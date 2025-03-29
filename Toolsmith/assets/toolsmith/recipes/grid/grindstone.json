@@ -1,0 +1,24 @@
+[
+	{
+		"ingredientPattern": "PSP,QQQ,Q_Q",
+		"ingredients": {
+			"S": { "type": "block", "code": "game:rock-granite" },
+			"P": { "type": "item", "code": "game:plank-*" },
+			"Q": { "type": "item", "code": "game:plank-*", "quantity": 2 }
+		},
+		"width": 3,
+		"height": 3,
+		"output": { "type": "block", "code": "toolsmith:grindstone-granite-north", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "PSP,QQQ,Q_Q",
+		"ingredients": {
+			"S": { "type": "block", "code": "game:rock-sandstone" },
+			"P": { "type": "item", "code": "game:plank-*" },
+			"Q": { "type": "item", "code": "game:plank-*", "quantity": 2 }
+		},
+		"width": 3,
+		"height": 3,
+		"output": { "type": "block", "code": "toolsmith:grindstone-sandstone-north", "quantity": 1 }
+	}
+]

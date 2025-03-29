@@ -1,0 +1,102 @@
+{
+	"code": "carpentedhandle",
+	"maxstacksize": 4,
+	"variantgroups": [
+		{ "code": "finish", "states": [ "none", "fat", "wax", "oil" ]},
+		{ "code": "state", "states": [ "wet", "finished" ]},
+		{ "code": "grip", "states": [ "plain", "twine", "cloth", "leather", "sturdy" ]}
+	],
+	"skipVariants": [
+		"carpentedhandle-none-wet-*"
+	],
+	"allowedVariants": [
+		"carpentedhandle-none-*",
+		"carpentedhandle-fat-wet-plain",
+		"carpentedhandle-fat-finished-*",
+		"carpentedhandle-wax-wet-plain",
+		"carpentedhandle-wax-finished-*",
+		"carpentedhandle-oil-wet-plain",
+		"carpentedhandle-oil-finished-*"
+	],
+	"attributes": {
+		"rackable": true,
+		"toolrackTransform": {
+			"translation": { "x": 0, "y": 0.6, "z":0 },
+			"scale": 1.25
+		}
+	},
+	"storageFlags" : 257,
+	"shapeByType": {
+		"*-plain": {
+			"base": "toolsmith:item/carpentedhandle-plain"
+		},
+		"*": {
+			"base": "toolsmith:item/carpentedhandle-wrap"
+		}
+	},
+	"texturesByType": {
+		"carpentedhandle-fat-wet-plain": {
+			"oak": { "base": "game:block/wood/debarked/larch" }
+		},
+		"carpentedhandle-wax-wet-plain": {
+			"oak": { "base": "game:block/wood/debarked/larch" }
+		},
+		"carpentedhandle-oil-wet-plain": {
+			"oak": { "base": "game:block/wood/debarked/aged" }
+		},
+		"*-cloth": {
+			"grip": { "base": "game:block/cloth/linen/normal1" }
+		},
+		"*-leather": {
+			"grip": { "base": "game:block/leather/plain" }
+		},
+		"*-sturdy": {
+			"grip": { "base": "game:block/leather/chromium" }
+		}
+	},
+	"creativeinventory": { "general": ["*"], "items": ["*"] },
+	"transitionablePropsByType": {
+		"carpentedhandle-fat-wet-plain":
+			[{
+				"type": "Dry",
+				"freshHours": { "avg": 0 },
+				"transitionHours": { "avg": 24 },
+				"transitionedStack": { "type": "item", "code": "carpentedhandle-fat-finished-plain" },
+				"transitionRatio": 1
+			}],
+		"carpentedhandle-wax-wet-plain":
+			[{
+				"type": "Dry",
+				"freshHours": { "avg": 0 },
+				"transitionHours": { "avg": 24 },
+				"transitionedStack": { "type": "item", "code": "carpentedhandle-wax-finished-plain" },
+				"transitionRatio": 1
+			}],
+		"carpentedhandle-oil-wet-plain":
+			[{
+				"type": "Dry",
+				"freshHours": { "avg": 0 },
+				"transitionHours": { "avg": 48 },
+				"transitionedStack": { "type": "item", "code": "carpentedhandle-oil-finished-plain" },
+				"transitionRatio": 1
+			}]
+	},
+	"tpHandTransform": {
+		"translation": { "x": 0, "y": -0.4, "z": -0.2 },
+		"rotation": { "x": 111, "y": 10, "z": 10 },
+		"origin": { "x": 0, "y": 0, "z": 0 },
+		"scale": 0.58
+	},
+	"guiTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": -115, "y": -9, "z": 110 },
+		"origin": { "x": 1.07, "y": -0.175, "z": 0.75 },
+		"scale": 2.55
+	},
+	"groundTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+		"scale": 5
+	}
+}

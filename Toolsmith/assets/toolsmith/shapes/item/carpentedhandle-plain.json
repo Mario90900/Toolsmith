@@ -1,0 +1,243 @@
+{
+	"editor": {
+		"collapsedPaths": "",
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"oak": "game:block/wood/debarked/oak"
+	},
+	"elements": [
+		{
+			"name": "origin",
+			"from": [ 8.0, 0.0, 8.0 ],
+			"to": [ 8.0, 0.0, 8.0 ],
+			"rotationOrigin": [ 8.0, 0.75, 8.0 ],
+			"faces": {
+				"north": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"east": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"south": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"west": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"up": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"down": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] }
+			},
+			"children": [
+				{
+					"name": "ShaftHead",
+					"from": [ 4.5, 0.5, -0.45 ],
+					"to": [ 7.5, 1.0, 0.55 ],
+					"rotationOrigin": [ 11.0, 0.0, 0.0 ],
+					"faces": {
+						"east": { "texture": "#oak", "uv": [ 13.0, 1.0, 15.0, 2.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"up": { "texture": "#oak", "uv": [ 9.0, 0.0, 13.0, 2.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"down": { "texture": "#oak", "uv": [ 9.0, 4.0, 13.0, 6.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+					},
+					"children": [
+						{
+							"name": "ShaftCurveDN",
+							"from": [ 0.0, -0.1, 0.31 ],
+							"to": [ 3.0, 0.15, 0.66 ],
+							"rotationOrigin": [ 6.5, 0.75, 0.45 ],
+							"rotationX": 45.0,
+							"faces": {
+								"east": { "texture": "#oak", "uv": [ 1.0, 1.0, 1.5, 1.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#oak", "uv": [ 9.0, 8.0, 13.0, 8.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftCurveUN",
+							"from": [ 0.0, -1.1, 0.24 ],
+							"to": [ 3.0, -0.85, 0.59 ],
+							"rotationOrigin": [ 6.5, -0.25, 0.45 ],
+							"rotationX": 135.0,
+							"faces": {
+								"east": { "texture": "#oak", "uv": [ 1.0, 0.0, 1.5, 0.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#oak", "uv": [ 9.0, 8.5, 13.0, 9.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftCurveUS",
+							"from": [ 0.0, -1.17, 0.24 ],
+							"to": [ 3.0, -0.92, 0.59 ],
+							"rotationOrigin": [ 6.5, -0.25, 0.45 ],
+							"rotationX": -135.0,
+							"faces": {
+								"east": { "texture": "#oak", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#oak", "uv": [ 9.0, 9.0, 12.0, 9.5 ], "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftCurveDS",
+							"from": [ 0.0, -0.17, 0.31 ],
+							"to": [ 3.0, 0.08, 0.66 ],
+							"rotationOrigin": [ 6.5, 0.75, 0.45 ],
+							"rotationX": -45.0,
+							"faces": {
+								"east": { "texture": "#oak", "uv": [ 0.0, 1.0, 0.5, 1.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#oak", "uv": [ 9.0, 9.5, 13.0, 10.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						}
+					]
+				},
+				{
+					"name": "ShaftHandle",
+					"from": [ -4.0, 0.0, -0.45 ],
+					"to": [ 5.0, 1.5, 0.55 ],
+					"rotationOrigin": [ 1.0, 0.0, -1.0 ],
+					"faces": {
+						"east": { "texture": "#oak", "uv": [ 13.0, 0.0, 15.0, 2.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"up": { "texture": "#oak", "uv": [ 1.0, 0.0, 10.0, 2.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"down": { "texture": "#oak", "uv": [ 1.0, 4.0, 10.0, 6.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+					},
+					"children": [
+						{
+							"name": "ShaftCurveDN2",
+							"from": [ 0.0, -0.1, 0.31 ],
+							"to": [ 9.0, 0.15, 0.66 ],
+							"rotationOrigin": [ 6.5, 0.75, 0.45 ],
+							"rotationX": 45.0,
+							"faces": {
+								"east": { "texture": "#oak", "uv": [ 1.0, 1.0, 1.5, 1.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#oak", "uv": [ 1.0, 8.0, 10.0, 8.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftCurveUN2",
+							"from": [ 0.0, -0.1, 0.24 ],
+							"to": [ 9.0, 0.15, 0.59 ],
+							"rotationOrigin": [ 6.5, 0.75, 0.45 ],
+							"rotationX": 135.0,
+							"faces": {
+								"east": { "texture": "#oak", "uv": [ 1.0, 0.0, 1.5, 0.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#oak", "uv": [ 1.0, 8.5, 10.0, 9.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftCurveUS2",
+							"from": [ 0.0, -0.17, 0.24 ],
+							"to": [ 9.0, 0.08, 0.59 ],
+							"rotationOrigin": [ 6.5, 0.75, 0.45 ],
+							"rotationX": -135.0,
+							"faces": {
+								"east": { "texture": "#oak", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#oak", "uv": [ 1.0, 9.0, 10.0, 9.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftCurveDS2",
+							"from": [ 0.0, -0.17, 0.31 ],
+							"to": [ 9.0, 0.08, 0.66 ],
+							"rotationOrigin": [ 6.5, 0.75, 0.45 ],
+							"rotationX": -45.0,
+							"faces": {
+								"east": { "texture": "#oak", "uv": [ 0.0, 1.0, 0.5, 1.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#oak", "uv": [ 1.0, 9.5, 10.0, 10.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftS2",
+							"from": [ 0.0, 0.25, 1.0 ],
+							"to": [ 9.0, 1.25, 1.25 ],
+							"rotationOrigin": [ 6.5, 0.0, 1.45 ],
+							"faces": {
+								"east": { "texture": "#oak", "uv": [ 0.0, 0.0, 0.5, 1.0 ], "windMode": [-1,-1,-1,-1] },
+								"south": { "texture": "#oak", "uv": [ 1.0, 6.0, 10.0, 8.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftN2",
+							"from": [ 0.0, 0.25, -0.25 ],
+							"to": [ 9.0, 1.25, 0.0 ],
+							"rotationOrigin": [ 6.5, 0.0, 0.45 ],
+							"faces": {
+								"north": { "texture": "#oak", "uv": [ 1.0, 2.0, 10.0, 4.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"east": { "texture": "#oak", "uv": [ 12.5, 0.5, 13.0, 2.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						}
+					]
+				},
+				{
+					"name": "ShaftHilt",
+					"from": [ -8.2, 0.0, 0.1 ],
+					"to": [ -4.2, 1.5, 1.1 ],
+					"rotationOrigin": [ -2.0, 0.0, 2.0 ],
+					"rotationY": -15.0,
+					"faces": {
+						"west": { "texture": "#oak", "uv": [ 13.0, 2.0, 15.0, 4.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"up": { "texture": "#oak", "uv": [ 10.0, 0.0, 14.0, 2.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"down": { "texture": "#oak", "uv": [ 10.0, 4.0, 14.0, 6.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+					},
+					"children": [
+						{
+							"name": "ShaftCurveDN4",
+							"from": [ 0.0, -0.1, 0.31 ],
+							"to": [ 4.0, 0.15, 0.66 ],
+							"rotationOrigin": [ 6.5, 0.75, 0.45 ],
+							"rotationX": 45.0,
+							"faces": {
+								"west": { "texture": "#oak", "uv": [ 1.0, 1.0, 1.5, 1.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#oak", "uv": [ 10.0, 8.0, 14.0, 8.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftCurveUN4",
+							"from": [ 0.0, -0.1, 0.24 ],
+							"to": [ 4.0, 0.15, 0.59 ],
+							"rotationOrigin": [ 6.5, 0.75, 0.45 ],
+							"rotationX": 135.0,
+							"faces": {
+								"west": { "texture": "#oak", "uv": [ 1.0, 0.0, 1.5, 0.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#oak", "uv": [ 10.0, 8.5, 14.0, 9.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftCurveUS4",
+							"from": [ 0.0, -0.17, 0.24 ],
+							"to": [ 4.0, 0.08, 0.59 ],
+							"rotationOrigin": [ 6.5, 0.75, 0.45 ],
+							"rotationX": -135.0,
+							"faces": {
+								"west": { "texture": "#oak", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#oak", "uv": [ 10.0, 9.0, 14.0, 9.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftCurveDS4",
+							"from": [ 0.0, -0.17, 0.31 ],
+							"to": [ 4.0, 0.08, 0.66 ],
+							"rotationOrigin": [ 6.5, 0.75, 0.45 ],
+							"rotationX": -45.0,
+							"faces": {
+								"west": { "texture": "#oak", "uv": [ 0.0, 1.0, 0.5, 1.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#oak", "uv": [ 10.0, 9.5, 14.0, 10.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftS4",
+							"from": [ 0.0, 0.25, 1.0 ],
+							"to": [ 4.0, 1.25, 1.25 ],
+							"rotationOrigin": [ 6.5, 0.0, 1.45 ],
+							"faces": {
+								"south": { "texture": "#oak", "uv": [ 10.0, 6.0, 14.0, 8.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"west": { "texture": "#oak", "uv": [ 0.0, 0.0, 0.5, 1.0 ], "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "ShaftN4",
+							"from": [ 0.0, 0.25, -0.25 ],
+							"to": [ 4.0, 1.25, 0.0 ],
+							"rotationOrigin": [ 6.5, 0.0, 0.45 ],
+							"faces": {
+								"north": { "texture": "#oak", "uv": [ 10.0, 2.0, 14.0, 4.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"west": { "texture": "#oak", "uv": [ 15.0, 2.5, 15.5, 4.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						}
+					]
+				}
+			]
+		}
+	]}

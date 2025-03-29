@@ -1,0 +1,50 @@
+{
+	"code": "grindstone",
+	"class": "toolsmith:BlockGrindstone",
+	"entityClass": "toolsmith:EntityGrindstone",
+	"maxstacksize": 1,
+	"variantgroups": [
+		{ "code": "stone", "states": [ "granite", "sandstone" ] },
+		{ "code": "side", "loadFromProperties": "abstract/horizontalorientation" }
+	],
+	"shapeByType": {
+		"*-north": { "base": "toolsmith:block/grindstone", "rotateY": 0 },
+		"*-east": { "base": "toolsmith:block/grindstone", "rotateY": 270 },
+		"*-west": { "base": "toolsmith:block/grindstone", "rotateY": 90 },
+		"*-south": { "base": "toolsmith:block/grindstone", "rotateY": 180 }
+	},
+	"texturesByType": {
+		"*-sandstone-*": {
+			"stone": { "base": "game:block/stone/polishedrock/sandstone-inside" }
+		}
+	},
+	"creativeinventory": { "general": [ "grindstone-*-north" ] },
+	"entityBehaviors": [{ "name": "Animatable" }],
+	"blockmaterial": "Stone",
+	"heldTpIdleAnimation": "holdbothhands",
+	"sounds": {
+		"place": "game:block/planks",
+		"walk": "game:walk/stone"
+	},
+	"replaceable": 100,
+	"resistance": 2,
+	"lightAbsorption": 0,
+	"sideopaque": {
+		"all": false
+	},
+	"sidesolid": {
+		"all": false
+	},
+	"guiTransform": {
+		"scale": 1.25
+	},
+	"collisionSelectionBox": {
+		"x1": 0.22, "y1": 0, "z1": 0.0625, "x2": 0.78, "y2": 0.85, "z2": 0.9375,
+		"rotateYByType": {
+			"*-north": 0,
+			"*-east": 270,
+			"*-west": 90,
+			"*-south": 180,
+		}
+	}
+}

@@ -1,0 +1,102 @@
+{
+	"code": "handle",
+	"maxstacksize": 4,
+	"variantgroups": [
+		{ "code": "finish", "states": [ "none", "fat", "wax", "oil" ]},
+		{ "code": "state", "states": [ "wet", "finished" ]},
+		{ "code": "grip", "states": [ "plain", "twine", "cloth", "leather", "sturdy" ]}
+	],
+	"skipVariants": [
+		"handle-none-wet-*"
+	],
+	"allowedVariants": [
+		"handle-none-*",
+		"handle-fat-wet-plain",
+		"handle-fat-finished-*",
+		"handle-wax-wet-plain",
+		"handle-wax-finished-*",
+		"handle-oil-wet-plain",
+		"handle-oil-finished-*"
+	],
+	"attributes": {
+		"rackable": true,
+		"toolrackTransform": {
+			"translation": { "x": 0, "y": 0.6, "z":0 },
+			"scale": 1.25
+		}
+	},
+	"storageFlags" : 257,
+	"shapeByType": {
+		"*-plain": {
+			"base": "toolsmith:item/handle-plain"
+		},
+		"*": {
+			"base": "toolsmith:item/handle-wrap"
+		}
+	},
+	"texturesByType": {
+		"handle-fat-wet-plain": {
+			"oak": { "base": "game:block/wood/debarked/larch" }
+		},
+		"handle-wax-wet-plain": {
+			"oak": { "base": "game:block/wood/debarked/larch" }
+		},
+		"handle-oil-wet-plain": {
+			"oak": { "base": "game:block/wood/debarked/aged" }
+		},
+		"*-cloth": {
+			"grip": { "base": "game:block/cloth/linen/normal1" }
+		},
+		"*-leather": {
+			"grip": { "base": "game:block/leather/plain" }
+		},
+		"*-sturdy": {
+			"grip": { "base": "game:block/leather/chromium" }
+		}
+	},
+	"creativeinventory": { "general": ["*"], "items": ["*"] },
+	"transitionablePropsByType": {
+		"handle-fat-wet-plain":
+			[{
+				"type": "Dry",
+				"freshHours": { "avg": 0 },
+				"transitionHours": { "avg": 12 },
+				"transitionedStack": { "type": "item", "code": "handle-fat-finished-plain" },
+				"transitionRatio": 1
+			}],
+		"handle-wax-wet-plain":
+			[{
+				"type": "Dry",
+				"freshHours": { "avg": 0 },
+				"transitionHours": { "avg": 12 },
+				"transitionedStack": { "type": "item", "code": "handle-wax-finished-plain" },
+				"transitionRatio": 1
+			}],
+		"handle-oil-wet-plain":
+			[{
+				"type": "Dry",
+				"freshHours": { "avg": 0 },
+				"transitionHours": { "avg": 24 },
+				"transitionedStack": { "type": "item", "code": "handle-oil-finished-plain" },
+				"transitionRatio": 1
+			}]
+	},
+	"tpHandTransform": {
+		"translation": { "x": 0, "y": -0.4, "z": -0.2 },
+		"rotation": { "x": 111, "y": 10, "z": 10 },
+		"origin": { "x": 0, "y": 0, "z": 0 },
+		"scale": 0.58
+	},
+	"guiTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": -115, "y": -9, "z": 110 },
+		"origin": { "x": 1.07, "y": -0.175, "z": 0.75 },
+		"scale": 2.55
+	},
+	"groundTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+		"scale": 5
+	}
+}

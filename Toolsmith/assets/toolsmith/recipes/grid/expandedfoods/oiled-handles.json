@@ -1,0 +1,70 @@
+[
+	{
+		"enabled": false,
+		"ingredientPattern": "HF",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:handle-none-finished-plain" },
+			"F": { "type": "block", "code": "game:woodbucket" }
+		},
+		"attributes": {
+			"liquidContainerProps": {
+				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-flax" },
+				"requiresLitres": 0.1
+			}
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:handle-oil-wet-plain", "quantity": 1 }
+	},
+	{
+		"enabled": false,
+		"ingredientPattern": "HF",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:handle-none-finished-plain" },
+			"F": { "type": "block", "code": "game:woodbucket" }
+		},
+		"attributes": {
+			"liquidContainerProps": {
+				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-seed" },
+				"requiresLitres": 0.1
+			}
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:handle-oil-wet-plain", "quantity": 1 }
+	},
+	{
+		"enabled": false,
+		"ingredientPattern": "HF",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:carpentedhandle-none-finished-plain" },
+			"F": { "type": "block", "code": "game:woodbucket" }
+		},
+		"attributes": {
+			"liquidContainerProps": {
+				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-flax" },
+				"requiresLitres": 0.1
+			}
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:carpentedhandle-oil-wet-plain", "quantity": 1 }
+	},
+	{
+		"enabled": false,
+		"ingredientPattern": "HF",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:carpentedhandle-none-finished-plain" },
+			"F": { "type": "block", "code": "game:woodbucket" }
+		},
+		"attributes": {
+			"liquidContainerProps": {
+				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-seed" },
+				"requiresLitres": 0.1
+			}
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:carpentedhandle-oil-wet-plain", "quantity": 1 }
+	}
+]

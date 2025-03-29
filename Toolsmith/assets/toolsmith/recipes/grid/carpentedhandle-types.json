@@ -1,0 +1,75 @@
+[
+	{
+		"ingredientPattern": "KSG,WP_",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"S": { "type": "block", "code": "game:sand-*" },
+			"G": { "type": "item", "code": "game:glueportion-pitch-hot" },
+			"W": { "type": "block", "code": "game:supportbeam-*" },
+			"P": { "type": "item", "code": "game:paper-parchment" }
+		},
+		"width": 3,
+		"height": 2,
+		"output": { "type": "item", "code": "toolsmith:carpentedhandle-none-finished-plain", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "HF",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:carpentedhandle-none-finished-plain" },
+			"F": { "type": "item", "code": "game:fat" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:carpentedhandle-fat-wet-plain", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "HF",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:carpentedhandle-none-finished-plain" },
+			"F": { "type": "item", "code": "game:beeswax" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:carpentedhandle-wax-wet-plain", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "HW",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:carpentedhandle-*-finished-plain",  "name": "finish" },
+			"W": { "type": "item", "code": "game:flaxtwine" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:carpentedhandle-{finish}-finished-twine", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "HW",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:carpentedhandle-*-finished-plain",  "name": "finish" },
+			"W": { "type": "block", "code": "game:linen-*-down" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:carpentedhandle-{finish}-finished-cloth", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "HW",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:carpentedhandle-*-finished-plain",  "name": "finish" },
+			"W": { "type": "item", "code": "game:leather-normal-*" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:carpentedhandle-{finish}-finished-leather", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "HW",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:carpentedhandle-*-finished-plain",  "name": "finish" },
+			"W": { "type": "item", "code": "game:leather-sturdy-plain" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:carpentedhandle-{finish}-finished-sturdy", "quantity": 1 }
+	}
+]
