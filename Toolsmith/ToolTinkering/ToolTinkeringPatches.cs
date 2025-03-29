@@ -20,7 +20,7 @@ namespace Toolsmith.ToolTinkering {
         //This Prefix Patch is for Smithed Tools, the ones that are simply smithed on an anvil and then you get the finished item. Mostly for just checking for 'Blunt' Tools.
         //Since it is probably impossible to tell what called to damage the tool, through an attack or just using the tool, it might just be simpler to render blunt tools undamagable.
         [HarmonyPrefix]
-        [HarmonyPatch(nameof(CollectibleObject.DamageItem))]
+        [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
         private static bool SmithedToolsDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) {
             if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTool>() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>() && !itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Api.Side.IsServer()) {
                 //If the tools is a Smithed Tool but not a Tinkered Tool with three parts, then simply don't damage it and interrupt the rest of the calls.
