@@ -112,7 +112,7 @@ namespace Toolsmith.ToolTinkering {
                 var foundHead = foundToolInput.GetToolhead();
                 if (foundHead == null) {
                     return; //Hopefully never hits this, but wew~ If somehow a tool was found, and THAT hasn't been initiated? Uh. Yeah, we'll just break out of this.
-                } //Though I can't help but ask, what if somehow it's converting one tool to another type? I hope not. Not going to dwell on that until it actually might come up though.
+                } //Though I can't help but ask, what if it's a recipe converting one tool to another type? I hope not. Not going to dwell on that until it actually might come up though.
                 outputSlot.Itemstack.SetToolhead(foundHead);
                 outputSlot.Itemstack.SetToolheadCurrentDurability(foundToolInput.GetToolheadCurrentDurability());
                 outputSlot.Itemstack.SetToolheadMaxDurability(foundToolInput.GetToolheadMaxDurability());

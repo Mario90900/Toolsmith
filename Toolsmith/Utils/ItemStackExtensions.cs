@@ -18,11 +18,16 @@ namespace Toolsmith.Utils {
         // -- ItemStack Extensions for the Tool items themselves --
         //Tool Head on full Tool ItemStack cluster
         internal static ItemStack? GetToolhead(this ItemStack itemStack) {
-            return itemStack.Attributes?.GetItemstack("tinkeredToolHead");
+            var head = itemStack.Attributes?.GetItemstack("tinkeredToolHead");
+            if (head == null) {
+                return null;
+            }
+            head.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+            return head.Clone();
         }
 
         internal static void SetToolhead(this ItemStack itemStack, ItemStack toolhead) {
-            itemStack.Attributes.SetItemstack("tinkeredToolHead", toolhead);
+            itemStack.Attributes.SetItemstack("tinkeredToolHead", toolhead.Clone()); //Save a clone of what was passed, maybe it's only been saving a reference each time...
         }
 
         internal static int GetToolheadCurrentDurability(this ItemStack itemStack) { //If ANY of these part durability return 0, assume they are fresh new parts and full durability.
@@ -43,11 +48,16 @@ namespace Toolsmith.Utils {
 
         //Tool Handle on full Tool ItemStack cluster
         internal static ItemStack? GetToolhandle(this ItemStack itemStack) {
-            return itemStack.Attributes?.GetItemstack("tinkeredToolHandle");
+            var handle = itemStack.Attributes?.GetItemstack("tinkeredToolHandle");
+            if (handle == null) {
+                return null;
+            }
+            handle.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+            return handle.Clone();
         }
 
         internal static void SetToolhandle(this ItemStack itemStack, ItemStack toolhandle) {
-            itemStack.Attributes.SetItemstack("tinkeredToolHandle", toolhandle);
+            itemStack.Attributes.SetItemstack("tinkeredToolHandle", toolhandle.Clone());
         }
 
         internal static int GetToolhandleCurrentDurability(this ItemStack itemStack) {
@@ -68,11 +78,16 @@ namespace Toolsmith.Utils {
 
         //Tool Binding on full Tool ItemStack cluster
         internal static ItemStack? GetToolbinding(this ItemStack itemStack) {
-            return itemStack.Attributes?.GetItemstack("tinkeredToolBinding");
+            var binding = itemStack.Attributes?.GetItemstack("tinkeredToolBinding");
+            if (binding == null) {
+                return null;
+            }
+            binding.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+            return binding.Clone();
         }
 
         internal static void SetToolbinding(this ItemStack itemStack, ItemStack binding) {
-            itemStack.Attributes.SetItemstack("tinkeredToolBinding", binding);
+            itemStack.Attributes.SetItemstack("tinkeredToolBinding", binding.Clone());
         }
 
         internal static int GetToolbindingCurrentDurability(this ItemStack itemStack) {
@@ -112,14 +127,14 @@ namespace Toolsmith.Utils {
 
         internal static void ResetNullHead(this ItemStack itemStack, IWorldAccessor world) {
             //Figure out the Tool Head and add the missing stats and ItemStack!
-            string toolCode = null;
+            string headCode = null;
             foreach (var t in RecipeRegisterModSystem.TinkerToolGridRecipes) {
                 if (t.Value.Code.Equals(itemStack.Collectible.Code)) {
-                    toolCode = t.Key;
+                    headCode = t.Key;
                     break;
                 }
             }
-            var headStack = new ItemStack(world.GetItem(new AssetLocation(toolCode)), 1);
+            var headStack = new ItemStack(world.GetItem(new AssetLocation(headCode)), 1);
             var headDur = ((int)itemStack.Attributes.GetDecimal("durability", itemStack.Collectible.Durability)) * 5; //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
             var headMaxDur = itemStack.Collectible.Durability * 5;
 
