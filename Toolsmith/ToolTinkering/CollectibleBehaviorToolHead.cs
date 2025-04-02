@@ -39,7 +39,7 @@ namespace Toolsmith.ToolTinkering {
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
             if (crafting && secondsUsed >= 4.4f) { //If they were crafting, verify that the countdown is up, and if so, craft it (if there still is a valid offhand handle!)
                 handling = EnumHandling.PreventDefault;
-                if (ValidHandleInOffhand(byEntity)) {
+                if (byEntity.World.Side.IsServer() && ValidHandleInOffhand(byEntity)) {
                     CraftTool(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);
                 }
                 crafting = false;
@@ -71,7 +71,7 @@ namespace Toolsmith.ToolTinkering {
                     bindingSlot.TakeOut(1);
                     bindingSlot.MarkDirty();
                 }
-                ItemStack tempHolder = slot.Itemstack; //I don't believe any Toolhead will actually stack more then once, but JUST INCASE I guess?
+                ItemStack tempHolder = slot.Itemstack; //I don't believe any Toolhead will actually stack more then once -- Actually they do. Huh. I never tried before. Good thing I had this!
                 slot.Itemstack = craftedItemStack; //Above holds the possible multiple-stacked Toolheads, this finally gives the crafted tool to slot that previously had the head(s)
                 slot.MarkDirty();
                 if (tempHolder.StackSize > 1) {

@@ -35,12 +35,13 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
         private static bool TinkeredToolDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) {
-            if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Api.Side.IsServer() && (ToolsmithModSystem.IgnoreCodes.Count() == 0 || ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString()))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
+            if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Side.IsServer() && (ToolsmithModSystem.IgnoreCodes.Count == 0 || ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString()))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
                 ItemStack itemStack = itemslot.Itemstack;
                 int remainingHeadDur = itemStack.GetToolheadCurrentDurability(); //Grab all the current durabilities of the parts!
                 int remainingHandleDur = itemStack.GetToolhandleCurrentDurability(); //But none should be 0 already, if any are, it means it's likely a Creative-spawned tool, or the mod was added to a world
                 int remainingBindingDur = itemStack.GetToolbindingCurrentDurability();
                 float chanceToDamage = itemStack.GetGripChanceToDamage();
+                bool headBroke = false;
 
                 if (remainingHeadDur <= 0) { //The same handling as in the tooltip changes for Tinkered Tools
                     itemStack.ResetNullHead(world);
@@ -97,6 +98,11 @@ namespace Toolsmith.ToolTinkering {
                         toolHead = itemStack.GetToolhead();
                         toolHead.SetCurrentPartDurability(remainingHeadDur);
                         toolHead.SetMaxPartDurability(itemStack.GetToolheadMaxDurability());
+                    } else {
+                        headBroke = true; //This right here might be key for compatability sake. The way I built the whole system runs off the assumption that the Tool's Head determines the tool.
+                                          //Thus, it can be considered that a tool does not fully "break" in the vanilla sense until the Head itself breaks, it only "falls apart" ie: the tool head flies off the handle, there's possible durability left on both.
+                                          //Because of this, always need to consider the possibility of dropping a handle or binder, but if the 'Head' is broken, we also want to run other mod's 'on damage' calls along with vanilla.
+                                          //Anything below that checks for !headBroke is looking to see if the Tool should be "Broken" or simply "Fallen Apart" in this sense, if it's fallen apart, do similar checks to vanilla tool breaking locally here. Otherwise let Vanilla code deal with it, since it's all or nothing after this patch is done.
                     }
                     if (remainingHandleDur > 0) {
                         toolHandle = itemStack.GetToolhandle();
@@ -122,7 +128,7 @@ namespace Toolsmith.ToolTinkering {
                         toolBinding = null;
                     }
 
-                    if (ToolsmithModSystem.Config.DebugMessages) {
+                    if (ToolsmithModSystem.Config.DebugMessages && world.Api.Side.IsServer()) {
                         ToolsmithModSystem.Logger.Debug("Tool broke!");
                         ToolsmithModSystem.Logger.Debug("The tool head is " + (toolHead?.Collectible.Code.ToString()));
                         ToolsmithModSystem.Logger.Debug("Head has durability: " + remainingHeadDur);
@@ -132,34 +138,43 @@ namespace Toolsmith.ToolTinkering {
                         ToolsmithModSystem.Logger.Debug("Binding has durability: " + remainingBindingDur);
                     }
 
-                    itemslot.Itemstack = null; //Actually 'break' the original item!
+                    if (!headBroke) {
+                        itemslot.Itemstack = null; //Actually 'break' the original item, but only if the head part isn't broken yet. Handle the 'falling apart' of the tools here, but let the 'breaking' happen elsewhere if the head DID fully break.
+                    } else {
+                        itemslot.Itemstack.Collectible.SetDurability(itemslot.Itemstack, 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
+                                                                                             //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
+                    }
                     IPlayer player = (byEntity as EntityPlayer)?.Player;
                     if (player != null) {
-                        if (__instance.Tool.HasValue) {
+                        if (!headBroke && __instance.Tool.HasValue) {
                             string ident = __instance.Attributes?["slotRefillIdentifier"].ToString();
                             __instance.RefillSlotIfEmpty(itemslot, byEntity as EntityAgent, (ItemStack stack) => (ident == null) ? (stack.Collectible.Tool == __instance.Tool) : (stack.ItemAttributes?["slotRefillIdentifier"]?.ToString() == ident));
                         }
 
                         //Try to give the player each part, if given successfully, set the stack to null again to represent this
-                        if (toolHead != null && player.InventoryManager.TryGiveItemstack(toolHead)) {
+                        if (!headBroke && toolHead != null && player.InventoryManager.TryGiveItemstack(toolHead, slotNotifyEffect: true)) {
                             toolHead = null;
                         }
-                        if (toolHandle != null && player.InventoryManager.TryGiveItemstack(toolHandle)) {
+                        if (toolHandle != null && player.InventoryManager.TryGiveItemstack(toolHandle, slotNotifyEffect: true)) {
                             toolHandle = null;
                         }
-                        if (toolBinding != null && player.InventoryManager.TryGiveItemstack(toolBinding)) {
+                        if (toolBinding != null && player.InventoryManager.TryGiveItemstack(toolBinding, slotNotifyEffect: true)) {
                             toolBinding = null;
-                        } else if (bitsDrop != null && player.InventoryManager.TryGiveItemstack(bitsDrop)) {
+                        } else if (bitsDrop != null && player.InventoryManager.TryGiveItemstack(bitsDrop, slotNotifyEffect: true)) {
                             bitsDrop = null;
                         }
 
-                        world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), player);
+                        if (!headBroke) {
+                            world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), player);
+                        }
                     } else {
-                        world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), byEntity.SidedPos.X, byEntity.SidedPos.Y, byEntity.SidedPos.Z, null, 1f, 16f);
+                        if (!headBroke) {
+                            world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), byEntity.SidedPos.X, byEntity.SidedPos.Y, byEntity.SidedPos.Z, null, 1f, 16f);
+                        }
                     }
 
                     //Drop any remaining tools not given to the player into the world
-                    if (toolHead != null) {
+                    if (!headBroke && toolHead != null) {
                         world.SpawnItemEntity(toolHead, byEntity.Pos.XYZ);
                     }
                     if (toolHandle != null) {
@@ -172,16 +187,17 @@ namespace Toolsmith.ToolTinkering {
                     }
                 }
 
-                if (itemslot.Itemstack != null && itemslot.Itemstack.Collectible.Tool.HasValue && (!itemslot.Itemstack.Attributes.HasAttribute("durability") || itemslot.Itemstack.Attributes.GetInt("durability") == 0)) {
-                    ItemStack itemstack = itemslot.Itemstack;
-                    itemstack.Attributes.SetInt("durability", itemstack.Collectible.GetMaxDurability(itemstack));
-                }
-
                 itemslot.MarkDirty();
-                return false; //Skip default and others
-            } else { //If it's not a tinkered tool, then there's no need to mess with anything.
-                return true; //Run default and others
+                if (!headBroke) {
+                    if (itemslot.Itemstack != null && itemslot.Itemstack.Collectible.Tool.HasValue && (!itemslot.Itemstack.Attributes.HasAttribute("durability") || itemslot.Itemstack.Attributes.GetInt("durability") == 0)) {
+                        ItemStack itemstack = itemslot.Itemstack;
+                        itemstack.Attributes.SetInt("durability", itemstack.Collectible.GetMaxDurability(itemstack));
+                    }
+                    return false; //Skip default and others
+                }
             }
+            //If it's not a tinkered tool, or the head did break, then let everything else run as well!
+            return true;
         }
 
         //Harmony Prefix Patch to intercept the GetMaxDurability calls, if it's a Tinkered Tool, instead it will need to check the different part's durabilities over the default 'durability'
@@ -191,9 +207,9 @@ namespace Toolsmith.ToolTinkering {
         private static bool TinkeredToolGetMaxDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
                 var headMax = itemstack.GetToolheadMaxDurability();
-                if (headMax == 0) { //If the headMax is 0, that likely means the item is either broken or otherwise not initialized yet, IE before it was crafted in the Handbook or Creative Menu
+                /*if (headMax == 0) { //If the headMax is 0, that likely means the item is either broken or otherwise not initialized yet, IE before it was crafted in the Handbook or Creative Menu
                     return true; //If so, just hop out right here and let the defaults take control.
-                }
+                }*/
                 var handleMax = itemstack.GetToolhandleMaxDurability();
                 var bindingMax = itemstack.GetToolbindingMaxDurability();
                 int lowestMax;
@@ -216,13 +232,13 @@ namespace Toolsmith.ToolTinkering {
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch(nameof(CollectibleObject.GetDurability))] //This method is technically depricated for GetRemainingDurability but it seems like it might be somehow bypassing Harmony patches if a mod calls this instead of that? Maybe?
+        [HarmonyPatch(nameof(CollectibleObject.GetDurability))] //This method is technically depricated for GetRemainingDurability but patching it just incase as well.
         private static bool TinkeredToolGetDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
                 var headMax = itemstack.GetToolheadMaxDurability();
-                if (headMax == 0) { //If the headMax is 0, that likely means the item is either broken or otherwise not initialized yet, IE before it was crafted in the Handbook or Creative Menu
+                /*if (headMax == 0) { //If the headMax is 0, that likely means the item is either broken or otherwise not initialized yet, IE before it was crafted in the Handbook or Creative Menu
                     return true; //If so, just hop out right here and let the defaults take control.
-                }
+                }*/
                 var handleMax = itemstack.GetToolhandleMaxDurability();
                 var bindingMax = itemstack.GetToolbindingMaxDurability();
                 int lowestMax;
@@ -250,9 +266,9 @@ namespace Toolsmith.ToolTinkering {
         private static bool TinkeredToolGetRemainingDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
                 var headCur = itemstack.GetToolheadCurrentDurability();
-                if (headCur == 0) {
+                /*if (headCur == 0) {
                     return true;
-                }
+                }*/
                 var handleCur = itemstack.GetToolhandleCurrentDurability();
                 var bindingCur = itemstack.GetToolbindingCurrentDurability();
                 int lowestCur;
