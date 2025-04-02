@@ -125,6 +125,8 @@ namespace Toolsmith.Utils {
 
         //Extensions to handle resetting invalid tools that are lacking any durability values
 
+        //Since it's possible to have issues either detecting proper tools, configuration being wonky, or other things, there needs to be a default fallback to set here.
+        //Any time the Tool Head is accessed, check if it's the Dummy and revert to vanilla mechanics to prevent crashing.
         internal static void ResetNullHead(this ItemStack itemStack, IWorldAccessor world) {
             //Figure out the Tool Head and add the missing stats and ItemStack!
             string headCode = null;
@@ -134,17 +136,28 @@ namespace Toolsmith.Utils {
                     break;
                 }
             }
+
+            if (headCode == null) { //If headCode is still null at this point, it never found a proper key. Is something wrong with the configs, or is something getting improperly registered through a wildcard?
+                //Either way, this needs an error printed and it has to be accounted for at any point.
+                if (world.Side.IsServer()) {
+                    ToolsmithModSystem.Logger.Error("Ran into a tool without an entry in the GridRecipes Dictionary! Something might be wrong with your configs, or something is getting improperly given the behaviors?\nThe Itemstack in question is: " + itemStack.ToString() + "\nAdding it to the Ignore list to revert to vanilla behaviors when encountered again.");
+                    ToolsmithModSystem.IgnoreCodes.Add(itemStack.Collectible.Code.ToString());
+                }
+                return;
+            }
+
             var headStack = new ItemStack(world.GetItem(new AssetLocation(headCode)), 1);
             var headDur = ((int)itemStack.Attributes.GetDecimal("durability", itemStack.Collectible.Durability)) * 5; //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
             var headMaxDur = itemStack.Collectible.Durability * 5;
 
-            headStack.SetMaxPartDurability(headMaxDur);
             headStack.SetCurrentPartDurability(headDur);
+            headStack.SetMaxPartDurability(headMaxDur);
             itemStack.SetToolhead(headStack);
             itemStack.SetToolheadCurrentDurability(headDur);
             itemStack.SetToolheadMaxDurability(headMaxDur);
         }
 
+        //Since the handle and binding can be expected to not have something, it makes sense to set them to Stick and 'none' respectively as defaults.
         internal static void ResetNullHandleOrBinding(this ItemStack itemStack, IWorldAccessor world) {
             ItemStack handle = null;
             int maxHandleDur = itemStack.GetToolhandleMaxDurability();

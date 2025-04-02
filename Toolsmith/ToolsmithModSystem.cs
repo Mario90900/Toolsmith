@@ -34,6 +34,8 @@ namespace Toolsmith {
         public static List<CollectibleObject> HandleList; //Will not be populated unless PrintAllParsedToolsAndParts is true
         public static List<CollectibleObject> BindingList; //Same as HandleList above
 
+        public static List<string> IgnoreCodes;
+
         public override void StartPre(ICoreAPI api) {
             Logger = Mod.Logger;
             ModId = Mod.Info.ModID;
@@ -43,6 +45,7 @@ namespace Toolsmith {
             TinkerableToolsList = new List<CollectibleObject>();
             HandleList = new List<CollectibleObject>();
             BindingList = new List<CollectibleObject>();
+            IgnoreCodes = new List<string>();
         }
 
         public override void Start(ICoreAPI api) {
@@ -173,6 +176,7 @@ namespace Toolsmith {
             TinkerableToolsList = null;
             HandleList = null;
             BindingList = null;
+            IgnoreCodes = null;
             base.Dispose();
         }
     }

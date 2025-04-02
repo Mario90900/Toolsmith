@@ -45,6 +45,9 @@ namespace Toolsmith.ToolTinkering {
                             maxDur = item.GetToolheadMaxDurability();
                             if (currentDur <= 0) { //If somehow the MaxDur is less then or equal to 0, it's likely an item that was spawned in, or a holdover from the mod being added to a save. Will need to init it properly.
                                 item.ResetNullHead(world);
+                                if (item.GetToolhead() == null) { //If the tool still has no proper head item saved to it, something went wrong and an error should have been printed.
+                                    return false;
+                                }
                                 currentDur = item.GetToolheadCurrentDurability();
                                 maxDur = item.GetToolheadMaxDurability();
                                 if (item.GetToolhandleCurrentDurability() <= 0 || item.GetToolbindingCurrentDurability() <= 0) {
@@ -119,7 +122,9 @@ namespace Toolsmith.ToolTinkering {
 
         //This checks if it is a valid repair tool as well as if it is a fully tinkered tool or if it is just a tool's head, since the durabilities are stored under different attributes
         private int IsValidRepairTool(CollectibleObject item) {
-            if (item.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //This one stores it under 'tinkeredToolHead' durability
+            if (ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(item.Code.ToString())) { //First check if the ignore list has any entries, and ensure this one isn't on it. Likely means something got improperly given the Behavior on init.
+                return 0;
+            } else if (item.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //This one stores it under 'tinkeredToolHead' durability
                 if (!item.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>() && item.IsCraftableMetal()) {
                     return 1;
                 }

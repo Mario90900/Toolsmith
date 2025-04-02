@@ -35,7 +35,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
         private static bool TinkeredToolDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) {
-            if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Api.Side.IsServer()) { //Important to check if it even is a Tinkered Tool
+            if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Api.Side.IsServer() && (ToolsmithModSystem.IgnoreCodes.Count() == 0 || ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString()))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
                 ItemStack itemStack = itemslot.Itemstack;
                 int remainingHeadDur = itemStack.GetToolheadCurrentDurability(); //Grab all the current durabilities of the parts!
                 int remainingHandleDur = itemStack.GetToolhandleCurrentDurability(); //But none should be 0 already, if any are, it means it's likely a Creative-spawned tool, or the mod was added to a world
@@ -44,6 +44,9 @@ namespace Toolsmith.ToolTinkering {
 
                 if (remainingHeadDur <= 0) { //The same handling as in the tooltip changes for Tinkered Tools
                     itemStack.ResetNullHead(world);
+                    if (itemStack.GetToolhead() == null) { //If the saved ToolHead is still null, something went really wrong, and it might be safest to just revert to vanilla behaviors to prevent a crash.
+                        return true;
+                    }
                     remainingHeadDur = itemStack.GetToolheadCurrentDurability();
                 }
                 if (remainingHandleDur <= 0 || remainingBindingDur <= 0) {
