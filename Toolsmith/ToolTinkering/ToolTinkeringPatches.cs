@@ -207,9 +207,9 @@ namespace Toolsmith.ToolTinkering {
         private static bool TinkeredToolGetMaxDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
                 var headMax = itemstack.GetToolheadMaxDurability();
-                /*if (headMax == 0) { //If the headMax is 0, that likely means the item is either broken or otherwise not initialized yet, IE before it was crafted in the Handbook or Creative Menu
+                if (headMax == 0) { //If the headMax is 0, that likely means the item is either broken or otherwise not initialized yet, IE before it was crafted in the Handbook or Creative Menu
                     return true; //If so, just hop out right here and let the defaults take control.
-                }*/
+                }
                 var handleMax = itemstack.GetToolhandleMaxDurability();
                 var bindingMax = itemstack.GetToolbindingMaxDurability();
                 int lowestMax;
@@ -236,9 +236,9 @@ namespace Toolsmith.ToolTinkering {
         private static bool TinkeredToolGetDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
                 var headMax = itemstack.GetToolheadMaxDurability();
-                /*if (headMax == 0) { //If the headMax is 0, that likely means the item is either broken or otherwise not initialized yet, IE before it was crafted in the Handbook or Creative Menu
+                if (headMax == 0) { //If the headMax is 0, that likely means the item is either broken or otherwise not initialized yet, IE before it was crafted in the Handbook or Creative Menu
                     return true; //If so, just hop out right here and let the defaults take control.
-                }*/
+                }
                 var handleMax = itemstack.GetToolhandleMaxDurability();
                 var bindingMax = itemstack.GetToolbindingMaxDurability();
                 int lowestMax;
@@ -266,9 +266,9 @@ namespace Toolsmith.ToolTinkering {
         private static bool TinkeredToolGetRemainingDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
                 var headCur = itemstack.GetToolheadCurrentDurability();
-                /*if (headCur == 0) {
+                if (headCur == 0) {
                     return true;
-                }*/
+                }
                 var handleCur = itemstack.GetToolhandleCurrentDurability();
                 var bindingCur = itemstack.GetToolbindingCurrentDurability();
                 int lowestCur;
