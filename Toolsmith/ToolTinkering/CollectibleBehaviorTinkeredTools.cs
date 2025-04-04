@@ -30,16 +30,9 @@ namespace Toolsmith.ToolTinkering {
             var maxBindingDur = inSlot.Itemstack.GetToolbindingMaxDurability();
 
             if (maxHeadDur == 0) { //If this is 0 then assume something went wrong and reset things, it's a new item spawned in, or a player added the mod to their save.
-                //inSlot.Itemstack.ResetNullHead(world); //This cannot be run from the client side, for now will have to patch it out and figure out a proper fix another time.
-                //if (inSlot.Itemstack.GetToolhead() == null) { //If even after an attempted reset it is still busted, likely something is wrong with the configs. Try and fall back to default behaviors.
-                //    return;
-                //}
-                //Instead for part of the temp-fix, just run off the assumption that for now it might work fine to have a placeholder basic calc to initialize it based on the default Durability value.
-                //Might have to figure out pinging the server for an item update on the client side here...
-                curHeadDur = ((int)inSlot.Itemstack.Attributes.GetDecimal("durability", inSlot.Itemstack.Collectible.Durability)) * 5; //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
-                maxHeadDur = inSlot.Itemstack.Collectible.Durability * 5;
-                inSlot.Itemstack.SetToolheadCurrentDurability(curHeadDur);
-                inSlot.Itemstack.SetToolheadMaxDurability(maxHeadDur);
+                inSlot.Itemstack.ResetNullHead(world); //Moved the client-half of resetting the tool head into this call. Can be safely called on both sides, and handle it over there. Make sure to mark the itemslot as dirty on the client though after using this.
+                curHeadDur = inSlot.Itemstack.GetToolheadCurrentDurability();
+                maxHeadDur = inSlot.Itemstack.GetToolheadMaxDurability();
             }
             if (maxHandleDur == 0 || maxBindingDur == 0) { //Same as above
                 inSlot.Itemstack.ResetNullHandleOrBinding(world);

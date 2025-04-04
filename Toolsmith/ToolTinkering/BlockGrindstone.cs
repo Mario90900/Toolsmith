@@ -31,7 +31,7 @@ namespace Toolsmith.ToolTinkering {
 
         public override bool OnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null) { //Make sure the slot isn't empty
-                int isTool = IsValidRepairTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible);
+                int isTool = IsValidRepairTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world);
                 if (isTool > 0) { //Check if it's a valid tool for repair, is made of metal and has one of the 2 behaviors, if so...
                     ItemStack item = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
                     
@@ -121,8 +121,8 @@ namespace Toolsmith.ToolTinkering {
         }
 
         //This checks if it is a valid repair tool as well as if it is a fully tinkered tool or if it is just a tool's head, since the durabilities are stored under different attributes
-        private int IsValidRepairTool(CollectibleObject item) {
-            if (ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(item.Code.ToString())) { //First check if the ignore list has any entries, and ensure this one isn't on it. Likely means something got improperly given the Behavior on init.
+        private int IsValidRepairTool(CollectibleObject item, IWorldAccessor world) {
+            if (world.Side.IsServer() && ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(item.Code.ToString())) { //First check if the ignore list has any entries, and ensure this one isn't on it. Likely means something got improperly given the Behavior on init.
                 return 0;
             } else if (item.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //This one stores it under 'tinkeredToolHead' durability
                 if (!item.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>() && item.IsCraftableMetal()) {

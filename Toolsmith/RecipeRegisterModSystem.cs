@@ -39,7 +39,7 @@ namespace Toolsmith {
             //Oh god this pains me. This does NOT feel optimal at all. But it works?
             foreach (var recipe in api.World.GridRecipes) { //Check each recipe...
                 foreach (var tool in ToolsmithModSystem.TinkerableToolsList.Where(t => recipe.Output.Code.Equals(t.Code))) { //Where the output code matches anything on the Tinkered Tool List (from the configs)...
-                    foreach (var ingredient in recipe.resolvedIngredients.Where(i => (i.ResolvedItemstack != null) && (ConfigUtility.IsToolHead(i.ResolvedItemstack.Collectible.Code.ToString())))) { //And the recipe in question has a Tool Head item that is on the Tool Head Config List
+                    foreach (var ingredient in recipe.resolvedIngredients.Where(i => (i != null) && (i.ResolvedItemstack != null) && (ConfigUtility.IsToolHead(i.ResolvedItemstack.Collectible?.Code.ToString())))) { //And the recipe in question has a Tool Head item that is on the Tool Head Config List
                         ingredient.ResolvedItemstack.Collectible.AddBehavior<CollectibleBehaviorToolHead>(); //Therefore it is a Tool Head! Give it the behavior.
 
                         if (ConfigUtility.IsBluntTool(tool.Code)) { //If it is also a blunt tool, add the 'nodamage' Behavior as a tag to the Head as well

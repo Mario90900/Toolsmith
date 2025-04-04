@@ -35,7 +35,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
         private static bool TinkeredToolDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) {
-            if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Side.IsServer() && (ToolsmithModSystem.IgnoreCodes.Count == 0 || ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString()))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
+            if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && ((world.Side.IsClient()) || (world.Side.IsServer() && (ToolsmithModSystem.IgnoreCodes.Count == 0 || ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString()))))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
                 ItemStack itemStack = itemslot.Itemstack;
                 int remainingHeadDur = itemStack.GetToolheadCurrentDurability(); //Grab all the current durabilities of the parts!
                 int remainingHandleDur = itemStack.GetToolhandleCurrentDurability(); //But none should be 0 already, if any are, it means it's likely a Creative-spawned tool, or the mod was added to a world
