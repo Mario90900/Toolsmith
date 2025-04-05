@@ -29,12 +29,12 @@ namespace Toolsmith.ToolTinkering {
             var curBindingDur = inSlot.Itemstack.GetToolbindingCurrentDurability();
             var maxBindingDur = inSlot.Itemstack.GetToolbindingMaxDurability();
 
-            if (maxHeadDur == 0) { //If this is 0 then assume something went wrong and reset things, it's a new item spawned in, or a player added the mod to their save.
+            if (maxHeadDur < 0) { //If this is 0 then assume something went wrong and reset things, it's a new item spawned in, or a player added the mod to their save.
                 inSlot.Itemstack.ResetNullHead(world); //Moved the client-half of resetting the tool head into this call. Can be safely called on both sides, and handle it over there. Make sure to mark the itemslot as dirty on the client though after using this.
                 curHeadDur = inSlot.Itemstack.GetToolheadCurrentDurability();
                 maxHeadDur = inSlot.Itemstack.GetToolheadMaxDurability();
             }
-            if (maxHandleDur == 0 || maxBindingDur == 0) { //Same as above
+            if (maxHandleDur < 0 || maxBindingDur < 0) { //Same as above
                 inSlot.Itemstack.ResetNullHandleOrBinding(world);
                 curHandleDur = inSlot.Itemstack.GetToolhandleCurrentDurability();
                 maxHandleDur = inSlot.Itemstack.GetToolhandleMaxDurability();
@@ -110,14 +110,12 @@ namespace Toolsmith.ToolTinkering {
             }
 
             if (headStack == null && foundToolInput == null) { //Probably a safety check here, since I realized some recipes IE the whetstone from Working Classes craft a knife with the stone to produce a knife.
-                return; //If no tool head is found and none of the inputs are also a tool, just back out to prevent a crash or anything
+                ToolsmithModSystem.Logger.Error("Somehow crafted a Tinker Tool with a recipe that could not find a head, nor tool to copy data from.\nThe tool in question is: " + outputSlot.Itemstack.Collectible.Code.ToString() + "\nAttempting to just reset the Tool Head instead. This might result in fallback data of a Candle being assigned.");
+                outputSlot.Itemstack.ResetNullHead(ToolsmithModSystem.Api.World);
             } else if (headStack == null && foundToolInput != null) {
                 //Actually found an input that is a tool, so probably copy over the stats of that tool into the new one? Oh god I hope no one tries to use this with another mod that makes tool crafting need more tools. That just... will break everything.
-                var foundHead = foundToolInput.GetToolhead();
-                if (foundHead == null) {
-                    return; //Hopefully never hits this, but wew~ If somehow a tool was found, and THAT hasn't been initiated? Uh. Yeah, we'll just break out of this.
-                } //Though I can't help but ask, what if it's a recipe converting one tool to another type? I hope not. Not going to dwell on that until it actually might come up though.
-                outputSlot.Itemstack.SetToolhead(foundHead);
+                //Though I can't help but ask, what if it's a recipe converting one tool to another type? I hope not. Not going to dwell on that until it actually might come up though.
+                outputSlot.Itemstack.SetToolhead(foundToolInput.GetToolhead());
                 outputSlot.Itemstack.SetToolheadCurrentDurability(foundToolInput.GetToolheadCurrentDurability());
                 outputSlot.Itemstack.SetToolheadMaxDurability(foundToolInput.GetToolheadMaxDurability());
                 outputSlot.Itemstack.SetToolhandle(foundToolInput.GetToolhandle());

@@ -43,17 +43,19 @@ namespace Toolsmith.ToolTinkering {
                         if (isTool == 1) { //The item is a Tinkered Tool! Use the extensions for the tool's head durability.
                             currentDur = item.GetToolheadCurrentDurability();
                             maxDur = item.GetToolheadMaxDurability();
-                            if (currentDur <= 0) { //If somehow the MaxDur is less then or equal to 0, it's likely an item that was spawned in, or a holdover from the mod being added to a save. Will need to init it properly.
-                                item.ResetNullHead(world);
-                                if (item.GetToolhead() == null) { //If the tool still has no proper head item saved to it, something went wrong and an error should have been printed.
-                                    return false;
-                                }
-                                currentDur = item.GetToolheadCurrentDurability();
-                                maxDur = item.GetToolheadMaxDurability();
-                                if (item.GetToolhandleCurrentDurability() <= 0 || item.GetToolbindingCurrentDurability() <= 0) {
-                                    item.ResetNullHandleOrBinding(world);
-                                }
+                            //if (currentDur <= 0) { //If somehow the MaxDur is less then or equal to 0, it's likely an item that was spawned in, or a holdover from the mod being added to a save. Will need to init it properly.
+                                //item.ResetNullHead(world);
+                            if (item.HasPlaceholderHead()) { //If the tool still has no proper head item saved to it, something went wrong and an error should have been printed.
+                                return false;
                             }
+                            var handleDur = item.GetToolhandleCurrentDurability(); //This is mostly just being called to test that the tools are fully initialized.
+                            var bindingDur = item.GetToolbindingCurrentDurability(); //^^^
+                                //currentDur = item.GetToolheadCurrentDurability();
+                                //maxDur = item.GetToolheadMaxDurability();
+                                //if (item.GetToolhandleCurrentDurability() <= 0 || item.GetToolbindingCurrentDurability() <= 0) {
+                                //    item.ResetNullHandleOrBinding(world);
+                                //}
+                            //}
                         } else if (isTool == 2) { //The item is a Smithed Tool! Instead use the default base durability system.
                             currentDur = item.Collectible.GetRemainingDurability(item);
                             maxDur = item.Collectible.GetMaxDurability(item);

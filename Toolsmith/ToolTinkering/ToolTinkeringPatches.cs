@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Config;
@@ -43,19 +44,19 @@ namespace Toolsmith.ToolTinkering {
                 float chanceToDamage = itemStack.GetGripChanceToDamage();
                 bool headBroke = false;
 
-                if (remainingHeadDur <= 0) { //The same handling as in the tooltip changes for Tinkered Tools
+                /*if (remainingHeadDur <= 0) { //The same handling as in the tooltip changes for Tinkered Tools
                     itemStack.ResetNullHead(world);
-                    if (itemStack.GetToolhead() == null) { //If the saved ToolHead is still null, something went really wrong, and it might be safest to just revert to vanilla behaviors to prevent a crash.
-                        return true;
-                    }
+                    //if (itemStack.GetToolhead() == null) { //If the saved ToolHead is still null, something went really wrong, and it might be safest to just revert to vanilla behaviors to prevent a crash.
+                    //    return true;
+                    //}
                     remainingHeadDur = itemStack.GetToolheadCurrentDurability();
-                }
-                if (remainingHandleDur <= 0 || remainingBindingDur <= 0) {
+                }*/
+                /*if (remainingHandleDur <= 0 || remainingBindingDur <= 0) {
                     itemStack.ResetNullHandleOrBinding(world);
                     remainingHandleDur = itemStack.GetToolhandleCurrentDurability();
                     remainingBindingDur = itemStack.GetToolbindingCurrentDurability();
                     chanceToDamage = itemStack.GetGripChanceToDamage();
-                }
+                }*/
 
                 //Handle damaging each part, the handle only if it should based on the chance to damage it
                 if (!itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>()) { //If this Tinkered Tool is also marked as a tool to not damage, then simply don't damage the head. Damage the other parts though!
@@ -90,11 +91,14 @@ namespace Toolsmith.ToolTinkering {
                 //Any or all parts COULD hit 0 at the same time, technically. I'd love to see it though, but it needs to be possible!
                 if (remainingBindingDur <= 0 || remainingHandleDur <= 0 || remainingHeadDur <= 0) {
                     ItemStack toolHead = null;
+                    bool gaveHead = false;
                     ItemStack toolHandle = null;
+                    bool gaveHandle = false;
                     ItemStack toolBinding = itemStack.GetToolbinding(); //This one is the only different one since it COULD be null representing a lack of a binding, but need to see if it even has a binding first by checking this fact
+                    bool gaveBinding = false;
                     ItemStack bitsDrop = null;
 
-                    if (remainingHeadDur > 0) {
+                    if (remainingHeadDur > 0 && !itemStack.HasPlaceholderHead()) {
                         toolHead = itemStack.GetToolhead();
                         toolHead.SetCurrentPartDurability(remainingHeadDur);
                         toolHead.SetMaxPartDurability(itemStack.GetToolheadMaxDurability());
@@ -109,23 +113,22 @@ namespace Toolsmith.ToolTinkering {
                         toolHandle.SetCurrentPartDurability(remainingHandleDur);
                         toolHandle.SetMaxPartDurability(itemStack.GetToolhandleMaxDurability());
                     }
-                    if (toolBinding != null && remainingBindingDur > 0) { //Binding doesn't always drop, only if the durability is above the threshold, and then if it's below, it breaks and if made of metal, drops some bits
+                    if (toolBinding != null) { //Binding doesn't always drop, only if the durability is above the threshold, and then if it's below, it breaks and if made of metal, drops some bits
                         BindingStats bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithModSystem.Config.BindingsWithStats.Get(toolBinding.Collectible.Code.Path).bindingStats);
                         float bindingPercentRemains = (float)(remainingBindingDur) / (float)(itemStack.GetToolbindingMaxDurability());
                         if (bindingPercentRemains < bindingStats.recoveryPercent) { //If the remaining HP percent is less then the recovery percent, the binding is used up.
-                            toolBinding = null; //Set it back to null to prevent dropping anything later!
-                            if (bindingStats.isMetal) {
-                                int numBits;
-                                if (world.Rand.NextDouble() < 0.5) {
-                                    numBits = 3;
-                                } else {
-                                    numBits = 4;
-                                }
-                                bitsDrop = new ItemStack(world.GetItem(new AssetLocation("game:metalbit-" + bindingStats.metalType)), numBits);
-                            }
+                            toolBinding = null; //Set it back to null to prevent dropping anything later! And then to see if Bits should drop!
                         }
-                    } else { //If it hits this, either the Binding is already null and this doesn't change anything, or the durability is <= 0, so it should have broke
-                        toolBinding = null;
+
+                        if (toolBinding == null && bindingStats.isMetal) {
+                            int numBits;
+                            if (world.Rand.NextDouble() < 0.5) {
+                                numBits = 3;
+                            } else {
+                                numBits = 4;
+                            }
+                            bitsDrop = new ItemStack(world.GetItem(new AssetLocation("game:metalbit-" + bindingStats.metalType)), numBits);
+                        }
                     }
 
                     if (ToolsmithModSystem.Config.DebugMessages && world.Api.Side.IsServer()) {
@@ -152,35 +155,35 @@ namespace Toolsmith.ToolTinkering {
                         }
 
                         //Try to give the player each part, if given successfully, set the stack to null again to represent this
-                        if (!headBroke && toolHead != null && player.InventoryManager.TryGiveItemstack(toolHead, slotNotifyEffect: true)) {
-                            toolHead = null;
+                        if (!headBroke && toolHead != null) {
+                            gaveHead = player.InventoryManager.TryGiveItemstack(toolHead, slotNotifyEffect: true);
                         }
-                        if (toolHandle != null && player.InventoryManager.TryGiveItemstack(toolHandle, slotNotifyEffect: true)) {
-                            toolHandle = null;
+                        if (toolHandle != null) {
+                            gaveHandle = player.InventoryManager.TryGiveItemstack(toolHandle, slotNotifyEffect: true);
                         }
-                        if (toolBinding != null && player.InventoryManager.TryGiveItemstack(toolBinding, slotNotifyEffect: true)) {
-                            toolBinding = null;
+                        if (toolBinding != null) {
+                            gaveBinding = player.InventoryManager.TryGiveItemstack(toolBinding, slotNotifyEffect: true);
                         } else if (bitsDrop != null && player.InventoryManager.TryGiveItemstack(bitsDrop, slotNotifyEffect: true)) {
                             bitsDrop = null;
                         }
 
-                        if (!headBroke) {
+                        if (!headBroke && world.Side.IsServer()) {
                             world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), player);
                         }
                     } else {
-                        if (!headBroke) {
+                        if (!headBroke && world.Side.IsServer()) {
                             world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), byEntity.SidedPos.X, byEntity.SidedPos.Y, byEntity.SidedPos.Z, null, 1f, 16f);
                         }
                     }
 
                     //Drop any remaining tools not given to the player into the world
-                    if (!headBroke && toolHead != null) {
+                    if (!headBroke && toolHead != null && !gaveHead) {
                         world.SpawnItemEntity(toolHead, byEntity.Pos.XYZ);
                     }
-                    if (toolHandle != null) {
+                    if (toolHandle != null && !gaveHandle) {
                         world.SpawnItemEntity(toolHandle, byEntity.Pos.XYZ);
                     }
-                    if (toolBinding != null) {
+                    if (toolBinding != null && !gaveBinding) {
                         world.SpawnItemEntity(toolBinding, byEntity.Pos.XYZ);
                     } else if (bitsDrop != null) {
                         world.SpawnItemEntity(bitsDrop, byEntity.Pos.XYZ);
@@ -206,10 +209,11 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPatch(nameof(CollectibleObject.GetMaxDurability))]
         private static bool TinkeredToolGetMaxDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                if (ToolsmithModSystem.Api.Side.IsServer() && itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
+                    return true; //Default to vanilla behavior here.
+                } //But if it's the Clientside, it COULD have a candle because it hasn't recieved an update packet yet.
+
                 var headMax = itemstack.GetToolheadMaxDurability();
-                if (headMax == 0) { //If the headMax is 0, that likely means the item is either broken or otherwise not initialized yet, IE before it was crafted in the Handbook or Creative Menu
-                    return true; //If so, just hop out right here and let the defaults take control.
-                }
                 var handleMax = itemstack.GetToolhandleMaxDurability();
                 var bindingMax = itemstack.GetToolbindingMaxDurability();
                 int lowestMax;
@@ -232,13 +236,14 @@ namespace Toolsmith.ToolTinkering {
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch(nameof(CollectibleObject.GetDurability))] //This method is technically depricated for GetRemainingDurability but patching it just incase as well.
+        [HarmonyPatch(nameof(CollectibleObject.GetDurability))] //This method is technically depricated for GetRemainingDurability but patching it just incase as well. Base call returns Max Durability.
         private static bool TinkeredToolGetDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                if (ToolsmithModSystem.Api.Side.IsServer() && itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
+                    return true; //Default to vanilla behavior here.
+                } //But if it's the Clientside, it COULD have a candle because it hasn't recieved an update packet yet.
+
                 var headMax = itemstack.GetToolheadMaxDurability();
-                if (headMax == 0) { //If the headMax is 0, that likely means the item is either broken or otherwise not initialized yet, IE before it was crafted in the Handbook or Creative Menu
-                    return true; //If so, just hop out right here and let the defaults take control.
-                }
                 var handleMax = itemstack.GetToolhandleMaxDurability();
                 var bindingMax = itemstack.GetToolbindingMaxDurability();
                 int lowestMax;
@@ -265,10 +270,11 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPatch(nameof(CollectibleObject.GetRemainingDurability))]
         private static bool TinkeredToolGetRemainingDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                if (ToolsmithModSystem.Api.Side.IsServer() && itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
+                    return true; //Default to vanilla behavior here.
+                } //But if it's the Clientside, it COULD have a candle because it hasn't recieved an update packet yet.
+
                 var headCur = itemstack.GetToolheadCurrentDurability();
-                if (headCur == 0) {
-                    return true;
-                }
                 var handleCur = itemstack.GetToolhandleCurrentDurability();
                 var bindingCur = itemstack.GetToolbindingCurrentDurability();
                 int lowestCur;
@@ -289,6 +295,34 @@ namespace Toolsmith.ToolTinkering {
 
             return true;
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CollectibleObject.SetDurability))]
+        private static bool TinkeredToolSetDurabilityPrefix(ItemStack itemstack, int amount) {
+            if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //Since most other mods will expect the vanilla durability, best to just have this repair the Head durability only.
+                itemstack.SetToolheadCurrentDurability(amount);
+                return false;
+            }
+            return true;
+        }
+
+        /*[HarmonyPostfix]
+        [HarmonyPatch(nameof(CollectibleObject.UpdateAndGetTransitionStates))]
+        private static void TinkeredToolUpdateAndGetTransitionStatesPrefix(ref TransitionState[] __result, IWorldAccessor world, ItemSlot inslot) {
+            if (inslot.Inventory == null || inslot.Inventory.GetType() == typeof(DummyInventory) || inslot.Inventory.GetType() == typeof(CreativeInventoryTab)) {
+                return;
+            }
+            if (inslot.Itemstack == null || inslot.Itemstack.Collectible == null) {
+                return;
+            }
+
+            if (inslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                if (!inslot.Itemstack.Attributes.HasAttribute("tinkeredToolHead")) { //On a call to this, just check if a tool has a registered head, and if not, run the reset null head on it.
+                    inslot.Itemstack.ResetNullHead(world);
+                    inslot.MarkDirty();
+                }
+            }
+        }*/
 
         //The Postfix Patch that handles the Mining Speed (ms) Boost from any Tinkered Tools, simply just takes the output of the original call and if it's a Tinkered Tool? Add ms + ms*bonus
         [HarmonyPostfix]
