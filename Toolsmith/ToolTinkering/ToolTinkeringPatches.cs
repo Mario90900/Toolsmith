@@ -62,6 +62,7 @@ namespace Toolsmith.ToolTinkering {
                             if (world.Rand.NextDouble() <= chanceToDamage) { //For each point of damage, roll for change to damage
                                 damageToTake++;
                             }
+                            count++;
                         }
                     }
                     remainingHandleDur -= damageToTake;
