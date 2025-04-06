@@ -3,6 +3,7 @@
         "file": "game:itemtypes/resource/stick",
         "op": "add",
         "path": "/storageFlags",
-        "value": 257
+        "value": 257,
+		"side": "server"
     }
 ]

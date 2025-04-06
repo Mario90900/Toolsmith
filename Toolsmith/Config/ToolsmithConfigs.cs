@@ -13,7 +13,7 @@ namespace Toolsmith.Config {
         public string SinglePartTools = "@.*:(chisel|cleaver|shears|wrench|wedge|truechisel|rollingpin|handplaner|handwedge|laddermaker|paintbrush|paintscraper|pantograph|pathmaker|spyglass).*";
         public string BluntHeadedTools = "@.*:(hammer|wrench|mallet|rubblehammer|rollingpin|handwedge|laddermaker|paintbrush|pantograph|pathmaker|spyglass).*";
 
-        public string PartBlacklist = "@.*(helve|-bone|-bone-|-wet-|chiseledblock|stickslayer|scrap|ruined|wfradmin|chiseled|chiselmold|wrenchmold|armory|awl-bone|awl-horn|awl-flint|awl-obsidian|sawbuck|sawhorse).*";
+        public string PartBlacklist = "@.*(helve|-bone|-bone-|-wet-|chiseledblock|stickslayer|scrap|ruined|wfradmin|chiseled|chiselmold|wrenchmold|armory|awl-bone|awl-horn|awl-flint|awl-obsidian|sawbuck|sawhorse|sawdust).*";
 
         public Dictionary<string, HandleWithStats> ToolHandlesWithStats = new() { //Both for the Handles and Bindings, it should be simple enough to just find each
             ["stick"] = new() { handleStats = "stick", gripStats = "plain", treatmentStats = "none" },
