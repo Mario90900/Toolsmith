@@ -35,28 +35,14 @@ namespace Toolsmith.ToolTinkering {
         //This Prefix Patch is entirely to hook into the DamageItem calls and see if the item in question is a Tinkered Tool, and if it is, manage the Damage to the 3 tool parts instead of the base item durability
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
-        private static bool TinkeredToolDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) {
+        private static bool TinkeredToolDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) { //The Itemslot in question has to finish this call Null if the item is broken, other parts of the game, IE Treecutting code, only check for if the slot is null to keep on cutting the tree. This works for vanilla, cause when a tool breaks, it WILL be gone.
             if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && ((world.Side.IsClient()) || (world.Side.IsServer() && (ToolsmithModSystem.IgnoreCodes.Count == 0 || ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString()))))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
                 ItemStack itemStack = itemslot.Itemstack;
                 int remainingHeadDur = itemStack.GetToolheadCurrentDurability(); //Grab all the current durabilities of the parts!
-                int remainingHandleDur = itemStack.GetToolhandleCurrentDurability(); //But none should be 0 already, if any are, it means it's likely a Creative-spawned tool, or the mod was added to a world
+                int remainingHandleDur = itemStack.GetToolhandleCurrentDurability(); //But none should be -1 already, if any are, it means it's likely a Creative-spawned tool, or the mod was added to a world
                 int remainingBindingDur = itemStack.GetToolbindingCurrentDurability();
                 float chanceToDamage = itemStack.GetGripChanceToDamage();
                 bool headBroke = false;
-
-                /*if (remainingHeadDur <= 0) { //The same handling as in the tooltip changes for Tinkered Tools
-                    itemStack.ResetNullHead(world);
-                    //if (itemStack.GetToolhead() == null) { //If the saved ToolHead is still null, something went really wrong, and it might be safest to just revert to vanilla behaviors to prevent a crash.
-                    //    return true;
-                    //}
-                    remainingHeadDur = itemStack.GetToolheadCurrentDurability();
-                }*/
-                /*if (remainingHandleDur <= 0 || remainingBindingDur <= 0) {
-                    itemStack.ResetNullHandleOrBinding(world);
-                    remainingHandleDur = itemStack.GetToolhandleCurrentDurability();
-                    remainingBindingDur = itemStack.GetToolbindingCurrentDurability();
-                    chanceToDamage = itemStack.GetGripChanceToDamage();
-                }*/
 
                 //Handle damaging each part, the handle only if it should based on the chance to damage it
                 if (!itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>()) { //If this Tinkered Tool is also marked as a tool to not damage, then simply don't damage the head. Damage the other parts though!
@@ -141,19 +127,8 @@ namespace Toolsmith.ToolTinkering {
                         ToolsmithModSystem.Logger.Debug("Binding has durability: " + remainingBindingDur);
                     }
 
-                    if (!headBroke) {
-                        itemslot.Itemstack = null; //Actually 'break' the original item, but only if the head part isn't broken yet. Handle the 'falling apart' of the tools here, but let the 'breaking' happen elsewhere if the head DID fully break.
-                    } else {
-                        itemslot.Itemstack.Collectible.SetDurability(itemslot.Itemstack, 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
-                                                                                             //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
-                    }
                     IPlayer player = (byEntity as EntityPlayer)?.Player;
                     if (player != null) {
-                        if (!headBroke && __instance.Tool.HasValue) {
-                            string ident = __instance.Attributes?["slotRefillIdentifier"].ToString();
-                            __instance.RefillSlotIfEmpty(itemslot, byEntity as EntityAgent, (ItemStack stack) => (ident == null) ? (stack.Collectible.Tool == __instance.Tool) : (stack.ItemAttributes?["slotRefillIdentifier"]?.ToString() == ident));
-                        }
-
                         //Try to give the player each part, if given successfully, set the stack to null again to represent this
                         if (!headBroke && toolHead != null) {
                             gaveHead = player.InventoryManager.TryGiveItemstack(toolHead, slotNotifyEffect: true);
@@ -167,12 +142,30 @@ namespace Toolsmith.ToolTinkering {
                             bitsDrop = null;
                         }
 
-                        if (!headBroke && world.Side.IsServer()) {
-                            world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), player);
+                        if (!headBroke) { //Move this inside the loop and AFTER giving the itemstack to prevent it from ending up in the same slot that the tool was in. This prevents things like the Treecutting code from falsely assuming the axe is not broke when it actually is.
+                            itemslot.Itemstack = null; //Actually 'break' the original item, but only if the head part isn't broken yet. Handle the 'falling apart' of the tools here, but let the 'breaking' happen elsewhere if the head DID fully break.
+                            
+                            if (__instance.Tool.HasValue) { //Attempt to refill the slot with a same tool only after the slot is emptied, otherwise it won't succeed.
+                                string ident = __instance.Attributes?["slotRefillIdentifier"].ToString();
+                                __instance.RefillSlotIfEmpty(itemslot, byEntity as EntityAgent, (ItemStack stack) => (ident == null) ? (stack.Collectible.Tool == __instance.Tool) : (stack.ItemAttributes?["slotRefillIdentifier"]?.ToString() == ident));
+                            }
+
+                            if (world.Side.IsServer()) {
+                                world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), player);
+                            }
+                        } else {
+                            itemslot.Itemstack.Collectible.SetDurability(itemslot.Itemstack, 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
+                                                                                                 //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
                         }
                     } else {
-                        if (!headBroke && world.Side.IsServer()) {
-                            world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), byEntity.SidedPos.X, byEntity.SidedPos.Y, byEntity.SidedPos.Z, null, 1f, 16f);
+                        if (!headBroke) { //This needs to be in here as well since no matter what, this needs to run
+                            itemslot.Itemstack = null; //Actually 'break' the original item, but only if the head part isn't broken yet. Handle the 'falling apart' of the tools here, but let the 'breaking' happen elsewhere if the head DID fully break.
+                            if (world.Side.IsServer()) {
+                                world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), byEntity.SidedPos.X, byEntity.SidedPos.Y, byEntity.SidedPos.Z, null, 1f, 16f);
+                            }
+                        } else {
+                            itemslot.Itemstack.Collectible.SetDurability(itemslot.Itemstack, 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
+                                                                                                 //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
                         }
                     }
 
@@ -305,24 +298,6 @@ namespace Toolsmith.ToolTinkering {
             }
             return true;
         }
-
-        /*[HarmonyPostfix]
-        [HarmonyPatch(nameof(CollectibleObject.UpdateAndGetTransitionStates))]
-        private static void TinkeredToolUpdateAndGetTransitionStatesPrefix(ref TransitionState[] __result, IWorldAccessor world, ItemSlot inslot) {
-            if (inslot.Inventory == null || inslot.Inventory.GetType() == typeof(DummyInventory) || inslot.Inventory.GetType() == typeof(CreativeInventoryTab)) {
-                return;
-            }
-            if (inslot.Itemstack == null || inslot.Itemstack.Collectible == null) {
-                return;
-            }
-
-            if (inslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                if (!inslot.Itemstack.Attributes.HasAttribute("tinkeredToolHead")) { //On a call to this, just check if a tool has a registered head, and if not, run the reset null head on it.
-                    inslot.Itemstack.ResetNullHead(world);
-                    inslot.MarkDirty();
-                }
-            }
-        }*/
 
         //The Postfix Patch that handles the Mining Speed (ms) Boost from any Tinkered Tools, simply just takes the output of the original call and if it's a Tinkered Tool? Add ms + ms*bonus
         [HarmonyPostfix]
