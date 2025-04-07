@@ -189,7 +189,7 @@ namespace Toolsmith.Utils {
 
                 var headStack = new ItemStack(world.GetItem(new AssetLocation(headCode)), 1);
                 var headDur = (int)(itemStack.Attributes.GetDecimal("durability", itemStack.Collectible.Durability) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
-                var headMaxDur = itemStack.Collectible.Durability * 5;
+                var headMaxDur = (int)(itemStack.Collectible.Durability * ToolsmithModSystem.Config.HeadDurabilityMult);
 
                 headStack.SetCurrentPartDurability(headDur);
                 headStack.SetMaxPartDurability(headMaxDur);
@@ -201,7 +201,7 @@ namespace Toolsmith.Utils {
                 //Might have to figure out pinging the server for an item update on the client side here... Or make sure the Serverside always marks the slot as dirty to update it to clients. Hopefully?
                 var headStack = new ItemStack(world.GetItem(new AssetLocation("game:candle")), 1); //Placeholder Candle! Wow! It'll be something so it actually _have_ something in there. No more nulls.
                 var curHeadDur = (int)(itemStack.Attributes.GetDecimal("durability", itemStack.Collectible.Durability) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
-                var maxHeadDur = itemStack.Collectible.Durability * 5;
+                var maxHeadDur = (int)(itemStack.Collectible.Durability * ToolsmithModSystem.Config.HeadDurabilityMult);
                 itemStack.SetToolhead(headStack);
                 itemStack.SetToolheadCurrentDurability(curHeadDur);
                 itemStack.SetToolheadMaxDurability(maxHeadDur);

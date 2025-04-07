@@ -153,7 +153,7 @@ namespace Toolsmith.ToolTinkering {
 
             //Various math and calculating the end effect of each part here.
             var baseDur = outputSlot.Itemstack.Collectible.Durability;
-            var headDur = baseDur * 5;//Start with the tool head, find out the base durability of the tool, multiply that by 5.
+            int headDur = (int)(baseDur * ToolsmithModSystem.Config.HeadDurabilityMult);//Start with the tool head, find out the base durability of the tool, multiply that by 5.
 
             var handleDur = baseDur * handleStats.baseHPfactor; //Starting with the handle: Account for baseHPfactor first in the handle...
             handleDur = handleDur + (handleDur * handleStats.selfHPBonus); //plus the selfDurabilityBonus
