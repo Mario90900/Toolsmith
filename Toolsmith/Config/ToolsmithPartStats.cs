@@ -38,6 +38,7 @@ namespace Toolsmith.Config {
     public class ToolsmithPartStats { //A Tool's head HP is always 5 times the base tool's HP level, and always ticks down 1 durability a use, since metal is easy to grindstone-fix
         public Dictionary<string, HandleStats> handles = new() {
             ["stick"] = new() { id = "stick", baseHPfactor = 1.0f, selfHPBonus = 0.0f, bindingHPBonus = 0.0f, speedBonus = 0.0f },
+            ["bone"] = new() { id = "bone", baseHPfactor = 1.0f, selfHPBonus = 0.05f, bindingHPBonus = 0.05f, speedBonus = 0.0f },
             ["crude"] = new() { id = "crude", baseHPfactor = 1.0f, selfHPBonus = 0.0f, bindingHPBonus = 0.05f, speedBonus = 0.0f },
             ["handle"] = new() { id = "handle", baseHPfactor = 1.2f, selfHPBonus = 0.05f, bindingHPBonus = 0.2f, speedBonus = 0.05f },
             ["professional"] = new() { id = "professional", baseHPfactor = 1.5f, selfHPBonus = 0.1f, bindingHPBonus = 0.4f, speedBonus = 0.1f }

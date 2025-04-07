@@ -63,7 +63,14 @@ namespace Toolsmith.ToolTinkering {
                 ItemSlot placeholderOutput = new ItemSlot(new DummyInventory(ToolsmithModSystem.Api));
                 placeholderOutput.Itemstack = craftedItemStack;
 
-                craftedItemStack.Collectible.OnCreatedByCrafting(new ItemSlot[] { slot, handleSlot, bindingSlot }, placeholderOutput, RecipeRegisterModSystem.DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
+                GridRecipe DummyRecipe = new() {
+                    AverageDurability = false,
+                    Output = new() {
+                        ResolvedItemstack = craftedItemStack
+                    }
+                };
+
+                craftedItemStack.Collectible.OnCreatedByCrafting(new ItemSlot[] { slot, handleSlot, bindingSlot }, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
 
                 handleSlot.TakeOut(1); //Decrement inputs, and place the finished item in the ToolHead's Slot
                 handleSlot.MarkDirty();

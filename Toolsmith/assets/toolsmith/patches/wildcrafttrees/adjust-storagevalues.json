@@ -1,0 +1,16 @@
+[
+	{
+		"file": "wildcrafttree:patches/storagetypes.json",
+		"op": "replace",
+		"path": "/0/value",
+		"value": "289",
+		"dependsOn": [ { "modid": "wildcrafttree" } ]
+	},
+	{
+		"file": "wildcrafttree:patches/storagetypes.json",
+		"op": "replace",
+		"path": "/15/value",
+		"value": "289",
+		"dependsOn": [ { "modid": "wildcrafttree" } ]
+	}
+]

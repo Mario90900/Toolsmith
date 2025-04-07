@@ -80,26 +80,38 @@ namespace Toolsmith {
             var bindingKeys = Config.BindingsWithStats.Keys;
             foreach (var t in api.World.Collectibles.Where(t => t?.Code != null)) { //A tool/part should likely be only one of these!
                 if (ConfigUtility.IsTinkerableTool(t.Code.ToString()) && !(ConfigUtility.IsToolHead(t.Code.ToString())) && !(ConfigUtility.IsOnBlacklist(t.Code.ToString()))) { //Any tool that you actually craft from a Tool Head to create!
-                    t.AddBehavior<CollectibleBehaviorTinkeredTools>();
+                    if (!t.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                        t.AddBehavior<CollectibleBehaviorTinkeredTools>();
+                    }
                     if (ConfigUtility.IsBluntTool(t.Code.ToString())) { //Any tinkered tool can still be one that's 'blunt', IE a Hammer in this case
-                        t.AddBehavior<CollectibleBehaviorToolNoDamageOnUse>();
+                        if (!t.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>()) {
+                            t.AddBehavior<CollectibleBehaviorToolNoDamageOnUse>();
+                        }
                     }
                     TinkerableToolsList.Add(t);
                 } else if (ConfigUtility.IsSinglePartTool(t.Code.ToString()) && !(ConfigUtility.IsOnBlacklist(t.Code.ToString()))) { //A 'Smithed' tool is one that once you finish the anvil smithing recipe, the tool is done. Shears, Wrench, or Chisel in vanilla! Add the 'Smithed' Tool Behavior so they can gain the Grinding interaction to maintain them.
-                    t.AddBehavior<CollectibleBehaviorSmithedTool>();
+                    if (!t.HasBehavior<CollectibleBehaviorSmithedTool>()) {
+                        t.AddBehavior<CollectibleBehaviorSmithedTool>();
+                    }
                     if (ConfigUtility.IsBluntTool(t.Code.ToString())) { //Any smithed tool can still be one that's 'blunt', IE a Wrench in this case
-                        t.AddBehavior<CollectibleBehaviorToolNoDamageOnUse>();
+                        if (!t.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>()) {
+                            t.AddBehavior<CollectibleBehaviorToolNoDamageOnUse>();
+                        }
                     }
                     if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) {
                         Logger.Debug(t.Code.ToString());
                     }
                 } else if (ConfigUtility.IsToolHandle(t.Code.Path, handleKeys)) { //Probably don't need the blacklist anymore, since can assume the configs have the exact Path
-                    t.AddBehavior<CollectibleBehaviorToolHandle>();
+                    if (!t.HasBehavior<CollectibleBehaviorToolHandle>()) {
+                        t.AddBehavior<CollectibleBehaviorToolHandle>();
+                    }
                     if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) { //Both Handles and Bindings don't really need to populate these lists anymore unless we are looking to actually print everything found. Should help to save some time and ram?
                         HandleList.Add(t);
                     }
                 } else if (ConfigUtility.IsToolBinding(t.Code.Path, bindingKeys)) {
-                    t.AddBehavior<CollectibleBehaviorToolBinding>();
+                    if (!t.HasBehavior<CollectibleBehaviorToolBinding>()) {
+                        t.AddBehavior<CollectibleBehaviorToolBinding>();
+                    }
                     if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) {
                         BindingList.Add(t);
                     }

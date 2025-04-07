@@ -155,8 +155,8 @@ namespace Toolsmith.ToolTinkering {
                                 world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), player);
                             }
                         } else {
-                            itemslot.Itemstack.Collectible.SetDurability(itemslot.Itemstack, 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
-                                                                                                 //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
+                            itemslot.Itemstack.Attributes.SetInt("durability", 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
+                                                                                   //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
                         }
                     } else {
                         if (!headBroke) { //This needs to be in here as well since no matter what, this needs to run
@@ -165,8 +165,8 @@ namespace Toolsmith.ToolTinkering {
                                 world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), byEntity.SidedPos.X, byEntity.SidedPos.Y, byEntity.SidedPos.Z, null, 1f, 16f);
                             }
                         } else {
-                            itemslot.Itemstack.Collectible.SetDurability(itemslot.Itemstack, 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
-                                                                                                 //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
+                            itemslot.Itemstack.Attributes.SetInt("durability", 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
+                                                                                   //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
                         }
                     }
 

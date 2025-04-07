@@ -8,6 +8,8 @@ namespace Toolsmith.Config {
     public class ToolsmithConfigs { //TODO for tomorrow: Time to refactor the original config file woo. Probably can/should clean this up...
         public bool PrintAllParsedToolsAndParts = false;
         public bool DebugMessages = false;
+        public double HeadDurabilityMult = 5.0;
+        public int GrindstoneSharpenPerTick = 5;
         public string ToolHeads = "@.*(head|blade|thorn|finishingchiselhead|wedgechiselhead).*";
         public string TinkerableTools = "@.*:(axe|hammer|hoe|knife|pickaxe|prospectingpick|saw|scythe|shovel|adze|mallet|awl|chisel-finishing|chisel-wedge|rubblehammer|forestaxe|grubaxe|maul).*";
         public string SinglePartTools = "@.*:(chisel|cleaver|shears|wrench|wedge|truechisel|rollingpin|handplaner|handwedge|laddermaker|paintbrush|paintscraper|pantograph|pathmaker|spyglass).*";
@@ -17,6 +19,7 @@ namespace Toolsmith.Config {
 
         public Dictionary<string, HandleWithStats> ToolHandlesWithStats = new() { //Both for the Handles and Bindings, it should be simple enough to just find each
             ["stick"] = new() { handleStats = "stick", gripStats = "plain", treatmentStats = "none" },
+            ["bone"] = new() { handleStats = "bone", gripStats = "plain", treatmentStats = "none" },
             ["crudehandle-plain"] = new() { handleStats = "crude", gripStats = "plain", treatmentStats = "none" },
             ["crudehandle-twine"] = new() { handleStats = "crude", gripStats = "twine", treatmentStats = "none" },
             ["crudehandle-cloth"] = new() { handleStats = "crude", gripStats = "cloth", treatmentStats = "none" },
@@ -107,9 +110,3 @@ namespace Toolsmith.Config {
         public string bindingStats;
     }
 }
-
-//Return Heads to just 'head' and 'blade'? Could actually first find all the tinkerable tools - THEN find the heads FROM the recipes for said tools! Would that work?
-//Blacklist for ignoring specific keys in items like the Helve Hammer?
-//Also change it to assign stats to various parts, handles and bindings... Will be a tough one perhaps. But could be made cleaner. And need way to configure what parts give what stats.
-//public string ToolHandles = "@.*:(stick|crudehandle|handle|carpentedhandle).*";
-//public string ToolBindings = "@.*:(flaxtwine|rope|leather-normal|glueportion-pitch-hot|metalnailsandstrips-tinbronze|metalnailsandstrips-bismuthbronze|metalnailsandstrips-blackbronze|metalnailsandstrips-iron).*";

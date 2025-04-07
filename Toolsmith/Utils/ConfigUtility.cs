@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Config;
+using Vintagestory.API.Common;
 using Vintagestory.API.Util;
 
 namespace Toolsmith.Utils {

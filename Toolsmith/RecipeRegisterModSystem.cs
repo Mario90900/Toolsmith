@@ -14,9 +14,6 @@ namespace Toolsmith {
     public class RecipeRegisterModSystem : ModSystem {
 
         public static Dictionary<string, CollectibleObject> TinkerToolGridRecipes; //A Dictionary to give it the Tool Head's Code.ToString to retreive the Tool CollectibleObject it should create
-        public static GridRecipe DummyRecipe = new() {
-            AverageDurability = false
-        };
 
         public override bool ShouldLoad(EnumAppSide forSide) {
             return forSide == EnumAppSide.Server;
@@ -40,10 +37,14 @@ namespace Toolsmith {
             foreach (var recipe in api.World.GridRecipes) { //Check each recipe...
                 foreach (var tool in ToolsmithModSystem.TinkerableToolsList.Where(t => recipe.Output.Code.Equals(t.Code))) { //Where the output code matches anything on the Tinkered Tool List (from the configs)...
                     foreach (var ingredient in recipe.resolvedIngredients.Where(i => (i != null) && (i.ResolvedItemstack != null) && (ConfigUtility.IsToolHead(i.ResolvedItemstack.Collectible?.Code.ToString())))) { //And the recipe in question has a Tool Head item that is on the Tool Head Config List
-                        ingredient.ResolvedItemstack.Collectible.AddBehavior<CollectibleBehaviorToolHead>(); //Therefore it is a Tool Head! Give it the behavior.
+                        if (!ingredient.ResolvedItemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
+                            ingredient.ResolvedItemstack.Collectible.AddBehavior<CollectibleBehaviorToolHead>(); //Therefore it is a Tool Head! Give it the behavior.
+                        }
 
                         if (ConfigUtility.IsBluntTool(tool.Code)) { //If it is also a blunt tool, add the 'nodamage' Behavior as a tag to the Head as well
-                            ingredient.ResolvedItemstack.Collectible.AddBehavior<CollectibleBehaviorToolNoDamageOnUse>();
+                            if (!ingredient.ResolvedItemstack.Collectible.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>()) {
+                                ingredient.ResolvedItemstack.Collectible.AddBehavior<CollectibleBehaviorToolNoDamageOnUse>();
+                            }
                         }
 
                         if (!TinkerToolGridRecipes.ContainsKey(ingredient.Code.ToString())) {
