@@ -155,8 +155,8 @@ namespace Toolsmith.ToolTinkering {
                                 world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), player);
                             }
                         } else {
-                            itemslot.Itemstack.Attributes.SetInt("durability", 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
-                                                                                   //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
+                            itemslot.Itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
+                                                                                                     //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
                         }
                     } else {
                         if (!headBroke) { //This needs to be in here as well since no matter what, this needs to run
@@ -165,8 +165,8 @@ namespace Toolsmith.ToolTinkering {
                                 world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), byEntity.SidedPos.X, byEntity.SidedPos.Y, byEntity.SidedPos.Z, null, 1f, 16f);
                             }
                         } else {
-                            itemslot.Itemstack.Attributes.SetInt("durability", 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
-                                                                                   //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
+                            itemslot.Itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
+                                                                                                     //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
                         }
                     }
 
@@ -186,9 +186,9 @@ namespace Toolsmith.ToolTinkering {
 
                 itemslot.MarkDirty();
                 if (!headBroke) {
-                    if (itemslot.Itemstack != null && itemslot.Itemstack.Collectible.Tool.HasValue && (!itemslot.Itemstack.Attributes.HasAttribute("durability") || itemslot.Itemstack.Attributes.GetInt("durability") == 0)) {
+                    if (itemslot.Itemstack != null && itemslot.Itemstack.Collectible.Tool.HasValue && (!itemslot.Itemstack.Attributes.HasAttribute(ToolsmithAttributes.Durability) || itemslot.Itemstack.Attributes.GetInt(ToolsmithAttributes.Durability) == 0)) {
                         ItemStack itemstack = itemslot.Itemstack;
-                        itemstack.Attributes.SetInt("durability", itemstack.Collectible.GetMaxDurability(itemstack));
+                        itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, itemstack.Collectible.GetMaxDurability(itemstack));
                     }
                     return false; //Skip default and others
                 }
@@ -197,13 +197,35 @@ namespace Toolsmith.ToolTinkering {
             return true;
         }
 
+        //This prefix and postfix hopefully will account for the Item Rarity Mod, maybe others as well.
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CollectibleObject.ConsumeCraftingIngredients)), HarmonyPriority(Priority.High)]
+        private static void TinkeredToolConsumeCraftingIngredientsPrefix(ItemSlot[] slots, ItemSlot outputSlot, GridRecipe matchingRecipe) {
+            if (outputSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                outputSlot.Itemstack.SetMaxDurBypassFlag(); //For at least Item Rarity, it hooks into this patch to do the rarity applying on a craft. Set the flag here to hopefully prevent it from hitting the MaxDurability patch below.
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(CollectibleObject.ConsumeCraftingIngredients)), HarmonyPriority(-100)]
+        private static void TinkeredToolConsumeCraftingIngredientsPostfix(ItemSlot[] slots, ItemSlot outputSlot, GridRecipe matchingRecipe) {
+            if (outputSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                outputSlot.Itemstack.ClearMaxDurBypassFlag(); //Make sure to clear the flag afterwards, too. Ideally after Item Rarity is done!
+            }
+        }
+
+
         //Harmony Prefix Patch to intercept the GetMaxDurability calls, if it's a Tinkered Tool, instead it will need to check the different part's durabilities over the default 'durability'
         //Returns whatever part has the lowest max durability, to make rendering the damage bar both make sense, and surprisingly simple to tweak what it's looking at. Plus, this might help with crafting using tools, maybe? Anything that calls GetMax separately.
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.GetMaxDurability))]
         private static bool TinkeredToolGetMaxDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                if (ToolsmithModSystem.Api.Side.IsServer() && itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
+                if (itemstack.GetMaxDurBypassFlag()) { //If this itemstack has the BypassFlag Attribute, that means it has been flagged as a 'first time call' to Collectable.Durability, but with the intent to account for other mod's changes that might hook in here.
+                    return true;
+                }
+
+                if (itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
                     return true; //Default to vanilla behavior here.
                 } //But if it's the Clientside, it COULD have a candle because it hasn't recieved an update packet yet.
 
@@ -233,7 +255,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPatch(nameof(CollectibleObject.GetDurability))] //This method is technically depricated for GetRemainingDurability but patching it just incase as well. Base call returns Max Durability.
         private static bool TinkeredToolGetDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                if (ToolsmithModSystem.Api.Side.IsServer() && itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
+                if (itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
                     return true; //Default to vanilla behavior here.
                 } //But if it's the Clientside, it COULD have a candle because it hasn't recieved an update packet yet.
 
@@ -264,7 +286,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPatch(nameof(CollectibleObject.GetRemainingDurability))]
         private static bool TinkeredToolGetRemainingDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                if (ToolsmithModSystem.Api.Side.IsServer() && itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
+                if (itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
                     return true; //Default to vanilla behavior here.
                 } //But if it's the Clientside, it COULD have a candle because it hasn't recieved an update packet yet.
 

@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="ItemRarity">
+      <HintPath>..\..\Other Mod's DLLs for Integration Purposes\ItemRarity\ItemRarity.dll</HintPath>
+      <Private>False</Private>
+      <EmbedInteropTypes></EmbedInteropTypes>
+    </Reference>
     <Reference Include="VintagestoryAPI">
       <HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>
       <Private>false</Private>

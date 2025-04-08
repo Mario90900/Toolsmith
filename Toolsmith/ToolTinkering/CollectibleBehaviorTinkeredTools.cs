@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ItemRarity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,10 +54,10 @@ namespace Toolsmith.ToolTinkering {
                 if (workingDsc[endIndex] == '\n') {
                     startIndex = endIndex + 1;
                 }
-                if (!withDebugInfo && workingDsc[endIndex] == 'D') {
+                if (!withDebugInfo && workingDsc[endIndex] == 'D') { //I don't know if this will work for any languages other then english? And I'm worried to find out, haha.
                     foundLine = true;
                 }
-                if (withDebugInfo && debugFlag && workingDsc[endIndex] == 'D') {
+                if (withDebugInfo && debugFlag && workingDsc[endIndex] == 'D') { //This whole bit is specifically searching for the English translated code... So this might cause issues in other languages. Oof.
                     if (startIndex == endIndex) {
                         foundLine = true;
                     }
@@ -133,26 +134,28 @@ namespace Toolsmith.ToolTinkering {
             if (handleStack != null) {
                 handle = ToolsmithModSystem.Config.ToolHandlesWithStats.Get(handleStack.Collectible.Code.Path);
             } else {
-                handle = ToolsmithModSystem.Config.ToolHandlesWithStats.Get("stick"); //Probably shouldn't ever run into this, but just incase something does go wrong, this might prevent a crash - and default to a stick used. Maybe if configs are not configured right this could happen!
+                handle = ToolsmithModSystem.Config.ToolHandlesWithStats.Get(ToolsmithConstants.DefaultHandlePartKey); //Probably shouldn't ever run into this, but just incase something does go wrong, this might prevent a crash - and default to a stick used. Maybe if configs are not configured right this could happen!
             }
             BindingWithStats binding;
             if (bindingStack != null) { //If there is a binding used, then get that one.
                 binding = ToolsmithModSystem.Config.BindingsWithStats.Get(bindingStack.Collectible.Code.Path);
             } else { 
-                binding = ToolsmithModSystem.Config.BindingsWithStats.Get("none");
+                binding = ToolsmithModSystem.Config.BindingsWithStats.Get(ToolsmithConstants.DefaultBindingPartKey);
             }
             var handleStats = ToolsmithModSystem.Stats.handles.Get(handle.handleStats);
             var gripStats = ToolsmithModSystem.Stats.grips.Get(handle.gripStats);
             var treatmentStats = ToolsmithModSystem.Stats.treatments.Get(handle.treatmentStats);
             BindingStats bindingStats;
             if (binding == null) {
-                bindingStats = ToolsmithModSystem.Stats.bindings.Get("none");//If binding is still null, none was used! Get those fallback stats.
+                bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithConstants.DefaultBindingStatKey);//If binding is still null, none was used! Get those fallback stats.
             } else {
                 bindingStats = ToolsmithModSystem.Stats.bindings.Get(binding.bindingStats);
             }
 
             //Various math and calculating the end effect of each part here.
-            var baseDur = outputSlot.Itemstack.Collectible.Durability;
+            HandleExtraModCompat(allInputslots, outputSlot); //Handle some mod compatability here! Anything that needs a little bit of extra handling before getting the first BaseMaxDurability.
+
+            var baseDur = outputSlot.Itemstack.Collectible.GetBaseMaxDurability(outputSlot.Itemstack);
             int headDur = (int)(baseDur * ToolsmithModSystem.Config.HeadDurabilityMult);//Start with the tool head, find out the base durability of the tool, multiply that by 5.
 
             var handleDur = baseDur * handleStats.baseHPfactor; //Starting with the handle: Account for baseHPfactor first in the handle...
@@ -206,7 +209,40 @@ namespace Toolsmith.ToolTinkering {
                 outputSlot.Itemstack.SetToolbinding(bindingStack);
             }
 
-            outputSlot.Itemstack.Attributes.SetInt("durability", outputSlot.Itemstack.Collectible.GetMaxDurability(outputSlot.Itemstack));
+            outputSlot.Itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, outputSlot.Itemstack.Collectible.GetMaxDurability(outputSlot.Itemstack));
+        }
+
+        private void HandleExtraModCompat(ItemSlot[] allInputslots, ItemSlot outputSlot) {
+            if (ToolsmithModSystem.Api.ModLoader.IsModEnabled("xskills")) { //Copy over the Quality Attribute (if it exists) onto the output item so that the GetMaxDurability will account for it here!
+                HandleXSkillsCompat(allInputslots, outputSlot);
+            }
+
+            if (ToolsmithModSystem.Api.ModLoader.IsModEnabled("itemrarity")) {
+                HandleItemRarityCompat(allInputslots, outputSlot);
+            }
+        }
+
+        private void HandleXSkillsCompat(ItemSlot[] allInputslots, ItemSlot outputSlot) {
+            float quality = 0.0f;
+            foreach (var input in allInputslots.Where(i => !i.Empty)) {
+                if (input.Itemstack.Attributes.HasAttribute("quality")) {
+                    quality = input.Itemstack.Attributes.GetFloat("quality");
+                    break;
+                }
+            }
+
+            if (quality > 0.0f) {
+                outputSlot.Itemstack.Attributes.SetFloat("quality", quality); //Doesn't appear to double up or anything, thankfully!
+            }
+        }
+
+        private void HandleItemRarityCompat(ItemSlot[] allInputslots, ItemSlot outputSlot) {
+            var itemStack = outputSlot.Itemstack;
+            if (itemStack == null || itemStack.Item?.Tool == null || itemStack.Attributes.HasAttribute(ModAttributes.Guid)) {
+                return;
+            }
+            var rarity = Rarity.GetRandomRarity();
+            itemStack.SetRarity(rarity.Key);
         }
     }
 }

@@ -69,8 +69,15 @@ namespace Toolsmith.ToolTinkering {
                         ResolvedItemstack = craftedItemStack
                     }
                 };
+                ItemSlot[] inputSlots;
+                if (bindingSlot.GetType() != typeof(DummySlot)) {
+                    inputSlots = new ItemSlot[] { slot, handleSlot, bindingSlot };
+                } else {
+                    inputSlots = new ItemSlot[] { slot, handleSlot };
+                }
 
-                craftedItemStack.Collectible.OnCreatedByCrafting(new ItemSlot[] { slot, handleSlot, bindingSlot }, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
+                craftedItemStack.Collectible.ConsumeCraftingIngredients(inputSlots, placeholderOutput, DummyRecipe);
+                craftedItemStack.Collectible.OnCreatedByCrafting(inputSlots, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
 
                 handleSlot.TakeOut(1); //Decrement inputs, and place the finished item in the ToolHead's Slot
                 handleSlot.MarkDirty();
@@ -83,7 +90,9 @@ namespace Toolsmith.ToolTinkering {
                 slot.MarkDirty();
                 if (tempHolder.StackSize > 1) {
                     tempHolder.StackSize -= 1;
-                    byEntity.TryGiveItemStack(tempHolder); //This should hopefully return any remainder!
+                    if (!byEntity.TryGiveItemStack(tempHolder)) { //This should hopefully return any remainder!
+                        byEntity.World.SpawnItemEntity(tempHolder, byEntity.Pos.XYZ);
+                    }
                 }
             }
         }
