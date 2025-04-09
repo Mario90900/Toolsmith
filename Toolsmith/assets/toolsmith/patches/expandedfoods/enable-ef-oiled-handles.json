@@ -1,6 +1,6 @@
 [
 	{
-		"file": "toolsmith:recipes/grid/expandedfoods/oiled-handles.json",
+		"file": "toolsmith:recipes/grid/expandedfoods/ef-oiled-handles.json",
 		"op": "replace",
 		"path": "/0/enabled",
 		"value": true,
@@ -8,7 +8,7 @@
 		"dependsOn": [ { "modid": "expandedfoods" } ]
 	},
 	{
-		"file": "toolsmith:recipes/grid/expandedfoods/oiled-handles.json",
+		"file": "toolsmith:recipes/grid/expandedfoods/ef-oiled-handles.json",
 		"op": "replace",
 		"path": "/1/enabled",
 		"value": true,
@@ -16,7 +16,7 @@
 		"dependsOn": [ { "modid": "expandedfoods" } ]
 	},
 	{
-		"file": "toolsmith:recipes/grid/expandedfoods/oiled-handles.json",
+		"file": "toolsmith:recipes/grid/expandedfoods/ef-oiled-handles.json",
 		"op": "replace",
 		"path": "/2/enabled",
 		"value": true,
@@ -24,7 +24,7 @@
 		"dependsOn": [ { "modid": "expandedfoods" } ]
 	},
 	{
-		"file": "toolsmith:recipes/grid/expandedfoods/oiled-handles.json",
+		"file": "toolsmith:recipes/grid/expandedfoods/ef-oiled-handles.json",
 		"op": "replace",
 		"path": "/3/enabled",
 		"value": true,

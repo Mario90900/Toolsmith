@@ -11,11 +11,11 @@ namespace Toolsmith.Config {
         public double HeadDurabilityMult = 5.0;
         public int GrindstoneSharpenPerTick = 5;
         public string ToolHeads = "@.*(head|blade|thorn|finishingchiselhead|wedgechiselhead).*";
-        public string TinkerableTools = "@.*:(axe|hammer|hoe|knife|pickaxe|prospectingpick|saw|scythe|shovel|adze|mallet|awl|chisel-finishing|chisel-wedge|rubblehammer|forestaxe|grubaxe|maul).*";
-        public string SinglePartTools = "@.*:(chisel|cleaver|shears|wrench|wedge|truechisel|rollingpin|handplaner|handwedge|laddermaker|paintbrush|paintscraper|pantograph|pathmaker|spyglass).*";
-        public string BluntHeadedTools = "@.*:(hammer|wrench|mallet|rubblehammer|rollingpin|handwedge|laddermaker|paintbrush|pantograph|pathmaker|spyglass).*";
+        public string TinkerableTools = "@.*:(axe|hammer|hoe|knife|pickaxe|prospectingpick|saw|scythe|shovel|adze|mallet|awl|chisel-finishing|chisel-wedge|rubblehammer|forestaxe|grubaxe|maul|hayfork).*";
+        public string SinglePartTools = "@.*:(chisel|cleaver|shears|wrench|wedge|truechisel|rollingpin|handplaner|handwedge|laddermaker|paintbrush|paintscraper|pantograph|pathmaker|spyglass|creaser).*";
+        public string BluntHeadedTools = "@.*:(hammer|wrench|mallet|rubblehammer|rollingpin|handwedge|laddermaker|paintbrush|pantograph|pathmaker|spyglass|creaser).*";
 
-        public string PartBlacklist = "@.*(helve|-bone|-bone-|-wet-|chiseledblock|stickslayer|scrap|ruined|wfradmin|chiseled|chiselmold|wrenchmold|armory|awl-bone|awl-horn|awl-flint|awl-obsidian|sawbuck|sawhorse|sawdust).*";
+        public string PartBlacklist = "@.*(helve|-bone|-bone-|-wet-|chiseledblock|stickslayer|scrap|ruined|wfradmin|chiseled|chiselmold|wrenchmold|armory|awl-bone|awl-horn|awl-flint|awl-obsidian|sawbuck|sawhorse|sawdust|wooden).*";
 
         public Dictionary<string, HandleWithStats> ToolHandlesWithStats = new() { //Both for the Handles and Bindings, it should be simple enough to just find each
             ["stick"] = new() { handleStats = "stick", gripStats = "plain", treatmentStats = "none" },

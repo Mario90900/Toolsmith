@@ -49,6 +49,9 @@ namespace Toolsmith {
         }
 
         public override void Start(ICoreAPI api) {
+            //This is important to let the Treasure Hunter Trader accept a Toolsmith Pick to get the map for Story Content! Thank you Item Rarity for also having the issue and both leaving a comment and pushing the commit not too long before I had the same problem :P
+            GlobalConstants.IgnoredStackAttributes = GlobalConstants.IgnoredStackAttributes.Append(new string[12] { ToolsmithAttributes.ToolHead, ToolsmithAttributes.ToolHeadCurrentDur, ToolsmithAttributes.ToolHeadMaxDur, ToolsmithAttributes.ToolHandle, ToolsmithAttributes.ToolHandleCurrentDur, ToolsmithAttributes.ToolHandleMaxDur, ToolsmithAttributes.ToolBinding, ToolsmithAttributes.ToolBindingCurrentDur, ToolsmithAttributes.ToolBindingMaxDur, ToolsmithAttributes.GripChanceToDamage, ToolsmithAttributes.SpeedBonus, ToolsmithAttributes.BypassMaxCall});
+
             api.RegisterCollectibleBehaviorClass($"{ModId}:TinkeredTools", typeof(CollectibleBehaviorTinkeredTools));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolPartWithHealth", typeof(CollectibleBehaviorToolPartWithHealth));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolNoDamageWithUse", typeof(CollectibleBehaviorToolNoDamageOnUse));
