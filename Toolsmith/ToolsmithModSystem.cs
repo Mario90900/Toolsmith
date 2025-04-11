@@ -49,6 +49,11 @@ namespace Toolsmith {
         }
 
         public override void Start(ICoreAPI api) {
+            if (api.ModLoader.IsModEnabled("smithingplus")) {
+                Logger.VerboseDebug("Smithing Plus found, trying to patch in attributes to the forgettable config!");
+                HandleSmithingPlusStartCompat(api);
+            }
+
             //This is important to let the Treasure Hunter Trader accept a Toolsmith Pick to get the map for Story Content! Thank you Item Rarity for also having the issue and both leaving a comment and pushing the commit not too long before I had the same problem :P
             GlobalConstants.IgnoredStackAttributes = GlobalConstants.IgnoredStackAttributes.Append(new string[12] { ToolsmithAttributes.ToolHead, ToolsmithAttributes.ToolHeadCurrentDur, ToolsmithAttributes.ToolHeadMaxDur, ToolsmithAttributes.ToolHandle, ToolsmithAttributes.ToolHandleCurrentDur, ToolsmithAttributes.ToolHandleMaxDur, ToolsmithAttributes.ToolBinding, ToolsmithAttributes.ToolBindingCurrentDur, ToolsmithAttributes.ToolBindingMaxDur, ToolsmithAttributes.GripChanceToDamage, ToolsmithAttributes.SpeedBonus, ToolsmithAttributes.BypassMaxCall});
 
@@ -162,6 +167,20 @@ namespace Toolsmith {
                 Mod.Logger.Error("Could not load stats, using default settings instead!");
                 Mod.Logger.Error(e);
                 Stats = new ToolsmithPartStats();
+            }
+        }
+
+        private void HandleSmithingPlusStartCompat(ICoreAPI api) {
+            SmithingPlus.Core SPCore = api.ModLoader.GetModSystem<SmithingPlus.Core>();
+            if (SPCore != null) {
+                if (!SmithingPlus.Core.Config.GetToolRepairForgettableAttributes.Contains<string>("tinkeredToolHead")) {
+                    SmithingPlus.Core.Config.ToolRepairForgettableAttributes = SmithingPlus.Core.Config.ToolRepairForgettableAttributes + ",tinkeredToolHead,tinkeredToolHeadDurability,tinkeredToolHeadMaxDurability,tinkeredToolHandle,tinkeredToolHandleDurability,tinkeredToolHandleMaxDurability,tinkeredToolBinding,tinkeredToolBindingDurability,tinkeredToolBindingMaxDurability,gripChanceToDamage,speedBonus";
+                    Logger.VerboseDebug("Added Toolsmith Attributes to Smithing Plus's Forgettable Attributes config!");
+                } else {
+                    Logger.VerboseDebug("Found possible presence of existing configs already in Smithing Plus for Toolsmith, forgoing the addition! If you have issues, please reset the ToolRepairForgettableAttributes line in the Smithing Plus config.");
+                }
+            } else {
+                Logger.Error("Found Smithing Plus loaded, but could not retrieve the Core ModLoader for it! Auto compatability will not work.");
             }
         }
 

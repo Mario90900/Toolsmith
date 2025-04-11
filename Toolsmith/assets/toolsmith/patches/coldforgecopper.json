@@ -1,0 +1,16 @@
+[
+	{
+		"op": "addmerge",
+		"path": "/attributes/workableTemperatureByType/ingot-copper",
+		"value": 0,
+		"file": "game:itemtypes/resource/ingot.json"
+	},
+	{
+		"op": "addmerge",
+		"path": "/attributesByType/workitem-copper",
+		"value": {
+			"workableTemperature": 0
+		},
+		"file": "game:itemtypes/resource/workitem.json"
+	}
+]

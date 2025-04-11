@@ -129,6 +129,21 @@ namespace Toolsmith.ToolTinkering {
                 outputSlot.Itemstack.SetGripChanceToDamage(foundToolInput.GetGripChanceToDamage());
                 return; //Mama mia. Maybe make this chunk another extension? If I ever have to do this again elsewhere.
             }
+
+            //Remove errant attribute data that might still be on the Tool Head like the temp. Vanilla crafting doesn't carry over the temp so it should be cleared before saving the head to the tool.
+            if (headStack.Attributes != null) {
+                if (headStack.Attributes.HasAttribute("temperature")) {
+                    headStack.Attributes.RemoveAttribute("temperature");
+                }
+                if (ToolsmithModSystem.Api.ModLoader.IsModEnabled("smithingplus")) { //If Smithing Plus is found, clear it's errant data as well or else it will compound due to how it reassigns it when the head breaks.
+                    if (headStack.Attributes.HasAttribute("repairedToolStack")) {
+                        headStack.Attributes.RemoveAttribute("repairedToolStack");
+                    }
+                    if (headStack.Attributes.HasAttribute("repairSmith")) {
+                        headStack.Attributes.RemoveAttribute("repairSmith");
+                    }
+                }
+            }
             //Once all (up to) three possible parts are found, access the stats for the handle and binding! The Head doesn't need much done to it, it's the simplest to handle.
             HandleWithStats handle;
             if (handleStack != null) {
@@ -138,6 +153,11 @@ namespace Toolsmith.ToolTinkering {
             }
             BindingWithStats binding;
             if (bindingStack != null) { //If there is a binding used, then get that one.
+                if (bindingStack.Attributes != null) {
+                    if (bindingStack.Attributes.HasAttribute("temperature")) {
+                        bindingStack.Attributes.RemoveAttribute("temperature");
+                    }
+                }
                 binding = ToolsmithModSystem.Config.BindingsWithStats.Get(bindingStack.Collectible.Code.Path);
             } else { 
                 binding = ToolsmithModSystem.Config.BindingsWithStats.Get(ToolsmithConstants.DefaultBindingPartKey);

@@ -12,6 +12,10 @@
       <Private>False</Private>
       <EmbedInteropTypes></EmbedInteropTypes>
     </Reference>
+    <Reference Include="SmithingPlus">
+      <HintPath>..\..\Other Mod's DLLs for Integration Purposes\SmithingPlus\SmithingPlus.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="VintagestoryAPI">
       <HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>
       <Private>false</Private>
