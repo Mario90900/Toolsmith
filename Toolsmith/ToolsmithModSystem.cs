@@ -59,7 +59,7 @@ namespace Toolsmith {
 
             api.RegisterCollectibleBehaviorClass($"{ModId}:TinkeredTools", typeof(CollectibleBehaviorTinkeredTools));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolPartWithHealth", typeof(CollectibleBehaviorToolPartWithHealth));
-            api.RegisterCollectibleBehaviorClass($"{ModId}:ToolNoDamageWithUse", typeof(CollectibleBehaviorToolNoDamageOnUse));
+            api.RegisterCollectibleBehaviorClass($"{ModId}:ToolNoDamageWithUse", typeof(CollectibleBehaviorToolBlunt));
             api.RegisterCollectibleBehaviorClass($"{ModId}:SmithedTool", typeof(CollectibleBehaviorSmithedTool));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolHead", typeof(CollectibleBehaviorToolHead));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolHandle", typeof(CollectibleBehaviorToolHandle));
@@ -92,8 +92,8 @@ namespace Toolsmith {
                         t.AddBehavior<CollectibleBehaviorTinkeredTools>();
                     }
                     if (ConfigUtility.IsBluntTool(t.Code.ToString())) { //Any tinkered tool can still be one that's 'blunt', IE a Hammer in this case
-                        if (!t.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>()) {
-                            t.AddBehavior<CollectibleBehaviorToolNoDamageOnUse>();
+                        if (!t.HasBehavior<CollectibleBehaviorToolBlunt>()) {
+                            t.AddBehavior<CollectibleBehaviorToolBlunt>();
                         }
                     }
                     TinkerableToolsList.Add(t);
@@ -102,8 +102,8 @@ namespace Toolsmith {
                         t.AddBehavior<CollectibleBehaviorSmithedTool>();
                     }
                     if (ConfigUtility.IsBluntTool(t.Code.ToString())) { //Any smithed tool can still be one that's 'blunt', IE a Wrench in this case
-                        if (!t.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>()) {
-                            t.AddBehavior<CollectibleBehaviorToolNoDamageOnUse>();
+                        if (!t.HasBehavior<CollectibleBehaviorToolBlunt>()) {
+                            t.AddBehavior<CollectibleBehaviorToolBlunt>();
                         }
                     }
                     if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) {
@@ -174,7 +174,7 @@ namespace Toolsmith {
             SmithingPlus.Core SPCore = api.ModLoader.GetModSystem<SmithingPlus.Core>();
             if (SPCore != null) {
                 if (!SmithingPlus.Core.Config.GetToolRepairForgettableAttributes.Contains<string>("tinkeredToolHead")) {
-                    SmithingPlus.Core.Config.ToolRepairForgettableAttributes = SmithingPlus.Core.Config.ToolRepairForgettableAttributes + ",tinkeredToolHead,tinkeredToolHeadDurability,tinkeredToolHeadMaxDurability,tinkeredToolHandle,tinkeredToolHandleDurability,tinkeredToolHandleMaxDurability,tinkeredToolBinding,tinkeredToolBindingDurability,tinkeredToolBindingMaxDurability,gripChanceToDamage,speedBonus";
+                    SmithingPlus.Core.Config.ToolRepairForgettableAttributes = SmithingPlus.Core.Config.ToolRepairForgettableAttributes + ToolsmithAttributes.ToolsmithForgettableAttributes;
                     Logger.VerboseDebug("Added Toolsmith Attributes to Smithing Plus's Forgettable Attributes config!");
                 } else {
                     Logger.VerboseDebug("Found possible presence of existing configs already in Smithing Plus for Toolsmith, forgoing the addition! If you have issues, please reset the ToolRepairForgettableAttributes line in the Smithing Plus config.");

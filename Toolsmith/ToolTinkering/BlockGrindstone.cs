@@ -19,6 +19,14 @@ namespace Toolsmith.ToolTinkering {
         protected float lastInterval = 0;
         protected float repairInterval = 0.2f;
 
+        public override void OnLoaded(ICoreAPI api) {
+            base.OnLoaded(api);
+
+            if (api.Side.IsClient()) {
+                ICoreClientAPI capi = api as ICoreClientAPI;
+            }
+        }
+
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             BlockEntityGrindstone grindstoneEnt = GetBlockEntity<BlockEntityGrindstone>(blockSel.Position);
             var entPlayer = byPlayer.Entity;
@@ -139,15 +147,15 @@ namespace Toolsmith.ToolTinkering {
             if (world.Side.IsServer() && ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(item.Code.ToString())) { //First check if the ignore list has any entries, and ensure this one isn't on it. Likely means something got improperly given the Behavior on init.
                 return 0;
             } else if (item.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //This one stores it under 'tinkeredToolHead' durability
-                if (!item.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>() && item.IsCraftableMetal()) {
+                if (!item.HasBehavior<CollectibleBehaviorToolBlunt>() && item.IsCraftableMetal()) {
                     return 1;
                 }
             } else if (item.HasBehavior<CollectibleBehaviorSmithedTool>()) { //And this one just uses the regular durability values since it's just a single solid tool, no parts
-                if (!item.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>() && item.IsCraftableMetal()) {
+                if (!item.HasBehavior<CollectibleBehaviorToolBlunt>() && item.IsCraftableMetal()) {
                     return 2;
                 }
             } else if (item.HasBehavior<CollectibleBehaviorToolHead>()) { //While this stores it as just 'toolPartDurability', since not every part will be a head, but every head will have this behavior
-                if (!item.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>() && item.IsCraftableMetal()) {
+                if (!item.HasBehavior<CollectibleBehaviorToolBlunt>() && item.IsCraftableMetal()) {
                     return 3;
                 }
             }

@@ -8,8 +8,10 @@ namespace Toolsmith.Config {
     public class ToolsmithConfigs { //TODO for tomorrow: Time to refactor the original config file woo. Probably can/should clean this up...
         public bool PrintAllParsedToolsAndParts = false;
         public bool DebugMessages = false;
-        public double HeadDurabilityMult = 5.0;
+        public double HeadDurabilityMult = 3.0;
+        public double SharpnessMult = 1.5;
         public int GrindstoneSharpenPerTick = 1;
+        public double BluntWear = 0.02;
         public string ToolHeads = "@.*(head|blade|thorn|finishingchiselhead|wedgechiselhead).*";
         public string TinkerableTools = "@.*:(axe|hammer|hoe|knife|pickaxe|prospectingpick|saw|scythe|shovel|adze|mallet|awl|chisel-finishing|chisel-wedge|rubblehammer|forestaxe|grubaxe|maul|hayfork).*";
         public string SinglePartTools = "@.*:(chisel|cleaver|shears|wrench|wedge|truechisel|rollingpin|handplaner|handwedge|laddermaker|paintbrush|paintscraper|pantograph|pathmaker|spyglass|creaser).*";

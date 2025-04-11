@@ -55,6 +55,41 @@ namespace Toolsmith.Utils {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolHeadMaxDur, dur);
         }
 
+        public static int GetToolCurrentSharpness(this ItemStack itemStack) {
+            var currentSharp = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent, -1);
+            if (currentSharp < 0) { //If the current sharpness returns as -1, it's not been set so will have to reset it.
+                currentSharp = (int)(itemStack.GetToolMaxSharpness() * ToolsmithConstants.StartingSharpnessMult);
+                itemStack.SetToolCurrentSharpness(currentSharp);
+            }
+
+            return currentSharp;
+        }
+
+        public static void SetToolCurrentSharpness(this ItemStack itemStack, int sharp) {
+            itemStack.Attributes.SetInt(ToolsmithAttributes.ToolSharpnessCurrent, sharp);
+        }
+
+        public static int GetToolMaxSharpness(this ItemStack itemStack) {
+            var maxSharp = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessMax, -1);
+
+            if (maxSharp < 0) {
+                itemStack.ResetSharpness(ToolsmithModSystem.Api.World);
+                maxSharp = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent);
+            }
+
+            return maxSharp;
+        }
+
+        public static void SetToolMaxSharpness(this ItemStack itemStack, int sharp) {
+            itemStack.Attributes.SetInt(ToolsmithAttributes.ToolSharpnessMax, sharp);
+        }
+
+        public static float GetToolSharpnessPercent(this ItemStack itemStack) {
+            var currentSharp = itemStack.GetToolCurrentSharpness();
+            var maxSharp = itemStack.GetToolMaxSharpness();
+            return ((float)currentSharp) / ((float)maxSharp);
+        }
+
         //Since this can be called or used before
         public static bool HasPlaceholderHead(this ItemStack itemStack) {
             if (itemStack.GetToolhead().Collectible.Code == ToolsmithConstants.FallbackHeadCode) {
@@ -166,7 +201,7 @@ namespace Toolsmith.Utils {
             }
 
             //Figure out the Tool Head and add the missing stats and ItemStack!
-            if (RecipeRegisterModSystem.TinkerToolGridRecipes != null) { //If this is being ran on the server-side, then RecipeRegisterModSystem will have actually booted and everything! This actually makes for a decent 'Am I client or server' check when not provided the world or api!
+            if (RecipeRegisterModSystem.TinkerToolGridRecipes != null) { //If this is being ran on the server-side or it is singleplayer, then RecipeRegisterModSystem will have actually booted and everything!
                 string headCode = null;
                 foreach (var t in RecipeRegisterModSystem.TinkerToolGridRecipes) {
                     if (t.Value.Code.Equals(itemStack.Collectible.Code)) {
@@ -182,31 +217,72 @@ namespace Toolsmith.Utils {
                     var headStackBackup = new ItemStack(world.GetItem(new AssetLocation(ToolsmithConstants.FallbackHeadCode)), 1); //Placeholder Candle! Wow! It'll be something so it actually _have_ something in there. No more nulls.
                     var curHeadDurBackup = 1; //Set these to just 1 so that something is set. Since this code should be ignored everywhere, this might help prevent re-checking it as well.
                     var maxHeadDurBackup = 1;
+                    var sharpnessBackup = 1;
+
                     itemStack.SetToolhead(headStackBackup);
                     itemStack.SetToolheadCurrentDurability(curHeadDurBackup);
                     itemStack.SetToolheadMaxDurability(maxHeadDurBackup);
+                    itemStack.SetToolCurrentSharpness(sharpnessBackup);
+                    itemStack.SetToolMaxSharpness(sharpnessBackup);
                     return;
                 }
 
+                var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
                 var headStack = new ItemStack(world.GetItem(new AssetLocation(headCode)), 1);
-                var headDur = (int)(itemStack.Attributes.GetDecimal(ToolsmithAttributes.Durability, itemStack.Collectible.GetBaseMaxDurability(itemStack)) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
-                var headMaxDur = (int)(itemStack.Collectible.GetBaseMaxDurability(itemStack) * ToolsmithModSystem.Config.HeadDurabilityMult);
+                var headDur = (int)(itemStack.Attributes.GetDecimal(ToolsmithAttributes.Durability, baseDur) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
+                var headMaxDur = (int)(baseDur * ToolsmithModSystem.Config.HeadDurabilityMult);
+                var sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
+                float sharpnessMult;
+                var isHeadMetal = headStack.Collectible.IsCraftableMetal();
+                if (isHeadMetal) {
+                    sharpnessMult = ToolsmithConstants.StartingSharpnessMult;
+                } else {
+                    sharpnessMult = ToolsmithConstants.NonMetalStartingSharpnessMult;
+                }
 
                 headStack.SetCurrentPartDurability(headDur);
                 headStack.SetMaxPartDurability(headMaxDur);
+                headStack.SetToolCurrentSharpness((int)(sharpness * sharpnessMult));
+                headStack.SetToolMaxSharpness(sharpness);
                 itemStack.SetToolhead(headStack);
                 itemStack.SetToolheadCurrentDurability(headDur);
                 itemStack.SetToolheadMaxDurability(headMaxDur);
+                itemStack.SetToolCurrentSharpness((int)(sharpness * sharpnessMult));
+                itemStack.SetToolMaxSharpness(sharpness);
             } else {
                 //Instead for part of the temp-fix, just run off the assumption that for now it might work fine to have a placeholder basic calc to initialize it based on the default Durability value.
                 //Might have to figure out pinging the server for an item update on the client side here... Or make sure the Serverside always marks the slot as dirty to update it to clients. Hopefully?
+                var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
                 var headStack = new ItemStack(world.GetItem(new AssetLocation(ToolsmithConstants.FallbackHeadCode)), 1); //Placeholder Candle! Wow! It'll be something so it actually _have_ something in there. No more nulls.
-                var curHeadDur = (int)(itemStack.Attributes.GetDecimal(ToolsmithAttributes.Durability, itemStack.Collectible.GetBaseMaxDurability(itemStack)) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
-                var maxHeadDur = (int)(itemStack.Collectible.GetBaseMaxDurability(itemStack) * ToolsmithModSystem.Config.HeadDurabilityMult);
+                var curHeadDur = (int)(itemStack.Attributes.GetDecimal(ToolsmithAttributes.Durability, baseDur) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
+                var maxHeadDur = (int)(baseDur * ToolsmithModSystem.Config.HeadDurabilityMult);
+                var sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
+
                 itemStack.SetToolhead(headStack);
                 itemStack.SetToolheadCurrentDurability(curHeadDur);
                 itemStack.SetToolheadMaxDurability(maxHeadDur);
+                itemStack.SetToolCurrentSharpness((int)(sharpness * ToolsmithConstants.StartingSharpnessMult));
+                itemStack.SetToolMaxSharpness(sharpness);
             }
+        }
+
+        public static void ResetSharpness(this ItemStack itemStack, IWorldAccessor world) {
+            if (itemStack.Attributes == null) {
+                itemStack.Attributes = new TreeAttribute();
+            }
+
+            var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
+            var sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
+            float sharpnessMult;
+            var isToolMetal = itemStack.Collectible.IsCraftableMetal();
+            if (isToolMetal) {
+                sharpnessMult = ToolsmithConstants.StartingSharpnessMult;
+            } else {
+                sharpnessMult = ToolsmithConstants.NonMetalStartingSharpnessMult;
+            }
+
+            itemStack.SetToolCurrentSharpness((int)(sharpness * sharpnessMult));
+            itemStack.SetToolMaxSharpness(sharpness);
         }
 
         //Since the handle and binding can be expected to not have something, it makes sense to set them to Stick and 'none' respectively as defaults.
@@ -310,7 +386,32 @@ namespace Toolsmith.Utils {
             var currentDur = itemStack.GetCurrentPartDurability();
             var maxDur = itemStack.GetMaxPartDurability();
             if (currentDur > 0 && maxDur > 0) {
-                return (float)currentDur / maxDur;
+                return (float)(currentDur / maxDur);
+            }
+            return 0.0f;
+        }
+
+        public static void SetCurrentPartSharpness(this ItemStack itemStack, int sharpness) { //Only to be used on the tool heads
+            itemStack.Attributes.SetInt(ToolsmithAttributes.ToolSharpnessCurrent, sharpness);
+        }
+
+        public static int GetCurrentPartSharpness(this ItemStack itemStack) {
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent, itemStack.GetMaxPartSharpness()); //If somehow this goes unset but the Max Part is set? Uh... How'd that happen for one, but oh well, reset to max I guess!
+        }
+
+        public static void SetMaxPartSharpness(this ItemStack itemStack, int sharpness) {
+            itemStack.Attributes.SetInt(ToolsmithAttributes.ToolSharpnessMax, sharpness);
+        }
+
+        public static int GetMaxPartSharpness(this ItemStack itemStack) {
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessMax, -1);
+        }
+
+        public static float GetPartRemainingSharpnessPercent(this ItemStack itemStack) {
+            var currentSharp = itemStack.GetCurrentPartSharpness();
+            var maxSharp = itemStack.GetMaxPartSharpness();
+            if (currentSharp > 0 && maxSharp > 0) {
+                return (float)(currentSharp / maxSharp);
             }
             return 0.0f;
         }

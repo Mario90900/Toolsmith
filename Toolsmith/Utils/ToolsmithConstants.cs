@@ -8,6 +8,8 @@ namespace Toolsmith.Utils {
     public static class ToolsmithConstants {
         public const string FallbackHeadCode = "game:candle";
         public const string DefaultHandleCode = "game:stick";
+        public const float StartingSharpnessMult = 0.85f;
+        public const float NonMetalStartingSharpnessMult = 0.66f;
 
         //The keys for accessing the default part entries themselves, to recieve their stat key blocks
         public const string DefaultHandlePartKey = "stick";

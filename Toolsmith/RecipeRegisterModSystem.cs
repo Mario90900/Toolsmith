@@ -42,8 +42,8 @@ namespace Toolsmith {
                         }
 
                         if (ConfigUtility.IsBluntTool(tool.Code)) { //If it is also a blunt tool, add the 'nodamage' Behavior as a tag to the Head as well
-                            if (!ingredient.ResolvedItemstack.Collectible.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>()) {
-                                ingredient.ResolvedItemstack.Collectible.AddBehavior<CollectibleBehaviorToolNoDamageOnUse>();
+                            if (!ingredient.ResolvedItemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
+                                ingredient.ResolvedItemstack.Collectible.AddBehavior<CollectibleBehaviorToolBlunt>();
                             }
                         }
 

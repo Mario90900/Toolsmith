@@ -11,6 +11,8 @@ namespace Toolsmith.Utils {
         public const string ToolHead = "tinkeredToolHead";
         public const string ToolHeadCurrentDur = "tinkeredToolHeadDurability";
         public const string ToolHeadMaxDur = "tinkeredToolHeadMaxDurability";
+        public const string ToolSharpnessCurrent = "ToolSharpnessCurrent"; //For both the tool and the head alone
+        public const string ToolSharpnessMax = "ToolSharpnessMax"; //For both the tool and the head alone
         public const string ToolHandle = "tinkeredToolHandle";
         public const string ToolHandleCurrentDur = "tinkeredToolHandleDurability";
         public const string ToolHandleMaxDur = "tinkeredToolHandleMaxDurability";
@@ -30,5 +32,8 @@ namespace Toolsmith.Utils {
         //Vanilla Attribute Consts
         //While these are not attributes created by the mod, I figure it might be beneficial to give them the same treatment. Just make sure they stay updated with the base game!
         public const string Durability = "durability";
+
+        //This just helps to organize it in this file, and pile them into one easy constant to call. Generally for Smithing Plus's Compat and the forgettable attributes there when a Workpiece is made.
+        public const string ToolsmithForgettableAttributes = "," + ToolsmithAttributes.ToolHead + "," + ToolsmithAttributes.ToolHeadCurrentDur + "," + ToolsmithAttributes.ToolHeadMaxDur + "," + ToolsmithAttributes.ToolSharpnessCurrent + "," + ToolsmithAttributes.ToolSharpnessMax + "," + ToolsmithAttributes.ToolHandle + "," + ToolsmithAttributes.ToolHandleCurrentDur + "," + ToolsmithAttributes.ToolHandleMaxDur + "," + ToolsmithAttributes.ToolBinding + "," + ToolsmithAttributes.ToolBindingCurrentDur + "," + ToolsmithAttributes.ToolBindingMaxDur + "," + ToolsmithAttributes.GripChanceToDamage + "," + ToolsmithAttributes.SpeedBonus + "," + ToolsmithAttributes.BypassMaxCall;
     }
 }

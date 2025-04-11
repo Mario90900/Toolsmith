@@ -110,15 +110,18 @@ namespace Toolsmith.ToolTinkering {
                 }
             }
 
-            if (headStack == null && foundToolInput == null) { //Probably a safety check here, since I realized some recipes IE the whetstone from Working Classes craft a knife with the stone to produce a knife.
+            bool isHeadMetal = false;
+            if (headStack == null && foundToolInput == null) { //I do hope nothing hits this. At least it'll likely get the candle backup.
                 ToolsmithModSystem.Logger.Error("Somehow crafted a Tinker Tool with a recipe that could not find a head, nor tool to copy data from.\nThe tool in question is: " + outputSlot.Itemstack.Collectible.Code.ToString() + "\nAttempting to just reset the Tool Head instead. This might result in fallback data of a Candle being assigned.");
                 outputSlot.Itemstack.ResetNullHead(ToolsmithModSystem.Api.World);
-            } else if (headStack == null && foundToolInput != null) {
+            } else if (headStack == null && foundToolInput != null) { //Probably a safety check here, since I realized some recipes IE the whetstone from Working Classes craft a knife with the stone to produce a knife.
                 //Actually found an input that is a tool, so probably copy over the stats of that tool into the new one? Oh god I hope no one tries to use this with another mod that makes tool crafting need more tools. That just... will break everything.
                 //Though I can't help but ask, what if it's a recipe converting one tool to another type? I hope not. Not going to dwell on that until it actually might come up though.
                 outputSlot.Itemstack.SetToolhead(foundToolInput.GetToolhead());
                 outputSlot.Itemstack.SetToolheadCurrentDurability(foundToolInput.GetToolheadCurrentDurability());
                 outputSlot.Itemstack.SetToolheadMaxDurability(foundToolInput.GetToolheadMaxDurability());
+                outputSlot.Itemstack.SetToolCurrentSharpness(foundToolInput.GetToolCurrentSharpness());
+                outputSlot.Itemstack.SetToolMaxSharpness(foundToolInput.GetToolMaxSharpness());
                 outputSlot.Itemstack.SetToolhandle(foundToolInput.GetToolhandle());
                 outputSlot.Itemstack.SetToolhandleCurrentDurability(foundToolInput.GetToolhandleCurrentDurability());
                 outputSlot.Itemstack.SetToolhandleMaxDurability(foundToolInput.GetToolhandleMaxDurability());
@@ -128,6 +131,8 @@ namespace Toolsmith.ToolTinkering {
                 outputSlot.Itemstack.SetSpeedBonus(foundToolInput.GetSpeedBonus());
                 outputSlot.Itemstack.SetGripChanceToDamage(foundToolInput.GetGripChanceToDamage());
                 return; //Mama mia. Maybe make this chunk another extension? If I ever have to do this again elsewhere.
+            } else {
+                isHeadMetal = headStack.Collectible.IsCraftableMetal();
             }
 
             //Remove errant attribute data that might still be on the Tool Head like the temp. Vanilla crafting doesn't carry over the temp so it should be cleared before saving the head to the tool.
@@ -177,6 +182,7 @@ namespace Toolsmith.ToolTinkering {
 
             var baseDur = outputSlot.Itemstack.Collectible.GetBaseMaxDurability(outputSlot.Itemstack);
             int headDur = (int)(baseDur * ToolsmithModSystem.Config.HeadDurabilityMult);//Start with the tool head, find out the base durability of the tool, multiply that by 5.
+            int sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);//Calculate the sharpness next similarly to the durability.
 
             var handleDur = baseDur * handleStats.baseHPfactor; //Starting with the handle: Account for baseHPfactor first in the handle...
             handleDur = handleDur + (handleDur * handleStats.selfHPBonus); //plus the selfDurabilityBonus
@@ -194,8 +200,21 @@ namespace Toolsmith.ToolTinkering {
                 currentHeadPer = 1.0f;
             }
             headStack.SetCurrentPartDurability((int)(headDur * currentHeadPer));
+            var currentHeadSharpPer = headStack.GetPartRemainingSharpnessPercent();
+            headStack.SetToolMaxSharpness(sharpness);
+            if (currentHeadSharpPer <= 0) {
+                if (isHeadMetal) {
+                    currentHeadSharpPer = ToolsmithConstants.StartingSharpnessMult;
+                } else {
+                    currentHeadSharpPer = ToolsmithConstants.NonMetalStartingSharpnessMult;
+                }
+            }
+            headStack.SetToolCurrentSharpness((int)(sharpness * currentHeadSharpPer));
+            
             outputSlot.Itemstack.SetToolheadMaxDurability(headDur);
             outputSlot.Itemstack.SetToolheadCurrentDurability((int)(headDur * currentHeadPer));
+            outputSlot.Itemstack.SetToolMaxSharpness(sharpness);
+            outputSlot.Itemstack.SetToolCurrentSharpness((int)(sharpness * currentHeadSharpPer));
 
             var currentHandlePer = handleStack.GetPartRemainingHPPercent();
             handleStack.SetMaxPartDurability((int)handleDur);
@@ -210,17 +229,22 @@ namespace Toolsmith.ToolTinkering {
             outputSlot.Itemstack.SetToolbindingCurrentDurability((int)bindingDur);
 
             var speedBonus = handleStats.speedBonus + gripStats.speedBonus;
+            var gripChanceDamage = gripStats.chanceToDamage;
             outputSlot.Itemstack.SetSpeedBonus(speedBonus);
+            outputSlot.Itemstack.SetGripChanceToDamage(gripChanceDamage);
 
             if (ToolsmithModSystem.Config.DebugMessages) {
                 ToolsmithModSystem.Logger.Debug("Tool's durability is: " + baseDur);
                 ToolsmithModSystem.Logger.Debug("Thus, the Tool Head's durability is: " + headDur);
-                ToolsmithModSystem.Logger.Debug("Handle Durability: " + handleDur);
+                ToolsmithModSystem.Logger.Debug("And the current Head Durability is: " + (int)(headDur * currentHeadPer));
+                ToolsmithModSystem.Logger.Debug("The tool's maximum sharpness is: " + sharpness);
+                ToolsmithModSystem.Logger.Debug("This tool's current sharpness is: " + (int)(sharpness * currentHeadSharpPer));
+                ToolsmithModSystem.Logger.Debug("Handle Max Durability: " + handleDur);
+                ToolsmithModSystem.Logger.Debug("Handle Current Durability: " + (int)(handleDur * currentHandlePer));
                 ToolsmithModSystem.Logger.Debug("Binding Durability: " + bindingDur);
                 ToolsmithModSystem.Logger.Debug("Speed Bonus: " + speedBonus);
-                ToolsmithModSystem.Logger.Debug("Chance To Damage: " + gripStats.chanceToDamage);
+                ToolsmithModSystem.Logger.Debug("Chance To Damage: " + gripChanceDamage);
             }
-            outputSlot.Itemstack.SetGripChanceToDamage(gripStats.chanceToDamage);
 
             //Then don't forget to add the ItemStacks for the parts to the tool's attributes to retrieve later on damage/destruction!
             outputSlot.Itemstack.SetToolhead(headStack);

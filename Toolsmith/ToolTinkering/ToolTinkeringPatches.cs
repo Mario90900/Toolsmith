@@ -23,7 +23,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
         private static bool SmithedToolsDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) {
-            if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTool>() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>() && !itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Api.Side.IsServer()) {
+            if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTool>() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>() && !itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Api.Side.IsServer()) {
                 //If the tools is a Smithed Tool but not a Tinkered Tool with three parts, then simply don't damage it and interrupt the rest of the calls.
                 itemslot.MarkDirty();
                 return false; //Skip default and others
@@ -44,13 +44,44 @@ namespace Toolsmith.ToolTinkering {
                 float chanceToDamage = itemStack.GetGripChanceToDamage();
                 bool headBroke = false;
 
+                //Time for SHARPNESS and WEAR! Lets a go!
+                bool doDamageHead = false;
+                bool doDamageHandle = false;
+                bool doDamageBinding = false;
+                int currentSharpness = itemStack.GetToolCurrentSharpness();
+                int maxSharpness = itemStack.GetToolMaxSharpness();
+
+                //First, the most important question, what is the current sharpness percentage? Then lower the sharpness by amount.
+                var sharpnessPer = itemStack.GetToolSharpnessPercent();
+                if (maxSharpness <= 1) { //If the Sharpness Max is 1, likely means something got marked improperly. I don't think it could be 1 otherwise?
+                    sharpnessPer = 0f; //Set the percent to one as a placeholder to just avoid infinite sharpness.
+                }
+                currentSharpness -= amount;
+
+                //Then based on the percentage, which parts do we actually damage?
+                //Above 0.98, nothing on the tool takes durability damage as a little bonus
+                if (sharpnessPer >= 0.98f) { //Since even if the tool isn't going to regularly take damage to all parts, we still want to damage the binding by 1 point just cause it's been 'used' once. It won't get damaged again anyway.
+                    remainingBindingDur -= 1;
+                } else if (sharpnessPer >= 0.95f) {
+                    doDamageBinding = true;
+                } else {
+                    doDamageHandle = true;
+                }
+
+                if (sharpnessPer < 0.98f && sharpnessPer >= 0.33) {
+                    //Starting at 5% chance-to-damage at 0.98, exponential curve the chance-to-damage the head up to 100% at 0.33 sharpness left.
+                    //TODO -- Continue where I left off here!
+                } else {
+                    doDamageHead = true;
+                }
+
                 //Handle damaging each part, the handle only if it should based on the chance to damage it
-                if (!itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolNoDamageOnUse>()) { //If this Tinkered Tool is also marked as a tool to not damage, then simply don't damage the head. Damage the other parts though!
+                if (doDamageHead && (!itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>() || world.Rand.NextDouble() <= ToolsmithModSystem.Config.BluntWear)) { //If this Tinkered Tool is also marked as a blunted tool, then apply the much much smaller chance to damage it. Damage the other parts though!
                     remainingHeadDur -= amount;
                 }
                 itemStack.SetToolheadCurrentDurability(remainingHeadDur);
 
-                if (chanceToDamage < 1.0f) {
+                if (doDamageHandle && chanceToDamage < 1.0f) {
                     var damageToTake = 0;
                     if (world.Rand.NextDouble() <= chanceToDamage) {
                         damageToTake++;
@@ -66,12 +97,14 @@ namespace Toolsmith.ToolTinkering {
                         }
                     }
                     remainingHandleDur -= damageToTake;
-                } else {
+                } else if (doDamageHandle) {
                     remainingHandleDur -= amount;
                 }
                 itemStack.SetToolhandleCurrentDurability(remainingHandleDur);
 
-                remainingBindingDur -= amount;
+                if (doDamageBinding) {
+                    remainingBindingDur -= amount;
+                }
                 itemStack.SetToolbindingCurrentDurability(remainingBindingDur);
 
                 //Check each part and see if the health of any of them is <= 0, thus the tool broke, handle it

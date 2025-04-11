@@ -7,8 +7,8 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 
 namespace Toolsmith.ToolTinkering {
-    public class CollectibleBehaviorToolNoDamageOnUse : CollectibleBehavior {
-        public CollectibleBehaviorToolNoDamageOnUse(CollectibleObject collObj) : base(collObj) {
+    public class CollectibleBehaviorToolBlunt : CollectibleBehavior {
+        public CollectibleBehaviorToolBlunt(CollectibleObject collObj) : base(collObj) {
 
         }
 
