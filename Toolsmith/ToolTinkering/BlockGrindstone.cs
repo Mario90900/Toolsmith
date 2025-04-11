@@ -9,6 +9,7 @@ using Vintagestory.API.MathTools;
 using Toolsmith.Utils;
 using Vintagestory.API.Client;
 using Vintagestory.Client.NoObf;
+using Vintagestory.API.Common.Entities;
 
 namespace Toolsmith.ToolTinkering {
     public class BlockGrindstone : Block {
@@ -20,25 +21,31 @@ namespace Toolsmith.ToolTinkering {
 
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             BlockEntityGrindstone grindstoneEnt = GetBlockEntity<BlockEntityGrindstone>(blockSel.Position);
-            if (grindstoneEnt != null) {
+            var entPlayer = byPlayer.Entity;
+            if (!entPlayer.Controls.ShiftKey && grindstoneEnt != null) {
                 grindstoneEnt.OnBlockInteractStart();
+            } else if (entPlayer.Controls.ShiftKey) {
+                if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null) {
+                    int isTool = IsValidRepairTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world);
+                    if (world.Side == EnumAppSide.Server && isTool == 1) {
+                        world.PlaySoundAt(new AssetLocation("sounds/player/messycraft.ogg"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
+                    }
+                }
             }
-
             return true;
         }
-
 
         public override bool OnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null) { //Make sure the slot isn't empty
                 int isTool = IsValidRepairTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world);
-                if (isTool > 0) { //Check if it's a valid tool for repair, is made of metal and has one of the 2 behaviors, if so...
+                if (!byPlayer.Entity.Controls.ShiftKey && isTool > 0) { //Check if it's a valid tool for repair, is made of metal and has one of the 2 behaviors, if so...
                     ItemStack item = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
-                    
+
                     deltaLastTick = secondsUsed - lastInterval;
                     if (deltaLastTick >= repairInterval) { //Try not to repair EVERY single tick to space it out some. Cause of this, repair 5 durability each time so it doesn't take forever.
                         int currentDur;
                         int maxDur;
-                        
+
                         if (isTool == 1) { //The item is a Tinkered Tool! Use the extensions for the tool's head durability.
                             currentDur = item.GetToolheadCurrentDurability();
                             maxDur = item.GetToolheadMaxDurability();
@@ -56,7 +63,13 @@ namespace Toolsmith.ToolTinkering {
                         }
 
                         if (currentDur < maxDur) {
-                            currentDur += ToolsmithModSystem.Config.GrindstoneSharpenPerTick;
+                            float percent = 1.0f;
+                            if (ToolsmithModSystem.Config.GrindstoneSharpenPerTick >= 1 && ToolsmithModSystem.Config.GrindstoneSharpenPerTick <= 100) {
+                                percent = ((float)ToolsmithModSystem.Config.GrindstoneSharpenPerTick / 100f);
+                            }
+
+                            int percentRepair = (int)(percent * maxDur);
+                            currentDur += percentRepair;
                             if (currentDur >= maxDur) {
                                 currentDur = maxDur;
                                 doneRepair = true;
@@ -76,11 +89,19 @@ namespace Toolsmith.ToolTinkering {
 
                         deltaLastTick = 0;
                         lastInterval = FloorToNearestMult(secondsUsed, repairInterval);
+
+                        if (secondsUsed > 300) { //Just in case a way to break out if someone's been holding down the repair for over a set time, so nothing gets too overloaded, or the tool is done repairing!
+                            doneRepair = true;
+                        }
+                    }
+                } else if (byPlayer.Entity.Controls.ShiftKey && isTool == 1) {
+                    if (world.Side.IsServer() && secondsUsed > 4.5) {
+                        DisassembleTool(secondsUsed, world, byPlayer, blockSel);
                     }
                 }
             }
 
-            if (doneRepair || secondsUsed > 300) { //Just in case a way to break out if someone's been holding down the repair for over a set time, so nothing gets too overloaded, or the tool is done repairing!
+            if (doneRepair) {
                 world.PlaySoundAt(new AssetLocation("sounds/block/hoppertumble.ogg"), blockSel.Position, 0, byPlayer);
                 return false;
             }
@@ -132,6 +153,57 @@ namespace Toolsmith.ToolTinkering {
             }
 
             return 0;
+        }
+
+        private void DisassembleTool(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
+            //Actually take apart the tool here!
+            //Get the parts of the tool from it
+            var tool = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
+            var head = tool.GetToolhead();
+            var handle = tool.GetToolhandle();
+            var binding = tool.GetToolbinding(); //Might be null if there is no binding.
+
+            //Check if the Binding is null, if not, see if it is still at full durability - otherwise don't return it.
+            if (binding != null) {
+                if (tool.GetToolbindingCurrentDurability() != tool.GetToolbindingMaxDurability()) {
+                    binding = null; //If it's null, no binding drop!
+                }
+            }
+
+            //For both the Head and Handle, set the part durabilities
+            head.SetCurrentPartDurability(tool.GetToolheadCurrentDurability());
+            head.SetMaxPartDurability(tool.GetToolheadMaxDurability());
+            handle.SetCurrentPartDurability(tool.GetToolhandleCurrentDurability());
+            handle.SetMaxPartDurability(tool.GetToolhandleMaxDurability());
+
+            //Return it all to the player, and get rid of the tool.
+            bool gaveHead = false;
+            bool gaveHandle = false;
+            bool gaveBinding = false;
+            var player = byPlayer.Entity;
+
+            if (player != null) {
+                gaveHead = player.TryGiveItemStack(head);
+                gaveHandle = player.TryGiveItemStack(handle);
+                if (binding != null) {
+                    gaveBinding = player.TryGiveItemStack(binding);
+                }
+            }
+
+            byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack = null;
+
+            //If no room in inventory, drop in world instead.
+            if (!gaveHead) {
+                player.World.SpawnItemEntity(head, player.Pos.XYZ);
+            }
+            if (!gaveHandle) {
+                player.World.SpawnItemEntity(handle, player.Pos.XYZ);
+            }
+            if (binding != null && !gaveBinding) {
+                player.World.SpawnItemEntity(binding, player.Pos.XYZ);
+            }
+
+            byPlayer.InventoryManager.ActiveHotbarSlot.MarkDirty();
         }
 
         private float FloorToNearestMult(float secondsUsed, float mult) {

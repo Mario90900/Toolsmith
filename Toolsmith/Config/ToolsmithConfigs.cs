@@ -9,7 +9,7 @@ namespace Toolsmith.Config {
         public bool PrintAllParsedToolsAndParts = false;
         public bool DebugMessages = false;
         public double HeadDurabilityMult = 5.0;
-        public int GrindstoneSharpenPerTick = 5;
+        public int GrindstoneSharpenPerTick = 1;
         public string ToolHeads = "@.*(head|blade|thorn|finishingchiselhead|wedgechiselhead).*";
         public string TinkerableTools = "@.*:(axe|hammer|hoe|knife|pickaxe|prospectingpick|saw|scythe|shovel|adze|mallet|awl|chisel-finishing|chisel-wedge|rubblehammer|forestaxe|grubaxe|maul|hayfork).*";
         public string SinglePartTools = "@.*:(chisel|cleaver|shears|wrench|wedge|truechisel|rollingpin|handplaner|handwedge|laddermaker|paintbrush|paintscraper|pantograph|pathmaker|spyglass|creaser).*";
