@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmithingPlus.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -55,6 +56,8 @@ namespace Toolsmith.Utils {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolHeadMaxDur, dur);
         }
 
+        //Sharpness can be used on both Tinkered and Smithed Tools. All types!
+
         public static int GetToolCurrentSharpness(this ItemStack itemStack) {
             var currentSharp = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent, -1);
             if (currentSharp < 0) { //If the current sharpness returns as -1, it's not been set so will have to reset it.
@@ -76,7 +79,7 @@ namespace Toolsmith.Utils {
                 itemStack.ResetSharpness(ToolsmithModSystem.Api.World);
                 maxSharp = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent);
             }
-
+            
             return maxSharp;
         }
 
@@ -191,6 +194,17 @@ namespace Toolsmith.Utils {
             itemStack.Attributes.SetFloat(ToolsmithAttributes.SpeedBonus, speed);
         }
 
+        //Extensions for Smithed Tools specifically
+
+        //Intended to be used for Smithed Tools, but this is techincally just looking at the vanilla Durability attribute
+        public static int GetSmithedDurability(this ItemStack itemStack) {
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, itemStack.Collectible.GetMaxDurability(itemStack));
+        }
+
+        public static void SetSmithedDurability(this ItemStack itemStack, int dur) {
+            itemStack.Attributes.SetInt(ToolsmithAttributes.Durability, dur);
+        }
+
         //Extensions to handle resetting invalid tools that are lacking any durability values
 
         //Since it's possible to have issues either detecting proper tools, configuration being wonky, or other things, there needs to be a default fallback to set here.
@@ -240,10 +254,10 @@ namespace Toolsmith.Utils {
                     sharpnessMult = ToolsmithConstants.NonMetalStartingSharpnessMult;
                 }
 
-                headStack.SetCurrentPartDurability(headDur);
-                headStack.SetMaxPartDurability(headMaxDur);
-                headStack.SetToolCurrentSharpness((int)(sharpness * sharpnessMult));
-                headStack.SetToolMaxSharpness(sharpness);
+                headStack.SetPartCurrentDurability(headDur);
+                headStack.SetPartMaxDurability(headMaxDur);
+                headStack.SetPartCurrentSharpness((int)(sharpness * sharpnessMult));
+                headStack.SetPartMaxSharpness(sharpness);
                 itemStack.SetToolhead(headStack);
                 itemStack.SetToolheadCurrentDurability(headDur);
                 itemStack.SetToolheadMaxDurability(headMaxDur);
@@ -330,16 +344,16 @@ namespace Toolsmith.Utils {
             bindingDur = bindingDur + (bindingDur * handleStats.bindingHPBonus);
 
             if (maxHandleDur < 0) {
-                handle.SetCurrentPartDurability((int)handleDur);
-                handle.SetMaxPartDurability((int)handleDur);
+                handle.SetPartCurrentDurability((int)handleDur);
+                handle.SetPartMaxDurability((int)handleDur);
                 itemStack.SetToolhandle(handle);
                 itemStack.SetToolhandleCurrentDurability((int)handleDur);
                 itemStack.SetToolhandleMaxDurability((int)handleDur);
             }
             if (maxBindingDur < 0) {
                 if (binding != null) {
-                    binding.SetCurrentPartDurability((int)bindingDur);
-                    binding.SetMaxPartDurability((int) bindingDur);
+                    binding.SetPartCurrentDurability((int)bindingDur);
+                    binding.SetPartMaxDurability((int) bindingDur);
                     itemStack.SetToolbinding(binding);
                 }
                 itemStack.SetToolbindingCurrentDurability((int)bindingDur);
@@ -366,50 +380,50 @@ namespace Toolsmith.Utils {
         }
 
         // -- ItemStack Extensions for the Part items --
-        public static void SetCurrentPartDurability(this ItemStack itemStack, int durability) {
+        public static void SetPartCurrentDurability(this ItemStack itemStack, int durability) {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolPartCurrentDur, durability);
         }
 
-        public static int GetCurrentPartDurability(this ItemStack itemStack) {
-            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolPartCurrentDur, itemStack.GetMaxPartDurability());
+        public static int GetPartCurrentDurability(this ItemStack itemStack) {
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolPartCurrentDur, itemStack.GetPartMaxDurability());
         }
 
-        public static void SetMaxPartDurability(this ItemStack itemStack, int durability) {
+        public static void SetPartMaxDurability(this ItemStack itemStack, int durability) {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolPartMaxDur, durability);
         }
 
-        public static int GetMaxPartDurability(this ItemStack itemStack) {
+        public static int GetPartMaxDurability(this ItemStack itemStack) {
             return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolPartMaxDur, -1);
         }
 
         public static float GetPartRemainingHPPercent(this ItemStack itemStack) { //Since by design of wanting to let handles and bindings scale to the Tool's vanilla HP values, this is needed to 'hold' over the damage it sustained during use if it survived.
-            var currentDur = itemStack.GetCurrentPartDurability();
-            var maxDur = itemStack.GetMaxPartDurability();
+            var currentDur = itemStack.GetPartCurrentDurability();
+            var maxDur = itemStack.GetPartMaxDurability();
             if (currentDur > 0 && maxDur > 0) {
                 return (float)(currentDur / maxDur);
             }
             return 0.0f;
         }
 
-        public static void SetCurrentPartSharpness(this ItemStack itemStack, int sharpness) { //Only to be used on the tool heads
+        public static void SetPartCurrentSharpness(this ItemStack itemStack, int sharpness) { //Only to be used on the tool heads
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolSharpnessCurrent, sharpness);
         }
 
-        public static int GetCurrentPartSharpness(this ItemStack itemStack) {
-            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent, itemStack.GetMaxPartSharpness()); //If somehow this goes unset but the Max Part is set? Uh... How'd that happen for one, but oh well, reset to max I guess!
+        public static int GetPartCurrentSharpness(this ItemStack itemStack) {
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent, itemStack.GetPartMaxSharpness()); //If somehow this goes unset but the Max Part is set? Uh... How'd that happen for one, but oh well, reset to max I guess!
         }
 
-        public static void SetMaxPartSharpness(this ItemStack itemStack, int sharpness) {
+        public static void SetPartMaxSharpness(this ItemStack itemStack, int sharpness) {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolSharpnessMax, sharpness);
         }
 
-        public static int GetMaxPartSharpness(this ItemStack itemStack) {
+        public static int GetPartMaxSharpness(this ItemStack itemStack) {
             return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessMax, -1);
         }
 
         public static float GetPartRemainingSharpnessPercent(this ItemStack itemStack) {
-            var currentSharp = itemStack.GetCurrentPartSharpness();
-            var maxSharp = itemStack.GetMaxPartSharpness();
+            var currentSharp = itemStack.GetPartCurrentSharpness();
+            var maxSharp = itemStack.GetPartMaxSharpness();
             if (currentSharp > 0 && maxSharp > 0) {
                 return (float)(currentSharp / maxSharp);
             }

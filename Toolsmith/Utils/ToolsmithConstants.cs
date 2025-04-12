@@ -10,6 +10,8 @@ namespace Toolsmith.Utils {
         public const string DefaultHandleCode = "game:stick";
         public const float StartingSharpnessMult = 0.85f;
         public const float NonMetalStartingSharpnessMult = 0.66f;
+        public const float HighSharpnessSpeedBonusMult = 0.05f;
+        public const float LowSharpnessSpeedMalusMult = -0.1f;
 
         //The keys for accessing the default part entries themselves, to recieve their stat key blocks
         public const string DefaultHandlePartKey = "stick";

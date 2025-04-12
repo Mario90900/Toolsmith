@@ -66,8 +66,8 @@ namespace Toolsmith.ToolTinkering {
                             currentDur = item.Collectible.GetRemainingDurability(item);
                             maxDur = item.Collectible.GetMaxDurability(item);
                         } else { //The item is just a Tool Head, not on a tool put together. Use the extensions for Part Durability.
-                            currentDur = item.GetCurrentPartDurability();
-                            maxDur = item.GetMaxPartDurability();
+                            currentDur = item.GetPartCurrentDurability();
+                            maxDur = item.GetPartMaxDurability();
                         }
 
                         if (currentDur < maxDur) {
@@ -91,7 +91,7 @@ namespace Toolsmith.ToolTinkering {
                         } else if (isTool == 2) {
                             item.Collectible.SetDurability(item, currentDur);
                         } else {
-                            item.SetCurrentPartDurability(currentDur);
+                            item.SetPartCurrentDurability(currentDur);
                         }
                         byPlayer.InventoryManager.ActiveHotbarSlot.MarkDirty();
 
@@ -150,7 +150,7 @@ namespace Toolsmith.ToolTinkering {
                 if (!item.HasBehavior<CollectibleBehaviorToolBlunt>() && item.IsCraftableMetal()) {
                     return 1;
                 }
-            } else if (item.HasBehavior<CollectibleBehaviorSmithedTool>()) { //And this one just uses the regular durability values since it's just a single solid tool, no parts
+            } else if (item.HasBehavior<CollectibleBehaviorSmithedTools>()) { //And this one just uses the regular durability values since it's just a single solid tool, no parts
                 if (!item.HasBehavior<CollectibleBehaviorToolBlunt>() && item.IsCraftableMetal()) {
                     return 2;
                 }
@@ -179,10 +179,10 @@ namespace Toolsmith.ToolTinkering {
             }
 
             //For both the Head and Handle, set the part durabilities
-            head.SetCurrentPartDurability(tool.GetToolheadCurrentDurability());
-            head.SetMaxPartDurability(tool.GetToolheadMaxDurability());
-            handle.SetCurrentPartDurability(tool.GetToolhandleCurrentDurability());
-            handle.SetMaxPartDurability(tool.GetToolhandleMaxDurability());
+            head.SetPartCurrentDurability(tool.GetToolheadCurrentDurability());
+            head.SetPartMaxDurability(tool.GetToolheadMaxDurability());
+            handle.SetPartCurrentDurability(tool.GetToolhandleCurrentDurability());
+            handle.SetPartMaxDurability(tool.GetToolhandleMaxDurability());
 
             //Return it all to the player, and get rid of the tool.
             bool gaveHead = false;

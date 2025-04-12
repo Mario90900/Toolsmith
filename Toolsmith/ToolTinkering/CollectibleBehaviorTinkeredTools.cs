@@ -12,7 +12,7 @@ using Vintagestory.API.Config;
 using Vintagestory.API.Util;
 
 namespace Toolsmith.ToolTinkering {
-    public class CollectibleBehaviorTinkeredTools : CollectibleBehaviorSmithedTool {
+    public class CollectibleBehaviorTinkeredTools : CollectibleBehaviorSmithedTools {
 
         public CollectibleBehaviorTinkeredTools(CollectibleObject collObj) : base(collObj) {
             
@@ -195,13 +195,13 @@ namespace Toolsmith.ToolTinkering {
 
             //Apply the end results of that to the tool/parts. Could the parts themselves actually hold the stats...? Eh. Might be faster to just directly apply them to the tool and then update the current HP when it breaks.
             var currentHeadPer = headStack.GetPartRemainingHPPercent(); //If this returns 0, then assume it's full durability since something is unset. Keep this assumption in mind!!!
-            headStack.SetMaxPartDurability(headDur);
+            headStack.SetPartMaxDurability(headDur);
             if (currentHeadPer <= 0) {
                 currentHeadPer = 1.0f;
             }
-            headStack.SetCurrentPartDurability((int)(headDur * currentHeadPer));
+            headStack.SetPartCurrentDurability((int)(headDur * currentHeadPer));
             var currentHeadSharpPer = headStack.GetPartRemainingSharpnessPercent();
-            headStack.SetToolMaxSharpness(sharpness);
+            headStack.SetPartMaxSharpness(sharpness);
             if (currentHeadSharpPer <= 0) {
                 if (isHeadMetal) {
                     currentHeadSharpPer = ToolsmithConstants.StartingSharpnessMult;
@@ -209,7 +209,7 @@ namespace Toolsmith.ToolTinkering {
                     currentHeadSharpPer = ToolsmithConstants.NonMetalStartingSharpnessMult;
                 }
             }
-            headStack.SetToolCurrentSharpness((int)(sharpness * currentHeadSharpPer));
+            headStack.SetPartCurrentSharpness((int)(sharpness * currentHeadSharpPer));
             
             outputSlot.Itemstack.SetToolheadMaxDurability(headDur);
             outputSlot.Itemstack.SetToolheadCurrentDurability((int)(headDur * currentHeadPer));
@@ -217,11 +217,11 @@ namespace Toolsmith.ToolTinkering {
             outputSlot.Itemstack.SetToolCurrentSharpness((int)(sharpness * currentHeadSharpPer));
 
             var currentHandlePer = handleStack.GetPartRemainingHPPercent();
-            handleStack.SetMaxPartDurability((int)handleDur);
+            handleStack.SetPartMaxDurability((int)handleDur);
             if (currentHandlePer <= 0) {
                 currentHandlePer = 1.0f;
             }
-            handleStack.SetCurrentPartDurability((int)(handleDur * currentHandlePer));
+            handleStack.SetPartCurrentDurability((int)(handleDur * currentHandlePer));
             outputSlot.Itemstack.SetToolhandleMaxDurability((int)handleDur);
             outputSlot.Itemstack.SetToolhandleCurrentDurability((int)(handleDur * currentHandlePer));
 

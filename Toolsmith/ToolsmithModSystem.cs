@@ -60,7 +60,7 @@ namespace Toolsmith {
             api.RegisterCollectibleBehaviorClass($"{ModId}:TinkeredTools", typeof(CollectibleBehaviorTinkeredTools));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolPartWithHealth", typeof(CollectibleBehaviorToolPartWithHealth));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolNoDamageWithUse", typeof(CollectibleBehaviorToolBlunt));
-            api.RegisterCollectibleBehaviorClass($"{ModId}:SmithedTool", typeof(CollectibleBehaviorSmithedTool));
+            api.RegisterCollectibleBehaviorClass($"{ModId}:SmithedTool", typeof(CollectibleBehaviorSmithedTools));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolHead", typeof(CollectibleBehaviorToolHead));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolHandle", typeof(CollectibleBehaviorToolHandle));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolBinding", typeof(CollectibleBehaviorToolBinding));
@@ -98,8 +98,8 @@ namespace Toolsmith {
                     }
                     TinkerableToolsList.Add(t);
                 } else if (ConfigUtility.IsSinglePartTool(t.Code.ToString()) && !(ConfigUtility.IsOnBlacklist(t.Code.ToString()))) { //A 'Smithed' tool is one that once you finish the anvil smithing recipe, the tool is done. Shears, Wrench, or Chisel in vanilla! Add the 'Smithed' Tool Behavior so they can gain the Grinding interaction to maintain them.
-                    if (!t.HasBehavior<CollectibleBehaviorSmithedTool>()) {
-                        t.AddBehavior<CollectibleBehaviorSmithedTool>();
+                    if (!t.HasBehavior<CollectibleBehaviorSmithedTools>()) {
+                        t.AddBehavior<CollectibleBehaviorSmithedTools>();
                     }
                     if (ConfigUtility.IsBluntTool(t.Code.ToString())) { //Any smithed tool can still be one that's 'blunt', IE a Wrench in this case
                         if (!t.HasBehavior<CollectibleBehaviorToolBlunt>()) {

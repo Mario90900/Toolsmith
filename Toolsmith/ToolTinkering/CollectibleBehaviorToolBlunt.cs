@@ -15,7 +15,7 @@ namespace Toolsmith.ToolTinkering {
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {
             if (inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
                 dsc.AppendLine(Lang.Get("tinkeredtoolnodamage"));
-            } else if (inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTool>()) {
+            } else if (inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
                 dsc.AppendLine(Lang.Get("smithedtoolnodamage"));
             } else {
                 dsc.AppendLine(Lang.Get("toolheadnodamage"));

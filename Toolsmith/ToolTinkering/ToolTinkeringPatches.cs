@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Config;
+using Toolsmith.ToolTinkering.Drawbacks;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
@@ -23,7 +24,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
         private static bool SmithedToolsDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) {
-            if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTool>() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>() && !itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Api.Side.IsServer()) {
+            if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>() && !itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Api.Side.IsServer()) {
                 //If the tools is a Smithed Tool but not a Tinkered Tool with three parts, then simply don't damage it and interrupt the rest of the calls.
                 itemslot.MarkDirty();
                 return false; //Skip default and others
@@ -42,42 +43,59 @@ namespace Toolsmith.ToolTinkering {
                 int remainingHandleDur = itemStack.GetToolhandleCurrentDurability(); //But none should be -1 already, if any are, it means it's likely a Creative-spawned tool, or the mod was added to a world
                 int remainingBindingDur = itemStack.GetToolbindingCurrentDurability();
                 float chanceToDamage = itemStack.GetGripChanceToDamage();
+                bool isBluntTool = itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>();
                 bool headBroke = false;
 
                 //Time for SHARPNESS and WEAR! Lets a go!
                 bool doDamageHead = false;
+                bool chanceForDoubleHeadDamage = false;
                 bool doDamageHandle = false;
                 bool doDamageBinding = false;
-                int currentSharpness = itemStack.GetToolCurrentSharpness();
-                int maxSharpness = itemStack.GetToolMaxSharpness();
 
                 //First, the most important question, what is the current sharpness percentage? Then lower the sharpness by amount.
-                var sharpnessPer = itemStack.GetToolSharpnessPercent();
+                int currentSharpness = itemStack.GetToolCurrentSharpness();
+                int maxSharpness = itemStack.GetToolMaxSharpness();
+                float sharpnessPer = itemStack.GetToolSharpnessPercent();
+
                 if (maxSharpness <= 1) { //If the Sharpness Max is 1, likely means something got marked improperly. I don't think it could be 1 otherwise?
                     sharpnessPer = 0f; //Set the percent to one as a placeholder to just avoid infinite sharpness.
                 }
-                currentSharpness -= amount;
+                if (currentSharpness > 0) {
+                    currentSharpness -= amount;
+                } else {
+                    chanceForDoubleHeadDamage = true;
+                }
+
+                if (!isBluntTool) {
+                    itemStack.SetToolCurrentSharpness(currentSharpness);
+                }
 
                 //Then based on the percentage, which parts do we actually damage?
                 //Above 0.98, nothing on the tool takes durability damage as a little bonus
                 if (sharpnessPer >= 0.98f) { //Since even if the tool isn't going to regularly take damage to all parts, we still want to damage the binding by 1 point just cause it's been 'used' once. It won't get damaged again anyway.
-                    remainingBindingDur -= 1;
+                    if (remainingBindingDur == itemStack.GetToolbindingMaxDurability()) {
+                        remainingBindingDur -= 1;
+                    }
                 } else if (sharpnessPer >= 0.95f) {
                     doDamageBinding = true;
                 } else {
+                    doDamageBinding = true;
                     doDamageHandle = true;
                 }
 
                 if (sharpnessPer < 0.98f && sharpnessPer >= 0.33) {
-                    //Starting at 5% chance-to-damage at 0.98, exponential curve the chance-to-damage the head up to 100% at 0.33 sharpness left.
-                    //TODO -- Continue where I left off here!
-                } else {
+                    //Starting at 5% chance-to-damage at 0.98, quartic curve to get the chance-to-damage the head up to 100% at 0.33 sharpness left.
+                    doDamageHead = MathUtility.ShouldDamageHeadFromCurveChance(world, sharpnessPer);
+                } else if (sharpnessPer < 0.33) {
                     doDamageHead = true;
                 }
 
                 //Handle damaging each part, the handle only if it should based on the chance to damage it
-                if (doDamageHead && (!itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>() || world.Rand.NextDouble() <= ToolsmithModSystem.Config.BluntWear)) { //If this Tinkered Tool is also marked as a blunted tool, then apply the much much smaller chance to damage it. Damage the other parts though!
+                if (doDamageHead && (!isBluntTool || world.Rand.NextDouble() <= ToolsmithModSystem.Config.BluntWear)) { //If this Tinkered Tool is also marked as a blunted tool, then apply the much much smaller chance to damage it. Damage the other parts though!
                     remainingHeadDur -= amount;
+                    if (chanceForDoubleHeadDamage && world.Rand.NextDouble() <= 0.5) {
+                        remainingHeadDur -= amount;
+                    }
                 }
                 itemStack.SetToolheadCurrentDurability(remainingHeadDur);
 
@@ -107,6 +125,10 @@ namespace Toolsmith.ToolTinkering {
                 }
                 itemStack.SetToolbindingCurrentDurability(remainingBindingDur);
 
+                if (sharpnessPer < 0.8 && remainingHeadDur > 0) {
+                    DrawbackUtility.TryChanceForDrawback(world, byEntity, itemslot, sharpnessPer);
+                }
+
                 //Check each part and see if the health of any of them is <= 0, thus the tool broke, handle it
                 //Any or all parts COULD hit 0 at the same time, technically. I'd love to see it though, but it needs to be possible!
                 if (remainingBindingDur <= 0 || remainingHandleDur <= 0 || remainingHeadDur <= 0) {
@@ -120,8 +142,8 @@ namespace Toolsmith.ToolTinkering {
 
                     if (remainingHeadDur > 0 && !itemStack.HasPlaceholderHead()) {
                         toolHead = itemStack.GetToolhead();
-                        toolHead.SetCurrentPartDurability(remainingHeadDur);
-                        toolHead.SetMaxPartDurability(itemStack.GetToolheadMaxDurability());
+                        toolHead.SetPartCurrentDurability(remainingHeadDur);
+                        toolHead.SetPartMaxDurability(itemStack.GetToolheadMaxDurability());
                     } else {
                         headBroke = true; //This right here might be key for compatability sake. The way I built the whole system runs off the assumption that the Tool's Head determines the tool.
                                           //Thus, it can be considered that a tool does not fully "break" in the vanilla sense until the Head itself breaks, it only "falls apart" ie: the tool head flies off the handle, there's possible durability left on both.
@@ -130,8 +152,8 @@ namespace Toolsmith.ToolTinkering {
                     }
                     if (remainingHandleDur > 0) {
                         toolHandle = itemStack.GetToolhandle();
-                        toolHandle.SetCurrentPartDurability(remainingHandleDur);
-                        toolHandle.SetMaxPartDurability(itemStack.GetToolhandleMaxDurability());
+                        toolHandle.SetPartCurrentDurability(remainingHandleDur);
+                        toolHandle.SetPartMaxDurability(itemStack.GetToolhandleMaxDurability());
                     }
                     if (toolBinding != null) { //Binding doesn't always drop, only if the durability is above the threshold, and then if it's below, it breaks and if made of metal, drops some bits
                         BindingStats bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithModSystem.Config.BindingsWithStats.Get(toolBinding.Collectible.Code.Path).bindingStats);
@@ -218,15 +240,57 @@ namespace Toolsmith.ToolTinkering {
                 }
 
                 itemslot.MarkDirty();
-                if (!headBroke) {
+                if (!headBroke) { //If the head did not break, then don't run everything!
                     if (itemslot.Itemstack != null && itemslot.Itemstack.Collectible.Tool.HasValue && (!itemslot.Itemstack.Attributes.HasAttribute(ToolsmithAttributes.Durability) || itemslot.Itemstack.Attributes.GetInt(ToolsmithAttributes.Durability) == 0)) {
                         ItemStack itemstack = itemslot.Itemstack;
                         itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, itemstack.Collectible.GetMaxDurability(itemstack));
                     }
                     return false; //Skip default and others
                 }
+            } else if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) { //If it's a smithed tool, only need to deal with the Sharpness, and any extra "head" damage. Head in this case is just the tool as a whole.
+                ItemStack itemStack = itemslot.Itemstack;
+                bool isBluntTool = itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>();
+                var currentDur = itemStack.GetSmithedDurability();
+
+                //Time for SHARPNESS and WEAR! Lets a go!
+                bool doDamageTool = false;
+                bool chanceForDoubleToolDamage = false;
+                int currentSharpness = itemStack.GetToolCurrentSharpness();
+                int maxSharpness = itemStack.GetToolMaxSharpness();
+                float sharpnessPer = itemStack.GetToolSharpnessPercent();
+
+                if (maxSharpness <= 1) { //If the Sharpness Max is 1, likely means something got marked improperly. I don't think it could be 1 otherwise?
+                    sharpnessPer = 0f; //Set the percent to one as a placeholder to just avoid infinite sharpness.
+                }
+                if (currentSharpness > 0) {
+                    currentSharpness -= amount;
+                } else {
+                    chanceForDoubleToolDamage = true;
+                }
+
+                if (!isBluntTool) {
+                    itemStack.SetToolCurrentSharpness(currentSharpness);
+                }
+
+                if (sharpnessPer < 0.98f && sharpnessPer >= 0.33) {
+                    //Starting at 5% chance-to-damage at 0.98, quartic curve to get the chance-to-damage the head up to 100% at 0.33 sharpness left.
+                    doDamageTool = MathUtility.ShouldDamageHeadFromCurveChance(world, sharpnessPer);
+                } else if (sharpnessPer < 0.33) {
+                    doDamageTool = true;
+                }
+
+                //Handle damaging each part, the handle only if it should based on the chance to damage it
+                if (doDamageTool && isBluntTool && world.Rand.NextDouble() >= ToolsmithModSystem.Config.BluntWear) { //If this Tinkered Tool is also marked as a blunted tool, then apply the much much smaller chance to damage it. Damage the other parts though!
+                    doDamageTool = false;
+                }
+
+                if (chanceForDoubleToolDamage && doDamageTool && world.Rand.NextDouble() <= 0.5) { //The 50/50 chance for double damage roll
+                    currentDur -= amount;
+                }
+
+                return doDamageTool;
             }
-            //If it's not a tinkered tool, or the head did break, then let everything else run as well!
+            //If it's not a tinkered or smithed tool, then let everything else run as well!
             return true;
         }
 
@@ -278,6 +342,13 @@ namespace Toolsmith.ToolTinkering {
                     __result = headMax;
                 }
 
+                return false;
+            } else if (itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
+                if (itemstack.GetMaxDurBypassFlag()) { //If this itemstack has the BypassFlag Attribute, that means it has been flagged as a 'first time call' to Collectable.Durability, but with the intent to account for other mod's changes that might hook in here.
+                    return true;
+                }
+
+                __result = (int)(itemstack.Collectible.Durability * ToolsmithModSystem.Config.HeadDurabilityMult);
                 return false;
             }
 
@@ -359,12 +430,25 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPostfix]
         [HarmonyPatch(nameof(CollectibleObject.GetMiningSpeed))]
         private static float TinkeredToolMiningSpeedPostfix(float miningSpeed, IItemStack itemstack, BlockSelection blockSel, Block block, IPlayer forPlayer) {
-            if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+            var isTinkeredTool = itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>();
+            var isSmithedTool = itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>();
+            float newMiningSpeed = miningSpeed;
+
+            if (isTinkeredTool || isSmithedTool) {
+                var sharpnessPer = ((ItemStack)itemstack).GetToolSharpnessPercent();
+                if (sharpnessPer >= 0.9) {
+                    newMiningSpeed += newMiningSpeed * ToolsmithConstants.HighSharpnessSpeedBonusMult;
+                } else if (sharpnessPer <= 0.33) {
+                    newMiningSpeed += newMiningSpeed * ToolsmithConstants.LowSharpnessSpeedMalusMult;
+                }
+            }
+            
+            if (isTinkeredTool) {
                 var speedBonus = ((ItemStack)itemstack).GetSpeedBonus();
-                return (miningSpeed + (miningSpeed * speedBonus));
+                newMiningSpeed += newMiningSpeed * speedBonus;
             }
 
-            return miningSpeed;
+            return newMiningSpeed;
         }
     }
 }
