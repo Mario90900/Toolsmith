@@ -1,9 +1,10 @@
 {
 	"game:pristinecondition": "This tool part is in pristine condition!",
 	"game:partiallydamaged": "This tool part has about {0}% durability remaining.",
-	"game:toolheaddurability": "Head Durability: {0}/{1}",
-	"game:toolhandledurability": "Handle Durability: {0}/{1}",
-	"game:toolbindingdurability": "Binding Durability: {0}/{1}",
+	"game:toolheaddurability": "Head Durability: {0} / {1}",
+	"game:toolhandledurability": "Handle Durability: {0} / {1}",
+	"game:toolbindingdurability": "Binding Durability: {0} / {1}",
+	"game:toolsharpness": "Sharpness: {0} / {1}",
 	"game:tinkeredtoolnodamage": "The blunt head of this tool is unlikely to get damaged, but ensure the handle and bindings hold.",
 	"game:smithedtoolnodamage": "This blunt-headed tool is unlikely to get damaged from use.",
 	"game:toolheadnodamage": "This tool head is blunt and is pretty unlikely to get damaged from proper use.",

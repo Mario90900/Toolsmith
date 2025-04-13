@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 
 namespace Toolsmith.ToolTinkering {
     public class CollectibleBehaviorSmithedTools : CollectibleBehavior {
@@ -14,9 +15,24 @@ namespace Toolsmith.ToolTinkering {
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {
-            if (ToolsmithModSystem.Config.DebugMessages) {
-                dsc.AppendLine("This is a Smithed Tool!");
+            if (inSlot.Itemstack == null || inSlot.Inventory.GetType() == typeof(DummyInventory) || inSlot.Inventory.GetType() == typeof(CreativeInventoryTab)) {
+                return;
             }
+
+            var curSharp = inSlot.Itemstack.GetToolCurrentSharpness(); //All that needs to be added to the stringbuilder is the Sharpness.
+            var maxSharp = inSlot.Itemstack.GetToolMaxSharpness();
+
+            StringBuilder workingDsc = new StringBuilder();
+            workingDsc.Append(dsc); //Still for safety sake, lets copy dsc into a temp one for active processing.
+            int startIndex = 0;
+            int endIndex = 0;
+
+            StringHelpers.FindTooltipVanillaDurabilityLine(ref startIndex, ref endIndex, workingDsc, world, withDebugInfo); //Moved this code originally from TinkerTools into it's own helper function.
+
+            workingDsc.Insert(startIndex, Lang.Get("toolsharpness", curSharp, maxSharp) + '\n');
+
+            dsc.Clear();
+            dsc.Append(workingDsc);
         }
 
         public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, ref EnumHandling bhHandling) {

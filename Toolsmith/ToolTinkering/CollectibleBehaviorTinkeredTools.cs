@@ -29,7 +29,10 @@ namespace Toolsmith.ToolTinkering {
             var maxHandleDur = inSlot.Itemstack.GetToolhandleMaxDurability();
             var curBindingDur = inSlot.Itemstack.GetToolbindingCurrentDurability();
             var maxBindingDur = inSlot.Itemstack.GetToolbindingMaxDurability();
+            var curSharp = inSlot.Itemstack.GetToolCurrentSharpness();
+            var maxSharp = inSlot.Itemstack.GetToolMaxSharpness();
 
+            //This extra reset parts bit might be redundant now after moving the resets into the Get calls themselves. It also might not ever call because it will always be > 0?
             if (maxHeadDur < 0) { //If this is 0 then assume something went wrong and reset things, it's a new item spawned in, or a player added the mod to their save.
                 inSlot.Itemstack.ResetNullHead(world); //Moved the client-half of resetting the tool head into this call. Can be safely called on both sides, and handle it over there. Make sure to mark the itemslot as dirty on the client though after using this.
                 curHeadDur = inSlot.Itemstack.GetToolheadCurrentDurability();
@@ -48,29 +51,9 @@ namespace Toolsmith.ToolTinkering {
             workingDsc.Append(dsc);
             int startIndex = 0;
             int endIndex = 0;
-            bool debugFlag = false; //True after the Attribute line has been found
-            bool foundLine = false;
-            while (endIndex < workingDsc.Length && foundLine == false) { //Find and trim off the original 'Durability' information, and then...
-                if (workingDsc[endIndex] == '\n') {
-                    startIndex = endIndex + 1;
-                }
-                if (!withDebugInfo && workingDsc[endIndex] == 'D') { //I don't know if this will work for any languages other then english? And I'm worried to find out, haha.
-                    foundLine = true;
-                }
-                if (withDebugInfo && debugFlag && workingDsc[endIndex] == 'D') { //This whole bit is specifically searching for the English translated code... So this might cause issues in other languages. Oof.
-                    if (startIndex == endIndex) {
-                        foundLine = true;
-                    }
-                }
-                if (withDebugInfo && !debugFlag && (((world.Api.Side == EnumAppSide.Client && (world.Api as ICoreClientAPI).Input.KeyboardKeyStateRaw[1]) && workingDsc[endIndex] == 'A') || (workingDsc[endIndex] == 'C'))) {
-                    startIndex = endIndex;
-                    debugFlag = true;
-                }
-                endIndex++;
-            }
-            while (endIndex < workingDsc.Length && workingDsc[endIndex] != '\n') {
-                endIndex++;
-            }
+
+            StringHelpers.FindTooltipVanillaDurabilityLine(ref startIndex,ref endIndex, workingDsc, world, withDebugInfo); //Moved this code originally from TinkerTools into it's own helper function.
+
             if (endIndex < workingDsc.Length) {
                 workingDsc.Remove(startIndex, (endIndex - startIndex) + 1); //Remove the durability line
             }
@@ -78,7 +61,8 @@ namespace Toolsmith.ToolTinkering {
             workingDsc.Insert(startIndex, Lang.Get("toolbindingdurability", curBindingDur, maxBindingDur) + '\n'); //Insert in the part durabilities in the place of it
             workingDsc.Insert(startIndex, Lang.Get("toolhandledurability", curHandleDur, maxHandleDur) + '\n');
             workingDsc.Insert(startIndex, Lang.Get("toolheaddurability", curHeadDur, maxHeadDur) + '\n');
-            
+            workingDsc.Insert(startIndex, Lang.Get("toolsharpness", curSharp, maxSharp) + '\n');
+
             dsc.Clear();
             dsc.Append(workingDsc);
         }
@@ -114,6 +98,7 @@ namespace Toolsmith.ToolTinkering {
             if (headStack == null && foundToolInput == null) { //I do hope nothing hits this. At least it'll likely get the candle backup.
                 ToolsmithModSystem.Logger.Error("Somehow crafted a Tinker Tool with a recipe that could not find a head, nor tool to copy data from.\nThe tool in question is: " + outputSlot.Itemstack.Collectible.Code.ToString() + "\nAttempting to just reset the Tool Head instead. This might result in fallback data of a Candle being assigned.");
                 outputSlot.Itemstack.ResetNullHead(ToolsmithModSystem.Api.World);
+                headStack = outputSlot.Itemstack.GetToolhead();
             } else if (headStack == null && foundToolInput != null) { //Probably a safety check here, since I realized some recipes IE the whetstone from Working Classes craft a knife with the stone to produce a knife.
                 //Actually found an input that is a tool, so probably copy over the stats of that tool into the new one? Oh god I hope no one tries to use this with another mod that makes tool crafting need more tools. That just... will break everything.
                 //Though I can't help but ask, what if it's a recipe converting one tool to another type? I hope not. Not going to dwell on that until it actually might come up though.
@@ -155,6 +140,7 @@ namespace Toolsmith.ToolTinkering {
                 handle = ToolsmithModSystem.Config.ToolHandlesWithStats.Get(handleStack.Collectible.Code.Path);
             } else {
                 handle = ToolsmithModSystem.Config.ToolHandlesWithStats.Get(ToolsmithConstants.DefaultHandlePartKey); //Probably shouldn't ever run into this, but just incase something does go wrong, this might prevent a crash - and default to a stick used. Maybe if configs are not configured right this could happen!
+                handleStack = new ItemStack(ToolsmithModSystem.Api.World.GetItem(new AssetLocation(ToolsmithConstants.DefaultHandleCode)), 1);
             }
             BindingWithStats binding;
             if (bindingStack != null) { //If there is a binding used, then get that one.

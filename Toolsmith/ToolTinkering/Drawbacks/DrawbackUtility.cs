@@ -5,12 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Common;
+using Toolsmith.Utils;
 
 namespace Toolsmith.ToolTinkering.Drawbacks {
     public static class DrawbackUtility {
 
         //Check and see if a drawback is rolled and then have it applied.
         public static void TryChanceForDrawback(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, float sharpnessPercent) {
+            if (HasDrawback(itemslot.Itemstack)) {
+                return;
+            }
+
             int oneInThis = 1;
             if (sharpnessPercent > 0.55) {
                 oneInThis = 20000;
@@ -31,7 +36,13 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
 
         //Check for valid drawbacks for this tool type given, then try rolling for one to apply it.
         public static void ApplyRandomDrawback(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, float sharpnessPercent) {
-            ToolsmithModSystem.Logger.Warning("A Tool should have had a Drawback applied!");
+            if (!HasDrawback(itemslot.Itemstack)) {
+                ToolsmithModSystem.Logger.Warning("A Tool should have had a Drawback applied!");
+            }
+        }
+
+        public static bool HasDrawback(ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.Drawback);
         }
     }
 }

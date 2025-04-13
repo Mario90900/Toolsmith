@@ -77,7 +77,7 @@ namespace Toolsmith.Utils {
 
             if (maxSharp < 0) {
                 itemStack.ResetSharpness(ToolsmithModSystem.Api.World);
-                maxSharp = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent);
+                maxSharp = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessMax);
             }
             
             return maxSharp;
@@ -213,6 +213,7 @@ namespace Toolsmith.Utils {
             if (itemStack.Attributes == null) {
                 itemStack.Attributes = new TreeAttribute();
             }
+            ToolsmithModSystem.Logger.Warning("Resetting Head for Tool!");
 
             //Figure out the Tool Head and add the missing stats and ItemStack!
             if (RecipeRegisterModSystem.TinkerToolGridRecipes != null) { //If this is being ran on the server-side or it is singleplayer, then RecipeRegisterModSystem will have actually booted and everything!
@@ -253,15 +254,16 @@ namespace Toolsmith.Utils {
                 } else {
                     sharpnessMult = ToolsmithConstants.NonMetalStartingSharpnessMult;
                 }
+                var startSharp = (int)(sharpness * sharpnessMult);
 
                 headStack.SetPartCurrentDurability(headDur);
                 headStack.SetPartMaxDurability(headMaxDur);
-                headStack.SetPartCurrentSharpness((int)(sharpness * sharpnessMult));
+                headStack.SetPartCurrentSharpness(startSharp);
                 headStack.SetPartMaxSharpness(sharpness);
                 itemStack.SetToolhead(headStack);
                 itemStack.SetToolheadCurrentDurability(headDur);
                 itemStack.SetToolheadMaxDurability(headMaxDur);
-                itemStack.SetToolCurrentSharpness((int)(sharpness * sharpnessMult));
+                itemStack.SetToolCurrentSharpness(startSharp);
                 itemStack.SetToolMaxSharpness(sharpness);
             } else {
                 //Instead for part of the temp-fix, just run off the assumption that for now it might work fine to have a placeholder basic calc to initialize it based on the default Durability value.
@@ -271,11 +273,12 @@ namespace Toolsmith.Utils {
                 var curHeadDur = (int)(itemStack.Attributes.GetDecimal(ToolsmithAttributes.Durability, baseDur) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
                 var maxHeadDur = (int)(baseDur * ToolsmithModSystem.Config.HeadDurabilityMult);
                 var sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
+                var startSharp = (int)(sharpness * ToolsmithConstants.StartingSharpnessMult);
 
                 itemStack.SetToolhead(headStack);
                 itemStack.SetToolheadCurrentDurability(curHeadDur);
                 itemStack.SetToolheadMaxDurability(maxHeadDur);
-                itemStack.SetToolCurrentSharpness((int)(sharpness * ToolsmithConstants.StartingSharpnessMult));
+                itemStack.SetToolCurrentSharpness(startSharp);
                 itemStack.SetToolMaxSharpness(sharpness);
             }
         }
@@ -284,18 +287,23 @@ namespace Toolsmith.Utils {
             if (itemStack.Attributes == null) {
                 itemStack.Attributes = new TreeAttribute();
             }
+            ToolsmithModSystem.Logger.Warning("Resetting Sharpness for Tool!");
 
             var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
             var sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
             float sharpnessMult;
             var isToolMetal = itemStack.Collectible.IsCraftableMetal();
+            ToolsmithModSystem.Logger.Warning("Base Durability is: " + baseDur);
+            ToolsmithModSystem.Logger.Warning("Max Sharpness is: " + sharpness);
+            ToolsmithModSystem.Logger.Warning("Is tool metal? " + isToolMetal);
             if (isToolMetal) {
                 sharpnessMult = ToolsmithConstants.StartingSharpnessMult;
             } else {
                 sharpnessMult = ToolsmithConstants.NonMetalStartingSharpnessMult;
             }
 
-            itemStack.SetToolCurrentSharpness((int)(sharpness * sharpnessMult));
+            var startSharpness = (int)(sharpness * sharpnessMult);
+            itemStack.SetToolCurrentSharpness(startSharpness);
             itemStack.SetToolMaxSharpness(sharpness);
         }
 

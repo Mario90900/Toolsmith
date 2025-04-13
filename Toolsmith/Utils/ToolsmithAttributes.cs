@@ -22,6 +22,7 @@ namespace Toolsmith.Utils {
 
         public const string GripChanceToDamage = "gripChanceToDamage";
         public const string SpeedBonus = "speedBonus";
+        public const string Drawback = "toolsmithDrawback";
 
         public const string BypassMaxCall = "toolsmithSkipMaxDurPatch";
 
@@ -34,6 +35,6 @@ namespace Toolsmith.Utils {
         public const string Durability = "durability";
 
         //This just helps to organize it in this file, and pile them into one easy constant to call. Generally for Smithing Plus's Compat and the forgettable attributes there when a Workpiece is made.
-        public const string ToolsmithForgettableAttributes = "," + ToolsmithAttributes.ToolHead + "," + ToolsmithAttributes.ToolHeadCurrentDur + "," + ToolsmithAttributes.ToolHeadMaxDur + "," + ToolsmithAttributes.ToolSharpnessCurrent + "," + ToolsmithAttributes.ToolSharpnessMax + "," + ToolsmithAttributes.ToolHandle + "," + ToolsmithAttributes.ToolHandleCurrentDur + "," + ToolsmithAttributes.ToolHandleMaxDur + "," + ToolsmithAttributes.ToolBinding + "," + ToolsmithAttributes.ToolBindingCurrentDur + "," + ToolsmithAttributes.ToolBindingMaxDur + "," + ToolsmithAttributes.GripChanceToDamage + "," + ToolsmithAttributes.SpeedBonus + "," + ToolsmithAttributes.BypassMaxCall;
+        public const string ToolsmithForgettableAttributes = "," + ToolHead + "," + ToolHeadCurrentDur + "," + ToolHeadMaxDur + "," + ToolSharpnessCurrent + "," + ToolSharpnessMax + "," + ToolHandle + "," + ToolHandleCurrentDur + "," + ToolHandleMaxDur + "," + ToolBinding + "," + ToolBindingCurrentDur + "," + ToolBindingMaxDur + "," + GripChanceToDamage + "," + SpeedBonus + "," + Drawback + "," + BypassMaxCall;
     }
 }
