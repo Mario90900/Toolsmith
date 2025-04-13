@@ -122,7 +122,7 @@ namespace Toolsmith.ToolTinkering {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
         }
 
-        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, ref EnumHandling bhHandling) {
+        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, ref EnumHandling bhHandling) { //TODO - This isn't called when a tool head is smithed. Buh! Have to move it elsewhere, or otherwise get this called... Where does XSkills patch in the Quality for Smithed tools?
             //I do hope this also gets called when Smithing/Knapping completes. I think it should?
 
             bool isToolMetal = outputSlot.Itemstack.Collectible.IsCraftableMetal();

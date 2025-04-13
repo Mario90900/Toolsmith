@@ -20,7 +20,8 @@ namespace Toolsmith.Utils {
                 chanceToDamage = 0.05;
             }
 
-            shouldDamage = (world.Rand.NextDouble() <= chanceToDamage);
+            var rand = world.Rand.NextDouble();
+            shouldDamage = (rand <= chanceToDamage);
 
             return shouldDamage;
         }

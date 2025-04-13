@@ -215,7 +215,6 @@ namespace Toolsmith.Utils {
             if (itemStack.Attributes == null) {
                 itemStack.Attributes = new TreeAttribute();
             }
-            ToolsmithModSystem.Logger.Warning("Resetting Head for Tool!");
 
             //Figure out the Tool Head and add the missing stats and ItemStack!
             if (RecipeRegisterModSystem.TinkerToolGridRecipes != null) { //If this is being ran on the server-side or it is singleplayer, then RecipeRegisterModSystem will have actually booted and everything!
@@ -289,7 +288,6 @@ namespace Toolsmith.Utils {
             if (itemStack.Attributes == null) {
                 itemStack.Attributes = new TreeAttribute();
             }
-            ToolsmithModSystem.Logger.Warning("Resetting Sharpness for Tool!");
 
             var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
             var sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
@@ -425,7 +423,7 @@ namespace Toolsmith.Utils {
             var currentDur = itemStack.GetPartCurrentDurability();
             var maxDur = itemStack.GetPartMaxDurability();
             if (currentDur > 0 && maxDur > 0) {
-                return (float)(currentDur / maxDur);
+                return ((float)currentDur / (float)maxDur);
             }
             return 0.0f;
         }
@@ -450,7 +448,7 @@ namespace Toolsmith.Utils {
             var currentSharp = itemStack.GetPartCurrentSharpness();
             var maxSharp = itemStack.GetPartMaxSharpness();
             if (currentSharp > 0 && maxSharp > 0) {
-                return (float)(currentSharp / maxSharp);
+                return ((float)currentSharp / (float)maxSharp);
             }
             return 0.0f;
         }

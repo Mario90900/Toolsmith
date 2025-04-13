@@ -12,7 +12,7 @@ using Vintagestory.API.Util;
 namespace Toolsmith.ToolTinkering {
     public static class TinkeringUtility {
 
-        public static void HandleBrokenTinkeredTool(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int remainingHeadDur, int remainingHandleDur, int remainingBindingDur, bool headBroke, bool refillSlot) {
+        public static void HandleBrokenTinkeredTool(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int remainingHeadDur, int remainingSharpness, int remainingHandleDur, int remainingBindingDur, bool headBroke, bool refillSlot) {
             ItemStack brokenToolStack = itemslot.Itemstack;
             CollectibleObject toolObject = brokenToolStack.Collectible;
             ItemStack toolHead = null;
@@ -27,6 +27,8 @@ namespace Toolsmith.ToolTinkering {
                 toolHead = brokenToolStack.GetToolhead();
                 toolHead.SetPartCurrentDurability(remainingHeadDur);
                 toolHead.SetPartMaxDurability(brokenToolStack.GetToolheadMaxDurability());
+                toolHead.SetPartCurrentSharpness(remainingSharpness);
+                toolHead.SetPartMaxSharpness(brokenToolStack.GetToolMaxSharpness());
             } else {
                 headBroke = true; //This right here might be key for compatability sake. The way I built the whole system runs off the assumption that the Tool's Head determines the tool.
                                   //Thus, it can be considered that a tool does not fully "break" in the vanilla sense until the Head itself breaks, it only "falls apart" ie: the tool head flies off the handle, there's possible durability left on both.
@@ -66,18 +68,18 @@ namespace Toolsmith.ToolTinkering {
                 ToolsmithModSystem.Logger.Debug("Binding has durability: " + remainingBindingDur);
             }
 
-            IPlayer player = (byEntity as EntityPlayer)?.Player;
+            EntityPlayer player = byEntity as EntityPlayer;
             if (player != null) {
                 //Try to give the player each part, if given successfully, set the stack to null again to represent this
                 if (!headBroke && toolHead != null) {
-                    gaveHead = player.InventoryManager.TryGiveItemstack(toolHead, slotNotifyEffect: true);
+                    gaveHead = player.TryGiveItemStack(toolHead);
                 }
                 if (toolHandle != null) {
-                    gaveHandle = player.InventoryManager.TryGiveItemstack(toolHandle, slotNotifyEffect: true);
+                    gaveHandle = player.TryGiveItemStack(toolHandle);
                 }
                 if (toolBinding != null) {
-                    gaveBinding = player.InventoryManager.TryGiveItemstack(toolBinding, slotNotifyEffect: true);
-                } else if (bitsDrop != null && player.InventoryManager.TryGiveItemstack(bitsDrop, slotNotifyEffect: true)) {
+                    gaveBinding = player.TryGiveItemStack(toolBinding);
+                } else if (bitsDrop != null && player.TryGiveItemStack(bitsDrop)) {
                     bitsDrop = null;
                 }
 

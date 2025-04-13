@@ -37,10 +37,10 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
         private static bool TinkeredToolDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) { //The Itemslot in question has to finish this call Null if the item is broken, other parts of the game, IE Treecutting code, only check for if the slot is null to keep on cutting the tree. This works for vanilla, cause when a tool breaks, it WILL be gone.
-            if (!itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && ((world.Side.IsClient()) || (world.Side.IsServer() && (ToolsmithModSystem.IgnoreCodes.Count == 0 || !ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString()))))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
+            if (world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && (ToolsmithModSystem.IgnoreCodes.Count == 0 || !ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString()))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
                 ItemStack itemStack = itemslot.Itemstack;
                 int remainingHeadDur = itemStack.GetToolheadCurrentDurability(); //Grab all the current durabilities of the parts!
-                int remainingHandleDur = itemStack.GetToolhandleCurrentDurability(); //But none should be -1 already, if any are, it means it's likely a Creative-spawned tool, or the mod was added to a world
+                int remainingHandleDur = itemStack.GetToolhandleCurrentDurability(); //But none should be -1 already, if any are, it means it's likely a Creative-spawned tool, or the mod was added to a world -- ((world.Side.IsClient()) || (
                 int remainingBindingDur = itemStack.GetToolbindingCurrentDurability();
                 float chanceToDamage = itemStack.GetGripChanceToDamage();
                 bool isBluntTool = itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>();
@@ -132,7 +132,7 @@ namespace Toolsmith.ToolTinkering {
                 //Check each part and see if the health of any of them is <= 0, thus the tool broke, handle it
                 //Any or all parts COULD hit 0 at the same time, technically. I'd love to see it though, but it needs to be possible!
                 if (remainingBindingDur <= 0 || remainingHandleDur <= 0 || remainingHeadDur <= 0) {
-                    TinkeringUtility.HandleBrokenTinkeredTool(world, byEntity, itemslot, remainingHeadDur, remainingHandleDur, remainingBindingDur, headBroke, headBroke);
+                    TinkeringUtility.HandleBrokenTinkeredTool(world, byEntity, itemslot, remainingHeadDur, currentSharpness, remainingHandleDur, remainingBindingDur, headBroke, !headBroke);
                 }
 
                 itemslot.MarkDirty();
@@ -143,7 +143,7 @@ namespace Toolsmith.ToolTinkering {
                     }
                     return false; //Skip default and others
                 }
-            } else if (!itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) { //If it's a smithed tool, only need to deal with the Sharpness, and any extra "head" damage. Head in this case is just the tool as a whole.
+            } else if (world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) { //If it's a smithed tool, only need to deal with the Sharpness, and any extra "head" damage. Head in this case is just the tool as a whole.
                 ItemStack itemStack = itemslot.Itemstack;
                 bool isBluntTool = itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>();
                 var currentDur = itemStack.GetSmithedDurability();
@@ -185,6 +185,8 @@ namespace Toolsmith.ToolTinkering {
                 }
 
                 return doDamageTool;
+            } else if (!world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>())) {
+                return false; //Clientside Catch for hitting this point, wait for the server sync to update everything to hopefully prevent that desync from the client
             }
             //If it's not a tinkered or smithed tool, then let everything else run as well!
             return true;
