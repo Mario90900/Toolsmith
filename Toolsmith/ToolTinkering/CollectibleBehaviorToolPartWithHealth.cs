@@ -18,6 +18,19 @@ namespace Toolsmith.ToolTinkering {
                 if (inSlot.Itemstack == null || inSlot.Inventory.GetType() == typeof(DummyInventory) || inSlot.Inventory.GetType() == typeof(CreativeInventoryTab)) {
                     return;
                 }
+
+                if (inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
+                    if (inSlot.Itemstack.GetPartMaxSharpness() > 0) {
+                        var remainingSharpPercent = inSlot.Itemstack.GetPartRemainingSharpnessPercent();
+                        if (remainingSharpPercent < 0 || remainingSharpPercent >= 1.0f) {
+                            dsc.AppendLine(Lang.Get("fullysharpened"));
+                        } else {
+                            var percent = Math.Floor(remainingSharpPercent * 100);
+                            dsc.AppendLine(Lang.Get("partiallysharpened", percent));
+                        }
+                    }
+                }
+
                 var remainingPercent = inSlot.Itemstack.GetPartRemainingHPPercent(); //Is there ANY way this could possibly have a null itemstack and still get called...? I'd be shocked honestly, hah!
                 if (remainingPercent <= 0.0f || remainingPercent >= 1.0f) { //If this returns 0 or less, assume it has not been used or is at full durability! If it's 1.0 or more (somehow?), well, similarly :P
                     dsc.AppendLine(Lang.Get("pristinecondition"));

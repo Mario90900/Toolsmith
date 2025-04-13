@@ -198,11 +198,13 @@ namespace Toolsmith.Utils {
 
         //Intended to be used for Smithed Tools, but this is techincally just looking at the vanilla Durability attribute
         public static int GetSmithedDurability(this ItemStack itemStack) {
-            return itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, itemStack.Collectible.GetMaxDurability(itemStack));
+            return itemStack.Collectible.GetRemainingDurability(itemStack); //Instead trying to hook into the vanilla calls for compatability sake
+            //return itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, itemStack.Collectible.GetMaxDurability(itemStack));
         }
 
         public static void SetSmithedDurability(this ItemStack itemStack, int dur) {
-            itemStack.Attributes.SetInt(ToolsmithAttributes.Durability, dur);
+            itemStack.Collectible.SetDurability(itemStack, dur); //Instead trying to hook into the vanilla calls for compatability sake
+            //itemStack.Attributes.SetInt(ToolsmithAttributes.Durability, dur);
         }
 
         //Extensions to handle resetting invalid tools that are lacking any durability values
@@ -373,6 +375,7 @@ namespace Toolsmith.Utils {
             itemStack.SetGripChanceToDamage(gripStats.chanceToDamage);
         }
 
+        //The Attribute Flags for tools! This will all be similar except for their intended use and name.
         public static void SetMaxDurBypassFlag(this ItemStack itemStack) {
             itemStack.Attributes.SetBool(ToolsmithAttributes.BypassMaxCall, true); //Doesn't matter what it's set to, but for human-readable sake, it's set to true.
         }
@@ -384,6 +387,20 @@ namespace Toolsmith.Utils {
         public static void ClearMaxDurBypassFlag(this ItemStack itemStack) {
             if (itemStack.Attributes.HasAttribute(ToolsmithAttributes.BypassMaxCall)) { //Just verify that it exists first.
                 itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.BypassMaxCall); //If so, just remove the flag attribute.
+            }
+        }
+
+        public static void SetBrokeWhileSharpeningFlag(this ItemStack itemStack) {
+            itemStack.Attributes.SetBool(ToolsmithAttributes.BrokeWhileSharpening, true);
+        }
+
+        public static bool GetBrokeWhileSharpeningFlag(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.BrokeWhileSharpening);
+        }
+
+        public static void ClearBrokeWhileSharpeningFlag(this ItemStack itemStack) {
+            if (itemStack.Attributes.HasAttribute(ToolsmithAttributes.BrokeWhileSharpening)) {
+                itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.BrokeWhileSharpening);
             }
         }
 
@@ -413,7 +430,7 @@ namespace Toolsmith.Utils {
             return 0.0f;
         }
 
-        public static void SetPartCurrentSharpness(this ItemStack itemStack, int sharpness) { //Only to be used on the tool heads
+        public static void SetPartCurrentSharpness(this ItemStack itemStack, int sharpness) { //Only to be used on the tool heads, this doesn't call the reset, because can only handle that when it has a base durability, and the heads are just a regular item.
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolSharpnessCurrent, sharpness);
         }
 

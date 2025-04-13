@@ -8,7 +8,7 @@ namespace Toolsmith.Config {
     public class ToolsmithConfigs { //TODO for tomorrow: Time to refactor the original config file woo. Probably can/should clean this up...
         public bool PrintAllParsedToolsAndParts = false;
         public bool DebugMessages = false;
-        public double HeadDurabilityMult = 3.0;
+        public double HeadDurabilityMult = 5.0;
         public double SharpnessMult = 1.5;
         public int GrindstoneSharpenPerTick = 1;
         public double BluntWear = 0.02;

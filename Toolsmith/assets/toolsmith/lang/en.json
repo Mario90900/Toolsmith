@@ -1,6 +1,8 @@
 {
 	"game:pristinecondition": "This tool part is in pristine condition!",
 	"game:partiallydamaged": "This tool part has about {0}% durability remaining.",
+	"game:fullysharpened": "This tool head doesn't look like it could get any sharper!",
+	"game:partiallysharpened": "This tool head seems about {0}% sharp.",
 	"game:toolheaddurability": "Head Durability: {0} / {1}",
 	"game:toolhandledurability": "Handle Durability: {0} / {1}",
 	"game:toolbindingdurability": "Binding Durability: {0} / {1}",

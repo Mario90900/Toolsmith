@@ -24,7 +24,9 @@ namespace Toolsmith.Utils {
         public const string SpeedBonus = "speedBonus";
         public const string Drawback = "toolsmithDrawback";
 
+        //Using attributes as flags, if they exist on a tool, it means that flag is set
         public const string BypassMaxCall = "toolsmithSkipMaxDurPatch";
+        public const string BrokeWhileSharpening = "toolsmithBrokeToolWhileSharpening";
 
         //The Attributes for the Part items themselves, used for Tool Heads and Handles currently. Try not to set these on a completed tool by mistake, use the specific above ones!
         public const string ToolPartCurrentDur = "toolPartCurrentDurability";
@@ -35,6 +37,6 @@ namespace Toolsmith.Utils {
         public const string Durability = "durability";
 
         //This just helps to organize it in this file, and pile them into one easy constant to call. Generally for Smithing Plus's Compat and the forgettable attributes there when a Workpiece is made.
-        public const string ToolsmithForgettableAttributes = "," + ToolHead + "," + ToolHeadCurrentDur + "," + ToolHeadMaxDur + "," + ToolSharpnessCurrent + "," + ToolSharpnessMax + "," + ToolHandle + "," + ToolHandleCurrentDur + "," + ToolHandleMaxDur + "," + ToolBinding + "," + ToolBindingCurrentDur + "," + ToolBindingMaxDur + "," + GripChanceToDamage + "," + SpeedBonus + "," + Drawback + "," + BypassMaxCall;
+        public const string ToolsmithForgettableAttributes = "," + ToolHead + "," + ToolHeadCurrentDur + "," + ToolHeadMaxDur + "," + ToolSharpnessCurrent + "," + ToolSharpnessMax + "," + ToolHandle + "," + ToolHandleCurrentDur + "," + ToolHandleMaxDur + "," + ToolBinding + "," + ToolBindingCurrentDur + "," + ToolBindingMaxDur + "," + GripChanceToDamage + "," + SpeedBonus + "," + Drawback + "," + BypassMaxCall + "," + BrokeWhileSharpening;
     }
 }

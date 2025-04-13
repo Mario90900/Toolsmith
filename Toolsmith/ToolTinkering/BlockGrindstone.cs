@@ -14,10 +14,11 @@ using Vintagestory.API.Common.Entities;
 namespace Toolsmith.ToolTinkering {
     public class BlockGrindstone : Block {
 
-        protected bool doneRepair = false;
+        protected bool doneSharpening = false;
         protected float deltaLastTick = 0;
         protected float lastInterval = 0;
-        protected float repairInterval = 0.2f;
+        protected float totalSharpnessHoned = 0;
+        protected float repairInterval = 0.4f;
 
         public override void OnLoaded(ICoreAPI api) {
             base.OnLoaded(api);
@@ -51,47 +52,110 @@ namespace Toolsmith.ToolTinkering {
 
                     deltaLastTick = secondsUsed - lastInterval;
                     if (deltaLastTick >= repairInterval) { //Try not to repair EVERY single tick to space it out some. Cause of this, repair 5 durability each time so it doesn't take forever.
-                        int currentDur;
+                        int curDur;
                         int maxDur;
+                        int curSharp;
+                        int maxSharp;
 
                         if (isTool == 1) { //The item is a Tinkered Tool! Use the extensions for the tool's head durability.
-                            currentDur = item.GetToolheadCurrentDurability();
+                            curDur = item.GetToolheadCurrentDurability();
                             maxDur = item.GetToolheadMaxDurability();
                             if (item.HasPlaceholderHead()) { //If the tool still has no proper head item saved to it, something went wrong and an error should have been printed.
                                 return false;
                             }
                             var handleDur = item.GetToolhandleCurrentDurability(); //This is mostly just being called to test that the tools are fully initialized.
                             var bindingDur = item.GetToolbindingCurrentDurability(); //^^^
+                            curSharp = item.GetToolCurrentSharpness();
+                            maxSharp = item.GetToolMaxSharpness();
                         } else if (isTool == 2) { //The item is a Smithed Tool! Instead use the default base durability system.
-                            currentDur = item.Collectible.GetRemainingDurability(item);
+                            curDur = item.Collectible.GetRemainingDurability(item);
                             maxDur = item.Collectible.GetMaxDurability(item);
+                            curSharp = item.GetToolCurrentSharpness();
+                            maxSharp = item.GetToolMaxSharpness();
                         } else { //The item is just a Tool Head, not on a tool put together. Use the extensions for Part Durability.
-                            currentDur = item.GetPartCurrentDurability();
+                            curDur = item.GetPartCurrentDurability();
                             maxDur = item.GetPartMaxDurability();
+                            curSharp = item.GetPartCurrentSharpness();
+                            maxSharp = item.GetPartMaxSharpness();
                         }
 
-                        if (currentDur < maxDur) {
+                        if (curSharp < maxSharp && curDur > 0) {
                             float percent = 1.0f;
                             if (ToolsmithModSystem.Config.GrindstoneSharpenPerTick >= 1 && ToolsmithModSystem.Config.GrindstoneSharpenPerTick <= 100) {
                                 percent = ((float)ToolsmithModSystem.Config.GrindstoneSharpenPerTick / 100f);
                             }
 
-                            int percentRepair = (int)(percent * maxDur);
-                            currentDur += percentRepair;
-                            if (currentDur >= maxDur) {
-                                currentDur = maxDur;
-                                doneRepair = true;
+                            int percentSharpen = (int)(percent * maxSharp);
+                            curSharp += percentSharpen;
+                            if (curSharp >= maxSharp) {
+                                curSharp = maxSharp;
+                                doneSharpening = true;
                             } else {
                                 world.PlaySoundAt(new AssetLocation("sounds/block/anvil1.ogg"), blockSel.Position, 0, byPlayer);
+                                totalSharpnessHoned += percent;
+                            }
+
+                            bool damageDurability = true;
+                            if (totalSharpnessHoned > 66.66) {
+                                damageDurability = (world.Rand.NextDouble() <= 0.05f);
+                            } else if (totalSharpnessHoned > 33.33) {
+                                damageDurability = MathUtility.ShouldDamageFromSharpening(world, totalSharpnessHoned);
+                            }
+
+                            if (damageDurability) {
+                                int percentDamage = (int)(percent * maxDur);
+                                curDur -= percentDamage;
                             }
                         }
 
                         if (isTool == 1) {
-                            item.SetToolheadCurrentDurability(currentDur);
+                            item.SetToolheadCurrentDurability(curDur);
+                            item.SetToolCurrentSharpness(curSharp);
+                            if (curDur <= 0) {
+                                CollectibleObject toolObj = item.Collectible;
+                                TinkeringUtility.HandleBrokenTinkeredTool(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, 0, item.GetToolhandleCurrentDurability(), item.GetToolbindingCurrentDurability(), true, false);
+                                item.SetBrokeWhileSharpeningFlag();
+                                toolObj.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
+                                if (item != null) {
+                                    item.ClearBrokeWhileSharpeningFlag();
+                                }
+                            }
                         } else if (isTool == 2) {
-                            item.Collectible.SetDurability(item, currentDur);
+                            item.SetSmithedDurability(curDur);
+                            item.SetToolCurrentSharpness(curSharp);
+                            if (curDur <= 0) {
+                                item.SetSmithedDurability(1);
+                                item.SetBrokeWhileSharpeningFlag();
+                                item.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
+                                if (item != null) {
+                                    item.ClearBrokeWhileSharpeningFlag();
+                                }
+                            }
                         } else {
-                            item.SetPartCurrentDurability(currentDur);
+                            item.SetPartCurrentDurability(curDur);
+                            item.SetPartCurrentSharpness(curSharp);
+                            if (curDur <= 0) {
+                                //Wait... This might be silly and may be hacky but... Can I just make it into an item AND break it right here right now? Lmao
+                                CollectibleObject toolToBreakObj; //This might proc other mod's on damage stuff for the head as if it were a real tool.
+                                var success = RecipeRegisterModSystem.TinkerToolGridRecipes.TryGetValue(item.Collectible.Code.ToString(), out toolToBreakObj);
+                                if (success) {
+                                    ItemStack toolToBreak = new ItemStack(world.GetItem(toolToBreakObj.Code), 1);
+                                    var toolType = IsValidRepairTool(toolToBreak.Collectible, world);
+                                    if (toolType == 1) { //Just to make sure it isn't on the ignore list already, but it should only come back as a Tinkered Tool.
+                                        toolToBreak.SetSmithedDurability(1); //Since this just sets the vanilla durability to whatever you send it, lets just use this to set that to 1, then use the ToolBroke Flag to bypass Toolsmith's own damage handling
+                                        //Initiate that JUST to insure it breaks now! Haha!
+                                        item = null;
+                                        byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack = toolToBreak;
+                                        toolToBreak.SetBrokeWhileSharpeningFlag();
+                                        toolToBreak.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
+                                        if (toolToBreak != null) {
+                                            toolToBreak.ClearBrokeWhileSharpeningFlag();
+                                        }
+                                    } else { //Just in case, if all else fails, just destroy the head. But man I hope this works, haha.
+                                        item = null;
+                                    }
+                                }
+                            }
                         }
                         byPlayer.InventoryManager.ActiveHotbarSlot.MarkDirty();
 
@@ -99,7 +163,7 @@ namespace Toolsmith.ToolTinkering {
                         lastInterval = FloorToNearestMult(secondsUsed, repairInterval);
 
                         if (secondsUsed > 300) { //Just in case a way to break out if someone's been holding down the repair for over a set time, so nothing gets too overloaded, or the tool is done repairing!
-                            doneRepair = true;
+                            doneSharpening = true;
                         }
                     }
                 } else if (byPlayer.Entity.Controls.ShiftKey && isTool == 1) {
@@ -109,7 +173,7 @@ namespace Toolsmith.ToolTinkering {
                 }
             }
 
-            if (doneRepair) {
+            if (doneSharpening) {
                 world.PlaySoundAt(new AssetLocation("sounds/block/hoppertumble.ogg"), blockSel.Position, 0, byPlayer);
                 return false;
             }
@@ -125,7 +189,8 @@ namespace Toolsmith.ToolTinkering {
 
             deltaLastTick = 0; //Make sure to reset these any time it's canceled
             lastInterval = 0;
-            doneRepair = false;
+            totalSharpnessHoned = 0;
+            doneSharpening = false;
 
             return true;
         }
@@ -139,7 +204,8 @@ namespace Toolsmith.ToolTinkering {
 
             deltaLastTick = 0; //Make sure to reset these any time it's canceled
             lastInterval = 0;
-            doneRepair = false;
+            totalSharpnessHoned = 0;
+            doneSharpening = false;
         }
 
         //This checks if it is a valid repair tool as well as if it is a fully tinkered tool or if it is just a tool's head, since the durabilities are stored under different attributes

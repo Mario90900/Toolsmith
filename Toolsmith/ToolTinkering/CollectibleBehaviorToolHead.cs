@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
@@ -119,6 +120,31 @@ namespace Toolsmith.ToolTinkering {
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {
             dsc.AppendLine(Lang.Get("toolheaddirections"));
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+        }
+
+        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, ref EnumHandling bhHandling) {
+            //I do hope this also gets called when Smithing/Knapping completes. I think it should?
+
+            bool isToolMetal = outputSlot.Itemstack.Collectible.IsCraftableMetal();
+            int baseDur = 1000; //Since we don't know the actual base durability YET for the tool, until it is crafted. So this is a placeholder.
+            int partDur = (int)(baseDur * ToolsmithModSystem.Config.HeadDurabilityMult);
+            int sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
+            int startingSharpness;
+            if (isToolMetal) {
+                startingSharpness = (int)(sharpness * ToolsmithConstants.StartingSharpnessMult);
+            } else {
+                startingSharpness = (int)(sharpness * ToolsmithConstants.NonMetalStartingSharpnessMult);
+            }
+
+            outputSlot.Itemstack.SetPartCurrentDurability(partDur);
+            outputSlot.Itemstack.SetPartMaxDurability(partDur);
+            outputSlot.Itemstack.SetToolCurrentSharpness(startingSharpness);
+            outputSlot.Itemstack.SetToolMaxSharpness(sharpness);
+
+            if (ToolsmithModSystem.Config.DebugMessages) {
+                ToolsmithModSystem.Logger.Debug("The starting Sharpness is: " + startingSharpness);
+                ToolsmithModSystem.Logger.Debug("Finally the max Sharpness is: " + sharpness);
+            }
         }
     }
 }
