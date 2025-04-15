@@ -293,9 +293,6 @@ namespace Toolsmith.Utils {
             var sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
             float sharpnessMult;
             var isToolMetal = itemStack.Collectible.IsCraftableMetal();
-            ToolsmithModSystem.Logger.Warning("Base Durability is: " + baseDur);
-            ToolsmithModSystem.Logger.Warning("Max Sharpness is: " + sharpness);
-            ToolsmithModSystem.Logger.Warning("Is tool metal? " + isToolMetal);
             if (isToolMetal) {
                 sharpnessMult = ToolsmithConstants.StartingSharpnessMult;
             } else {

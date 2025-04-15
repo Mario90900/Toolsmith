@@ -1,0 +1,59 @@
+{
+	"code": "whetstone",
+	"class": "toolsmith:ItemWhetstone",
+	"maxstacksize": 1,
+	"durability": 300,
+	"variantgroups": [
+		{ "code": "stone", "states": [ "chert", "granite", "andesite", "basalt", "peridotite" ] }
+	],
+	"behaviors": [
+		{ "name": "GroundStorable", "properties": { "layout": "Quadrants", "collisionBox": { "x1": 0, "y1": 0, "z1": 0, "x2": 1, "y2": 0.125, "z2": 1 } } }
+	],
+	"attributes": {
+		"rackable": true,
+		"toolrackTransform": {
+			"translation": { "x": 0, "y": 0.6, "z":0 },
+			"scale": 1.25
+		},
+		"groundStorageTransform": {
+			"translation": { "x": 0.45, "y": 0, "z": -0.1 },
+			"rotation": { "x": 0, "y": -45, "z": 0 },
+			"origin": { "x": 0, "y": 0, "z": 0 },
+			"scale": 0.9
+		}
+	},
+	"storageFlags" : 257,
+	"shape": { "base": "toolsmith:item/whetstone" },
+	"texturesByType": {
+		"*-granite": {
+			"stone": { "base": "game:block/stone/polishedrock/granite-inside" }
+		},
+		"*-andesite": {
+			"stone": { "base": "game:block/stone/polishedrock/andesite-inside" }
+		},
+		"*-basalt": {
+			"stone": { "base": "game:block/stone/polishedrock/basalt-inside" }
+		},
+		"*-peridotite": {
+			"stone": { "base": "game:block/stone/polishedrock/peridotite-inside" }
+		}
+	},
+	"creativeinventory": { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	"tpHandTransform": {
+		"translation": { "x": -1, "y": -1, "z": -1.2 },
+		"rotation": { "x": -80, "y": -22, "z": 54 },
+		"scale": 0.45
+	},
+	"guiTransform": {
+		"translation": { "x": -34, "y": -23, "z": 0 },
+		"rotation": { "x": 0, "y": 45, "z": 45 },
+		"origin": { "x": 0, "y": 0, "z": 0 },
+		"scale": 2.5
+	},
+	"groundTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": 0, "y": 0, "z": 0 },
+		"scale": 2.5
+	}
+}

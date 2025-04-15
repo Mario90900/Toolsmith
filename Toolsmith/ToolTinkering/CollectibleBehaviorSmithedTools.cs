@@ -10,6 +10,10 @@ using Vintagestory.API.Config;
 namespace Toolsmith.ToolTinkering {
     public class CollectibleBehaviorSmithedTools : CollectibleBehavior {
 
+        protected bool sharpening = false;
+        protected float deltaLastTick = 0;
+        protected float lastInterval = 0;
+
         public CollectibleBehaviorSmithedTools(CollectibleObject collObj) : base(collObj) {
             
         }
@@ -80,6 +84,39 @@ namespace Toolsmith.ToolTinkering {
                     ToolsmithModSystem.Logger.Debug("This tool had no input slots! Was it smithed?");
                 }
             }
+        }
+
+        public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling) { //Handle the grinding code here as well as the tool itself! Probably can offload the core interaction to a helper utility function?
+            if (TinkeringUtility.WhetstoneInOffhand(byEntity) != null && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
+                handHandling = EnumHandHandling.PreventDefault;
+                sharpening = true;
+                return;
+            }
+            handHandling = EnumHandHandling.NotHandled;
+        }
+
+        public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
+            handling = EnumHandling.PreventSubsequent;
+
+            if (sharpening) {
+                return TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, slot, byEntity, ref handling);
+            }
+
+            return false;
+        }
+
+        public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
+            if (sharpening) {
+                handling = EnumHandling.PreventDefault;
+                deltaLastTick = 0;
+                lastInterval = 0;
+                var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
+                if (whetstone != null) {
+                    whetstone.DoneSharpening();
+                }
+                sharpening = false;
+            }
+            handling = EnumHandling.PassThrough;
         }
     }
 }

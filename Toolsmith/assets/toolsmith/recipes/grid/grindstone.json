@@ -20,5 +20,27 @@
 		"width": 3,
 		"height": 3,
 		"output": { "type": "block", "code": "toolsmith:grindstone-sandstone-north", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "PSP,QQQ,Q_Q",
+		"ingredients": {
+			"S": { "type": "block", "code": "game:rock-shale" },
+			"P": { "type": "item", "code": "game:plank-*" },
+			"Q": { "type": "item", "code": "game:plank-*", "quantity": 2 }
+		},
+		"width": 3,
+		"height": 3,
+		"output": { "type": "block", "code": "toolsmith:grindstone-shale-north", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "PSP,QQQ,Q_Q",
+		"ingredients": {
+			"S": { "type": "block", "code": "game:rock-andesite" },
+			"P": { "type": "item", "code": "game:plank-*" },
+			"Q": { "type": "item", "code": "game:plank-*", "quantity": 2 }
+		},
+		"width": 3,
+		"height": 3,
+		"output": { "type": "block", "code": "toolsmith:grindstone-andesite-north", "quantity": 1 }
 	}
 ]

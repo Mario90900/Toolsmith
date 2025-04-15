@@ -14,6 +14,9 @@ namespace Toolsmith.ToolTinkering {
     public class CollectibleBehaviorToolHead : CollectibleBehaviorToolPartWithHealth {
 
         private bool crafting = false;
+        private bool sharpening = false;
+        protected float deltaLastTick = 0;
+        protected float lastInterval = 0;
 
         public CollectibleBehaviorToolHead(CollectibleObject collObj) : base(collObj) {
 
@@ -27,6 +30,10 @@ namespace Toolsmith.ToolTinkering {
                 }
                 crafting = true;
                 return;
+            } else if (TinkeringUtility.WhetstoneInOffhand(byEntity) != null && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
+                handHandling = EnumHandHandling.PreventDefault;
+                sharpening = true;
+                return;
             }
             handHandling = EnumHandHandling.NotHandled;
         }
@@ -34,7 +41,13 @@ namespace Toolsmith.ToolTinkering {
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
             handling = EnumHandling.PreventSubsequent;
             
-            return (crafting && secondsUsed < 4.5f); //Crafting a toolhead into a tool takes around 4.5s
+            if (crafting) {
+                return (crafting && secondsUsed < 4.5f); //Crafting a toolhead into a tool takes around 4.5s
+            } else if (sharpening) {
+                return TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, slot, byEntity, ref handling);
+            }
+
+            return false;
         }
 
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
@@ -45,6 +58,15 @@ namespace Toolsmith.ToolTinkering {
                 }
                 crafting = false;
                 return;
+            } else if (sharpening) {
+                handling = EnumHandling.PreventDefault;
+                deltaLastTick = 0;
+                lastInterval = 0;
+                var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
+                if (whetstone != null) {
+                    whetstone.DoneSharpening();
+                }
+                sharpening = false;
             }
             handling = EnumHandling.PassThrough;
         }

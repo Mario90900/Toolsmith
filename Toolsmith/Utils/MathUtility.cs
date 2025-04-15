@@ -42,5 +42,9 @@ namespace Toolsmith.Utils {
 
             return shouldDamage;
         }
+
+        public static float FloorToNearestMult(float secondsUsed, float mult) {
+            return MathF.Floor(secondsUsed / mult) * mult;
+        }
     }
 }

@@ -67,6 +67,7 @@ namespace Toolsmith {
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolBinding", typeof(CollectibleBehaviorToolBinding));
             api.RegisterBlockEntityClass($"{ModId}:EntityGrindstone", typeof(BlockEntityGrindstone));
             api.RegisterBlockClass($"{ModId}:BlockGrindstone", typeof(BlockGrindstone));
+            api.RegisterItemClass($"{ModId}:ItemWhetstone", typeof(ItemWhetstone));
             HarmonyPatch();
         }
 

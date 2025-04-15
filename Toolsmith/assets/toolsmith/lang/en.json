@@ -67,8 +67,16 @@
 	"item-carpentedhandle-oil-finished-leather": "Oiled Professional Tool Handle with Leather Grip",
 	"item-carpentedhandle-oil-finished-sturdy": "Oiled Professional Tool Handle with Sturdy Grip",
 	
+	"toolsmith:item-whetstone-chert": "Chert Whetstone",
+	"toolsmith:item-whetstone-granite": "Granite Whetstone",
+	"toolsmith:item-whetstone-andesite": "Andesite Whetstone",
+	"toolsmith:item-whetstone-basalt": "Basalt Whetstone",
+	"toolsmith:item-whetstone-peridotite": "Peridotite Whetstone",
+	
 	"toolsmith:block-grindstone-granite-north": "Granite Grindstone",
 	"toolsmith:block-grindstone-sandstone-north": "Sandstone Grindstone",
+	"toolsmith:block-grindstone-shale-north": "Shale Grindstone",
+	"toolsmith:block-grindstone-andesite-north": "Andesite Grindstone",
 	
 	"game:blockhelp-grindstone-hone": "Hone metal item",
 	"game:blockhelp-grindstone-deconstruct": "Take apart tool",

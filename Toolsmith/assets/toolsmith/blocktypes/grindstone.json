@@ -4,7 +4,7 @@
 	"entityClass": "toolsmith:EntityGrindstone",
 	"maxstacksize": 1,
 	"variantgroups": [
-		{ "code": "stone", "states": [ "granite", "sandstone" ] },
+		{ "code": "stone", "states": [ "granite", "sandstone", "shale", "andesite" ] },
 		{ "code": "side", "loadFromProperties": "abstract/horizontalorientation" }
 	],
 	"shapeByType": {
@@ -16,6 +16,12 @@
 	"texturesByType": {
 		"*-sandstone-*": {
 			"stone": { "base": "game:block/stone/polishedrock/sandstone-inside" }
+		},
+		"*-shale-*": {
+			"stone": { "base": "game:block/stone/polishedrock/shale-inside" }
+		},
+		"*-andesite-*": {
+			"stone": { "base": "game:block/stone/polishedrock/andesite-inside" }
 		}
 	},
 	"creativeinventory": { "general": [ "grindstone-*-north" ] },
