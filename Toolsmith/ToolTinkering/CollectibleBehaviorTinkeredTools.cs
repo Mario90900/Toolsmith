@@ -19,7 +19,7 @@ namespace Toolsmith.ToolTinkering {
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) { //This only seems to get called on the clientside, which makes sense. Whoops, it can't be a catch-all to fix null tools like I thought, but it's still important to display the durabilities before the item's actually used.
-            if (inSlot.Itemstack == null || inSlot.Inventory.GetType() == typeof(DummyInventory) || inSlot.Inventory.GetType() == typeof(CreativeInventoryTab) || (ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(inSlot.Itemstack.Collectible.Code.ToString()))) { //I don't think it's possible for the itemstack to be null at this point, but JUST IN CASE I'll confirm it.
+            if (inSlot.Itemstack == null || inSlot.Inventory == null || inSlot.Inventory.GetType() == typeof(DummyInventory) || inSlot.Inventory.GetType() == typeof(CreativeInventoryTab) || (ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(inSlot.Itemstack.Collectible.Code.ToString()))) { //I don't think it's possible for the itemstack to be null at this point, but JUST IN CASE I'll confirm it.
                 return; //If this item is in a DummyInventory or CreativeInventoryTab, it's likely not an actual item - but something rendering in a Handbook slot or creative inventory slot I believe. Lets just not mess with those, they won't have data anyway.
             }
             

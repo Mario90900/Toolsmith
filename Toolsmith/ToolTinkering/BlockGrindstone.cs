@@ -10,6 +10,7 @@ using Toolsmith.Utils;
 using Vintagestory.API.Client;
 using Vintagestory.Client.NoObf;
 using Vintagestory.API.Common.Entities;
+using Vintagestory.API.Util;
 
 namespace Toolsmith.ToolTinkering {
     public class BlockGrindstone : Block {
@@ -20,12 +21,60 @@ namespace Toolsmith.ToolTinkering {
         protected float totalSharpnessHoned = 0;
         protected float repairInterval = 0.4f;
 
+        WorldInteraction[] interactions;
+
         public override void OnLoaded(ICoreAPI api) {
             base.OnLoaded(api);
 
-            if (api.Side.IsClient()) {
-                ICoreClientAPI capi = api as ICoreClientAPI;
+            if (api.Side.IsServer()) {
+                return;
             }
+
+            ICoreClientAPI capi = api as ICoreClientAPI;
+
+            interactions = ObjectCacheUtil.GetOrCreate(api, "grindstoneInteractions", () => {
+                List<ItemStack> honeables = new List<ItemStack>();
+                List<ItemStack> tinkerableTools = new List<ItemStack>();
+
+                foreach (Item i in api.World.Items) {
+                    if (i.Code == null) {
+                        continue;
+                    }
+
+                    if (i.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                        if (i.IsCraftableMetal() && !i.HasBehavior<CollectibleBehaviorToolBlunt>()) { //If it's a tinkered tool and it's not blunt, it can be honed.
+                            honeables.Add(new ItemStack(i));
+                        }
+                        tinkerableTools.Add(new ItemStack(i)); //All tinkered tools can be deconstructed!
+                        continue;
+                    } else if (i.HasBehavior<CollectibleBehaviorSmithedTools>() && i.IsCraftableMetal() && !i.HasBehavior<CollectibleBehaviorToolBlunt>()) { //If it's a smithed tool and not blunt, it can be honed.
+                        honeables.Add(new ItemStack(i));
+                        continue;
+                    } else if (i.HasBehavior<CollectibleBehaviorToolHead>() && i.IsCraftableMetal() && !i.HasBehavior<CollectibleBehaviorToolBlunt>()) {
+                        honeables.Add(new ItemStack(i));
+                        continue;
+                    }
+                }
+
+                return new WorldInteraction[] {
+                    new WorldInteraction() {
+                        ActionLangCode = "blockhelp-grindstone-hone",
+                        HotKeyCode = null,
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = honeables.ToArray()
+                    },
+                    new WorldInteraction() {
+                        ActionLangCode = "blockhelp-grindstone-deconstruct",
+                        HotKeyCode = "shift",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = tinkerableTools.ToArray()
+                    }
+                };
+            });
+        }
+
+        public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer) {
+            return interactions.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
         }
 
         public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {

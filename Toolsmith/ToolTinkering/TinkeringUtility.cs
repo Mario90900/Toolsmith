@@ -8,9 +8,77 @@ using Toolsmith.Utils;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Common;
 using Vintagestory.API.Util;
+using Vintagestory.API.Client;
+using Vintagestory.API.MathTools;
 
 namespace Toolsmith.ToolTinkering {
     public static class TinkeringUtility {
+
+        static int[] sharpnessColors = new int[11] {
+            ColorUtil.Hex2Int("#7e0279"),
+            ColorUtil.Hex2Int("#7a3299"),
+            ColorUtil.Hex2Int("#6f4eb6"),
+            ColorUtil.Hex2Int("#5e67ce"),
+            ColorUtil.Hex2Int("#457fe2"),
+            ColorUtil.Hex2Int("#1995f0"),
+            ColorUtil.Hex2Int("#00abf8"),
+            ColorUtil.Hex2Int("#00bffd"),
+            ColorUtil.Hex2Int("#00d3fd"),
+            ColorUtil.Hex2Int("#00e6fb"),
+            ColorUtil.Hex2Int("#43f8f8")
+        };
+        static int[] unpleasantGradient = new int[11] { //It's very unpleasant.
+            ColorUtil.Hex2Int("#9e5400"),
+            ColorUtil.Hex2Int("#c34523"),
+            ColorUtil.Hex2Int("#e5274a"),
+            ColorUtil.Hex2Int("#fe007c"),
+            ColorUtil.Hex2Int("#ff00b8"),
+            ColorUtil.Hex2Int("#fa35fd"),
+            ColorUtil.Hex2Int("#ff5fa3"),
+            ColorUtil.Hex2Int("#ff746a"),
+            ColorUtil.Hex2Int("#fb8e00"),
+            ColorUtil.Hex2Int("#aebb00"),
+            ColorUtil.Hex2Int("#23d726")
+        };
+        static int[] monhunGradiant = new int[11] {
+            ColorUtil.Hex2Int("#ff0f00"),
+            ColorUtil.Hex2Int("#ff4b00"),
+            ColorUtil.Hex2Int("#ff6b00"),
+            ColorUtil.Hex2Int("#ffb300"),
+            ColorUtil.Hex2Int("#fff700"),
+            ColorUtil.Hex2Int("#b4fd00"),
+            ColorUtil.Hex2Int("#24ff00"),
+            ColorUtil.Hex2Int("#009aab"),
+            ColorUtil.Hex2Int("#0000FF"),
+            ColorUtil.Hex2Int("#8080ff"),
+            ColorUtil.Hex2Int("#ffffff")
+        };
+        static int[] SharpnessColorGradient;
+
+        //This just sets the color gradiant for the Sharpness Bar. Only run this on the Client. This bit was copied over from GuiStyle vanilla code! And the hex values adjusted.
+        public static void InitializeSharpnessColorGradient() {
+            var gradiantChoice = SelectGradiantForSharpness();
+
+            SharpnessColorGradient = new int[100];
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 10; j++) {
+                    SharpnessColorGradient[10 * i + j] = ColorUtil.ColorOverlay(gradiantChoice[i], gradiantChoice[i + 1], (float)j / 10f);
+                }
+            }
+        }
+
+        private static int[] SelectGradiantForSharpness() {
+            switch (ToolsmithModSystem.GradientSelection) {
+                case 0:
+                    return sharpnessColors;
+                case 1:
+                    return unpleasantGradient;
+                case 2:
+                    return monhunGradiant;
+                default:
+                    return sharpnessColors;
+            }
+        }
 
         public static void HandleBrokenTinkeredTool(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int remainingHeadDur, int remainingSharpness, int remainingHandleDur, int remainingBindingDur, bool headBroke, bool refillSlot) {
             ItemStack brokenToolStack = itemslot.Itemstack;
@@ -122,6 +190,24 @@ namespace Toolsmith.ToolTinkering {
             } else if (bitsDrop != null) {
                 world.SpawnItemEntity(bitsDrop, byEntity.Pos.XYZ);
             }
+        }
+
+        public static bool ShouldRenderSharpnessBar(ItemStack item) {
+            if ((item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || item.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) && !item.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>() && item.Collectible.IsCraftableMetal()) {
+                return item.GetToolCurrentSharpness() != item.GetToolMaxSharpness();
+            } else {
+                return false;
+            }
+        }
+
+        public static int GetItemSharpnessColor(ItemStack item) {
+            int maxSharpness = item.GetToolMaxSharpness();
+            if (maxSharpness == 0) {
+                return 0;
+            }
+
+            int num = GameMath.Clamp(100 * item.GetToolCurrentSharpness() / maxSharpness, 0, 99);
+            return SharpnessColorGradient[num];
         }
     }
 }

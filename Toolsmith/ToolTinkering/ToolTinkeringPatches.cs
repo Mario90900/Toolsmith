@@ -1,17 +1,23 @@
-﻿using HarmonyLib;
+﻿using Cairo;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Config;
 using Toolsmith.ToolTinkering.Drawbacks;
 using Toolsmith.Utils;
+using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Datastructures;
+using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
+using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering {
 
@@ -354,6 +360,96 @@ namespace Toolsmith.ToolTinkering {
             }
 
             return newMiningSpeed;
+        }
+
+        //Patching the GuiElementItemSlotGridBase now! Anything patching CollectibleObject is above!
+        [HarmonyPatch(typeof(GuiElementItemSlotGridBase))]
+        [HarmonyTranspiler]
+        [HarmonyPatch("ComposeSlotOverlays")]
+        private static IEnumerable<CodeInstruction> ComposeSlotOverlaysTranspiler(IEnumerable<CodeInstruction> instructions) { //WOW Transpilers are FUN. And actually I do understand them better now having written this.
+
+            int retCount = 0;
+            int shadePathCount = 0;
+            int index = -1;
+            int indexOfThirdRet = -1;
+
+            var codes = new List<CodeInstruction>(instructions);
+
+            for (int i = 0; i < codes.Count; i++) {
+                if (retCount < 3 && codes[i].opcode == OpCodes.Ret) { //Don't need to look at anything until after we have found three 'ret' calls
+                    retCount++;
+                    if (retCount == 3 && codes[i - 1].opcode == OpCodes.Ldc_I4_1) {
+                        indexOfThirdRet = i;
+                    }
+                    continue;
+                }
+
+                if (retCount == 3 && shadePathCount < 2 && codes[i].opcode == OpCodes.Call) {
+                    if (codes[i - 1].opcode == OpCodes.Ldc_R8 && (double)codes[i - 1].operand == (double)(2)) { //If a Call code is preceeded by a float 2 being loaded, it is likely the ShadePath call we are looking for.
+                        if (codes[i - 2].opcode == OpCodes.Ldloc_2) { //Then just in case, lets see if before THAT was loading the textCtx on the stack. THEN we are certain. (probably? Hopefully.)
+                            shadePathCount++;
+                            continue;
+                        }
+                    }
+                }
+
+                if (shadePathCount == 2) {
+                    index = i;
+                    break;
+                }
+            }
+
+            var codeAddition = new List<CodeInstruction> {
+                CodeInstruction.LoadArgument(1),
+                CodeInstruction.LoadArgument(2),
+                CodeInstruction.LoadArgument(3),
+                CodeInstruction.LoadLocal(2),
+                CodeInstruction.LoadArgument(0),
+                CodeInstruction.Call(typeof(ToolTinkeringPatches), "DrawSharpnessBar", new Type[5] { typeof(ItemSlot), typeof(int), typeof(int), typeof(Context), typeof(GuiElementItemSlotGridBase) })
+            };
+
+            if (index >= 0 && indexOfThirdRet >= 0) {
+                codeAddition[0].MoveLabelsFrom(codes[index]);
+                codes[indexOfThirdRet].opcode = OpCodes.Nop;
+                codes[indexOfThirdRet - 1].opcode = OpCodes.Nop;
+                codes.InsertRange(index, codeAddition);
+            } else {
+                if (index < 0) {
+                    ToolsmithModSystem.Logger.Error("Sharpness Bar Transpiler had an error! Could not find the second call to ShadePath for the Damage Bar rendering. The Sharpness Bar will not function!");
+                }
+                if (indexOfThirdRet < 0) {
+                    ToolsmithModSystem.Logger.Error("Sharpness Bar Transpiler had an error! Could not locate the third return call. The Sharpness Bar will not function!");
+                }
+            }
+            
+            return codes.AsEnumerable();
+        }
+
+        //This is basically the vanilla way of handling the Durability bar, but instead I tweaked it to be a little above, and also look at the Sharpness instead of Durability values. ShouldRenderSharpness checks if it's even a tool with sharpness, so this shouldn't run on anything that doesn't actually have it.
+        private static void DrawSharpnessBar(ItemSlot slot, int slotId, int slotIndex, Context textCtx, GuiElementItemSlotGridBase instance) {
+            if (TinkeringUtility.ShouldRenderSharpnessBar(slot.Itemstack)) {
+                double x = ElementBounds.scaled(4);
+                double y = (int)instance.SlotBounds[slotIndex].InnerHeight - ElementBounds.scaled(8) - ElementBounds.scaled(4);
+                textCtx.SetSourceRGBA(GuiStyle.DialogStrongBgColor);
+                double width = (instance.SlotBounds[slotIndex].InnerWidth - ElementBounds.scaled(8));
+                double height = ElementBounds.scaled(4);
+                GuiElement.RoundRectangle(textCtx, x, y, width, height, 1);
+                textCtx.FillPreserve();
+                instance.ShadePath(textCtx, 2);
+
+
+                float[] color = ColorUtil.ToRGBAFloats(TinkeringUtility.GetItemSharpnessColor(slot.Itemstack));
+                textCtx.SetSourceRGB(color[0], color[1], color[2]);
+
+                int maxSharp = slot.Itemstack.GetToolMaxSharpness();
+                float remainingSharpness = (float)slot.Itemstack.GetToolCurrentSharpness() / maxSharp;
+
+                width = remainingSharpness * (instance.SlotBounds[slotIndex].InnerWidth - ElementBounds.scaled(8));
+
+                GuiElement.RoundRectangle(textCtx, x, y, width, height, 1);
+                textCtx.FillPreserve();
+                instance.ShadePath(textCtx, 2);
+            }
         }
     }
 }

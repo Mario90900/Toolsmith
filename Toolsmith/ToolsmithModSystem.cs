@@ -25,6 +25,7 @@ namespace Toolsmith {
         public static Harmony HarmonyInstance;
         public static ToolsmithConfigs Config;
         public static ToolsmithPartStats Stats;
+        public static int GradientSelection = 0;
 
         public const string ToolTinkeringPatchCategory = "toolTinkering";
 
@@ -74,7 +75,8 @@ namespace Toolsmith {
         }
 
         public override void StartClientSide(ICoreClientAPI api) {
-            
+            GradientSelection = 0;
+            TinkeringUtility.InitializeSharpnessColorGradient();
         }
 
         public override void AssetsFinalize(ICoreAPI api) {

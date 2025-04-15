@@ -69,4 +69,7 @@
 	
 	"toolsmith:block-grindstone-granite-north": "Granite Grindstone",
 	"toolsmith:block-grindstone-sandstone-north": "Sandstone Grindstone",
+	
+	"game:blockhelp-grindstone-hone": "Hone metal item",
+	"game:blockhelp-grindstone-deconstruct": "Take apart tool",
 }
