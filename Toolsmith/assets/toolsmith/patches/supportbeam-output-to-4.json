@@ -1,0 +1,9 @@
+[
+	{
+		"file": "game:recipes/grid/beams.json",
+        "op": "replace",
+        "path": "/0/output/quantity",
+        "value": 4,
+		"side": "server"
+	}
+]

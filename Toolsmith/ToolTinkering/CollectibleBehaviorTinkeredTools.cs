@@ -12,7 +12,11 @@ using Vintagestory.API.Config;
 using Vintagestory.API.Util;
 
 namespace Toolsmith.ToolTinkering {
-    public class CollectibleBehaviorTinkeredTools : CollectibleBehaviorSmithedTools {
+    public class CollectibleBehaviorTinkeredTools : CollectibleBehavior {
+
+        protected bool sharpening = false;
+        protected float deltaLastTick = 0;
+        protected float lastInterval = 0;
 
         public CollectibleBehaviorTinkeredTools(CollectibleObject collObj) : base(collObj) {
             
@@ -36,7 +40,6 @@ namespace Toolsmith.ToolTinkering {
             if (maxHeadDur < 0) { //If this is 0 then assume something went wrong and reset things, it's a new item spawned in, or a player added the mod to their save.
                 inSlot.Itemstack.ResetNullHead(world); //Moved the client-half of resetting the tool head into this call. Can be safely called on both sides, and handle it over there. Make sure to mark the itemslot as dirty on the client though after using this.
                 curHeadDur = inSlot.Itemstack.GetToolheadCurrentDurability();
-                maxHeadDur = inSlot.Itemstack.GetToolheadMaxDurability();
             }
             if (maxHandleDur < 0 || maxBindingDur < 0) { //Same as above
                 inSlot.Itemstack.ResetNullHandleOrBinding(world);
@@ -104,7 +107,6 @@ namespace Toolsmith.ToolTinkering {
                 //Though I can't help but ask, what if it's a recipe converting one tool to another type? I hope not. Not going to dwell on that until it actually might come up though.
                 outputSlot.Itemstack.SetToolhead(foundToolInput.GetToolhead());
                 outputSlot.Itemstack.SetToolheadCurrentDurability(foundToolInput.GetToolheadCurrentDurability());
-                outputSlot.Itemstack.SetToolheadMaxDurability(foundToolInput.GetToolheadMaxDurability());
                 outputSlot.Itemstack.SetToolCurrentSharpness(foundToolInput.GetToolCurrentSharpness());
                 outputSlot.Itemstack.SetToolMaxSharpness(foundToolInput.GetToolMaxSharpness());
                 outputSlot.Itemstack.SetToolhandle(foundToolInput.GetToolhandle());
@@ -167,7 +169,7 @@ namespace Toolsmith.ToolTinkering {
             HandleExtraModCompat(allInputslots, outputSlot); //Handle some mod compatability here! Anything that needs a little bit of extra handling before getting the first BaseMaxDurability.
 
             var baseDur = outputSlot.Itemstack.Collectible.GetBaseMaxDurability(outputSlot.Itemstack);
-            int headDur = (int)(baseDur * ToolsmithModSystem.Config.HeadDurabilityMult);//Start with the tool head, find out the base durability of the tool, multiply that by 5.
+            int headDur = outputSlot.Itemstack.GetToolheadMaxDurability();//Start with the tool head, find out the base durability of the tool, multiply that by 5 - now encapsulated within this call.
             int sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);//Calculate the sharpness next similarly to the durability.
 
             var handleDur = baseDur * handleStats.baseHPfactor; //Starting with the handle: Account for baseHPfactor first in the handle...
@@ -197,7 +199,6 @@ namespace Toolsmith.ToolTinkering {
             }
             headStack.SetPartCurrentSharpness((int)(sharpness * currentHeadSharpPer));
             
-            outputSlot.Itemstack.SetToolheadMaxDurability(headDur);
             outputSlot.Itemstack.SetToolheadCurrentDurability((int)(headDur * currentHeadPer));
             outputSlot.Itemstack.SetToolMaxSharpness(sharpness);
             outputSlot.Itemstack.SetToolCurrentSharpness((int)(sharpness * currentHeadSharpPer));
@@ -239,7 +240,7 @@ namespace Toolsmith.ToolTinkering {
                 outputSlot.Itemstack.SetToolbinding(bindingStack);
             }
 
-            outputSlot.Itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, outputSlot.Itemstack.Collectible.GetMaxDurability(outputSlot.Itemstack));
+            //outputSlot.Itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, outputSlot.Itemstack.Collectible.GetMaxDurability(outputSlot.Itemstack));
         }
 
         private void HandleExtraModCompat(ItemSlot[] allInputslots, ItemSlot outputSlot) {
@@ -278,20 +279,21 @@ namespace Toolsmith.ToolTinkering {
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling) { //Handle the grinding code here as well as the tool itself! Probably can offload the core interaction to a helper utility function?
             if (TinkeringUtility.WhetstoneInOffhand(byEntity) != null && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
                 handHandling = EnumHandHandling.PreventDefault;
+                handling = EnumHandling.PreventSubsequent;
                 sharpening = true;
                 return;
             }
-            handHandling = EnumHandHandling.NotHandled;
+
+            base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);
         }
 
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
-            handling = EnumHandling.PreventSubsequent;
-
             if (sharpening) {
+                handling = EnumHandling.PreventSubsequent;
                 return TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, slot, byEntity, ref handling);
             }
 
-            return false;
+            return base.OnHeldInteractStep(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);
         }
 
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
@@ -305,7 +307,8 @@ namespace Toolsmith.ToolTinkering {
                 }
                 sharpening = false;
             }
-            handling = EnumHandling.PassThrough;
+
+            base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);
         }
     }
 }

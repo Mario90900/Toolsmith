@@ -9,8 +9,6 @@ namespace Toolsmith.Utils {
         //Going to properly define constants for the Attributes. Just like the hardcoded x5 situation for toolheads before, lets get ontop of the bad practices now and clean them up :P
         //All the Attributes for a Tinkered Tool, it's various parts, durabilities and max durabilities, plus the two important stats they can get from higher quality parts.
         public const string ToolHead = "tinkeredToolHead";
-        public const string ToolHeadCurrentDur = "tinkeredToolHeadDurability";
-        public const string ToolHeadMaxDur = "tinkeredToolHeadMaxDurability";
         public const string ToolSharpnessCurrent = "toolSharpnessCurrent"; //For both the tool and the head alone
         public const string ToolSharpnessMax = "toolSharpnessMax"; //For both the tool and the head alone
         public const string ToolHandle = "tinkeredToolHandle";
@@ -36,7 +34,12 @@ namespace Toolsmith.Utils {
         //While these are not attributes created by the mod, I figure it might be beneficial to give them the same treatment. Just make sure they stay updated with the base game!
         public const string Durability = "durability";
 
+        //Slated for Removal later down the line! Only kept around for the purposes of checking if they still exist and fixing them! Do not use these anymore!
+        public const string ToolHeadCurrentDur = "tinkeredToolHeadDurability";
+        public const string ToolHeadMaxDur = "tinkeredToolHeadMaxDurability";
+
         //This just helps to organize it in this file, and pile them into one easy constant to call. Generally for Smithing Plus's Compat and the forgettable attributes there when a Workpiece is made.
-        public const string ToolsmithForgettableAttributes = "," + ToolHead + "," + ToolHeadCurrentDur + "," + ToolHeadMaxDur + "," + ToolSharpnessCurrent + "," + ToolSharpnessMax + "," + ToolHandle + "," + ToolHandleCurrentDur + "," + ToolHandleMaxDur + "," + ToolBinding + "," + ToolBindingCurrentDur + "," + ToolBindingMaxDur + "," + GripChanceToDamage + "," + SpeedBonus + "," + Drawback + "," + BypassMaxCall + "," + BrokeWhileSharpening;
+        public const string ToolsmithForgettableAttributes = "," + ToolHead + "," + ToolSharpnessCurrent + "," + ToolSharpnessMax + "," + ToolHandle + "," + ToolHandleCurrentDur + "," + ToolHandleMaxDur + "," + ToolBinding + "," + ToolBindingCurrentDur + "," + ToolBindingMaxDur + "," + GripChanceToDamage + "," + SpeedBonus + "," + Drawback + "," + BypassMaxCall + "," + BrokeWhileSharpening;
+        public static readonly string[] ToolsmithIgnoreAttributesArray = new string[10] { ToolHead, ToolHandle, ToolHandleCurrentDur, ToolHandleMaxDur, ToolBinding, ToolBindingCurrentDur, ToolBindingMaxDur, GripChanceToDamage, SpeedBonus, BypassMaxCall };
     }
 }

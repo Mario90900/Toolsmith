@@ -83,7 +83,7 @@ namespace Toolsmith.ToolTinkering {
         }
 
         public static bool ShouldRenderSharpnessBar(ItemStack item) {
-            if ((item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || item.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) && !item.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>() && item.Collectible.IsCraftableMetal()) {
+            if ((item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || item.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) && !item.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
                 return item.GetToolCurrentSharpness() != item.GetToolMaxSharpness();
             } else {
                 return false;
@@ -183,8 +183,8 @@ namespace Toolsmith.ToolTinkering {
                         world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), player);
                     }
                 } else {
-                    itemslot.Itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
-                                                                                             //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
+                    itemslot.Itemstack.SetToolheadCurrentDurability(1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
+                                                                        //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
                 }
             } else {
                 if (!headBroke) { //This needs to be in here as well since no matter what, this needs to run
@@ -193,8 +193,8 @@ namespace Toolsmith.ToolTinkering {
                         world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), byEntity.SidedPos.X, byEntity.SidedPos.Y, byEntity.SidedPos.Z, null, 1f, 16f);
                     }
                 } else {
-                    itemslot.Itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, 1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
-                                                                                             //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
+                    itemslot.Itemstack.SetToolheadCurrentDurability(1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
+                                                                        //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
                 }
             }
 
@@ -213,27 +213,27 @@ namespace Toolsmith.ToolTinkering {
         }
 
         public static ItemWhetstone WhetstoneInOffhand(EntityAgent byEntity) {
-            var offhandItem = byEntity.LeftHandItemSlot?.Itemstack?.Item;
-            if (offhandItem == null) {
+            if (byEntity.LeftHandItemSlot.Empty) {
                 return null;
             }
+            var offhandItem = byEntity.LeftHandItemSlot?.Itemstack?.Item;
             return offhandItem as ItemWhetstone;
         }
 
         //This checks if it is a valid repair tool as well as if it is a fully tinkered tool or if it is just a tool's head, since the durabilities are stored under different attributes
-        public static int IsValidRepairTool(CollectibleObject item, IWorldAccessor world) {
+        public static int IsValidSharpenTool(CollectibleObject item, IWorldAccessor world) {
             if (world.Side.IsServer() && ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(item.Code.ToString())) { //First check if the ignore list has any entries, and ensure this one isn't on it. Likely means something got improperly given the Behavior on init.
                 return 0;
             } else if (item.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //This one stores it under 'tinkeredToolHead' durability
-                if (!item.HasBehavior<CollectibleBehaviorToolBlunt>() && item.IsCraftableMetal()) {
+                if (!item.HasBehavior<CollectibleBehaviorToolBlunt>()) {
                     return 1;
                 }
             } else if (item.HasBehavior<CollectibleBehaviorSmithedTools>()) { //And this one just uses the regular durability values since it's just a single solid tool, no parts
-                if (!item.HasBehavior<CollectibleBehaviorToolBlunt>() && item.IsCraftableMetal()) {
+                if (!item.HasBehavior<CollectibleBehaviorToolBlunt>()) {
                     return 2;
                 }
             } else if (item.HasBehavior<CollectibleBehaviorToolHead>()) { //While this stores it as just 'toolPartDurability', since not every part will be a head, but every head will have this behavior
-                if (!item.HasBehavior<CollectibleBehaviorToolBlunt>() && item.IsCraftableMetal()) {
+                if (!item.HasBehavior<CollectibleBehaviorToolBlunt>()) {
                     return 3;
                 }
             }
@@ -245,7 +245,7 @@ namespace Toolsmith.ToolTinkering {
             var curSharp = item.GetToolCurrentSharpness();
             var maxSharp = item.GetToolMaxSharpness();
             int curDur;
-            var toolType = IsValidRepairTool(item.Collectible, world);
+            var toolType = IsValidSharpenTool(item.Collectible, world);
 
             if (toolType == 1) {
                 curDur = item.GetToolheadCurrentDurability();
@@ -268,7 +268,7 @@ namespace Toolsmith.ToolTinkering {
                     var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
 
                     if (whetstone != null) { //If the offhand is still a Whetstone, sharpen! Otherwise break out of this entirely and end the action.
-                        var isTool = IsValidRepairTool(slot.Itemstack.Collectible, byEntity.World);
+                        var isTool = IsValidSharpenTool(slot.Itemstack.Collectible, byEntity.World);
                         whetstone.HandleSharpenTick(secondsUsed, slot, byEntity.LeftHandItemSlot, byEntity, isTool);
                     } else {
                         return false;
@@ -298,9 +298,9 @@ namespace Toolsmith.ToolTinkering {
                 var bindingDur = item.GetToolbindingCurrentDurability(); //^^^
                 curSharp = item.GetToolCurrentSharpness();
                 maxSharp = item.GetToolMaxSharpness();
-            } else if (isTool == 2) { //The item is a Smithed Tool! Instead use the default base durability system.
+            } else if (isTool == 2) { //The item is a Smithed Tool!
                 curDur = item.GetSmithedDurability();
-                maxDur = item.Collectible.GetMaxDurability(item);
+                maxDur = item.GetSmithedMaxDurability();
                 curSharp = item.GetToolCurrentSharpness();
                 maxSharp = item.GetToolMaxSharpness();
             } else { //The item is just a Tool Head, not on a tool put together. Use the extensions for Part Durability.
@@ -373,12 +373,12 @@ namespace Toolsmith.ToolTinkering {
                     var success = RecipeRegisterModSystem.TinkerToolGridRecipes.TryGetValue(item.Collectible.Code.ToString(), out toolToBreakObj);
                     if (success) {
                         ItemStack toolToBreak = new ItemStack(byEntity.World.GetItem(toolToBreakObj.Code), 1);
-                        var toolType = TinkeringUtility.IsValidRepairTool(toolToBreak.Collectible, byEntity.World);
+                        var toolType = TinkeringUtility.IsValidSharpenTool(toolToBreak.Collectible, byEntity.World);
                         if (toolType == 1) { //Just to make sure it isn't on the ignore list already, but it should only come back as a Tinkered Tool.
                                              //Initiate that JUST to insure it breaks now! Haha!
                             item = null;
                             mainHandSlot.Itemstack = toolToBreak.Clone();
-                            mainHandSlot.Itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, 1);
+                            mainHandSlot.Itemstack.SetToolheadCurrentDurability(1);
                             mainHandSlot.Itemstack.SetBrokeWhileSharpeningFlag();
                             mainHandSlot.Itemstack.Collectible.DamageItem(byEntity.World, byEntity, mainHandSlot);
                             if (!mainHandSlot.Empty) {

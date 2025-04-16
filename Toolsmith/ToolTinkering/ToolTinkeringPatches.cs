@@ -143,10 +143,6 @@ namespace Toolsmith.ToolTinkering {
 
                 itemslot.MarkDirty();
                 if (!headBroke) { //If the head did not break, then don't run everything!
-                    if (itemslot.Itemstack != null && itemslot.Itemstack.Collectible.Tool.HasValue && (!itemslot.Itemstack.Attributes.HasAttribute(ToolsmithAttributes.Durability) || itemslot.Itemstack.Attributes.GetInt(ToolsmithAttributes.Durability) == 0)) {
-                        ItemStack itemstack = itemslot.Itemstack;
-                        itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, itemstack.Collectible.GetMaxDurability(itemstack));
-                    }
                     return false; //Skip default and others
                 }
             } else if (world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) { //If it's a smithed tool, only need to deal with the Sharpness, and any extra "head" damage. Head in this case is just the tool as a whole.
@@ -263,6 +259,10 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPatch(nameof(CollectibleObject.GetDurability))] //This method is technically depricated for GetRemainingDurability but patching it just incase as well. Base call returns Max Durability.
         private static bool TinkeredToolGetDurabilityPrefix(ItemStack itemstack, ref int __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                if (itemstack.GetMaxDurBypassFlag()) { //If this itemstack has the BypassFlag Attribute, that means it has been flagged as a 'first time call' to Collectable.Durability, but with the intent to account for other mod's changes that might hook in here.
+                    return true;
+                }
+
                 if (itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
                     return true; //Default to vanilla behavior here.
                 } //But if it's the Clientside, it COULD have a candle because it hasn't recieved an update packet yet.
@@ -327,6 +327,7 @@ namespace Toolsmith.ToolTinkering {
             return true;
         }
 
+        /* Probably not needed if swapping to using the Vanilla Durabiility Attribute as a Tinker Tool's Head.
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.SetDurability))]
         private static bool TinkeredToolSetDurabilityPrefix(ItemStack itemstack, int amount) {
@@ -335,7 +336,7 @@ namespace Toolsmith.ToolTinkering {
                 return false;
             }
             return true;
-        }
+        }*/
 
         //The Postfix Patch that handles the Mining Speed (ms) Boost from any Tinkered Tools, simply just takes the output of the original call and if it's a Tinkered Tool? Add ms + ms*bonus
         [HarmonyPostfix]

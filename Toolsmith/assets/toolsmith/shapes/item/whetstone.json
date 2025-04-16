@@ -12,17 +12,33 @@
 	},
 	"elements": [
 		{
-			"name": "WhetstoneBody",
-			"from": [ 3.0, 0.0, 6.0 ],
-			"to": [ 13.0, 1.0, 10.0 ],
+			"name": "origin",
+			"from": [ 8.0, 0.0, 8.0 ],
+			"to": [ 8.0, 0.0, 8.0 ],
 			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
 			"faces": {
-				"north": { "texture": "#stone", "uv": [ 0.0, 0.0, 10.0, 1.0 ] },
-				"east": { "texture": "#stone", "uv": [ 12.0, 0.0, 16.0, 1.0 ] },
-				"south": { "texture": "#stone", "uv": [ 6.0, 0.0, 16.0, 1.0 ] },
-				"west": { "texture": "#stone", "uv": [ 0.0, 0.0, 4.0, 1.0 ] },
-				"up": { "texture": "#stone", "uv": [ 0.0, 8.0, 10.0, 12.0 ], "autoUv": false },
-				"down": { "texture": "#stone", "uv": [ 0.0, 12.0, 10.0, 16.0 ], "autoUv": false }
-			}
+				"north": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"east": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"south": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"west": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"up": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"down": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] }
+			},
+			"children": [
+				{
+					"name": "WhetstoneBody",
+					"from": [ -5.0, 0.0, -2.0 ],
+					"to": [ 5.0, 1.0, 2.0 ],
+					"rotationOrigin": [ -5.0, 0.0, -2.0 ],
+					"faces": {
+						"north": { "texture": "#stone", "uv": [ 0.0, 0.0, 10.0, 1.0 ] },
+						"east": { "texture": "#stone", "uv": [ 12.0, 0.0, 16.0, 1.0 ] },
+						"south": { "texture": "#stone", "uv": [ 6.0, 0.0, 16.0, 1.0 ] },
+						"west": { "texture": "#stone", "uv": [ 0.0, 0.0, 4.0, 1.0 ] },
+						"up": { "texture": "#stone", "uv": [ 0.0, 8.0, 10.0, 12.0 ], "autoUv": false },
+						"down": { "texture": "#stone", "uv": [ 0.0, 12.0, 10.0, 16.0 ], "autoUv": false }
+					}
+				}
+			]
 		}
 	]}

@@ -25,6 +25,7 @@ namespace Toolsmith.ToolTinkering {
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling) { //Handle the grinding code here as well as the tool itself! Probably can offload the core interaction to a helper utility function?
             if (ValidHandleInOffhand(byEntity)) { //Check for Handle in Offhand
                 handHandling = EnumHandHandling.PreventDefault;
+                handling = EnumHandling.PreventSubsequent;
                 if (byEntity.World.Side == EnumAppSide.Server) {
                     byEntity.World.PlaySoundAt(new AssetLocation("sounds/player/messycraft.ogg"), byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z, null, true, 32f, 1f);
                 }
@@ -32,22 +33,24 @@ namespace Toolsmith.ToolTinkering {
                 return;
             } else if (TinkeringUtility.WhetstoneInOffhand(byEntity) != null && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
                 handHandling = EnumHandHandling.PreventDefault;
+                handling = EnumHandling.PreventSubsequent;
                 sharpening = true;
                 return;
             }
-            handHandling = EnumHandHandling.NotHandled;
+
+            base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);
         }
 
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
-            handling = EnumHandling.PreventSubsequent;
-            
             if (crafting) {
+                handling = EnumHandling.PreventSubsequent;
                 return (crafting && secondsUsed < 4.5f); //Crafting a toolhead into a tool takes around 4.5s
             } else if (sharpening) {
+                handling = EnumHandling.PreventSubsequent;
                 return TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, slot, byEntity, ref handling);
             }
 
-            return false;
+            return base.OnHeldInteractStep(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);
         }
 
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
@@ -68,7 +71,8 @@ namespace Toolsmith.ToolTinkering {
                 }
                 sharpening = false;
             }
-            handling = EnumHandling.PassThrough;
+
+            base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);
         }
 
         private void CraftTool(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {

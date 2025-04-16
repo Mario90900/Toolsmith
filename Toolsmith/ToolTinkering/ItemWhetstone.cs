@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.GameContent;
 using Vintagestory.ServerMods.NoObf;
 
@@ -28,7 +29,7 @@ namespace Toolsmith.ToolTinkering {
             ToolsmithModSystem.Logger.Warning("Total Sharpness Percent recovered this action: " + totalSharpnessHoned);
             ToolsmithModSystem.Logger.Warning("Seconds the Whetstone has been going: " + secondsUsed);
             whetstone.Collectible.DamageItem(byEntity.World, byEntity, offhandSlot);
-
+            
             TinkeringUtility.SetResultsOfSharpening(curDur, curSharp, item, byEntity, mainHandSlot, isTool);
 
             mainHandSlot.MarkDirty();

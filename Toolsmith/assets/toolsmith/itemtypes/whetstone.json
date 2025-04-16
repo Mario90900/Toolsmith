@@ -45,9 +45,9 @@
 		"scale": 0.45
 	},
 	"guiTransform": {
-		"translation": { "x": -34, "y": -23, "z": 0 },
-		"rotation": { "x": 0, "y": 45, "z": 45 },
-		"origin": { "x": 0, "y": 0, "z": 0 },
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 160, "y": 45, "z": -20 },
+		"origin": { "x": 0.5, "y": 0.1, "z": 0.45 },
 		"scale": 2.5
 	},
 	"groundTransform": {
