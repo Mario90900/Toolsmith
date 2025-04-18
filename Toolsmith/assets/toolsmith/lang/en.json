@@ -7,12 +7,13 @@
 	"game:toolhandledurability": "Handle Durability: {0} / {1}",
 	"game:toolbindingdurability": "Binding Durability: {0} / {1}",
 	"game:toolsharpness": "Sharpness: {0} / {1}",
-	"game:tinkeredtoolnodamage": "The blunt head of this tool is unlikely to get damaged, but ensure the handle and bindings hold.",
-	"game:smithedtoolnodamage": "This blunt-headed tool is unlikely to get damaged from use.",
-	"game:toolheadnodamage": "This tool head is blunt and is pretty unlikely to get damaged from proper use.",
-	"game:toolheaddirections": "Finish this tool by holding rightclick with a handle in the offhand, and optionally a binding material in your hotbar.\nOr simply craft it like normal for a basic one!",
+	"game:tinkeredtoolverylowdamage": "The blunt head of this tool is pretty unlikely to get damaged, but ensure the handle and bindings hold.",
+	"game:smithedtoolverylowdamage": "This blunt-headed tool is pretty unlikely to get damaged from use.",
+	"game:toolheadverylowdamage": "This tool head is blunt and is pretty unlikely to get damaged from use.",
+	"game:toolheaddirections": "Prepare this tool by holding rightclick with a handle in the offhand!\nOr simply craft it like normal for a basic one!",
 	"game:toolhandledirections": "This looks like it would make a good handle for a tool.",
 	"game:toolbindingdirections": "This looks very useful for binding a tool together.",
+	"game:tinkertoolpartscontains": "Prepared an {0}, and a {1} for crafting into a tool. Now optionally choose a binding the same as the handle!",
 	
     "item-crudehandle-plain": "Crude Tool Handle",
 	"item-crudehandle-twine": "Crude Tool Handle with Twine Grip",
@@ -72,6 +73,8 @@
 	"toolsmith:item-whetstone-andesite": "Andesite Whetstone",
 	"toolsmith:item-whetstone-basalt": "Basalt Whetstone",
 	"toolsmith:item-whetstone-peridotite": "Peridotite Whetstone",
+	
+	"toolsmith:item-tinkertoolparts": "Tool Head and Handle",
 	
 	"toolsmith:block-grindstone-granite-north": "Granite Grindstone",
 	"toolsmith:block-grindstone-sandstone-north": "Sandstone Grindstone",

@@ -1,5 +1,6 @@
 ﻿using Cairo;
 using HarmonyLib;
+using SmithingPlus.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Config;
+using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.ToolTinkering.Drawbacks;
 using Toolsmith.Utils;
 using Vintagestory.API.Client;
@@ -194,132 +196,22 @@ namespace Toolsmith.ToolTinkering {
             return true;
         }
 
-        //This prefix and postfix hopefully will account for the Item Rarity Mod, maybe others as well.
-        [HarmonyPrefix]
-        [HarmonyPatch(nameof(CollectibleObject.ConsumeCraftingIngredients)), HarmonyPriority(Priority.High)]
-        private static void TinkeredToolConsumeCraftingIngredientsPrefix(ItemSlot[] slots, ItemSlot outputSlot, GridRecipe matchingRecipe) {
-            if (outputSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                outputSlot.Itemstack.SetMaxDurBypassFlag(); //For at least Item Rarity, it hooks into this patch to do the rarity applying on a craft. Set the flag here to hopefully prevent it from hitting the MaxDurability patch below.
-            }
-        }
-
         [HarmonyPostfix]
-        [HarmonyPatch(nameof(CollectibleObject.ConsumeCraftingIngredients)), HarmonyPriority(-100)]
-        private static void TinkeredToolConsumeCraftingIngredientsPostfix(ItemSlot[] slots, ItemSlot outputSlot, GridRecipe matchingRecipe) {
-            if (outputSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                outputSlot.Itemstack.ClearMaxDurBypassFlag(); //Make sure to clear the flag afterwards, too. Ideally after Item Rarity is done!
-            }
-        }
-
-
-        //Harmony Prefix Patch to intercept the GetMaxDurability calls, if it's a Tinkered Tool, instead it will need to check the different part's durabilities over the default 'durability'
-        //Returns whatever part has the lowest max durability, to make rendering the damage bar both make sense, and surprisingly simple to tweak what it's looking at. Plus, this might help with crafting using tools, maybe? Anything that calls GetMax separately.
-        [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.GetMaxDurability))]
-        private static bool TinkeredToolGetMaxDurabilityPrefix(ItemStack itemstack, ref int __result) {
-            if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                if (itemstack.GetMaxDurBypassFlag()) { //If this itemstack has the BypassFlag Attribute, that means it has been flagged as a 'first time call' to Collectable.Durability, but with the intent to account for other mod's changes that might hook in here.
-                    return true;
-                }
-
-                if (itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
-                    return true; //Default to vanilla behavior here.
-                } //But if it's the Clientside, it COULD have a candle because it hasn't recieved an update packet yet.
-
-                var headMax = itemstack.GetToolheadMaxDurability();
-                var handleMax = itemstack.GetToolhandleMaxDurability();
-                var bindingMax = itemstack.GetToolbindingMaxDurability();
-                int lowestMax;
-
-                if (bindingMax < handleMax) {
-                    lowestMax = bindingMax;
-                } else {
-                    lowestMax = handleMax;
-                }
-                if (lowestMax < headMax) { //Find the lowest and set it as the result, then block any subsequent calls
-                    __result = lowestMax;
-                } else {
-                    __result = headMax;
-                }
-
-                return false;
-            } else if (itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
-                if (itemstack.GetMaxDurBypassFlag()) { //If this itemstack has the BypassFlag Attribute, that means it has been flagged as a 'first time call' to Collectable.Durability, but with the intent to account for other mod's changes that might hook in here.
-                    return true;
-                }
-
-                __result = (int)(itemstack.Collectible.Durability * ToolsmithModSystem.Config.HeadDurabilityMult);
-                return false;
+        private static void TinkeredToolGetMaxDurabilityPostfix(ref int __result, ItemStack itemstack) {
+            if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
+                __result = (int)((double)__result * ToolsmithModSystem.Config.HeadDurabilityMult);
             }
-
-            return true;
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch(nameof(CollectibleObject.GetDurability))] //This method is technically depricated for GetRemainingDurability but patching it just incase as well. Base call returns Max Durability.
-        private static bool TinkeredToolGetDurabilityPrefix(ItemStack itemstack, ref int __result) {
+        [HarmonyPatch(nameof(CollectibleObject.ShouldDisplayItemDamage))]
+        private static bool TinkeredToolShouldDisplayItemDamagePrefix(ItemStack itemstack, ref bool __result) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                if (itemstack.GetMaxDurBypassFlag()) { //If this itemstack has the BypassFlag Attribute, that means it has been flagged as a 'first time call' to Collectable.Durability, but with the intent to account for other mod's changes that might hook in here.
-                    return true;
-                }
+                var lowestCurrent = TinkeringUtility.FindLowestCurrentDurabilityForBar(itemstack);
+                var lowestMax = TinkeringUtility.FindLowestMaxDurabilityForBar(itemstack);
 
-                if (itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
-                    return true; //Default to vanilla behavior here.
-                } //But if it's the Clientside, it COULD have a candle because it hasn't recieved an update packet yet.
-
-                var headMax = itemstack.GetToolheadMaxDurability();
-                var handleMax = itemstack.GetToolhandleMaxDurability();
-                var bindingMax = itemstack.GetToolbindingMaxDurability();
-                int lowestMax;
-
-                if (bindingMax < handleMax) {
-                    lowestMax = bindingMax;
-                } else {
-                    lowestMax = handleMax;
-                }
-                if (lowestMax < headMax) { //Find the lowest and set it as the result, then block any subsequent calls
-                    __result = lowestMax;
-                } else {
-                    __result = headMax;
-                }
-
-                return false;
-            } else if (itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
-                if (itemstack.GetMaxDurBypassFlag()) { //If this itemstack has the BypassFlag Attribute, that means it has been flagged as a 'first time call' to Collectable.Durability, but with the intent to account for other mod's changes that might hook in here.
-                    return true;
-                }
-
-                __result = (int)(itemstack.Collectible.Durability * ToolsmithModSystem.Config.HeadDurabilityMult);
-                return false;
-            }
-
-            return true;
-        }
-
-        //This Prefix Patch is pretty much identical to the Max Durability one! Just, you know, returning the current instead, hah.
-        [HarmonyPrefix]
-        [HarmonyPatch(nameof(CollectibleObject.GetRemainingDurability))]
-        private static bool TinkeredToolGetRemainingDurabilityPrefix(ItemStack itemstack, ref int __result) {
-            if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                if (itemstack.HasPlaceholderHead()) { //If this tool has a PlaceholderHead, ie a Candle, that likely means the item is broken.
-                    return true; //Default to vanilla behavior here.
-                } //But if it's the Clientside, it COULD have a candle because it hasn't recieved an update packet yet.
-
-                var headCur = itemstack.GetToolheadCurrentDurability();
-                var handleCur = itemstack.GetToolhandleCurrentDurability();
-                var bindingCur = itemstack.GetToolbindingCurrentDurability();
-                int lowestCur;
-
-                if (bindingCur < handleCur) {
-                    lowestCur = bindingCur;
-                } else {
-                    lowestCur = handleCur;
-                }
-                if (lowestCur < headCur) {
-                    __result = lowestCur;
-                } else {
-                    __result = headCur;
-                }
+                __result = (lowestCurrent != lowestMax);
 
                 return false;
             }
@@ -327,24 +219,34 @@ namespace Toolsmith.ToolTinkering {
             return true;
         }
 
-        /* Probably not needed if swapping to using the Vanilla Durabiility Attribute as a Tinker Tool's Head.
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.SetDurability))]
         private static bool TinkeredToolSetDurabilityPrefix(ItemStack itemstack, int amount) {
-            if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //Since most other mods will expect the vanilla durability, best to just have this repair the Head durability only.
-                itemstack.SetToolheadCurrentDurability(amount);
-                return false;
+            if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //Since Smithing Plus has a similar check, just running a check here to make sure no part durability is over the maximum somehow.
+                var maxDur = itemstack.GetToolheadMaxDurability();
+                if (amount > maxDur) {
+                    amount = maxDur;
+                }
+                itemstack.EnsureSharpnessIsNotOverMax();
+                itemstack.EnsureHandleIsNotOverMax();
+                itemstack.EnsureBindingIsNotOverMax();
+            } else if (itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
+                var maxDur = itemstack.GetSmithedDurability();
+                if (amount > maxDur) {
+                    amount = maxDur;
+                }
+                itemstack.EnsureSharpnessIsNotOverMax();
             }
             return true;
-        }*/
+        }
 
         //The Postfix Patch that handles the Mining Speed (ms) Boost from any Tinkered Tools, simply just takes the output of the original call and if it's a Tinkered Tool? Add ms + ms*bonus
         [HarmonyPostfix]
         [HarmonyPatch(nameof(CollectibleObject.GetMiningSpeed))]
-        private static float TinkeredToolMiningSpeedPostfix(float miningSpeed, IItemStack itemstack, BlockSelection blockSel, Block block, IPlayer forPlayer) {
+        private static void TinkeredToolMiningSpeedPostfix(ref float __result, IItemStack itemstack, BlockSelection blockSel, Block block, IPlayer forPlayer) {
             var isTinkeredTool = itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>();
             var isSmithedTool = itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>();
-            float newMiningSpeed = miningSpeed;
+            float newMiningSpeed = __result;
 
             if (isTinkeredTool || isSmithedTool) {
                 var sharpnessPer = ((ItemStack)itemstack).GetToolSharpnessPercent();
@@ -360,7 +262,7 @@ namespace Toolsmith.ToolTinkering {
                 newMiningSpeed += newMiningSpeed * speedBonus;
             }
 
-            return newMiningSpeed;
+            __result = newMiningSpeed;
         }
 
         //Patching the GuiElementItemSlotGridBase now! Anything patching CollectibleObject is above!
@@ -373,6 +275,12 @@ namespace Toolsmith.ToolTinkering {
             int shadePathCount = 0;
             int index = -1;
             int indexOfThirdRet = -1;
+            int indexOfDamageColor = -1;
+            var targetDamageColor = AccessTools.Method(typeof(CollectibleObject), nameof(CollectibleObject.GetItemDamageColor));
+            int indexOfGetMaxDur = -1;
+            var targetGetMaxDur = AccessTools.Method(typeof(CollectibleObject), nameof(CollectibleObject.GetMaxDurability));
+            int indexOfGetRemainingDur = -1;
+            var targetGetRemainingDur = AccessTools.Method(typeof(CollectibleObject), nameof(CollectibleObject.GetRemainingDurability));
 
             var codes = new List<CodeInstruction>(instructions);
 
@@ -383,6 +291,21 @@ namespace Toolsmith.ToolTinkering {
                         indexOfThirdRet = i;
                     }
                     continue;
+                }
+
+                if (retCount == 3 && shadePathCount < 2 && codes[i].opcode == OpCodes.Callvirt) {
+                    if ((MethodInfo)codes[i].operand == targetDamageColor) {
+                        indexOfDamageColor = i;
+                        continue;
+                    }
+                    if ((MethodInfo)codes[i].operand == targetGetMaxDur) {
+                        indexOfGetMaxDur = i;
+                        continue;
+                    }
+                    if ((MethodInfo)codes[i].operand == targetGetRemainingDur) {
+                        indexOfGetRemainingDur = i;
+                        continue;
+                    }
                 }
 
                 if (retCount == 3 && shadePathCount < 2 && codes[i].opcode == OpCodes.Call) {
@@ -409,17 +332,46 @@ namespace Toolsmith.ToolTinkering {
                 CodeInstruction.Call(typeof(ToolTinkeringPatches), "DrawSharpnessBar", new Type[5] { typeof(ItemSlot), typeof(int), typeof(int), typeof(Context), typeof(GuiElementItemSlotGridBase) })
             };
 
-            if (index >= 0 && indexOfThirdRet >= 0) {
+            var toolsmithGetItemDamage = AccessTools.Method(typeof(TinkeringUtility), "ToolsmithGetItemDamageColor", new Type[1] { typeof(ItemStack) });
+            var toolsmithGetMaxDur = AccessTools.Method(typeof(TinkeringUtility), "FindLowestMaxDurabilityForBar", new Type[1] { typeof(ItemStack) });
+            var toolsmithGetRemainingDur = AccessTools.Method(typeof(TinkeringUtility), "FindLowestCurrentDurabilityForBar", new Type[1] { typeof(ItemStack) });
+
+            if (index >= 0 && indexOfThirdRet >= 0 && indexOfDamageColor >= 0 && indexOfGetMaxDur >= 0 && indexOfGetRemainingDur >= 0) {
                 codeAddition[0].MoveLabelsFrom(codes[index]);
                 codes[indexOfThirdRet].opcode = OpCodes.Nop;
                 codes[indexOfThirdRet - 1].opcode = OpCodes.Nop;
                 codes.InsertRange(index, codeAddition);
+                codes[indexOfDamageColor - 5].opcode = OpCodes.Nop;
+                codes[indexOfDamageColor - 4].opcode = OpCodes.Nop;
+                codes[indexOfDamageColor - 3].opcode = OpCodes.Nop;
+                codes[indexOfDamageColor].opcode = OpCodes.Call;
+                codes[indexOfDamageColor].operand = toolsmithGetItemDamage;
+                codes[indexOfGetMaxDur - 5].opcode = OpCodes.Nop;
+                codes[indexOfGetMaxDur - 4].opcode = OpCodes.Nop;
+                codes[indexOfGetMaxDur - 3].opcode = OpCodes.Nop;
+                codes[indexOfGetMaxDur].opcode = OpCodes.Call;
+                codes[indexOfGetMaxDur].operand = toolsmithGetMaxDur;
+                codes[indexOfGetRemainingDur - 5].opcode = OpCodes.Nop;
+                codes[indexOfGetRemainingDur - 4].opcode = OpCodes.Nop;
+                codes[indexOfGetRemainingDur - 3].opcode = OpCodes.Nop;
+                codes[indexOfGetRemainingDur].opcode = OpCodes.Call;
+                codes[indexOfGetRemainingDur].operand = toolsmithGetRemainingDur;
             } else {
+                ToolsmithModSystem.Logger.Error("Durability and Sharpness Bar Transpiler had an error!  Will not patch anything, errors will follow:");
                 if (index < 0) {
-                    ToolsmithModSystem.Logger.Error("Sharpness Bar Transpiler had an error! Could not find the second call to ShadePath for the Damage Bar rendering. The Sharpness Bar will not function!");
+                    ToolsmithModSystem.Logger.Error("Could not find the second call to ShadePath for the Damage Bar rendering.");
                 }
                 if (indexOfThirdRet < 0) {
-                    ToolsmithModSystem.Logger.Error("Sharpness Bar Transpiler had an error! Could not locate the third return call. The Sharpness Bar will not function!");
+                    ToolsmithModSystem.Logger.Error("Could not locate the third return call.");
+                }
+                if (indexOfDamageColor < 0) {
+                    ToolsmithModSystem.Logger.Error("Could not locate the Damage Color call.");
+                }
+                if (indexOfGetMaxDur < 0) {
+                    ToolsmithModSystem.Logger.Error("Could not locate the GetMaxDurability call.");
+                }
+                if (indexOfGetRemainingDur < 0) {
+                    ToolsmithModSystem.Logger.Error("Could not locate the GetRemainingDurability call.");
                 }
             }
             

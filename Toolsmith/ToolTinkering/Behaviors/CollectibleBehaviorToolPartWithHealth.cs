@@ -7,7 +7,7 @@ using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 
-namespace Toolsmith.ToolTinkering {
+namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorToolPartWithHealth : CollectibleBehavior {
         public CollectibleBehaviorToolPartWithHealth(CollectibleObject collObj) : base(collObj) {
 

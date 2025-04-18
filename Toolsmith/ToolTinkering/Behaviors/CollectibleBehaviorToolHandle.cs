@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 
-namespace Toolsmith.ToolTinkering {
+namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorToolHandle : CollectibleBehaviorToolPartWithHealth { //Mostly here just to allow for easy detection if something is a tool handle!
         public CollectibleBehaviorToolHandle(CollectibleObject collObj) : base(collObj) {
 

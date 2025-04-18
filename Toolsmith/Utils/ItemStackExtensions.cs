@@ -20,11 +20,10 @@ namespace Toolsmith.Utils {
         // -- ItemStack Extensions for the Tool items themselves --
         //Tool Head on full Tool ItemStack cluster
         public static ItemStack GetToolhead(this ItemStack itemStack) { //If there is no tool head returned, lets reset it in here.
-            var head = itemStack.Attributes?.GetItemstack(ToolsmithAttributes.ToolHead);
-            if (head == null) {
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHead)) {
                 itemStack.ResetNullHead(ToolsmithModSystem.Api.World);
-                head = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHead);
             }
+            var head = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHead);
             head.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
             return head.Clone();
         }
@@ -35,7 +34,10 @@ namespace Toolsmith.Utils {
 
         public static int GetToolheadCurrentDurability(this ItemStack itemStack) { //If ANY of these part durability return -1, assume they are fresh new parts and full durability. It might be safer to just run with something obviously impossible, instead of something that will hit eventually - though should break when it does.
             itemStack.TestForOldToolheadAttributesAndFix();
-            return itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, itemStack.GetToolheadMaxDurability());
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.Durability)) {
+                itemStack.ResetNullHead(ToolsmithModSystem.Api.World);
+            }
+            return itemStack.Collectible.GetRemainingDurability(itemStack); //Trying to hook into the vanilla calls for compatability sake
         }
 
         public static void SetToolheadCurrentDurability(this ItemStack itemStack, int dur) {
@@ -43,35 +45,32 @@ namespace Toolsmith.Utils {
         }
 
         public static int GetToolheadMaxDurability(this ItemStack itemStack) {
-            var baseMaxDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
+            return itemStack.Collectible.GetMaxDurability(itemStack);
+        }
 
-            return (int)(baseMaxDur * ToolsmithModSystem.Config.HeadDurabilityMult);
+        //Since this can be called or used before
+        public static bool HasPlaceholderHead(this ItemStack itemStack) {
+            if (itemStack.GetToolhead().Collectible.Code == ToolsmithConstants.FallbackHeadCode) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         //Checks for the old attributes, updates the tool by setting the vanilla durability to the old current and then removes the attributes. Should cause all tools to transfer seemlessly over!
         public static void TestForOldToolheadAttributesAndFix(this ItemStack itemStack) {
-            if (itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHeadCurrentDur) || itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHeadMaxDur)) {
+            if (itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHeadCurrentDur)) {
                 itemStack.SetToolheadCurrentDurability(itemStack.Attributes.GetInt(ToolsmithAttributes.ToolHeadCurrentDur));
                 itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.ToolHeadCurrentDur);
+            }
+            if (itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHeadMaxDur)) {
                 itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.ToolHeadMaxDur);
             }
         }
 
-        //Might not be needed if I swap to considering the tool's vanilla durability attribute as the head's durability.
-        /*public static void SetToolheadMaxDurability(this ItemStack itemStack, int dur) {
-            itemStack.Attributes.SetInt(ToolsmithAttributes.ToolHeadMaxDur, dur);
-        }*/
-        
-        //Sharpness can be used on both Tinkered and Smithed Tools. All types!
-
+        //Sharpness!
         public static int GetToolCurrentSharpness(this ItemStack itemStack) {
-            var currentSharp = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent, -1);
-            if (currentSharp < 0) { //If the current sharpness returns as -1, it's not been set so will have to reset it.
-                itemStack.ResetSharpness(ToolsmithModSystem.Api.World);
-                currentSharp = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent);
-            }
-
-            return currentSharp;
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent, itemStack.GetToolMaxSharpness());
         }
 
         public static void SetToolCurrentSharpness(this ItemStack itemStack, int sharp) {
@@ -79,14 +78,10 @@ namespace Toolsmith.Utils {
         }
 
         public static int GetToolMaxSharpness(this ItemStack itemStack) {
-            var maxSharp = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessMax, -1);
-
-            if (maxSharp < 0) {
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolSharpnessMax)) {
                 itemStack.ResetSharpness(ToolsmithModSystem.Api.World);
-                maxSharp = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessMax);
             }
-            
-            return maxSharp;
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessMax);
         }
 
         public static void SetToolMaxSharpness(this ItemStack itemStack, int sharp) {
@@ -99,22 +94,25 @@ namespace Toolsmith.Utils {
             return ((float)currentSharp) / ((float)maxSharp);
         }
 
-        //Since this can be called or used before
-        public static bool HasPlaceholderHead(this ItemStack itemStack) {
-            if (itemStack.GetToolhead().Collectible.Code == ToolsmithConstants.FallbackHeadCode) {
-                return true;
-            } else {
-                return false;
+        public static void EnsureSharpnessIsNotOverMax(this ItemStack itemStack) {
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolSharpnessCurrent) || !itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolSharpnessMax)) {
+                itemStack.ResetSharpness(ToolsmithModSystem.Api.World);
+                return;
+            }
+
+            var curSharp = itemStack.GetToolCurrentSharpness();
+            var maxSharp = itemStack.GetToolMaxSharpness();
+            if (curSharp > maxSharp) {
+                itemStack.SetToolCurrentSharpness(maxSharp);
             }
         }
 
         //Tool Handle on full Tool ItemStack cluster
         public static ItemStack GetToolhandle(this ItemStack itemStack) { //Same as the head, if there is no Handle, lets reset it in here. Hopefully this makes it stronger.
-            var handle = itemStack.Attributes?.GetItemstack(ToolsmithAttributes.ToolHandle);
-            if (handle == null) {
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHandle)) {
                 itemStack.ResetNullHandleOrBinding(ToolsmithModSystem.Api.World);
-                handle = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHandle);
             }
+            var handle = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHandle);
             handle.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
             return handle.Clone();
         }
@@ -132,26 +130,34 @@ namespace Toolsmith.Utils {
         }
 
         public static int GetToolhandleMaxDurability(this ItemStack itemStack) {
-            var maxDur = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolHandleMaxDur, -1);
-
-            if (maxDur < 0) {
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHandleMaxDur)) {
                 itemStack.ResetNullHandleOrBinding(ToolsmithModSystem.Api.World);
-                maxDur = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolHandleMaxDur);
             }
-
-            return maxDur;
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolHandleMaxDur);
         }
 
         public static void SetToolhandleMaxDurability(this ItemStack itemStack, int dur) {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolHandleMaxDur, dur);
         }
 
+        public static void EnsureHandleIsNotOverMax(this ItemStack itemStack) {
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHandleCurrentDur) || !itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHandleMaxDur)) {
+                itemStack.ResetNullHandleOrBinding(ToolsmithModSystem.Api.World);
+                return;
+            }
+
+            var maxDur = itemStack.GetToolhandleMaxDurability();
+            if (itemStack.GetToolhandleCurrentDurability() > maxDur) {
+                itemStack.SetToolhandleCurrentDurability(maxDur);
+            }
+        }
+
         //Tool Binding on full Tool ItemStack cluster
         public static ItemStack? GetToolbinding(this ItemStack itemStack) { //A Null Tool Binding means that no binding was used, this is the only case where it is allowed.
-            var binding = itemStack.Attributes?.GetItemstack(ToolsmithAttributes.ToolBinding);
-            if (binding == null) {
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolBinding)) {
                 return null;
             }
+            var binding = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolBinding);
             binding.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
             return binding.Clone();
         }
@@ -169,18 +175,25 @@ namespace Toolsmith.Utils {
         }
 
         public static int GetToolbindingMaxDurability(this ItemStack itemStack) {
-            var maxDur = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolBindingMaxDur, -1);
-
-            if (maxDur < 0) {
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolBindingMaxDur)) {
                 itemStack.ResetNullHandleOrBinding(ToolsmithModSystem.Api.World);
-                maxDur = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolBindingMaxDur);
             }
-
-            return maxDur;
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolBindingMaxDur);
         }
 
         public static void SetToolbindingMaxDurability(this ItemStack itemStack, int dur) {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolBindingMaxDur, dur);
+        }
+
+        public static void EnsureBindingIsNotOverMax(this ItemStack itemStack) {
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolBindingCurrentDur) || !itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolBindingMaxDur)) {
+                return;
+            }
+
+            var maxDur = itemStack.GetToolbindingMaxDurability();
+            if (itemStack.GetToolbindingCurrentDurability() > maxDur) {
+                itemStack.SetToolbindingCurrentDurability(maxDur);
+            }
         }
 
         //Other Full Tool stats inhereted from the parts, set on crafting generally
@@ -212,9 +225,7 @@ namespace Toolsmith.Utils {
         }
 
         public static int GetSmithedMaxDurability(this ItemStack itemStack) {
-            var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
-
-            return (int)(baseDur * ToolsmithModSystem.Config.HeadDurabilityMult);
+            return itemStack.Collectible.GetMaxDurability(itemStack);
         }
 
         //Extensions to handle resetting invalid tools that are lacking any durability values
@@ -253,48 +264,28 @@ namespace Toolsmith.Utils {
 
                 var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
                 var headStack = new ItemStack(world.GetItem(new AssetLocation(headCode)), 1);
-                var headDur = (int)(itemStack.Attributes.GetDecimal(ToolsmithAttributes.Durability, baseDur) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
+                var headDur = (int)(itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, baseDur)); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
                 var headMaxDur = itemStack.GetToolheadMaxDurability();
-                var sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
-                float sharpnessMult;
-                var isHeadMetal = headStack.Collectible.IsCraftableMetal();
-                if (isHeadMetal) {
-                    sharpnessMult = ToolsmithConstants.StartingSharpnessMult;
-                } else {
-                    sharpnessMult = ToolsmithConstants.NonMetalStartingSharpnessMult;
-                }
-                var startSharp = (int)(sharpness * sharpnessMult);
+                var curSharpness = itemStack.GetToolCurrentSharpness();
+                var maxSharpness = itemStack.GetToolMaxSharpness();
 
                 headStack.SetPartCurrentDurability(headDur);
                 headStack.SetPartMaxDurability(headMaxDur);
-                headStack.SetPartCurrentSharpness(startSharp);
-                headStack.SetPartMaxSharpness(sharpness);
+                headStack.SetPartCurrentSharpness(curSharpness);
+                headStack.SetPartMaxSharpness(maxSharpness);
                 itemStack.SetToolhead(headStack);
                 itemStack.SetToolheadCurrentDurability(headDur);
-                itemStack.SetToolCurrentSharpness(startSharp);
-                itemStack.SetToolMaxSharpness(sharpness);
             } else {
                 //Instead, for part of the temp-fix, just run off the assumption that for now it might work fine to have a placeholder basic calc to initialize it based on the default Durability value.
                 //Might have to figure out pinging the server for an item update on the client side here... Or make sure the Serverside always marks the slot as dirty to update it to clients. Hopefully?
                 // -- Seems like frequently marking the slot as dirty on the server causes an update and that's all that's really needed. Any time the attributes are set, make sure it's marked as dirty!
                 var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
                 var headStack = new ItemStack(world.GetItem(new AssetLocation(ToolsmithConstants.FallbackHeadCode)), 1); //Placeholder Candle! Wow! It'll be something so it actually _have_ something in there. No more nulls.
-                var curHeadDur = (int)(itemStack.Attributes.GetDecimal(ToolsmithAttributes.Durability, baseDur) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
-                var maxHeadDur = itemStack.GetToolheadMaxDurability();
-                var sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
-                float sharpnessMult;
-                var isHeadMetal = itemStack.Collectible.IsCraftableMetal();
-                if (isHeadMetal) {
-                    sharpnessMult = ToolsmithConstants.StartingSharpnessMult;
-                } else {
-                    sharpnessMult = ToolsmithConstants.NonMetalStartingSharpnessMult;
-                }
-                var startSharp = (int)(sharpness * sharpnessMult);
+                var curHeadDur = (int)(itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, baseDur)); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
+                var sharpness = itemStack.GetToolCurrentSharpness(); //Even though this isn't used, this call is important because it will 
 
                 itemStack.SetToolhead(headStack);
                 itemStack.SetToolheadCurrentDurability(curHeadDur);
-                itemStack.SetToolCurrentSharpness(startSharp);
-                itemStack.SetToolMaxSharpness(sharpness);
             }
         }
 
@@ -306,8 +297,7 @@ namespace Toolsmith.Utils {
             var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
             var sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
             float sharpnessMult;
-            var isToolMetal = itemStack.Collectible.IsCraftableMetal();
-            if (isToolMetal) {
+            if (itemStack.Collectible.IsCraftableMetal()) {
                 sharpnessMult = ToolsmithConstants.StartingSharpnessMult;
             } else {
                 sharpnessMult = ToolsmithConstants.NonMetalStartingSharpnessMult;
@@ -319,17 +309,18 @@ namespace Toolsmith.Utils {
         }
 
         //Since the handle and binding can be expected to not have something, it makes sense to set them to Stick and 'none' respectively as defaults.
+        //The binding will possibly be null, but the handle never should be.
         public static void ResetNullHandleOrBinding(this ItemStack itemStack, IWorldAccessor world) {
             if (itemStack.Attributes == null) {
                 itemStack.Attributes = new TreeAttribute();
             }
 
             ItemStack handle = null;
-            int maxHandleDur = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolHandleMaxDur, -1);
+            int maxHandleDur = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolHandleMaxDur, -1); //Specifically getting this from the attributes directly here to prevent looping the call.
             HandleWithStats handleWithStats = null;
 
             ItemStack binding = null;
-            int maxBindingDur = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolBindingMaxDur, -1);
+            int maxBindingDur = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolBindingMaxDur, -1); //Specifically getting this from the attributes directly here to prevent looping the call.
             BindingWithStats bindingWithStats = null;
 
             if (maxHandleDur < 0) { //Just need to grab the basic Stick if there is no durability already set.
@@ -384,21 +375,7 @@ namespace Toolsmith.Utils {
             itemStack.SetGripChanceToDamage(gripStats.chanceToDamage);
         }
 
-        //The Attribute Flags for tools! This will all be similar except for their intended use and name.
-        public static void SetMaxDurBypassFlag(this ItemStack itemStack) {
-            itemStack.Attributes.SetBool(ToolsmithAttributes.BypassMaxCall, true); //Doesn't matter what it's set to, but for human-readable sake, it's set to true.
-        }
-
-        public static bool GetMaxDurBypassFlag(this ItemStack itemStack) {
-            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.BypassMaxCall); //The existance of this attribute is all that matters, that is our flag!
-        }
-
-        public static void ClearMaxDurBypassFlag(this ItemStack itemStack) {
-            if (itemStack.Attributes.HasAttribute(ToolsmithAttributes.BypassMaxCall)) { //Just verify that it exists first.
-                itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.BypassMaxCall); //If so, just remove the flag attribute.
-            }
-        }
-
+        //The Attribute Flags for tools! These will all be similar except for their intended use and name.
         public static void SetBrokeWhileSharpeningFlag(this ItemStack itemStack) {
             itemStack.Attributes.SetBool(ToolsmithAttributes.BrokeWhileSharpening, true);
         }
@@ -489,13 +466,9 @@ namespace Toolsmith.Utils {
             return collectibleObject.Variant["metal"] ?? collectibleObject.Variant["material"];
         }
 
-        //Attempt to bypass the expected Toolsmith GetMaxDurability patch because this is a KNOWN call to GetMaxDurability with the intent to recieve the result of other mods factoring in their patches or changes through this method. If there are none? It just returns the default base call anyway through the GetMaxDurability patch!
-        //Since the idea was to replace all itemStack.Collectible.Durability; accesses I made with this, that means in the end it will return the same thing as long as it is called through this specific method.
-        public static int GetBaseMaxDurability(this CollectibleObject collectibleObject, ItemStack itemStack) { //itemStack is the expected tool in question.
-            itemStack.SetMaxDurBypassFlag(); //This should be the only place this is EVER called.
-            var baseDur = itemStack.Collectible.GetMaxDurability(itemStack);
-            itemStack.ClearMaxDurBypassFlag(); //Make sure to clean the flag up afterwards, since we don't want to leave the flag there once it is read.
-            return baseDur;
+        //Since we know what the Head Durability Mult is, lets hook into GetMaxDurability for compat with other mods, let them do their things, THEN divide by the known HeadDurabilityMult to get the changed base value back.
+        public static int GetBaseMaxDurability(this CollectibleObject collectibleObject, ItemStack itemStack) {
+            return (int)((double)itemStack.Collectible.GetMaxDurability(itemStack) / ToolsmithModSystem.Config.HeadDurabilityMult);
         }
     }
 }

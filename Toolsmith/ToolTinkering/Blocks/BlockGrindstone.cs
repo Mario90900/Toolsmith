@@ -11,8 +11,9 @@ using Vintagestory.API.Client;
 using Vintagestory.Client.NoObf;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Util;
+using Toolsmith.ToolTinkering.Behaviors;
 
-namespace Toolsmith.ToolTinkering {
+namespace Toolsmith.ToolTinkering.Blocks {
     public class BlockGrindstone : Block {
 
         protected bool doneSharpening = false;

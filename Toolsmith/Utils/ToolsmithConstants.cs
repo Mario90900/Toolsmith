@@ -8,6 +8,8 @@ namespace Toolsmith.Utils {
     public static class ToolsmithConstants {
         public const string FallbackHeadCode = "game:candle";
         public const string DefaultHandleCode = "game:stick";
+        public const string ToolBundleCode = "toolsmith:tinkertoolparts";
+        public const float TimeToCraftTinkerTool = 2.5f;
         public const float StartingSharpnessMult = 0.85f;
         public const float NonMetalStartingSharpnessMult = 0.66f;
         public const float HighSharpnessSpeedBonusMult = 0.05f;

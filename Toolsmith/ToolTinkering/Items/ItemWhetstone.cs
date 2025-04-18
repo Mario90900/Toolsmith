@@ -9,7 +9,7 @@ using Vintagestory.API.Common.Entities;
 using Vintagestory.GameContent;
 using Vintagestory.ServerMods.NoObf;
 
-namespace Toolsmith.ToolTinkering {
+namespace Toolsmith.ToolTinkering.Items {
     public class ItemWhetstone : Item {
         protected float totalSharpnessHoned = 0;
 
@@ -29,7 +29,7 @@ namespace Toolsmith.ToolTinkering {
             ToolsmithModSystem.Logger.Warning("Total Sharpness Percent recovered this action: " + totalSharpnessHoned);
             ToolsmithModSystem.Logger.Warning("Seconds the Whetstone has been going: " + secondsUsed);
             whetstone.Collectible.DamageItem(byEntity.World, byEntity, offhandSlot);
-            
+
             TinkeringUtility.SetResultsOfSharpening(curDur, curSharp, item, byEntity, mainHandSlot, isTool);
 
             mainHandSlot.MarkDirty();

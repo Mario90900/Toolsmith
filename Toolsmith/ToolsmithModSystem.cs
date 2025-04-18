@@ -5,6 +5,9 @@ using System.Linq;
 using System.Reflection.Metadata;
 using Toolsmith.Config;
 using Toolsmith.ToolTinkering;
+using Toolsmith.ToolTinkering.Behaviors;
+using Toolsmith.ToolTinkering.Blocks;
+using Toolsmith.ToolTinkering.Items;
 using Toolsmith.Utils;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -68,6 +71,7 @@ namespace Toolsmith {
             api.RegisterBlockEntityClass($"{ModId}:EntityGrindstone", typeof(BlockEntityGrindstone));
             api.RegisterBlockClass($"{ModId}:BlockGrindstone", typeof(BlockGrindstone));
             api.RegisterItemClass($"{ModId}:ItemWhetstone", typeof(ItemWhetstone));
+            api.RegisterItemClass($"{ModId}:ItemTinkerToolParts", typeof(ItemTinkerToolParts));
             HarmonyPatch();
         }
 
@@ -84,7 +88,7 @@ namespace Toolsmith {
             base.AssetsFinalize(api);
             if (api.Side.IsClient()) return;
             
-            if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) {
+            if (Config.PrintAllParsedToolsAndParts) {
                 Logger.Debug("Single Part Tools:");
             }
             var handleKeys = Config.ToolHandlesWithStats.Keys;
@@ -109,27 +113,28 @@ namespace Toolsmith {
                             t.AddBehavior<CollectibleBehaviorToolBlunt>();
                         }
                     }
-                    if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) {
+                    if (Config.PrintAllParsedToolsAndParts) {
                         Logger.Debug(t.Code.ToString());
                     }
                 } else if (ConfigUtility.IsToolHandle(t.Code.Path, handleKeys)) { //Probably don't need the blacklist anymore, since can assume the configs have the exact Path
                     if (!t.HasBehavior<CollectibleBehaviorToolHandle>()) {
                         t.AddBehavior<CollectibleBehaviorToolHandle>();
                     }
-                    if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) { //Both Handles and Bindings don't really need to populate these lists anymore unless we are looking to actually print everything found. Should help to save some time and ram?
+                    if (Config.PrintAllParsedToolsAndParts) { //Both Handles and Bindings don't really need to populate these lists anymore unless we are looking to actually print everything found. Should help to save some time and ram?
                         HandleList.Add(t);
                     }
                 } else if (ConfigUtility.IsToolBinding(t.Code.Path, bindingKeys)) {
                     if (!t.HasBehavior<CollectibleBehaviorToolBinding>()) {
                         t.AddBehavior<CollectibleBehaviorToolBinding>();
+                        t.StorageFlags += 0x100;
                     }
-                    if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) {
+                    if (Config.PrintAllParsedToolsAndParts) {
                         BindingList.Add(t);
                     }
                 }
             }
 
-            if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) { //Mainly left in for debugging purposes since it's kinda useful to just let it run through everything and see what might be going wrong and where... Especially when adding other mods
+            if (Config.PrintAllParsedToolsAndParts) { //Mainly left in for debugging purposes since it's kinda useful to just let it run through everything and see what might be going wrong and where... Especially when adding other mods
                 Logger.Debug("Tinkerable Tools:");
                 foreach (var t in TinkerableToolsList) {
                     Logger.Debug(t.Code.ToString());

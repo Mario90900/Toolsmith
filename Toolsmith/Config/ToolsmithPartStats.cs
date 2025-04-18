@@ -66,7 +66,9 @@ namespace Toolsmith.Config {
             ["bismuthbronzenails"] = new() { id = "bismuthbronzenails", baseHPfactor = 1.7f, selfHPBonus = 0.25f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "bismuthbronze" },
             ["blackbronzenails"] = new() { id = "blackbronzenails", baseHPfactor = 1.7f, selfHPBonus = 0.3f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "blackbronze" },
             ["ironnails"] = new() { id = "ironnails", baseHPfactor = 1.8f, selfHPBonus = 0.3f, handleHPBonus = 0.2f, recoveryPercent = 0.45f, isMetal = true, metalType = "iron" },
-            ["cupronickelnails"] = new() { id = "cupronickelnails", baseHPfactor = 1.7f, selfHPBonus = 0.2f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "cupronickel" }
+            ["cupronickelnails"] = new() { id = "cupronickelnails", baseHPfactor = 1.7f, selfHPBonus = 0.2f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "cupronickel" },
+            ["meteoricironnails"] = new() { id = "meteoricironnails", baseHPfactor = 1.8f, selfHPBonus = 0.4f, handleHPBonus = 0.25f, recoveryPercent = 0.45f, isMetal = true, metalType = "meteoriciron" },
+            ["steelnails"] = new() { id = "steelnails", baseHPfactor = 2.0f, selfHPBonus = 0.5f, handleHPBonus = 0.35f, recoveryPercent = 0.35f, isMetal = true, metalType = "steel" }
         };
     }
 }

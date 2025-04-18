@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Toolsmith.ToolTinkering;
+using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;

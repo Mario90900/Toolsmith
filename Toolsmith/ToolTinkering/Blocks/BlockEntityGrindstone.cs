@@ -10,7 +10,7 @@ using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 
-namespace Toolsmith.ToolTinkering {
+namespace Toolsmith.ToolTinkering.Blocks {
     public class BlockEntityGrindstone : BlockEntity {
         public bool grinding { get; set; }
         protected ILoadedSound grindingWheel;
@@ -47,7 +47,7 @@ namespace Toolsmith.ToolTinkering {
         public override void Initialize(ICoreAPI api) {
             base.Initialize(api);
 
-            isClient = (api.Side == EnumAppSide.Client);
+            isClient = api.Side == EnumAppSide.Client;
             Rotation = api.World.BlockAccessor.GetBlock(Pos).LastCodePart();
 
             if (isClient) {
@@ -62,7 +62,7 @@ namespace Toolsmith.ToolTinkering {
             if (!isClient) {
                 return;
             }
-            
+
             AnimUtil?.StartAnimation(new AnimationMetaData() { Animation = "spinwheel", Code = "spinwheel", EaseInSpeed = 10, EaseOutSpeed = 2 });
             grinding = true;
             ToggleWheelSound(true);

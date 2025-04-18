@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 
-namespace Toolsmith.ToolTinkering {
+namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorToolBinding : CollectibleBehavior { //Mostly here just for easy simple detection if something is or is not a tool binding!
         public CollectibleBehaviorToolBinding(CollectibleObject collObj) : base(collObj) {
 

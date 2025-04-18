@@ -11,6 +11,8 @@ using Vintagestory.API.Util;
 using Vintagestory.API.Client;
 using Vintagestory.API.MathTools;
 using Vintagestory.ServerMods.NoObf;
+using Toolsmith.ToolTinkering.Items;
+using Toolsmith.ToolTinkering.Behaviors;
 
 namespace Toolsmith.ToolTinkering {
     //This is beginning to hold the MEAT of the whole tinkering system. It has various helper functions that are being used in multiple places to help keep everything just running the single code calls and ensuring it isn't spaghetti while I add more ways to do the same things.
@@ -98,6 +100,66 @@ namespace Toolsmith.ToolTinkering {
 
             int num = GameMath.Clamp(100 * item.GetToolCurrentSharpness() / maxSharpness, 0, 99);
             return SharpnessColorGradient[num];
+        }
+
+        public static int ToolsmithGetItemDamageColor(ItemStack item) {
+            if (item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                var max = FindLowestMaxDurabilityForBar(item);
+                if (max == 0) {
+                    return 0;
+                }
+
+                int num = GameMath.Clamp(100 * FindLowestCurrentDurabilityForBar(item) / max, 0, 99);
+                return GuiStyle.DamageColorGradient[num];
+            } else {
+                return item.Collectible.GetItemDamageColor(item);
+            }
+        }
+
+        //For rendering the durability bar to be used in the transpiler. Generally for just Tinkered Tools here, smithed ones can use the default!
+        public static int FindLowestCurrentDurabilityForBar(ItemStack itemStack) {
+            if (itemStack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                var head = itemStack.GetToolheadCurrentDurability();
+                var handle = itemStack.GetToolhandleCurrentDurability();
+                var binding = itemStack.GetToolbindingCurrentDurability();
+                int lowest;
+
+                if (binding < handle) {
+                    lowest = binding;
+                } else {
+                    lowest = handle;
+                }
+                if (lowest < head) {
+                    return lowest;
+                } else {
+                    return head;
+                }
+            } else {
+                return itemStack.Collectible.GetRemainingDurability(itemStack);
+            }
+        }
+
+        //Used just like the above, but for the max durabilities!
+        public static int FindLowestMaxDurabilityForBar(ItemStack itemStack) {
+            if (itemStack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                var head = itemStack.GetToolheadMaxDurability();
+                var handle = itemStack.GetToolhandleMaxDurability();
+                var binding = itemStack.GetToolbindingMaxDurability();
+                int lowest;
+
+                if (binding < handle) {
+                    lowest = binding;
+                } else {
+                    lowest = handle;
+                }
+                if (lowest < head) {
+                    return lowest;
+                } else {
+                    return head;
+                }
+            } else {
+                return itemStack.Collectible.GetMaxDurability(itemStack);
+            }
         }
 
         public static void HandleBrokenTinkeredTool(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int remainingHeadDur, int remainingSharpness, int remainingHandleDur, int remainingBindingDur, bool headBroke, bool refillSlot) {
@@ -218,6 +280,142 @@ namespace Toolsmith.ToolTinkering {
             }
             var offhandItem = byEntity.LeftHandItemSlot?.Itemstack?.Item;
             return offhandItem as ItemWhetstone;
+        }
+
+        public static bool ValidHandleInOffhand(EntityAgent byEntity) {
+            var offhandItem = byEntity.LeftHandItemSlot?.Itemstack?.Collectible;
+            if (offhandItem == null) {
+                return false;
+            }
+            return offhandItem.HasBehavior<CollectibleBehaviorToolHandle>();
+        }
+
+        public static bool ValidBindingInOffhand(EntityAgent byEntity) {
+            var offhandItem = byEntity.LeftHandItemSlot?.Itemstack?.Collectible;
+            if (offhandItem == null) {
+                return true;
+            }
+            return offhandItem.HasBehavior<CollectibleBehaviorToolBinding>();
+        }
+
+        public static void AssemblePartBundle(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel) {
+            ItemStack bundle = new ItemStack(byEntity.World.GetItem(ToolsmithConstants.ToolBundleCode), 1);
+            ItemSlot handleSlot = byEntity.LeftHandItemSlot;
+
+            bundle.SetToolhead(slot.TakeOut(1));
+            bundle.SetToolhandle(handleSlot.TakeOut(1)); //Take out one, and set it as the Bundle's tool handle!
+
+            handleSlot.MarkDirty();
+            ItemStack tempHolder = slot.Itemstack;
+            slot.Itemstack = bundle; //Above holds the possible multiple-stacked Toolheads, this finally gives the crafted tool to slot that previously had the head(s)
+            slot.MarkDirty();
+            if (tempHolder != null) {
+                if (!byEntity.TryGiveItemStack(tempHolder)) { //This should hopefully return any remainder!
+                    byEntity.World.SpawnItemEntity(tempHolder, byEntity.Pos.XYZ);
+                }
+            }
+        }
+
+        public static void AssembleFullTool(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel) {
+            CollectibleObject craftedTool;
+            ItemStack head = slot.Itemstack.GetToolhead();
+            var success = RecipeRegisterModSystem.TinkerToolGridRecipes.TryGetValue(head.Collectible.Code.ToString(), out craftedTool);
+            if (success) {
+                ItemSlot bindingSlot = byEntity.LeftHandItemSlot;
+                ItemStack craftedItemStack = new ItemStack(byEntity.World.GetItem(craftedTool.Code), 1); //Create the tool in question
+                ItemSlot placeholderOutput = new ItemSlot(new DummyInventory(ToolsmithModSystem.Api));
+                placeholderOutput.Itemstack = craftedItemStack;
+
+                GridRecipe DummyRecipe = new() {
+                    AverageDurability = false,
+                    Output = new() {
+                        ResolvedItemstack = craftedItemStack
+                    }
+                };
+
+                ItemStack handle = slot.Itemstack.GetToolhandle();
+                ItemSlot headSlot = new ItemSlot(new DummyInventory(ToolsmithModSystem.Api));
+                headSlot.Itemstack = head;
+                ItemSlot handleSlot = new ItemSlot(new DummyInventory(ToolsmithModSystem.Api));
+                handleSlot.Itemstack = handle;
+                ItemSlot[] inputSlots;
+                if (bindingSlot.Empty) {
+                    inputSlots = new ItemSlot[] { headSlot, handleSlot };
+                } else {
+                    inputSlots = new ItemSlot[] { headSlot, handleSlot, bindingSlot };
+                }
+
+                craftedItemStack.Collectible.ConsumeCraftingIngredients(inputSlots, placeholderOutput, DummyRecipe);
+                craftedItemStack.Collectible.OnCreatedByCrafting(inputSlots, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
+
+                if (!bindingSlot.Empty) {
+                    bindingSlot.TakeOut(1);
+                    bindingSlot.MarkDirty();
+                }
+                slot.Itemstack = craftedItemStack;
+                slot.MarkDirty();
+            }
+        }
+
+        //Older code now, may be repurposed for the workbench later on.
+        public static ItemSlot SearchForPossibleBindings(IPlayer player) { //Searches only the Hotbar just for efficiency sake! Also kinda ease of use that you don't have to dump EVERYTHING on the ground that might be a binding. Just store it in bags.
+            IInventory hotbar = player.InventoryManager.GetHotbarInventory();
+            foreach (var slot in hotbar.Where(s => s.Itemstack != null)) {
+                if (slot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBinding>()) {
+                    return slot;
+                }
+            }
+            return null;
+        }
+
+        //Old code now, may be repurposed for the Workbench later on.
+        public static void CraftTool(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
+            CollectibleObject craftedTool;
+            var success = RecipeRegisterModSystem.TinkerToolGridRecipes.TryGetValue(slot.Itemstack.Collectible.Code.ToString(), out craftedTool);
+            if (success) {
+                IPlayer player = ((EntityPlayer)byEntity).Player; //I THINK only a player can ever craft something? I dunno. This aint modded Minecraft though so maybe no fake players to account for woo.
+                ItemSlot bindingSlot = SearchForPossibleBindings(player); //Does the Player have a valid Binding in their hotbar? Note, this bindingSlot can be null! That means no binding found and not used.
+                if (bindingSlot == null) { //If so, grab it and the handle...
+                    bindingSlot = new DummySlot();
+                }
+                ItemSlot handleSlot = byEntity.LeftHandItemSlot;
+
+                ItemStack craftedItemStack = new ItemStack(byEntity.World.GetItem(craftedTool.Code), 1); //Create the tool in question
+                ItemSlot placeholderOutput = new ItemSlot(new DummyInventory(ToolsmithModSystem.Api));
+                placeholderOutput.Itemstack = craftedItemStack;
+
+                GridRecipe DummyRecipe = new() {
+                    AverageDurability = false,
+                    Output = new() {
+                        ResolvedItemstack = craftedItemStack
+                    }
+                };
+                ItemSlot[] inputSlots;
+                if (bindingSlot.GetType() != typeof(DummySlot)) {
+                    inputSlots = new ItemSlot[] { slot, handleSlot, bindingSlot };
+                } else {
+                    inputSlots = new ItemSlot[] { slot, handleSlot };
+                }
+
+                craftedItemStack.Collectible.ConsumeCraftingIngredients(inputSlots, placeholderOutput, DummyRecipe);
+                craftedItemStack.Collectible.OnCreatedByCrafting(inputSlots, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
+
+                handleSlot.TakeOut(1); //Decrement inputs, and place the finished item in the ToolHead's Slot
+                handleSlot.MarkDirty();
+                if (bindingSlot.GetType() != typeof(DummySlot)) {
+                    bindingSlot.TakeOut(1);
+                    bindingSlot.MarkDirty();
+                }
+                ItemStack tempHolder = slot.Itemstack; //I don't believe any Toolhead will actually stack more then once -- Actually they do. Huh. I never tried before. Good thing I had this!
+                slot.Itemstack = craftedItemStack; //Above holds the possible multiple-stacked Toolheads, this finally gives the crafted tool to slot that previously had the head(s)
+                slot.MarkDirty();
+                if (tempHolder.StackSize > 1) {
+                    tempHolder.StackSize -= 1;
+                    if (!byEntity.TryGiveItemStack(tempHolder)) { //This should hopefully return any remainder!
+                        byEntity.World.SpawnItemEntity(tempHolder, byEntity.Pos.XYZ);
+                    }
+                }
+            }
         }
 
         //This checks if it is a valid repair tool as well as if it is a fully tinkered tool or if it is just a tool's head, since the durabilities are stored under different attributes

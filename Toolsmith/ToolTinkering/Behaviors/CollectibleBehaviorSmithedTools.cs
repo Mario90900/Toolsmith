@@ -7,7 +7,7 @@ using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 
-namespace Toolsmith.ToolTinkering {
+namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorSmithedTools : CollectibleBehavior {
 
         protected bool sharpening = false;
@@ -15,7 +15,7 @@ namespace Toolsmith.ToolTinkering {
         protected float lastInterval = 0;
 
         public CollectibleBehaviorSmithedTools(CollectibleObject collObj) : base(collObj) {
-            
+
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {

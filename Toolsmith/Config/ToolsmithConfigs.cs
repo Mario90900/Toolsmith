@@ -88,6 +88,8 @@ namespace Toolsmith.Config {
             ["metalnailsandstrips-blackbronze"] = new() { bindingStats = "blackbronzenails" },
             ["metalnailsandstrips-iron"] = new() { bindingStats = "ironnails" },
             ["metalnailsandstrips-cupronickel"] = new() { bindingStats = "cupronickelnails" },
+            ["metalnailsandstrips-meteoriciron"] = new() { bindingStats = "meteoricironnails" },
+            ["metalnailsandstrips-steel"] = new() { bindingStats = "steelnails" },
             ["metal-parts"] = new() { bindingStats = "cupronickelnails" },
             ["cordage"] = new() { bindingStats = "rope" },
             ["glueportion-sinew-cold"] = new() { bindingStats = "glue" },

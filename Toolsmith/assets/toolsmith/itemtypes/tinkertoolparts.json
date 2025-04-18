@@ -1,0 +1,32 @@
+{
+	"code": "tinkertoolparts",
+	"class": "toolsmith:ItemTinkerToolParts",
+	"maxstacksize": 1,
+	"attributes": {
+		"rackable": true,
+		"toolrackTransform": {
+			"translation": { "x": 0, "y": 0.6, "z":0 },
+			"scale": 1.25
+		}
+	},
+	"shape": { "base": "game:item/scrapweaponkit" },
+	"creativeinventory": { },
+	"guiTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": -46, "y": 22, "z": -1 },
+		"origin": { "x": 0.46, "y": 0, "z": 0.49 },
+		"scale": 1.9
+	},
+	"tpHandTransform": {
+		"translation": { "x": -1.07, "y": -0.21, "z": -0.67 },
+		"rotation": { "x": 180, "y": -100, "z": -180 },
+		"origin": { "x": 0.5, "y": 0.2, "z": 0.5 },
+		"scale": 0.61
+	},
+	"groundTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+		"scale": 3.5
+	}
+}

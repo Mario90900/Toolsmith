@@ -11,7 +11,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Util;
 
-namespace Toolsmith.ToolTinkering {
+namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorTinkeredTools : CollectibleBehavior {
 
         protected bool sharpening = false;
@@ -19,14 +19,14 @@ namespace Toolsmith.ToolTinkering {
         protected float lastInterval = 0;
 
         public CollectibleBehaviorTinkeredTools(CollectibleObject collObj) : base(collObj) {
-            
+
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) { //This only seems to get called on the clientside, which makes sense. Whoops, it can't be a catch-all to fix null tools like I thought, but it's still important to display the durabilities before the item's actually used.
-            if (inSlot.Itemstack == null || inSlot.Inventory == null || inSlot.Inventory.GetType() == typeof(DummyInventory) || inSlot.Inventory.GetType() == typeof(CreativeInventoryTab) || (ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(inSlot.Itemstack.Collectible.Code.ToString()))) { //I don't think it's possible for the itemstack to be null at this point, but JUST IN CASE I'll confirm it.
+            if (inSlot.Itemstack == null || inSlot.Inventory == null || inSlot.Inventory.GetType() == typeof(DummyInventory) || inSlot.Inventory.GetType() == typeof(CreativeInventoryTab) || ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(inSlot.Itemstack.Collectible.Code.ToString())) { //I don't think it's possible for the itemstack to be null at this point, but JUST IN CASE I'll confirm it.
                 return; //If this item is in a DummyInventory or CreativeInventoryTab, it's likely not an actual item - but something rendering in a Handbook slot or creative inventory slot I believe. Lets just not mess with those, they won't have data anyway.
             }
-            
+
             var curHeadDur = inSlot.Itemstack.GetToolheadCurrentDurability();
             var maxHeadDur = inSlot.Itemstack.GetToolheadMaxDurability();
             var curHandleDur = inSlot.Itemstack.GetToolhandleCurrentDurability();
@@ -37,7 +37,7 @@ namespace Toolsmith.ToolTinkering {
             var maxSharp = inSlot.Itemstack.GetToolMaxSharpness();
 
             //This extra reset parts bit might be redundant now after moving the resets into the Get calls themselves. It also might not ever call because it will always be > 0?
-            if (maxHeadDur < 0) { //If this is 0 then assume something went wrong and reset things, it's a new item spawned in, or a player added the mod to their save.
+            if (curHeadDur < 0) { //If this is 0 then assume something went wrong and reset things, it's a new item spawned in, or a player added the mod to their save.
                 inSlot.Itemstack.ResetNullHead(world); //Moved the client-half of resetting the tool head into this call. Can be safely called on both sides, and handle it over there. Make sure to mark the itemslot as dirty on the client though after using this.
                 curHeadDur = inSlot.Itemstack.GetToolheadCurrentDurability();
             }
@@ -55,10 +55,10 @@ namespace Toolsmith.ToolTinkering {
             int startIndex = 0;
             int endIndex = 0;
 
-            StringHelpers.FindTooltipVanillaDurabilityLine(ref startIndex,ref endIndex, workingDsc, world, withDebugInfo); //Moved this code originally from TinkerTools into it's own helper function.
+            StringHelpers.FindTooltipVanillaDurabilityLine(ref startIndex, ref endIndex, workingDsc, world, withDebugInfo); //Moved this code originally from TinkerTools into it's own helper function.
 
             if (endIndex < workingDsc.Length) {
-                workingDsc.Remove(startIndex, (endIndex - startIndex) + 1); //Remove the durability line
+                workingDsc.Remove(startIndex, endIndex - startIndex + 1); //Remove the durability line
             }
 
             workingDsc.Insert(startIndex, Lang.Get("toolbindingdurability", curBindingDur, maxBindingDur) + '\n'); //Insert in the part durabilities in the place of it
@@ -68,6 +68,7 @@ namespace Toolsmith.ToolTinkering {
 
             dsc.Clear();
             dsc.Append(workingDsc);
+            inSlot.MarkDirty();
         }
 
         //Now to break down the ingredients used in the craft... This may or may not be VERY interesting when the vanilla crafting recipes call OnCreatedByCrafting...
@@ -80,7 +81,7 @@ namespace Toolsmith.ToolTinkering {
             ItemStack handleStack = null;
             ItemStack bindingStack = null;
             ItemStack foundToolInput = null;
-            
+
             foreach (var itemSlot in allInputslots.Where(i => i.Itemstack != null)) { //Is it possible any slot could even be null here...? Like when a grid-craft is done. Better to be safe though?
                 if (itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) { //If it has this behavior, found the tool head!
                     headStack = itemSlot.Itemstack.Clone();
@@ -112,7 +113,10 @@ namespace Toolsmith.ToolTinkering {
                 outputSlot.Itemstack.SetToolhandle(foundToolInput.GetToolhandle());
                 outputSlot.Itemstack.SetToolhandleCurrentDurability(foundToolInput.GetToolhandleCurrentDurability());
                 outputSlot.Itemstack.SetToolhandleMaxDurability(foundToolInput.GetToolhandleMaxDurability());
-                outputSlot.Itemstack.SetToolbinding(foundToolInput.GetToolbinding());
+                var foundToolInputBinding = foundToolInput.GetToolbinding();
+                if (foundToolInputBinding != null) { //Whoops. It was a mistake not to be verifying that there even was a binding first. Fixed this hole though!
+                    outputSlot.Itemstack.SetToolbinding(foundToolInputBinding);
+                }
                 outputSlot.Itemstack.SetToolbindingCurrentDurability(foundToolInput.GetToolbindingCurrentDurability());
                 outputSlot.Itemstack.SetToolbindingMaxDurability(foundToolInput.GetToolbindingMaxDurability());
                 outputSlot.Itemstack.SetSpeedBonus(foundToolInput.GetSpeedBonus());
@@ -152,7 +156,7 @@ namespace Toolsmith.ToolTinkering {
                     }
                 }
                 binding = ToolsmithModSystem.Config.BindingsWithStats.Get(bindingStack.Collectible.Code.Path);
-            } else { 
+            } else {
                 binding = ToolsmithModSystem.Config.BindingsWithStats.Get(ToolsmithConstants.DefaultBindingPartKey);
             }
             var handleStats = ToolsmithModSystem.Stats.handles.Get(handle.handleStats);
@@ -169,17 +173,17 @@ namespace Toolsmith.ToolTinkering {
             HandleExtraModCompat(allInputslots, outputSlot); //Handle some mod compatability here! Anything that needs a little bit of extra handling before getting the first BaseMaxDurability.
 
             var baseDur = outputSlot.Itemstack.Collectible.GetBaseMaxDurability(outputSlot.Itemstack);
-            int headDur = outputSlot.Itemstack.GetToolheadMaxDurability();//Start with the tool head, find out the base durability of the tool, multiply that by 5 - now encapsulated within this call.
+            int headDur = outputSlot.Itemstack.GetToolheadMaxDurability();//Start with the tool head.
             int sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);//Calculate the sharpness next similarly to the durability.
 
             var handleDur = baseDur * handleStats.baseHPfactor; //Starting with the handle: Account for baseHPfactor first in the handle...
-            handleDur = handleDur + (handleDur * handleStats.selfHPBonus); //plus the selfDurabilityBonus
-            handleDur = handleDur + (handleDur * treatmentStats.handleHPbonus); //Then any treatment bonus
-            handleDur = handleDur + (handleDur * bindingStats.handleHPBonus); //Finally the Binding bonus, and all this should be multiplicitive, cause why not haha
+            handleDur = handleDur + handleDur * handleStats.selfHPBonus; //plus the selfDurabilityBonus
+            handleDur = handleDur + handleDur * treatmentStats.handleHPbonus; //Then any treatment bonus
+            handleDur = handleDur + handleDur * bindingStats.handleHPBonus; //Finally the Binding bonus, and all this should be multiplicitive, cause why not haha
 
             var bindingDur = baseDur * bindingStats.baseHPfactor; //Now for the binding, but this has fewer parts.
-            bindingDur = bindingDur + (bindingDur * bindingStats.selfHPBonus);
-            bindingDur = bindingDur + (bindingDur * handleStats.bindingHPBonus);
+            bindingDur = bindingDur + bindingDur * bindingStats.selfHPBonus;
+            bindingDur = bindingDur + bindingDur * handleStats.bindingHPBonus;
 
             //Apply the end results of that to the tool/parts. Could the parts themselves actually hold the stats...? Eh. Might be faster to just directly apply them to the tool and then update the current HP when it breaks.
             var currentHeadPer = headStack.GetPartRemainingHPPercent(); //If this returns 0, then assume it's full durability since something is unset. Keep this assumption in mind!!!
@@ -198,7 +202,7 @@ namespace Toolsmith.ToolTinkering {
                 }
             }
             headStack.SetPartCurrentSharpness((int)(sharpness * currentHeadSharpPer));
-            
+
             outputSlot.Itemstack.SetToolheadCurrentDurability((int)(headDur * currentHeadPer));
             outputSlot.Itemstack.SetToolMaxSharpness(sharpness);
             outputSlot.Itemstack.SetToolCurrentSharpness((int)(sharpness * currentHeadSharpPer));
@@ -239,6 +243,7 @@ namespace Toolsmith.ToolTinkering {
             if (bindingStack != null) {
                 outputSlot.Itemstack.SetToolbinding(bindingStack);
             }
+            //outputSlot.MarkDirty();
 
             //outputSlot.Itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, outputSlot.Itemstack.Collectible.GetMaxDurability(outputSlot.Itemstack));
         }
