@@ -1,0 +1,13 @@
+[
+	{
+		"ingredientPattern": "KS,W_",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"S": { "type": "item", "code": "toolsmith:sandpaper" },
+			"W": { "type": "block", "code": "game:supportbeam-*" }
+		},
+		"width": 2,
+		"height": 2,
+		"output": { "type": "item", "code": "toolsmith:carpentedhandle", "quantity": 1 }
+	}
+]

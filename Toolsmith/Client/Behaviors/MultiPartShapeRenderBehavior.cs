@@ -8,16 +8,22 @@ using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
-namespace Toolsmith.ToolTinkering.Behaviors {
-    public class MultiPartShapeAndTextureRenderBehavior : CollectibleBehavior, IContainedMeshSource {
-        public MultiPartShapeAndTextureRenderBehavior(CollectibleObject collObj) : base(collObj) {
+namespace Toolsmith.Client.Behaviors {
+    public class MultiPartShapeRenderBehavior : CollectibleBehavior, IContainedMeshSource {
+
+        public MultiPartShapeRenderBehavior(CollectibleObject collObj) : base(collObj) {
+
         }
 
         public MeshData GenMesh(ItemStack itemstack, ITextureAtlasAPI targetAtlas, BlockPos atBlockPos) {
+
+
             throw new NotImplementedException();
         }
 
         public string GetMeshCacheKey(ItemStack itemstack) {
+
+
             throw new NotImplementedException();
         }
     }

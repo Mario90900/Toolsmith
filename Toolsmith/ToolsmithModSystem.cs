@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
+using Toolsmith.Client.Behaviors;
 using Toolsmith.Config;
 using Toolsmith.ToolTinkering;
 using Toolsmith.ToolTinkering.Behaviors;
@@ -14,6 +15,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
+using Vintagestory.Client.NoObf;
 using Vintagestory.GameContent;
 using Vintagestory.Server;
 using Vintagestory.ServerMods;
@@ -35,8 +37,12 @@ namespace Toolsmith {
         public static List<CollectibleObject> TinkerableToolsList; //This will still get populated because it's used to search the recipes later, and it saves having to re-iterate over every single object a second time.
                                                                    //I feel it's best to keep the recipe handling after the game expects them all to be loaded. Let me know if it might be better in the long run to just
                                                                    //do it immediately on first discovery - or push it all later? Wait that might not be a good idea either, cause Behaviors get assigned here-ish.
-        public static List<CollectibleObject> HandleList; //Will not be populated unless PrintAllParsedToolsAndParts is true
-        public static List<CollectibleObject> BindingList; //Same as HandleList above
+        public static List<CollectibleObject> HandleList; //Now populated to see if Grid Recipes can be generated with the tool heads, handles, and bindings. Will likely clear it afterwards, so do not expect it to remain populated.
+        public static List<CollectibleObject> BindingList; //^^^
+        public static List<CollectibleObject> GripList; //This gets populated on start during the pass through all the items. Will be used to reference back to when generating the recipes for Handles! Contains references to all collectable objects that have an entry in the GripRegistry config section.
+        public static List<CollectibleObject> TreatmentList; //More CollectibleObjects to be used as treatments! Both Treatments and Grips will likely be cleared after processed on the server side for recipes.
+
+        public static Dictionary<string, Shape> AlternatePartShapes; //This is only created on the Clientside! The shapes only are used for rendering anyway.
 
         public static List<string> IgnoreCodes;
 
@@ -49,6 +55,9 @@ namespace Toolsmith {
             TinkerableToolsList = new List<CollectibleObject>();
             HandleList = new List<CollectibleObject>();
             BindingList = new List<CollectibleObject>();
+            GripList = new List<CollectibleObject>();
+            TreatmentList = new List<CollectibleObject>();
+            AlternatePartShapes = new Dictionary<string, Shape>();
             IgnoreCodes = new List<string>();
         }
 
@@ -61,6 +70,7 @@ namespace Toolsmith {
             //This is important to let the Treasure Hunter Trader accept a Toolsmith Pick to get the map for Story Content! Thank you Item Rarity for also having the issue and both leaving a comment and pushing the commit not too long before I had the same problem :P
             GlobalConstants.IgnoredStackAttributes = GlobalConstants.IgnoredStackAttributes.Append(ToolsmithAttributes.ToolsmithIgnoreAttributesArray);
 
+            //Tool Tinkering general Behaviors
             api.RegisterCollectibleBehaviorClass($"{ModId}:TinkeredTools", typeof(CollectibleBehaviorTinkeredTools));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolPartWithHealth", typeof(CollectibleBehaviorToolPartWithHealth));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolNoDamageWithUse", typeof(CollectibleBehaviorToolBlunt));
@@ -68,10 +78,16 @@ namespace Toolsmith {
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolHead", typeof(CollectibleBehaviorToolHead));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolHandle", typeof(CollectibleBehaviorToolHandle));
             api.RegisterCollectibleBehaviorClass($"{ModId}:ToolBinding", typeof(CollectibleBehaviorToolBinding));
+
+            //Rendering-Based Behaviors
+            api.RegisterCollectibleBehaviorClass($"{ModId}:ModularPartRenderingFromAttributes", typeof(ModularPartRenderingFromAttributes));
+
+            //Blocks and Items registry
             api.RegisterBlockEntityClass($"{ModId}:EntityGrindstone", typeof(BlockEntityGrindstone));
             api.RegisterBlockClass($"{ModId}:BlockGrindstone", typeof(BlockGrindstone));
             api.RegisterItemClass($"{ModId}:ItemWhetstone", typeof(ItemWhetstone));
             api.RegisterItemClass($"{ModId}:ItemTinkerToolParts", typeof(ItemTinkerToolParts));
+
             HarmonyPatch();
         }
 
@@ -86,51 +102,75 @@ namespace Toolsmith {
 
         public override void AssetsFinalize(ICoreAPI api) {
             base.AssetsFinalize(api);
-            if (api.Side.IsClient()) return;
+
+            if (api.Side.IsClient()) {
+                Logger.VerboseDebug("Toolsmith getting and locally caching alternate part shapes.");
+                foreach (var pair in Config.BaseHandleRegistry) {
+                    if (pair.Value.gripShapePath != "") {
+                        var tempShape = api.Assets.TryGet(new AssetLocation(pair.Value.gripShapePath + ".json"))?.ToObject<Shape>();
+                        AlternatePartShapes.TryAdd(pair.Value.gripShapePath, tempShape.Clone());
+                    }
+                }
+
+                return;
+            }
             
             if (Config.PrintAllParsedToolsAndParts) {
                 Logger.Debug("Single Part Tools:");
             }
-            var handleKeys = Config.ToolHandlesWithStats.Keys;
-            var bindingKeys = Config.BindingsWithStats.Keys;
+            var handleKeys = Config.BaseHandleRegistry.Keys;
+            var bindingKeys = Config.BindingRegistry.Keys;
+            var gripKeys = Config.GripRegistry.Keys;
+            var treatmentKeys = Config.TreatmentRegistry.Keys;
             foreach (var t in api.World.Collectibles.Where(t => t?.Code != null)) { //A tool/part should likely be only one of these!
                 if (ConfigUtility.IsTinkerableTool(t.Code.ToString()) && !(ConfigUtility.IsToolHead(t.Code.ToString())) && !(ConfigUtility.IsOnBlacklist(t.Code.ToString()))) { //Any tool that you actually craft from a Tool Head to create!
                     if (!t.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                        t.AddBehavior<CollectibleBehaviorTinkeredTools>();
+                        t.AddBehaviorAtFront<CollectibleBehaviorTinkeredTools>();
                     }
                     if (ConfigUtility.IsBluntTool(t.Code.ToString())) { //Any tinkered tool can still be one that's 'blunt', IE a Hammer in this case
                         if (!t.HasBehavior<CollectibleBehaviorToolBlunt>()) {
-                            t.AddBehavior<CollectibleBehaviorToolBlunt>();
+                            t.AddBehaviorAtFront<CollectibleBehaviorToolBlunt>();
                         }
                     }
                     TinkerableToolsList.Add(t);
+                    continue;
                 } else if (ConfigUtility.IsSinglePartTool(t.Code.ToString()) && !(ConfigUtility.IsOnBlacklist(t.Code.ToString()))) { //A 'Smithed' tool is one that once you finish the anvil smithing recipe, the tool is done. Shears, Wrench, or Chisel in vanilla! Add the 'Smithed' Tool Behavior so they can gain the Grinding interaction to maintain them.
                     if (!t.HasBehavior<CollectibleBehaviorSmithedTools>()) {
-                        t.AddBehavior<CollectibleBehaviorSmithedTools>();
+                        t.AddBehaviorAtFront<CollectibleBehaviorSmithedTools>();
                     }
                     if (ConfigUtility.IsBluntTool(t.Code.ToString())) { //Any smithed tool can still be one that's 'blunt', IE a Wrench in this case
                         if (!t.HasBehavior<CollectibleBehaviorToolBlunt>()) {
-                            t.AddBehavior<CollectibleBehaviorToolBlunt>();
+                            t.AddBehaviorAtFront<CollectibleBehaviorToolBlunt>();
                         }
                     }
                     if (Config.PrintAllParsedToolsAndParts) {
                         Logger.Debug(t.Code.ToString());
                     }
+                    continue;
                 } else if (ConfigUtility.IsToolHandle(t.Code.Path, handleKeys)) { //Probably don't need the blacklist anymore, since can assume the configs have the exact Path
                     if (!t.HasBehavior<CollectibleBehaviorToolHandle>()) {
-                        t.AddBehavior<CollectibleBehaviorToolHandle>();
+                        t.AddBehaviorAtFront<CollectibleBehaviorToolHandle>();
                     }
-                    if (Config.PrintAllParsedToolsAndParts) { //Both Handles and Bindings don't really need to populate these lists anymore unless we are looking to actually print everything found. Should help to save some time and ram?
-                        HandleList.Add(t);
-                    }
+                    //if (Config.PrintAllParsedToolsAndParts) { //Both Handles and Bindings don't really need to populate these lists anymore unless we are looking to actually print everything found. Should help to save some time and ram?
+                    HandleList.Add(t);
+                    //}
+                    continue;
                 } else if (ConfigUtility.IsToolBinding(t.Code.Path, bindingKeys)) {
                     if (!t.HasBehavior<CollectibleBehaviorToolBinding>()) {
-                        t.AddBehavior<CollectibleBehaviorToolBinding>();
+                        t.AddBehaviorAtFront<CollectibleBehaviorToolBinding>();
                         t.StorageFlags += 0x100;
                     }
-                    if (Config.PrintAllParsedToolsAndParts) {
-                        BindingList.Add(t);
-                    }
+                    //if (Config.PrintAllParsedToolsAndParts) {
+                    BindingList.Add(t);
+                    //}
+                    continue;
+                }
+
+                if (ConfigUtility.IsValidGripMaterial(t.Code.Path, gripKeys)) {
+                    GripList.Add(t);
+                }
+                if (ConfigUtility.IsValidTreatmentMaterial(t.Code.Path, treatmentKeys)) {
+                    TreatmentList.Add(t);
                 }
             }
 
@@ -147,6 +187,21 @@ namespace Toolsmith {
                 foreach (var t in BindingList) {
                     Logger.Debug(t.Code.ToString());
                 }
+                Logger.Debug("Grip Materials:");
+                foreach (var t in GripList) {
+                    Logger.Debug(t.Code.ToString());
+                }
+                Logger.Debug("Treatment Materials:");
+                foreach (var t in TreatmentList) {
+                    Logger.Debug(t.Code.ToString());
+                }
+            }
+
+            if (api.Side.IsClient()) { //If this is the clientside, after it has printed, just clear these four. These four get cleared on the serverside in RecipeRegisterModSystem at the end of using them!
+                HandleList = null;
+                BindingList = null;
+                GripList = null;
+                BindingList = null;
             }
         }
 
@@ -218,6 +273,8 @@ namespace Toolsmith {
             TinkerableToolsList = null;
             HandleList = null;
             BindingList = null;
+            GripList = null;
+            TreatmentList = null;
             IgnoreCodes = null;
             base.Dispose();
         }

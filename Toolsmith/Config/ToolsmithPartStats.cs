@@ -16,12 +16,15 @@ namespace Toolsmith.Config {
 
     public class GripStats {
         public string id;
+        public string texturePath = "plain"; 
+        public string langTag = ""; //A tag to set for localization purposes that describes the grip on the tool IE: "grip-cloth" for cloth
         public float speedBonus; //The best speed bonuses come from the grip of the tool. If you can hold it better, you can use it faster...
         public float chanceToDamage; //And more efficiently too. Gives the handle a chance to ignore damage!
     }
 
     public class TreatmentStats {
         public string id;
+        public string langTag = ""; //A tag to set for localization purposes that describes the treatment on the tool IE: "treatment-wax" for wax
         public float handleHPbonus; //Treating the handle makes it last longer
     }
 
@@ -36,7 +39,7 @@ namespace Toolsmith.Config {
     }
 
     public class ToolsmithPartStats { //A Tool's head HP is always 5 times the base tool's HP level, and always ticks down 1 durability a use, since metal is easy to grindstone-fix
-        public Dictionary<string, HandleStats> handles = new() {
+        public Dictionary<string, HandleStats> baseHandles = new() {
             ["stick"] = new() { id = "stick", baseHPfactor = 1.0f, selfHPBonus = 0.0f, bindingHPBonus = 0.0f, speedBonus = 0.0f },
             ["bone"] = new() { id = "bone", baseHPfactor = 1.0f, selfHPBonus = 0.05f, bindingHPBonus = 0.05f, speedBonus = 0.0f },
             ["crude"] = new() { id = "crude", baseHPfactor = 1.0f, selfHPBonus = 0.0f, bindingHPBonus = 0.05f, speedBonus = 0.0f },
@@ -45,16 +48,16 @@ namespace Toolsmith.Config {
         };
         public Dictionary<string, GripStats> grips = new() {
             ["plain"] = new() { id = "plain", speedBonus = 0.0f, chanceToDamage = 1.0f },
-            ["twine"] = new() { id = "twine", speedBonus = 0.0f, chanceToDamage = 0.95f },
-            ["cloth"] = new() { id = "cloth", speedBonus = 0.1f, chanceToDamage = 0.9f },
-            ["leather"] = new() { id = "leather", speedBonus = 0.2f, chanceToDamage = 0.8f },
-            ["sturdy"] = new() { id = "sturdy", speedBonus = 0.3f, chanceToDamage = 0.65f }
+            ["twine"] = new() { id = "twine", texturePath = "game:block/cloth/reedrope", langTag = "grip-twine", speedBonus = 0.0f, chanceToDamage = 0.95f },
+            ["cloth"] = new() { id = "cloth", texturePath = "game:block/cloth/linen/normal1", langTag = "grip-cloth", speedBonus = 0.1f, chanceToDamage = 0.9f },
+            ["leather"] = new() { id = "leather", texturePath = "game:block/leather/plain", langTag = "grip-leather", speedBonus = 0.2f, chanceToDamage = 0.8f },
+            ["sturdy"] = new() { id = "sturdy", texturePath = "game:block/leather/chromium", langTag = "grip-sturdy", speedBonus = 0.3f, chanceToDamage = 0.65f }
         };
         public Dictionary<string, TreatmentStats> treatments = new() {
             ["none"] = new() { id = "none", handleHPbonus = 0.0f },
-            ["fat"] = new() { id = "fat", handleHPbonus = 0.2f },
-            ["wax"] = new() { id = "wax", handleHPbonus = 0.5f },
-            ["oil"] = new() { id = "oil", handleHPbonus = 0.65f }
+            ["fat"] = new() { id = "fat", langTag = "treatment-fat", handleHPbonus = 0.2f },
+            ["wax"] = new() { id = "wax", langTag = "treatment-wax", handleHPbonus = 0.5f },
+            ["oil"] = new() { id = "oil", langTag = "treatment-oil", handleHPbonus = 0.65f }
         };
         public Dictionary<string, BindingStats> bindings = new() {
             ["none"] = new() { id = "none", baseHPfactor = 1.0f, selfHPBonus = 0.0f, handleHPBonus = 0.0f, recoveryPercent = 1.0f, isMetal = false },

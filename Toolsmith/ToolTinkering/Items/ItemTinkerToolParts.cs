@@ -45,9 +45,14 @@ namespace Toolsmith.ToolTinkering.Items {
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {
-            var head = inSlot.Itemstack.GetToolhead();
-            var handle = inSlot.Itemstack.GetToolhandle();
-            dsc.AppendLine(Lang.Get("tinkertoolpartscontains", head.GetName(), handle.GetName()));
+            var head = inSlot.Itemstack.GetToolheadForData();
+            var handle = inSlot.Itemstack.GetToolhandleForData();
+
+            if ( head != null && handle != null ) {
+                dsc.AppendLine(Lang.Get("tinkertoolpartscontains", head.GetName(), handle.GetName()));
+            } else {
+                dsc.AppendLine("This Tinker Tool Part Bundle is lacking either a head or handle! Something went wrong, craft at your own risk.");
+            }
 
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
         }

@@ -22,17 +22,31 @@ namespace Toolsmith.Utils {
             return match;
         }
 
-        public static bool IsToolHandle(string toolHandle, Dictionary<string, HandleWithStats>.KeyCollection keys) {
+        public static bool IsToolHandle(string toolHandle, Dictionary<string, HandleStatPair>.KeyCollection keys) {
             if (toolHandle == null) return false;
 
             var match = keys.Contains(toolHandle);
             return match;
         }
 
-        public static bool IsToolBinding(string toolBinding, Dictionary<string, BindingWithStats>.KeyCollection keys) {
+        public static bool IsToolBinding(string toolBinding, Dictionary<string, BindingStatPair>.KeyCollection keys) {
             if (toolBinding == null) return false;
 
             var match = keys.Contains(toolBinding);
+            return match;
+        }
+
+        public static bool IsValidGripMaterial(string gripMat, Dictionary<string, GripStatPair>.KeyCollection keys) {
+            if (gripMat == null) return false;
+
+            var match = keys.Contains(gripMat);
+            return match;
+        }
+
+        public static bool IsValidTreatmentMaterial(string treatmentMat, Dictionary<string,  TreatmentStatPair>.KeyCollection keys) {
+            if (treatmentMat == null) return false;
+
+            var match = keys.Contains(treatmentMat);
             return match;
         }
 

@@ -15,12 +15,23 @@
 	"game:toolbindingdirections": "This looks very useful for binding a tool together.",
 	"game:tinkertoolpartscontains": "Prepared an {0}, and a {1} for crafting into a tool. Now optionally choose a binding the same as the handle!",
 	
-    "item-crudehandle-plain": "Crude Tool Handle",
+    "item-crudehandle": "Crude Tool Handle",
+	"item-handle": "Carved Tool Handle",
+	"item-carpentedhandle": "Professional Tool Handle",
+	
+	"game:grip-twine": "Twine",
+	"game:grip-cloth": "Cloth",
+	"game:grip-leather": "Leather",
+	"game:grip-sturdy": "Sturdy",
+	
+	"game:treatment-fat": "Greased",
+	"game:treatment-wax": "Waxed",
+	"game:treatment-oil": "Oiled",
+	
 	"item-crudehandle-twine": "Crude Tool Handle with Twine Grip",
 	"item-crudehandle-cloth": "Crude Tool Handle with Linen Grip",
 	"item-crudehandle-leather": "Crude Tool Handle with Leather Grip",
 	
-	"item-handle-none-finished-plain": "Carved Tool Handle",
 	"item-handle-none-finished-twine": "Carved Tool Handle with Twine Grip",
 	"item-handle-none-finished-cloth": "Carved Tool Handle with Linen Grip",
 	"item-handle-none-finished-leather": "Carved Tool Handle with Leather Grip",
@@ -44,7 +55,6 @@
 	"item-handle-oil-finished-leather": "Oiled Carved Tool Handle with Leather Grip",
 	"item-handle-oil-finished-sturdy": "Oiled Carved Tool Handle with Sturdy Grip",
 	
-	"item-carpentedhandle-none-finished-plain": "Professional Tool Handle",
 	"item-carpentedhandle-none-finished-twine": "Professional Tool Handle with Twine Grip",
 	"item-carpentedhandle-none-finished-cloth": "Professional Tool Handle with Linen Grip",
 	"item-carpentedhandle-none-finished-leather": "Professional Tool Handle with Leather Grip",

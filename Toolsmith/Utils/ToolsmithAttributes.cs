@@ -29,6 +29,17 @@ namespace Toolsmith.Utils {
         public const string ToolPartCurrentDur = "toolPartCurrentDurability";
         public const string ToolPartMaxDur = "toolPartMaxDurability";
 
+        //Attributes to control the addons to a handle, and the tool as a whole itself. Will be stored on the handles, and referenced for generating the renderer as well as stats. Important these are saved.
+        public const string HandleGripTag = "toolHandleGripTag";
+        public const string HandleTreatmentTag = "toolHandleTreatmentTag";
+        public const string ModularPartShapePath = "modularPartShape";
+        public const string ShaftWoodTypeAttribute = "shaftTexture";
+        public const string GripTexture = "gripTexture";
+        public const string TreatmentOverlay = "treatmentOverlay"; //Can also serve as an easy 'IsWet' check!
+
+        //Temp Attributes! Ones not intended to be saved to the item forever, and instead are used in the TempAttributes tree on the itemstack. It seems like the Temp Attributes get cleaned every time a slot is marked dirty.
+        public const string ToolsmithMeshID = "toolsmithMeshrefID";
+
         //Vanilla Attribute Consts
         //While these are not attributes created by the mod, I figure it might be beneficial to give them the same treatment. Just make sure they stay updated with the base game!
         public const string Durability = "durability";

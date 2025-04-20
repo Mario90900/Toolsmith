@@ -28,6 +28,15 @@ namespace Toolsmith.Utils {
             return head.Clone();
         }
 
+        public static ItemStack? GetToolheadForData(this ItemStack itemStack) { //A version of the above call that specifically is to be used in cases where it is not mandatory for it to be set, and resetting it would be bad. It's either not a tool, or this is just for informational purposes.
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHead)) {
+                return null;
+            }
+            var head = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHead);
+            head.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+            return head.Clone();
+        }
+
         public static void SetToolhead(this ItemStack itemStack, ItemStack toolhead) {
             itemStack.Attributes.SetItemstack(ToolsmithAttributes.ToolHead, toolhead.Clone()); //Save a clone of what was passed, maybe it's only been saving a reference each time...
         }
@@ -108,9 +117,20 @@ namespace Toolsmith.Utils {
         }
 
         //Tool Handle on full Tool ItemStack cluster
+
         public static ItemStack GetToolhandle(this ItemStack itemStack) { //Same as the head, if there is no Handle, lets reset it in here. Hopefully this makes it stronger.
             if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHandle)) {
                 itemStack.ResetNullHandleOrBinding(ToolsmithModSystem.Api.World);
+            }
+            // !!! Test for old handles here, and change them to new ones if they are pulled from a tool !!!
+            var handle = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHandle);
+            handle.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+            return handle.Clone();
+        }
+
+        public static ItemStack? GetToolhandleForData(this ItemStack itemStack) { //A version of the above call that specifically is to be used in cases where it is not mandatory for it to be set, and resetting it would be bad. It's either not a tool, or this is just for informational purposes.
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHandle)) {
+                return null;
             }
             var handle = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHandle);
             handle.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
@@ -264,7 +284,7 @@ namespace Toolsmith.Utils {
 
                 var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
                 var headStack = new ItemStack(world.GetItem(new AssetLocation(headCode)), 1);
-                var headDur = (int)(itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, baseDur)); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
+                var headDur = (int)(itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, baseDur) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
                 var headMaxDur = itemStack.GetToolheadMaxDurability();
                 var curSharpness = itemStack.GetToolCurrentSharpness();
                 var maxSharpness = itemStack.GetToolMaxSharpness();
@@ -281,7 +301,7 @@ namespace Toolsmith.Utils {
                 // -- Seems like frequently marking the slot as dirty on the server causes an update and that's all that's really needed. Any time the attributes are set, make sure it's marked as dirty!
                 var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
                 var headStack = new ItemStack(world.GetItem(new AssetLocation(ToolsmithConstants.FallbackHeadCode)), 1); //Placeholder Candle! Wow! It'll be something so it actually _have_ something in there. No more nulls.
-                var curHeadDur = (int)(itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, baseDur)); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
+                var curHeadDur = (int)(itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, baseDur) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
                 var sharpness = itemStack.GetToolCurrentSharpness(); //Even though this isn't used, this call is important because it will 
 
                 itemStack.SetToolhead(headStack);
@@ -317,32 +337,44 @@ namespace Toolsmith.Utils {
 
             ItemStack handle = null;
             int maxHandleDur = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolHandleMaxDur, -1); //Specifically getting this from the attributes directly here to prevent looping the call.
-            HandleWithStats handleWithStats = null;
+            HandleStatPair handleWithStats = null;
 
             ItemStack binding = null;
             int maxBindingDur = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolBindingMaxDur, -1); //Specifically getting this from the attributes directly here to prevent looping the call.
-            BindingWithStats bindingWithStats = null;
+            BindingStatPair bindingWithStats = null;
 
             if (maxHandleDur < 0) { //Just need to grab the basic Stick if there is no durability already set.
                 handle = new ItemStack(world.GetItem(new AssetLocation(ToolsmithConstants.DefaultHandleCode)), 1);
-                handleWithStats = ToolsmithModSystem.Config.ToolHandlesWithStats.Get(ToolsmithConstants.DefaultHandlePartKey);
+                handleWithStats = ToolsmithModSystem.Config.BaseHandleRegistry.Get(ToolsmithConstants.DefaultHandlePartKey);
             } else {
                 handle = itemStack.GetToolhandle();
-                handleWithStats = ToolsmithModSystem.Config.ToolHandlesWithStats.Get(handle.Collectible.Code.Path);
+                handleWithStats = ToolsmithModSystem.Config.BaseHandleRegistry.Get(handle.Collectible.Code.Path);
             }
             BindingStats bindingStats;
             if (maxBindingDur < 0) { //Since 'None' is a valid binding, it still needs setting to that, and given the default durability levels! No Itemstack needed though.
                 bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithConstants.DefaultBindingPartKey);
             } else {
                 binding = itemStack.GetToolbinding();
-                bindingWithStats = ToolsmithModSystem.Config.BindingsWithStats.Get(binding.Collectible.Code.Path);
-                bindingStats = ToolsmithModSystem.Stats.bindings.Get(bindingWithStats.bindingStats);
+                bindingWithStats = ToolsmithModSystem.Config.BindingRegistry.Get(binding.Collectible.Code.Path);
+                bindingStats = ToolsmithModSystem.Stats.bindings.Get(bindingWithStats.bindingStatTag);
             }
             
             var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
-            var handleStats = ToolsmithModSystem.Stats.handles.Get(handleWithStats.handleStats);
-            var gripStats = ToolsmithModSystem.Stats.grips.Get(handleWithStats.gripStats);
-            var treatmentStats = ToolsmithModSystem.Stats.treatments.Get(handleWithStats.treatmentStats);
+            var handleStats = ToolsmithModSystem.Stats.baseHandles.Get(handleWithStats.handleStatTag);
+
+            GripStats gripStats;
+            if (handle.HasHandleGripTag()) {
+                gripStats = ToolsmithModSystem.Stats.grips.Get(handle.GetHandleGripTag());
+            } else {
+                gripStats = ToolsmithModSystem.Stats.grips.Get(ToolsmithConstants.DefaultGripTag);
+            }
+
+            TreatmentStats treatmentStats;
+            if (handle.HasHandleTreatmentTag()) {
+                treatmentStats = ToolsmithModSystem.Stats.treatments.Get(handle.GetHandleTreatmentTag());
+            } else {
+                treatmentStats = ToolsmithModSystem.Stats.treatments.Get(ToolsmithConstants.DefaultTreatmentTag);
+            }
 
             var handleDur = baseDur * handleStats.baseHPfactor; //Starting with the handle: Account for baseHPfactor first in the handle...
             handleDur = handleDur + (handleDur * handleStats.selfHPBonus); //plus the selfDurabilityBonus
@@ -441,12 +473,80 @@ namespace Toolsmith.Utils {
             return 0.0f;
         }
 
+        public static void SetHandleShaftTextureString(this ItemStack itemStack, string texPath) {
+            itemStack.Attributes.SetString(ToolsmithAttributes.ShaftWoodTypeAttribute, texPath);
+        }
+
+        public static string GetHandleShaftTextureString(this ItemStack itemStack) {
+            return itemStack.Attributes.GetString(ToolsmithAttributes.ShaftWoodTypeAttribute);
+        }
+
+        public static bool HasHandleShaftTexture(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.ShaftWoodTypeAttribute);
+        }
+
+        public static void SetHandleGripTag(this ItemStack itemStack, string tag) {
+            itemStack.Attributes.SetString(ToolsmithAttributes.HandleGripTag, tag);
+        }
+
+        public static string GetHandleGripTag(this ItemStack itemStack) {
+            return itemStack.Attributes.GetString(ToolsmithAttributes.HandleGripTag);
+        }
+
+        public static bool HasHandleGripTag(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.HandleGripTag);
+        }
+
+        public static void SetGripTextPath(this ItemStack itemStack, string texture) {
+            itemStack.Attributes.SetString(ToolsmithAttributes.GripTexture, texture);
+        }
+
+        public static string GetGripTextPath(this ItemStack itemStack) {
+            return itemStack.Attributes.GetString(ToolsmithAttributes.GripTexture);
+        }
+
+        public static void SetHandleTreatmentTag(this ItemStack itemStack, string tag) {
+            itemStack.Attributes.SetString(ToolsmithAttributes.HandleTreatmentTag, tag);
+        }
+
+        public static string GetHandleTreatmentTag(this ItemStack itemStack) {
+            return itemStack.Attributes.GetString(ToolsmithAttributes.HandleTreatmentTag);
+        }
+
+        public static bool HasHandleTreatmentTag(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.HandleTreatmentTag);
+        }
+
+        public static void SetTreatmentTextPath(this ItemStack itemStack, string texture) {
+            itemStack.Attributes.SetString(ToolsmithAttributes.TreatmentOverlay, texture);
+        }
+
+        public static string GetTreatmentTextPath(this ItemStack itemStack) {
+            return itemStack.Attributes.GetString(ToolsmithAttributes.TreatmentOverlay);
+        }
+
+        public static bool HasWetTreatment(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.TreatmentOverlay);
+        }
+
+        public static void SetModularPartShape(this ItemStack itemStack, string path) {
+            itemStack.Attributes.SetString(ToolsmithAttributes.ModularPartShapePath, path);
+        }
+
+        public static string GetModularPartShape(this ItemStack itemStack) {
+            return itemStack.Attributes.GetString(ToolsmithAttributes.ModularPartShapePath);
+        }
+
+        public static bool HasModularPartShape(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.ModularPartShapePath);
+        }
+
         // -- More Generic ItemStack extensions or helper methods intended to handle items/collectibleobjects --
-        public static void AddBehavior<T>(this CollectibleObject collectibleObject) where T : CollectibleBehavior {
+        public static void AddBehaviorAtFront<T>(this CollectibleObject collectibleObject) where T : CollectibleBehavior {
             var existingBehavior = collectibleObject.CollectibleBehaviors.FirstOrDefault(b => b.GetType() == typeof(T));
             collectibleObject.CollectibleBehaviors.Remove(existingBehavior);
             var addedBehavior = (T)Activator.CreateInstance(typeof(T), collectibleObject);
-            collectibleObject.CollectibleBehaviors = collectibleObject.CollectibleBehaviors.Append(addedBehavior);
+            collectibleObject.CollectibleBehaviors = collectibleObject.CollectibleBehaviors.Prepend(addedBehavior).ToArray();
         }
 
         //Checks if a given CollectableObject is made of metal

@@ -1,0 +1,12 @@
+[
+	{
+		"ingredientPattern": "K,W",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"W": { "type": "item", "code": "game:firewood" }
+		},
+		"width": 1,
+		"height": 2,
+		"output": { "type": "item", "code": "toolsmith:crudehandle", "quantity": 1 }
+	}
+]

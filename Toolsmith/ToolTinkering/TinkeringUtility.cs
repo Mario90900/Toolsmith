@@ -191,7 +191,7 @@ namespace Toolsmith.ToolTinkering {
                 toolHandle.SetPartMaxDurability(brokenToolStack.GetToolhandleMaxDurability());
             }
             if (toolBinding != null) { //Binding doesn't always drop, only if the durability is above the threshold, and then if it's below, it breaks and if made of metal, drops some bits
-                BindingStats bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithModSystem.Config.BindingsWithStats.Get(toolBinding.Collectible.Code.Path).bindingStats);
+                BindingStats bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithModSystem.Config.BindingRegistry.Get(toolBinding.Collectible.Code.Path).bindingStatTag);
                 float bindingPercentRemains = (float)(remainingBindingDur) / (float)(brokenToolStack.GetToolbindingMaxDurability());
                 if (bindingPercentRemains < bindingStats.recoveryPercent) { //If the remaining HP percent is less then the recovery percent, the binding is used up.
                     toolBinding = null; //Set it back to null to prevent dropping anything later! And then to see if Bits should drop!
@@ -200,9 +200,9 @@ namespace Toolsmith.ToolTinkering {
                 if (toolBinding == null && bindingStats.isMetal) {
                     int numBits;
                     if (world.Rand.NextDouble() < 0.5) {
-                        numBits = 3;
+                        numBits = ToolsmithConstants.NumBitsReturnMinimum;
                     } else {
-                        numBits = 4;
+                        numBits = ToolsmithConstants.NumBitsReturnMinimum + 1;
                     }
                     bitsDrop = new ItemStack(world.GetItem(new AssetLocation("game:metalbit-" + bindingStats.metalType)), numBits);
                 }
@@ -345,7 +345,8 @@ namespace Toolsmith.ToolTinkering {
                     inputSlots = new ItemSlot[] { headSlot, handleSlot, bindingSlot };
                 }
 
-                craftedItemStack.Collectible.ConsumeCraftingIngredients(inputSlots, placeholderOutput, DummyRecipe);
+                craftedItemStack.Collectible.ConsumeCraftingIngredients(inputSlots, placeholderOutput, DummyRecipe); //This line is needed because of ItemRarity, but at the same time, this is technically called _AFTER_ the 'onCreatedByCrafting' line, when the player actually clicks to take the item...
+                                                                                                                     //Might be a good idea to reconsider when the whole Tinker Tool Crafting logic is called, but... Would require patching this call, and it's ONLY for Item Rarity so far, not exactly a priority by a long shot. Leaving this note incase something else uses this, but also probably not a big deal to make the change either?
                 craftedItemStack.Collectible.OnCreatedByCrafting(inputSlots, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
 
                 if (!bindingSlot.Empty) {
