@@ -31,24 +31,29 @@ namespace Toolsmith.Utils {
 
         //Attributes to control the addons to a handle, and the tool as a whole itself. Will be stored on the handles, and referenced for generating the renderer as well as stats. Important these are saved.
         public const string HandleGripTag = "toolHandleGripTag";
-        public const string HandleTreatmentTag = "toolHandleTreatmentTag";
-        public const string ModularPartShapePath = "modularPartShape";
-        public const string ShaftWoodTypeAttribute = "shaftTexture";
-        public const string GripTexture = "gripTexture";
-        public const string TreatmentOverlay = "treatmentOverlay"; //Can also serve as an easy 'IsWet' check!
+        public const string HandleTreatmentTag = "toolHandleTreatmentTag"; //Tags stay on the base item that have them and don't need to be moved to the crafted tool. They will have their stats transferred instead upwards.
+        public const string PartWetTreatment = "partHasWetTreatment"; //Easy fix or placeholder for if the part is still 'wet' after a treatment has been applied. Treat it like a Flag - if it exists, it is set. Data doesn't matter.
+
+        // -- Render Data AttributeTree stuffs! --
+        public const string ModularToolDataTree = "modularToolRenderData"; //This is a TreeAttribute that will contain more Trees of the respective parts. When added to a tool, the string tag for each part is that part's name. IE: Head, Handle or Binding, this will be set by the tool's behavior during OnCrafting.
+        public const string ModularPartDataTree = "modularPartRenderData"; //This TreeAttribute is solely on individual parts to make retreieving them easier and consistant! This simply contains the Data entries organized below, and is also set and updated during OnCrafting!
+
+        public const string ModularPartShapeIndex = "partShapeIndex"; //This will just contain a string for the dictionary entry holding the part in the cache.
+        public const string ModularPartTextureTree = "partTextures"; //This is another TreeAttribute that contains entries of the respective Shape's codes for the various textures in it, and the texture entries.
+                                                                     //To help handle 'overlay' textures, find the intended entry to be overlayed, and then append a ++ to the end of the texture path, and afterwards add the overlay path. This might be what that one Texture handling class was looking for?
 
         //Temp Attributes! Ones not intended to be saved to the item forever, and instead are used in the TempAttributes tree on the itemstack. It seems like the Temp Attributes get cleaned every time a slot is marked dirty.
         public const string ToolsmithMeshID = "toolsmithMeshrefID";
 
-        //Vanilla Attribute Consts
+        // -- Vanilla Attribute Consts --
         //While these are not attributes created by the mod, I figure it might be beneficial to give them the same treatment. Just make sure they stay updated with the base game!
         public const string Durability = "durability";
 
-        //Slated for Removal later down the line! Only kept around for the purposes of checking if they still exist and fixing them! Do not use these anymore!
+        // -- Slated for Removal later down the line! Only kept around for the purposes of checking if they still exist and fixing them! Do not use these anymore!
         public const string ToolHeadCurrentDur = "tinkeredToolHeadDurability";
         public const string ToolHeadMaxDur = "tinkeredToolHeadMaxDurability";
 
-        //This just helps to organize it in this file, and pile them into one easy constant to call. Generally for Smithing Plus's Compat and the forgettable attributes there when a Workpiece is made.
+        // -- This just helps to organize it in this file, and pile them into one easy constant to call. Generally for Smithing Plus's Compat and the forgettable attributes there when a Workpiece is made.
         public const string ToolsmithForgettableAttributes = "," + ToolHead + "," + ToolSharpnessCurrent + "," + ToolSharpnessMax + "," + ToolHandle + "," + ToolHandleCurrentDur + "," + ToolHandleMaxDur + "," + ToolBinding + "," + ToolBindingCurrentDur + "," + ToolBindingMaxDur + "," + GripChanceToDamage + "," + SpeedBonus + "," + Drawback + "," + BrokeWhileSharpening;
         public static readonly string[] ToolsmithIgnoreAttributesArray = new string[13] { ToolHead, ToolSharpnessCurrent, ToolSharpnessMax, ToolHandle, ToolHandleCurrentDur, ToolHandleMaxDur, ToolBinding, ToolBindingCurrentDur, ToolBindingMaxDur, GripChanceToDamage, SpeedBonus, Drawback, BrokeWhileSharpening };
     }

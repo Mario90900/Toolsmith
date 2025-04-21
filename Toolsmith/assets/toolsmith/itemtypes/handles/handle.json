@@ -15,12 +15,9 @@
 		{
 			"name": "toolsmith:ModularPartRenderingFromAttributes",
 			"properties": {
-				"partAttribute": "tinkeredToolHandle",
-				"shapePath": "toolsmith:shapes/item/handle-plain",
 				"textures": [
 					{
 						"code": "shaft",
-						"attribute": "shaftTexture",
 						"Default": "game:block/wood/debarked/oak",
 						"values": [
 							"game:block/wood/debarked/aged",

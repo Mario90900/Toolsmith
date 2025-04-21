@@ -473,18 +473,6 @@ namespace Toolsmith.Utils {
             return 0.0f;
         }
 
-        public static void SetHandleShaftTextureString(this ItemStack itemStack, string texPath) {
-            itemStack.Attributes.SetString(ToolsmithAttributes.ShaftWoodTypeAttribute, texPath);
-        }
-
-        public static string GetHandleShaftTextureString(this ItemStack itemStack) {
-            return itemStack.Attributes.GetString(ToolsmithAttributes.ShaftWoodTypeAttribute);
-        }
-
-        public static bool HasHandleShaftTexture(this ItemStack itemStack) {
-            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.ShaftWoodTypeAttribute);
-        }
-
         public static void SetHandleGripTag(this ItemStack itemStack, string tag) {
             itemStack.Attributes.SetString(ToolsmithAttributes.HandleGripTag, tag);
         }
@@ -495,14 +483,6 @@ namespace Toolsmith.Utils {
 
         public static bool HasHandleGripTag(this ItemStack itemStack) {
             return itemStack.Attributes.HasAttribute(ToolsmithAttributes.HandleGripTag);
-        }
-
-        public static void SetGripTextPath(this ItemStack itemStack, string texture) {
-            itemStack.Attributes.SetString(ToolsmithAttributes.GripTexture, texture);
-        }
-
-        public static string GetGripTextPath(this ItemStack itemStack) {
-            return itemStack.Attributes.GetString(ToolsmithAttributes.GripTexture);
         }
 
         public static void SetHandleTreatmentTag(this ItemStack itemStack, string tag) {
@@ -517,28 +497,8 @@ namespace Toolsmith.Utils {
             return itemStack.Attributes.HasAttribute(ToolsmithAttributes.HandleTreatmentTag);
         }
 
-        public static void SetTreatmentTextPath(this ItemStack itemStack, string texture) {
-            itemStack.Attributes.SetString(ToolsmithAttributes.TreatmentOverlay, texture);
-        }
-
-        public static string GetTreatmentTextPath(this ItemStack itemStack) {
-            return itemStack.Attributes.GetString(ToolsmithAttributes.TreatmentOverlay);
-        }
-
         public static bool HasWetTreatment(this ItemStack itemStack) {
-            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.TreatmentOverlay);
-        }
-
-        public static void SetModularPartShape(this ItemStack itemStack, string path) {
-            itemStack.Attributes.SetString(ToolsmithAttributes.ModularPartShapePath, path);
-        }
-
-        public static string GetModularPartShape(this ItemStack itemStack) {
-            return itemStack.Attributes.GetString(ToolsmithAttributes.ModularPartShapePath);
-        }
-
-        public static bool HasModularPartShape(this ItemStack itemStack) {
-            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.ModularPartShapePath);
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.PartWetTreatment);
         }
 
         // -- More Generic ItemStack extensions or helper methods intended to handle items/collectibleobjects --

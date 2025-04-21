@@ -12,7 +12,9 @@ using Toolsmith.ToolTinkering.Items;
 using Toolsmith.Utils;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
+using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
 using Vintagestory.Client.NoObf;
@@ -108,7 +110,7 @@ namespace Toolsmith {
                 foreach (var pair in Config.BaseHandleRegistry) {
                     if (pair.Value.gripShapePath != "") {
                         var tempShape = api.Assets.TryGet(new AssetLocation(pair.Value.gripShapePath + ".json"))?.ToObject<Shape>();
-                        AlternatePartShapes.TryAdd(pair.Value.gripShapePath, tempShape.Clone());
+                        AlternatePartShapes.TryAdd(pair.Value.handleStatTag, tempShape.Clone());
                     }
                 }
 
@@ -275,6 +277,7 @@ namespace Toolsmith {
             BindingList = null;
             GripList = null;
             TreatmentList = null;
+            AlternatePartShapes = null;
             IgnoreCodes = null;
             base.Dispose();
         }
