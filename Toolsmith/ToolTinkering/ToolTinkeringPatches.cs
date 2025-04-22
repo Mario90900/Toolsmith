@@ -9,6 +9,7 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Toolsmith.Client.Behaviors;
 using Toolsmith.Config;
 using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.ToolTinkering.Drawbacks;
@@ -263,6 +264,71 @@ namespace Toolsmith.ToolTinkering {
             }
 
             __result = newMiningSpeed;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(CollectibleObject.GetTransitionableProperties))] //For NOW lets assume Result will likely always be Null and ignore the Result, just override it with the part's own.
+        private static void ToolPartTransitionalOverridePostfix(ref TransitionableProperties[] __result, IWorldAccessor world, ItemStack itemstack, Entity forEntity) {
+            if (itemstack.Collectible.HasBehavior<ModularPartRenderingFromAttributes>()) {
+                if (itemstack.HasWetTreatment()) {
+                    var itemCopy = itemstack.Clone();
+                    itemCopy.RemoveWetTreatment();
+                    var transProp = new TransitionableProperties {
+                        Type = EnumTransitionType.Dry,
+                        FreshHours = NatFloat.createUniform(0, 0),
+                        TransitionHours = NatFloat.createUniform(itemstack.GetWetTreatment(), 0f),
+                        TransitionedStack = new JsonItemStack { ResolvedItemstack = itemCopy }, //Type = itemCopy.Collectible.ItemClass, Code = itemCopy.Collectible.Code, Attributes = JsonObject.FromJson(itemCopy.Attributes.ToJsonToken())
+                        TransitionRatio = 1
+                    };
+
+                    __result = new TransitionableProperties[] { transProp };
+                }
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(CollectibleObject.RequiresTransitionableTicking))]
+        private static void ToolPartRequiresTransitionOverridePostfix(ref bool __result, IWorldAccessor world, ItemStack itemstack) {
+            if (itemstack.Collectible.HasBehavior<ModularPartRenderingFromAttributes>()) {
+                if (itemstack.HasWetTreatment()) {
+                    __result = true;
+                }
+            }
+        }
+
+        [HarmonyTranspiler]
+        [HarmonyPatch("UpdateAndGetTransitionStatesNative")]
+        private static IEnumerable<CodeInstruction> UpdateAndGetTransitionStatesNativeTranspiler(IEnumerable<CodeInstruction> instructions) {
+            var targetTransitionNow = AccessTools.Method(typeof(CollectibleObject), nameof(CollectibleObject.OnTransitionNow));
+            var codes = new List<CodeInstruction>(instructions);
+
+            for (int i = 0; i < codes.Count; i++) {
+                if (codes[i].opcode == OpCodes.Callvirt && (MethodInfo)codes[i].operand == targetTransitionNow) {
+                    int j = i - 1;
+                    while (j > 0) {
+                        if (codes[j].opcode == OpCodes.Ldloc_0) {
+                            codes[j].opcode = OpCodes.Ldloc_S;
+                            object operand = null;
+                            int k = j - 1;
+                            while (k > 0) {
+                                if (codes[k].opcode == OpCodes.Ldfld) {
+                                    operand = codes[k - 1].operand;
+                                    break;
+                                }
+                                k--;
+                            }
+                            codes[j].operand = operand;
+                            break;
+                        } else {
+                            codes[j].opcode = OpCodes.Nop;
+                        }
+                        j--;
+                    }
+                    break;
+                }
+            }
+
+            return codes.AsEnumerable();
         }
 
         //Patching the GuiElementItemSlotGridBase now! Anything patching CollectibleObject is above!

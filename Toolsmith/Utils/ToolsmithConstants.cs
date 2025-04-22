@@ -16,8 +16,8 @@ namespace Toolsmith.Utils {
         public const string FirewoodCode = "game:firewood";
         public const string DebarkedWoodPathMinusType = "game:block/wood/debarked/";
         public const string DefaultGripFallbackTexture = "game:block/cloth/reedrope";
-        public const string LightTreatementOverlayPath = "toolsmith:textures/item/woodtints/light";
-        public const string DarkTreatementOverlayPath = "toolsmith:textures/item/woodtints/dark";
+        public const string LightTreatementOverlayPath = "toolsmith:textures/item/overlays/lighter";
+        public const string DarkTreatementOverlayPath = "toolsmith:textures/item/overlays/darker";
 
         public const float TimeToCraftTinkerTool = 2.5f;
         public const float StartingSharpnessMult = 0.85f;

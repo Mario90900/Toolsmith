@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Toolsmith.Client;
 using Toolsmith.Config;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
@@ -497,16 +498,34 @@ namespace Toolsmith.Utils {
             return itemStack.Attributes.HasAttribute(ToolsmithAttributes.HandleTreatmentTag);
         }
 
+        public static void SetWetTreatment(this ItemStack itemStack, int hours) {
+            itemStack.Attributes.SetInt(ToolsmithAttributes.PartWetTreatment, hours);
+        }
+
+        public static int GetWetTreatment(this ItemStack itemStack) {
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.PartWetTreatment);
+        }
+
         public static bool HasWetTreatment(this ItemStack itemStack) {
             return itemStack.Attributes.HasAttribute(ToolsmithAttributes.PartWetTreatment);
         }
 
+        public static void RemoveWetTreatment(this ItemStack itemStack) {
+            itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.PartWetTreatment);
+            itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.TransitionState);
+
+            //var renderTree = itemStack.GetPartRenderTree();
+            //var textureTree = renderTree.GetPartTextureTree();
+            //var firstEntry = textureTree.First(); //This is pretty likely to be the first thing someone is ever able to do to a tool handle or anything. Treating the wood is the first step. Probably best to keep it that way?
+            //textureTree.SetString(firstEntry.Key, )
+        }
+
         // -- More Generic ItemStack extensions or helper methods intended to handle items/collectibleobjects --
-        public static void AddBehaviorAtFront<T>(this CollectibleObject collectibleObject) where T : CollectibleBehavior {
+        public static void AddBehavior<T>(this CollectibleObject collectibleObject) where T : CollectibleBehavior {
             var existingBehavior = collectibleObject.CollectibleBehaviors.FirstOrDefault(b => b.GetType() == typeof(T));
             collectibleObject.CollectibleBehaviors.Remove(existingBehavior);
             var addedBehavior = (T)Activator.CreateInstance(typeof(T), collectibleObject);
-            collectibleObject.CollectibleBehaviors = collectibleObject.CollectibleBehaviors.Prepend(addedBehavior).ToArray();
+            collectibleObject.CollectibleBehaviors = collectibleObject.CollectibleBehaviors.Append(addedBehavior);
         }
 
         //Checks if a given CollectableObject is made of metal

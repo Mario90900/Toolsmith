@@ -60,24 +60,11 @@ namespace Toolsmith.Client.Behaviors {
             if (meshrefID == 0 || !meshrefs.TryGetValue(meshrefID, out renderinfo.ModelRef)) { //This checks if it has already been rendered and cached, and if so, send that again - otherwise generate one.
                 int id = meshrefs.Count + 1;
                 MultiTextureMeshRef modelref = capi.Render.UploadMultiTextureMesh(GenMesh(itemstack, capi.ItemTextureAtlas));
-                renderinfo.ModelRef = meshrefs[id] = modelref;
 
+                renderinfo.ModelRef = meshrefs[id] = modelref;
                 itemstack.TempAttributes.SetInt(ToolsmithAttributes.ToolsmithMeshID, id);
             }
         }
-
-        /*public MultiTextureMeshRef GetMeshRef(ICoreClientAPI capi, ItemStack itemstack, EnumItemRenderTarget target, ref ItemRenderInfo renderinfo, PartData part) {
-            int meshrefID = itemstack.TempAttributes.GetInt(ToolsmithAttributes.ToolsmithMeshID);
-            if (meshrefID == 0 || !meshrefs.TryGetValue(meshrefID, out renderinfo.ModelRef)) { //This checks if it has already been rendered and cached, and if so, send that again - otherwise generate one.
-                int id = meshrefs.Count + 1;
-                MultiTextureMeshRef modelref = capi.Render.UploadMultiTextureMesh(GenMesh(itemstack, capi.ItemTextureAtlas, part));
-                renderinfo.ModelRef = meshrefs[id] = modelref;
-
-                itemstack.TempAttributes.SetInt(ToolsmithAttributes.ToolsmithMeshID, id);
-            }
-            
-            return renderinfo.ModelRef;
-        }*/ //Might not need this either, I really don't see myself using the Part Override.
 
         public MeshData GenMesh(ItemStack itemstack, ITextureAtlasAPI targetAtlas, BlockPos atBlockPos) {
             return GenMesh(itemstack, targetAtlas);
@@ -102,26 +89,38 @@ namespace Toolsmith.Client.Behaviors {
                 return new MeshData();
             }
 
-            ContainedTextureSource texSource = new(api as ICoreClientAPI, targetAtlas, new Dictionary<string, AssetLocation>(), $"For rendering texture variants of {item.Code}");
+            OverlayedTextureSource texSource = new(api as ICoreClientAPI, targetAtlas, new Dictionary<string, CompositeTexture>());
             texSource.Textures.Clear();
 
             foreach ((string texCode, AssetLocation assetLoc) in shape.Textures) { //Go through the shape's textures and populate the texSource with any that the shape already has defined
                 if (item.Textures.TryGetValue(texCode, out CompositeTexture texture)) {
-                    texSource.Textures[texCode] = texture.Base;
+                    texSource.Textures[texCode] = texture;
                 } else { //If the item doesn't have any texture overrides defined, then use the shape's default.
-                    texSource.Textures[texCode] = assetLoc;
+                    texSource.Textures[texCode] = new CompositeTexture(assetLoc);
                 } //This more or less initializes it to have something in each texture spot. Maybe good for safety? But might not be needed either, since I can expect that the attributes will be set properly? They need to be at least.
             }
 
             if (!needFallback) {
                 ITreeAttribute textureTree = renderTree.GetPartTextureTree();
                 foreach (var entry in textureTree) {
-                    string path = textureTree.GetAsString(entry.Key);
-                    texSource.Textures[entry.Key] = new AssetLocation(path + ".png");
+                    CompositeTexture tex;
+                    if (entry.Key.Contains("-overlay")) {
+                        var actualEntry = entry.Key.Split('-').First();
+                        tex = texSource.Textures[actualEntry];
+                        if (tex.BlendedOverlays == null) {
+                            tex.BlendedOverlays = Array.Empty<BlendedOverlayTexture>();
+                        }
+                        var overlay = new BlendedOverlayTexture();
+                        overlay.Base = new AssetLocation(textureTree.GetAsString(entry.Key) + ".png");
+                        tex.BlendedOverlays = tex.BlendedOverlays.Append(overlay);
+                    } else {
+                        tex = new CompositeTexture(new AssetLocation(textureTree.GetAsString(entry.Key) + ".png"));
+                    }
+                    texSource.Textures[entry.Key] = tex;
                 }
             } else { //Fallback to the default textures in the properties. Ideally shouldn't hit here but uhhh.
                 foreach (TextureData texConfig in properties.textures) { //Then go through each texture entry in the properties, see if the itemstack in question has that attribute set and retrieve it if so
-                    texSource.Textures[texConfig.code] = new AssetLocation(texConfig.Default + ".png");
+                    texSource.Textures[texConfig.code] = new CompositeTexture(new AssetLocation(texConfig.Default + ".png"));
                 }
             }
 
@@ -211,7 +210,8 @@ namespace Toolsmith.Client.Behaviors {
 
             List<JsonItemStack> stacks = new();
             ITreeAttribute tree = new TreeAttribute();
-            tree.GetOrAddTreeAttribute(ToolsmithAttributes.ModularPartDataTree);
+            var top = tree.GetOrAddTreeAttribute(ToolsmithAttributes.ModularPartDataTree);
+            top.GetPartTextureTree();
             ConstructStacksWithRecursion(stacks, tree, 0);
             
             JsonItemStack stackWithNoAttributes = new() {
@@ -244,19 +244,12 @@ namespace Toolsmith.Client.Behaviors {
             }
             
             if (properties.textures.Length <= index) { //If the current step is beyond the length of the Textures array, then we can cap it off and collapse this line of calls here.
-                //json += "}";
                 stacks.Add(GenJsonStack(tree)); //Add it to the list of itemstacks, and then collapse
                 return;
             }
 
-            //if (json != "{") { //As long as it is not the initial call, add a comma between each entry.
-            //    json += ", ";
-            //}
-
             TextureData textureProp = properties.textures[index];
             foreach (string path in textureProp.values) { //Go through the whole values array, and keep adding the attributes it finds to the json string. One itemstack per each combo of attributes in the full properties.
-                //string jsonCopy = (string)json.Clone();
-                //jsonCopy += $"{textureProp.attribute}: \"{path}\"";
                 tree.GetOrAddTreeAttribute(ToolsmithAttributes.ModularPartDataTree).GetPartTextureTree().SetString(textureProp.code, path);
                 ConstructStacksWithRecursion(stacks, tree, index + 1);
             }

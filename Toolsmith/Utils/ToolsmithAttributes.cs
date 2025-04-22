@@ -32,7 +32,8 @@ namespace Toolsmith.Utils {
         //Attributes to control the addons to a handle, and the tool as a whole itself. Will be stored on the handles, and referenced for generating the renderer as well as stats. Important these are saved.
         public const string HandleGripTag = "toolHandleGripTag";
         public const string HandleTreatmentTag = "toolHandleTreatmentTag"; //Tags stay on the base item that have them and don't need to be moved to the crafted tool. They will have their stats transferred instead upwards.
-        public const string PartWetTreatment = "partHasWetTreatment"; //Easy fix or placeholder for if the part is still 'wet' after a treatment has been applied. Treat it like a Flag - if it exists, it is set. Data doesn't matter.
+        public const string PartWetTreatment = "partHasWetTreatment"; //Both a flag and holds the full time the treatment goes for.
+        public const string PartAfterTreatmentStack = "partAfterTreatmentStack"; //Set the copy stack in the first Transition tick to this tag, to make retreiving it easier. It should regen this if it's somehow lost as well!
 
         // -- Render Data AttributeTree stuffs! --
         public const string ModularToolDataTree = "modularToolRenderData"; //This is a TreeAttribute that will contain more Trees of the respective parts. When added to a tool, the string tag for each part is that part's name. IE: Head, Handle or Binding, this will be set by the tool's behavior during OnCrafting.
@@ -48,6 +49,7 @@ namespace Toolsmith.Utils {
         // -- Vanilla Attribute Consts --
         //While these are not attributes created by the mod, I figure it might be beneficial to give them the same treatment. Just make sure they stay updated with the base game!
         public const string Durability = "durability";
+        public const string TransitionState = "transitionstate";
 
         // -- Slated for Removal later down the line! Only kept around for the purposes of checking if they still exist and fixing them! Do not use these anymore!
         public const string ToolHeadCurrentDur = "tinkeredToolHeadDurability";
