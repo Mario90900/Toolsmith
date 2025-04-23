@@ -77,7 +77,8 @@ namespace Toolsmith.Client.Behaviors {
 
             bool needFallback = (!itemstack.HasToolRenderTree() && !itemstack.HasPartRenderTree()); //Fallback to the properties defaults if this is the case.
 
-            Shape shape;
+            //CompositeShape shape = new CompositeShape();
+            Shape shape = null;
             ITreeAttribute renderTree = itemstack.GetPartRenderTree(); //Only works for Parts currently. Will work on multi-part renders after.
             if (renderTree.HasPartShapeIndex()) {
                 shape = ToolsmithModSystem.AlternatePartShapes.TryGetValue(renderTree.GetPartShapeIndex());
@@ -89,14 +90,14 @@ namespace Toolsmith.Client.Behaviors {
                 return new MeshData();
             }
 
-            OverlayedTextureSource texSource = new(api as ICoreClientAPI, targetAtlas, new Dictionary<string, CompositeTexture>());
-            texSource.Textures.Clear();
+            ShapeTextureSource texSource = new(api as ICoreClientAPI, shape, "Compiling and Rendering Composite Shape for Modular Tool and Part rendering");
+            texSource.textures.Clear();
 
             foreach ((string texCode, AssetLocation assetLoc) in shape.Textures) { //Go through the shape's textures and populate the texSource with any that the shape already has defined
                 if (item.Textures.TryGetValue(texCode, out CompositeTexture texture)) {
-                    texSource.Textures[texCode] = texture;
+                    texSource.textures[texCode] = texture;
                 } else { //If the item doesn't have any texture overrides defined, then use the shape's default.
-                    texSource.Textures[texCode] = new CompositeTexture(assetLoc);
+                    texSource.textures[texCode] = new CompositeTexture(assetLoc);
                 } //This more or less initializes it to have something in each texture spot. Maybe good for safety? But might not be needed either, since I can expect that the attributes will be set properly? They need to be at least.
             }
 
@@ -104,9 +105,9 @@ namespace Toolsmith.Client.Behaviors {
                 ITreeAttribute textureTree = renderTree.GetPartTextureTree();
                 foreach (var entry in textureTree) {
                     CompositeTexture tex;
-                    if (entry.Key.Contains("-overlay")) {
+                    if (entry.Key.Contains("-overlay")) { //This looks for any entries that have the "-overlay" appended to them! This means, if you assign a texture to the RenderDataTree with the key of {code}-overlay you will overlay that texture code! And it should (theoretically) function with any number of overlays!
                         var actualEntry = entry.Key.Split('-').First();
-                        tex = texSource.Textures[actualEntry];
+                        tex = texSource.textures[actualEntry];
                         if (tex.BlendedOverlays == null) {
                             tex.BlendedOverlays = Array.Empty<BlendedOverlayTexture>();
                         }
@@ -116,15 +117,15 @@ namespace Toolsmith.Client.Behaviors {
                     } else {
                         tex = new CompositeTexture(new AssetLocation(textureTree.GetAsString(entry.Key) + ".png"));
                     }
-                    texSource.Textures[entry.Key] = tex;
+                    texSource.textures[entry.Key] = tex;
                 }
             } else { //Fallback to the default textures in the properties. Ideally shouldn't hit here but uhhh.
                 foreach (TextureData texConfig in properties.textures) { //Then go through each texture entry in the properties, see if the itemstack in question has that attribute set and retrieve it if so
-                    texSource.Textures[texConfig.code] = new CompositeTexture(new AssetLocation(texConfig.Default + ".png"));
+                    texSource.textures[texConfig.code] = new CompositeTexture(new AssetLocation(texConfig.Default + ".png"));
                 }
             }
 
-            capi.Tesselator.TesselateShape("Rendering Modular part for " + item.Code, shape, out MeshData mesh, texSource); //item, out MeshData mesh, texSource
+            capi.Tesselator.TesselateShape("Modular Part rendering", shape, out MeshData mesh, texSource);
             return mesh;
 
             //Going to have to completely rewrite this. It's far FAR too static the original way it was implemented...
@@ -194,7 +195,7 @@ namespace Toolsmith.Client.Behaviors {
             }*/
         }
 
-        public string GetMeshCacheKey(ItemStack itemstack) {
+        public string GetMeshCacheKey(ItemStack itemstack) { //Oh god this doesn't work at all but needs fixing badly.
             string cacheKey = item.Code.ToShortString();
             
             foreach (TextureData textures in properties.textures) {

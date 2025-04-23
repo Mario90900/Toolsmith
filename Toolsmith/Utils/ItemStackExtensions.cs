@@ -125,6 +125,7 @@ namespace Toolsmith.Utils {
             }
             // !!! Test for old handles here, and change them to new ones if they are pulled from a tool !!!
             var handle = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHandle);
+            handle = CheckForOldHandleAndConvert(handle);
             handle.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
             return handle.Clone();
         }
@@ -171,6 +172,48 @@ namespace Toolsmith.Utils {
             if (itemStack.GetToolhandleCurrentDurability() > maxDur) {
                 itemStack.SetToolhandleCurrentDurability(maxDur);
             }
+        }
+
+        public static ItemStack CheckForOldHandleAndConvert(ItemStack handle) { //TODO - This doesn't actually work cause the name isn't saved. Only the item ID in the game's save data. Oh boy. ... Remap to a placeholder item that can be craft-converted into an updated handle?
+            if (handle.Collectible?.Code == null || !ToolsmithModSystem.Config.BaseHandleRegistry.ContainsKey(handle.Collectible.Code.Path)) {
+                var oldHandlePath = handle.Collectible.Code.Path.Split('-');
+                ItemStack newHandle = new ItemStack(ToolsmithModSystem.Api.World.GetItem(new AssetLocation(oldHandlePath[0])));
+                string treatment = null;
+                string grip = null;
+                foreach (var bit in oldHandlePath) {
+                    if (bit == "crudehandle" || bit == "handle" || bit == "carpentedhandle" || bit == "plain" || bit == "none" || bit == "finished") {
+                        continue;
+                    }
+
+                    if (bit == "fat" || bit == "wax" || bit == "oil") {
+                        treatment = bit;
+                    } else {
+                        grip = bit;
+                    }
+                }
+
+                var renderTree = newHandle.GetPartRenderTree();
+                var textureTree = renderTree.GetPartTextureTree();
+
+                HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry[oldHandlePath[0]];
+                newHandle.SetHandleStatTag(handleStats.handleStatTag);
+                textureTree.SetString("wood", ToolsmithConstants.DebarkedWoodPathMinusType + "oak");
+                
+                if (grip != null) {
+                    renderTree.SetPartShapeIndex(handleStats.handleStatTag);
+                    var gripStats = ToolsmithModSystem.Stats.grips[grip];
+                    newHandle.SetHandleGripTag(grip);
+                    textureTree.SetString("grip", gripStats.texturePath);
+                }
+
+                if (treatment != null) {
+                    newHandle.SetHandleTreatmentTag(treatment);
+                }
+
+                return newHandle;
+            }
+
+            return handle;
         }
 
         //Tool Binding on full Tool ItemStack cluster
@@ -474,6 +517,18 @@ namespace Toolsmith.Utils {
             return 0.0f;
         }
 
+        public static void SetHandleStatTag(this ItemStack itemStack, string tag) {
+            itemStack.Attributes.SetString(ToolsmithAttributes.HandleStatTag, tag);
+        }
+
+        public static string GetHandleStatTag(this ItemStack itemStack) {
+            return itemStack.Attributes.GetString(ToolsmithAttributes.HandleStatTag);
+        }
+
+        public static bool HasHandleStatTag(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.HandleStatTag);
+        }
+
         public static void SetHandleGripTag(this ItemStack itemStack, string tag) {
             itemStack.Attributes.SetString(ToolsmithAttributes.HandleGripTag, tag);
         }
@@ -514,10 +569,24 @@ namespace Toolsmith.Utils {
             itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.PartWetTreatment);
             itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.TransitionState);
 
-            //var renderTree = itemStack.GetPartRenderTree();
-            //var textureTree = renderTree.GetPartTextureTree();
-            //var firstEntry = textureTree.First(); //This is pretty likely to be the first thing someone is ever able to do to a tool handle or anything. Treating the wood is the first step. Probably best to keep it that way?
-            //textureTree.SetString(firstEntry.Key, )
+            var renderTree = itemStack.GetPartRenderTree();
+            var textureTree = renderTree.GetPartTextureTree();
+            foreach (var texture in textureTree) {
+                if (texture.Key.Contains("-overlay")) {
+                    textureTree.RemoveAttribute(texture.Key);
+                }
+            }
+        }
+
+        public static void SetDisposeMeNowPlease(this ItemStack itemStack) {
+            if (itemStack.Attributes == null) {
+                itemStack.Attributes = new TreeAttribute();
+            }
+            itemStack.Attributes.SetBool(ToolsmithAttributes.DisposeMeNowPleaseTag, true);
+        }
+
+        public static bool HasDisposeMeNowPlease(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.DisposeMeNowPleaseTag);
         }
 
         // -- More Generic ItemStack extensions or helper methods intended to handle items/collectibleobjects --

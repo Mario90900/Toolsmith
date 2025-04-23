@@ -115,13 +115,6 @@ namespace Toolsmith {
                     }
                 }
 
-                var lightAssetLoc = new AssetLocation(ToolsmithConstants.LightTreatementOverlayPath + ".png");
-                var darkAssetLoc = new AssetLocation(ToolsmithConstants.DarkTreatementOverlayPath + ".png");
-                var lightOverlay = api.Assets.TryGet(lightAssetLoc);
-                var darkOverlay = api.Assets.TryGet(darkAssetLoc);
-                (api as ICoreClientAPI).ItemTextureAtlas.GetOrInsertTexture(lightAssetLoc, out var _, out var _, () => lightOverlay.ToBitmap(api as ICoreClientAPI));
-                (api as ICoreClientAPI).ItemTextureAtlas.GetOrInsertTexture(darkAssetLoc, out var _, out var _, () => darkOverlay.ToBitmap(api as ICoreClientAPI));
-
                 return;
             }
             
@@ -167,7 +160,6 @@ namespace Toolsmith {
                     //if (Config.PrintAllParsedToolsAndParts) { //Both Handles and Bindings don't really need to populate these lists anymore unless we are looking to actually print everything found. Should help to save some time and ram?
                     HandleList.Add(t);
                     //}
-                    continue;
                 } else if (ConfigUtility.IsToolBinding(t.Code.Path, bindingKeys)) {
                     if (!t.HasBehavior<CollectibleBehaviorToolBinding>()) {
                         t.AddBehavior<CollectibleBehaviorToolBinding>();
@@ -176,7 +168,6 @@ namespace Toolsmith {
                     //if (Config.PrintAllParsedToolsAndParts) {
                     BindingList.Add(t);
                     //}
-                    continue;
                 }
 
                 if (ConfigUtility.IsValidGripMaterial(t.Code.Path, gripKeys)) {

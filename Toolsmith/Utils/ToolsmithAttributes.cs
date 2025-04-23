@@ -30,10 +30,11 @@ namespace Toolsmith.Utils {
         public const string ToolPartMaxDur = "toolPartMaxDurability";
 
         //Attributes to control the addons to a handle, and the tool as a whole itself. Will be stored on the handles, and referenced for generating the renderer as well as stats. Important these are saved.
+        public const string HandleStatTag = "toolHandleTag";
         public const string HandleGripTag = "toolHandleGripTag";
         public const string HandleTreatmentTag = "toolHandleTreatmentTag"; //Tags stay on the base item that have them and don't need to be moved to the crafted tool. They will have their stats transferred instead upwards.
         public const string PartWetTreatment = "partHasWetTreatment"; //Both a flag and holds the full time the treatment goes for.
-        public const string PartAfterTreatmentStack = "partAfterTreatmentStack"; //Set the copy stack in the first Transition tick to this tag, to make retreiving it easier. It should regen this if it's somehow lost as well!
+        public const string DisposeMeNowPleaseTag = "disposeMeNowThisShouldntExist"; //Set the copy stack in the first Transition tick to this tag, to make retreiving it easier. It should regen this if it's somehow lost as well!
 
         // -- Render Data AttributeTree stuffs! --
         public const string ModularToolDataTree = "modularToolRenderData"; //This is a TreeAttribute that will contain more Trees of the respective parts. When added to a tool, the string tag for each part is that part's name. IE: Head, Handle or Binding, this will be set by the tool's behavior during OnCrafting.

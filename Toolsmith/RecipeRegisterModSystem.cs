@@ -113,10 +113,10 @@ namespace Toolsmith {
         private List<GridRecipe> GenerateHandleRecipes(ICoreAPI api) {
             var list = new List<GridRecipe>();
             foreach (var handle in ToolsmithModSystem.HandleList) { //For every handle base that was found...
-                if (handle.Code.Path == "stick" || handle.Code.Path == "bone") {
-                    continue;
-                }
-                HandleStatPair handlesStats = ToolsmithModSystem.Config.BaseHandleRegistry.Get<string, HandleStatPair>(handle.Code.Path); //Grab the stat pair that should be registered in the configs here.
+                //if (handle.Code.Path == "stick" || handle.Code.Path == "bone") {
+                //    continue;
+                //}
+                HandleStatPair handlesStats = ToolsmithModSystem.Config.BaseHandleRegistry.Get(handle.Code.Path); //Grab the stat pair that should be registered in the configs here.
                 if (handlesStats != null) { //Just in case, ensure it was found!
                     //Check the stats of the handle found, see what recipes are required to make for this one. Grip? Treatment? Both or neither?
                     //If Grip is allowed on this handle, generate a recipe with each of the Grip ingredients and add to list. Leave the actual assigning of attributes to the Handle Behavior's OnCreatedByCrafting call

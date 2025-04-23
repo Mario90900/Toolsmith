@@ -7,8 +7,8 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 
-namespace Toolsmith.Client {
-    internal class OverlayedTextureSource : ITexPositionSource {
+namespace Toolsmith.Client { }
+    /*internal class OverlayedTextureSource : ITexPositionSource {
 
         private ITextureAtlasAPI targetAtlas;
         private ICoreClientAPI capi;
@@ -30,7 +30,7 @@ namespace Toolsmith.Client {
                 path = compTexture.Base;
             } else {
                 if (compTexture.Baked == null) {
-                    compTexture.Bake(capi.Assets);
+                    compTexture.RuntimeBake(capi, targetAtlas);
                 }
                 path = compTexture.Baked.BakedName;
             }
@@ -59,4 +59,4 @@ namespace Toolsmith.Client {
             return texPos;
         }
     }
-}
+}*/

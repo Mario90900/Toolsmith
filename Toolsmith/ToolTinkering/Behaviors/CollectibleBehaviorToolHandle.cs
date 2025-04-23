@@ -29,7 +29,20 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {
             dsc.AppendLine(Lang.Get("toolhandledirections"));
+            if (inSlot.Itemstack.HasHandleGripTag() && inSlot.Itemstack.HasHandleTreatmentTag()) {
+                dsc.AppendLine(Lang.Get("toolhandlefullyprepared", inSlot.Itemstack.GetHandleGripTag(), inSlot.Itemstack.GetHandleTreatmentTag()));
+            } else if (inSlot.Itemstack.HasHandleTreatmentTag()) {
+                dsc.AppendLine(Lang.Get("toolhandletreated", inSlot.Itemstack.GetHandleTreatmentTag()));
+            } else if (inSlot.Itemstack.HasHandleGripTag()) {
+                dsc.AppendLine(Lang.Get("toolhandlegripped", inSlot.Itemstack.GetHandleGripTag()));
+            }
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+        }
+
+        public override void GetHeldItemName(StringBuilder sb, ItemStack itemStack) {
+            if (itemStack.HasWetTreatment()) {
+                sb.Append(Lang.Get("handleiswet"));
+            }
         }
 
         public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, ref EnumHandling bhHandling) {
@@ -38,7 +51,6 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             ItemSlot handleSlot = null;
             ItemSlot gripOrTreatmentSlot = null;
 
-            bhHandling = EnumHandling.Handled;
             foreach (var slot in allInputslots) {
                 if (!slot.Empty && (slot.Itemstack.Collectible.Code != ToolsmithConstants.SandpaperCode || slot.Itemstack.Collectible.Code != ToolsmithConstants.FirewoodCode)) {
                     if (slot.Itemstack.Collectible.Tool != null) {
@@ -53,6 +65,8 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 }
             }
 
+            ToolsmithModSystem.Logger.Warning("Is gripOrTreatmentSlot null? " + (gripOrTreatmentSlot == null) as string);
+
             if (toolSlot != null && blankSlot != null) {
                 var woodtype = blankSlot.Itemstack.Collectible.LastCodePart();
                 if (woodtype != null) {
@@ -63,29 +77,41 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     ITreeAttribute textureTree = renderTree.GetPartTextureTree();
                     var woodtypeTextPath = ToolsmithConstants.DebarkedWoodPathMinusType + woodtype;
                     textureTree.SetString("wood", woodtypeTextPath);
+                    HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry[outputSlot.Itemstack.Collectible.Code.Path];
+                    outputSlot.Itemstack.SetHandleStatTag(handleStats.handleStatTag);
                     outputSlot.Itemstack.SetPartCurrentDurability(1000);
                     outputSlot.Itemstack.SetPartMaxDurability(1000);
+                    bhHandling = EnumHandling.Handled;
                 }
             } else if (handleSlot != null && gripOrTreatmentSlot != null) {
                 outputSlot.Itemstack.Attributes = handleSlot.Itemstack.Attributes.Clone();
                 ITreeAttribute renderTree = outputSlot.Itemstack.GetPartRenderTree();
                 ITreeAttribute textureTree = renderTree.GetPartTextureTree();
 
-                ToolsmithModSystem.Logger.Warning("What is this? " + gripOrTreatmentSlot.Itemstack.Collectible.Code.Path);
                 if (ToolsmithModSystem.Config.GripRegistry.ContainsKey(gripOrTreatmentSlot.Itemstack.Collectible.Code.Path)) {
-                    if (handleSlot.Itemstack.HasHandleGripTag()) {
+                    if (handleSlot.Itemstack.HasHandleGripTag() || handleSlot.Itemstack.HasWetTreatment()) {
                         outputSlot.Itemstack = null;
+                        outputSlot.Itemstack = new ItemStack(ToolsmithModSystem.Api.World.GetBlock(new AssetLocation("game:air")));
+                        outputSlot.Itemstack.SetDisposeMeNowPlease();
                         bhHandling = EnumHandling.PreventDefault;
                     } else {
                         var grip = gripOrTreatmentSlot.Itemstack;
-                        renderTree.SetPartShapeIndex(handleSlot.Itemstack.Collectible.Code.Path);
+                        if (handleSlot.Itemstack.HasHandleStatTag()) {
+                            renderTree.SetPartShapeIndex(handleSlot.Itemstack.GetHandleStatTag());
+                        } else {
+                            HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry[outputSlot.Itemstack.Collectible.Code.Path];
+                            renderTree.SetPartShapeIndex(handleStats.handleStatTag);
+                        }
                         var gripStats = ToolsmithModSystem.Stats.grips[ToolsmithModSystem.Config.GripRegistry[grip.Collectible.Code.Path].gripStatTag];
                         outputSlot.Itemstack.SetHandleGripTag(gripStats.id);
                         textureTree.SetString("grip", gripStats.texturePath);
+                        bhHandling = EnumHandling.Handled;
                     }
                 } else {
                     if (handleSlot.Itemstack.HasHandleGripTag() || handleSlot.Itemstack.HasHandleTreatmentTag()) {
                         outputSlot.Itemstack = null;
+                        outputSlot.Itemstack = new ItemStack(ToolsmithModSystem.Api.World.GetBlock(new AssetLocation("game:air")));
+                        outputSlot.Itemstack.SetDisposeMeNowPlease();
                         bhHandling = EnumHandling.PreventDefault;
                     } else {
                         var treatment = gripOrTreatmentSlot.Itemstack;
@@ -105,6 +131,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                             ToolsmithModSystem.Logger.Error("A treatment config is improperly set! This treatment - " + treatment.Collectible.Code + " - was marked as a liquid, but could not find a liquid container in this recipe. Will treat it as a non-liquid, but is worth fixing that!");
                             textureTree.SetString("wood-overlay", ToolsmithConstants.LightTreatementOverlayPath);
                         }
+                        bhHandling = EnumHandling.Handled;
                     }
                 }
             } else if (handleSlot != null) {
@@ -114,6 +141,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 renderTree.GetPartTextureTree();
             }
 
+            ToolsmithModSystem.Logger.Warning("Is bhHandling PreventSubsequent? " + (bhHandling == EnumHandling.PreventSubsequent));
             outputSlot.MarkDirty();
         }
     }

@@ -24,7 +24,7 @@ using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering {
 
-    [HarmonyPatch(typeof (CollectibleObject))]
+    [HarmonyPatch(typeof(CollectibleObject))]
     [HarmonyPatchCategory(ToolsmithModSystem.ToolTinkeringPatchCategory)]
     public class ToolTinkeringPatches {
 
@@ -194,6 +194,20 @@ namespace Toolsmith.ToolTinkering {
                 return false; //Clientside Catch for hitting this point, wait for the server sync to update everything to hopefully prevent that desync from the client
             }
             //If it's not a tinkered or smithed tool, then let everything else run as well!
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CollectibleObject.ConsumeCraftingIngredients))]
+        private static bool ConsumeCraftingIngredientsModularPartPrefix(ItemSlot[] slots, ItemSlot outputSlot, GridRecipe matchingRecipe, ref bool __result) {
+            if (outputSlot.Itemstack.HasDisposeMeNowPlease()) {
+                outputSlot.Itemstack = null;
+                outputSlot.MarkDirty();
+
+                __result = true;
+                return false;
+            }
+
             return true;
         }
 

@@ -14,6 +14,10 @@
 	"game:toolhandledirections": "This looks like it would make a good handle for a tool.",
 	"game:toolbindingdirections": "This looks very useful for binding a tool together.",
 	"game:tinkertoolpartscontains": "Prepared an {0}, and a {1} for crafting into a tool. Now optionally choose a binding the same as the handle!",
+	"game:handleiswet": " (Wet)",
+	"game:toolhandlefullyprepared": "This handle has been treated with {0} and given a {1} grip.",
+	"game:toolhandletreated": "This handle has been treated with {0}.",
+	"game:toolhandlegripped": "This handle has a {0} grip.",
 	
     "item-crudehandle": "Crude Tool Handle",
 	"item-handle": "Carved Tool Handle",

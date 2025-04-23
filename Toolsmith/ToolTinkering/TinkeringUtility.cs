@@ -283,11 +283,12 @@ namespace Toolsmith.ToolTinkering {
         }
 
         public static bool ValidHandleInOffhand(EntityAgent byEntity) {
-            var offhandItem = byEntity.LeftHandItemSlot?.Itemstack?.Collectible;
-            if (offhandItem == null) {
+            var offhandItemCol = byEntity.LeftHandItemSlot?.Itemstack?.Collectible;
+            var offhandItemstack = byEntity.LeftHandItemSlot?.Itemstack;
+            if (offhandItemCol == null || offhandItemstack.HasWetTreatment()) {
                 return false;
             }
-            return offhandItem.HasBehavior<CollectibleBehaviorToolHandle>();
+            return offhandItemCol.HasBehavior<CollectibleBehaviorToolHandle>();
         }
 
         public static bool ValidBindingInOffhand(EntityAgent byEntity) {
@@ -464,7 +465,7 @@ namespace Toolsmith.ToolTinkering {
                 deltaLastTick = secondsUsed - lastInterval;
 
                 if (deltaLastTick >= ToolsmithConstants.sharpenInterval) { //Try not to repair EVERY single tick to space it out some. Cause of this, repair 5 durability each time so it doesn't take forever.
-                    var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
+                    var whetstone = WhetstoneInOffhand(byEntity);
 
                     if (whetstone != null) { //If the offhand is still a Whetstone, sharpen! Otherwise break out of this entirely and end the action.
                         var isTool = IsValidSharpenTool(slot.Itemstack.Collectible, byEntity.World);
@@ -476,7 +477,7 @@ namespace Toolsmith.ToolTinkering {
                     deltaLastTick = 0;
                     lastInterval = MathUtility.FloorToNearestMult(secondsUsed, ToolsmithConstants.sharpenInterval);
 
-                    if (!TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
+                    if (!ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
                         return false; //End the interaction when it doesn't need sharpening anymore
                     }
                 }
