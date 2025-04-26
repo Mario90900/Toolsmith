@@ -125,8 +125,10 @@ namespace Toolsmith.Utils {
             }
             // !!! Test for old handles here, and change them to new ones if they are pulled from a tool !!!
             var handle = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHandle);
-            handle = CheckForOldHandleAndConvert(handle);
             handle.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+            if (handle.Collectible.Code.Path.StartsWith(ToolsmithAttributes.OldHandlePrefix)) { //If we find an old handle it's time to convert it to the new ones. Remove this bit later on after some time.
+                handle = CheckForOldHandleAndConvert(handle);
+            }
             return handle.Clone();
         }
 
@@ -174,10 +176,15 @@ namespace Toolsmith.Utils {
             }
         }
 
-        public static ItemStack CheckForOldHandleAndConvert(ItemStack handle) { //TODO - This doesn't actually work cause the name isn't saved. Only the item ID in the game's save data. Oh boy. ... Remap to a placeholder item that can be craft-converted into an updated handle?
+        public static ItemStack CheckForOldHandleAndConvert(ItemStack handle) {
+            var oldHandlePath = handle.Collectible.Code.Path.Split('-');
+            ToolsmithModSystem.Logger.Warning("OldHandle[0] is " + oldHandlePath[0]);
+            if (oldHandlePath[0].Contains(ToolsmithAttributes.OldHandlePrefix)) {
+                oldHandlePath[0] = oldHandlePath[0].Remove(0, 3);
+            }
+            ToolsmithModSystem.Logger.Warning("OldHandle[0] now is " + oldHandlePath[0]);
             if (handle.Collectible?.Code == null || !ToolsmithModSystem.Config.BaseHandleRegistry.ContainsKey(handle.Collectible.Code.Path)) {
-                var oldHandlePath = handle.Collectible.Code.Path.Split('-');
-                ItemStack newHandle = new ItemStack(ToolsmithModSystem.Api.World.GetItem(new AssetLocation(oldHandlePath[0])));
+                ItemStack newHandle = new ItemStack(ToolsmithModSystem.Api.World.GetItem(new AssetLocation("toolsmith:" + oldHandlePath[0])));
                 string treatment = null;
                 string grip = null;
                 foreach (var bit in oldHandlePath) {
@@ -192,18 +199,35 @@ namespace Toolsmith.Utils {
                     }
                 }
 
-                var renderTree = newHandle.GetPartRenderTree();
+                if (newHandle.HasPartRenderTree()) {
+                    newHandle.Attributes.RemoveAttribute(ToolsmithAttributes.ModularPartDataTree);
+                }
+
+                var multiPartTree = newHandle.GetMultiPartRenderTree();
+                var handleTree = multiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
+                var renderTree = handleTree.GetPartRenderTree();
                 var textureTree = renderTree.GetPartTextureTree();
 
-                HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry[oldHandlePath[0]];
-                newHandle.SetHandleStatTag(handleStats.handleStatTag);
-                textureTree.SetString("wood", ToolsmithConstants.DebarkedWoodPathMinusType + "oak");
+                if (oldHandlePath[0] == "handle" || oldHandlePath[0] == "carpentedhandle") {
+                    HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry[oldHandlePath[0]];
+                    newHandle.SetHandleStatTag(handleStats.handleStatTag);
+                    renderTree.SetPartShapePath(handleStats.handleShapePath);
+                    textureTree.SetString("wood", ToolsmithConstants.DebarkedWoodPathMinusType + "oak");
+                }
                 
                 if (grip != null) {
-                    renderTree.SetPartShapeIndex(handleStats.handleStatTag);
+                    var gripTree = multiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartGripName);
+                    var gripRenderTree = gripTree.GetPartRenderTree();
+                    var gripTextureTree = gripRenderTree.GetPartTextureTree();
                     var gripStats = ToolsmithModSystem.Stats.grips[grip];
+
                     newHandle.SetHandleGripTag(grip);
-                    textureTree.SetString("grip", gripStats.texturePath);
+                    if (oldHandlePath[0] == "crude") {
+                        gripRenderTree.SetPartShapePath("toolsmith:shapes/item/gripfabric-crude");
+                    } else {
+                        gripRenderTree.SetPartShapePath("toolsmith:shapes/item/gripfabric");
+                    }
+                    gripTextureTree.SetString("grip", gripStats.texturePath);
                 }
 
                 if (treatment != null) {
@@ -302,7 +326,7 @@ namespace Toolsmith.Utils {
             }
 
             //Figure out the Tool Head and add the missing stats and ItemStack!
-            if (RecipeRegisterModSystem.TinkerToolGridRecipes != null) { //If this is being ran on the server-side or it is singleplayer, then RecipeRegisterModSystem will have actually booted and everything!
+            if (RecipeRegisterModSystem.TinkerToolGridRecipes.Count > 0) { //If this is being ran on the server-side or it is singleplayer, then RecipeRegisterModSystem will have actually booted and everything!
                 string headCode = null;
                 foreach (var t in RecipeRegisterModSystem.TinkerToolGridRecipes) {
                     if (t.Value.Code.Equals(itemStack.Collectible.Code)) {
@@ -324,6 +348,10 @@ namespace Toolsmith.Utils {
                     itemStack.SetToolCurrentSharpness(sharpnessBackup);
                     itemStack.SetToolMaxSharpness(sharpnessBackup);
                     return;
+                }
+
+                if (headCode.Contains("-bone")) {
+                    headCode = headCode.Remove(headCode.Length - 5);
                 }
 
                 var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
@@ -388,7 +416,11 @@ namespace Toolsmith.Utils {
             BindingStatPair bindingWithStats = null;
 
             if (maxHandleDur < 0) { //Just need to grab the basic Stick if there is no durability already set.
-                handle = new ItemStack(world.GetItem(new AssetLocation(ToolsmithConstants.DefaultHandleCode)), 1);
+                string handleCode = ToolsmithConstants.DefaultHandleCode;
+                if (itemStack.Collectible.Code.Path.Contains("-bone")) {
+                    handleCode = ToolsmithConstants.BoneHandleCode;
+                }
+                handle = new ItemStack(world.GetItem(new AssetLocation(handleCode)), 1);
                 handleWithStats = ToolsmithModSystem.Config.BaseHandleRegistry.Get(ToolsmithConstants.DefaultHandlePartKey);
             } else {
                 handle = itemStack.GetToolhandle();

@@ -8,6 +8,7 @@ namespace Toolsmith.Utils {
     public static class ToolsmithConstants {
         public const string FallbackHeadCode = "game:candle";
         public const string DefaultHandleCode = "game:stick";
+        public const string BoneHandleCode = "game:bone";
         public const string DefaultGripTag = "plain";
         public const string DefaultTreatmentTag = "none";
         public const string ToolBundleCode = "toolsmith:tinkertoolparts";
@@ -26,6 +27,11 @@ namespace Toolsmith.Utils {
         public const float LowSharpnessSpeedMalusMult = -0.1f;
         public const float sharpenInterval = 0.4f;
         public const int NumBitsReturnMinimum = 2;
+
+        public const string TinkerToolCacheListKey = "TinkerToolCacheList";
+
+        public const string TinkerToolMadeFromGridRecipeKey = "TinkerToolMadeFromGridRecipes";
+        public const string ToolHeadMadeFromSmithingRecipesKey = "ToolHeadMadeFromSmithingRecipes";
 
         public const string ModularPartRenderingFromAttributesMeshRefs = "ToolsmithModularPartRenderingMeshRefs";
         public const string HandleRenderingDataRef = "ToolsmithHandleRenderingDataRef";

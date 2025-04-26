@@ -11,8 +11,7 @@ namespace Toolsmith.Client {
     //Generally referenced and used for rendering the tool. The itemstack itself will hold the actual functional bits of the tool's attributes.
     //This is all mainly static render information that shouldn't change unless the tool or part does, so it can be cached and referenced back to for hopefully easier access.
     public class MultiPartToolRenderingData {
-        public PartData[] parts = Array.Empty<PartData>();
-        public EnumTool? toolType;
+
     }
 
     public class PartData {

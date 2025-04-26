@@ -1,6 +1,9 @@
 {
-	"code": "crudehandle",
+	"code": "oldcrudehandle",
 	"maxstacksize": 4,
+	"variantgroups": [
+		{ "code": "grip", "states": [ "plain", "twine", "cloth", "leather" ]}
+	],
 	"behaviors": [
 		{
 			"name": "GroundStorable",
@@ -11,9 +14,6 @@
 					"x2": 1, "y2": 0.125, "z2": 1
 				}
 			}
-		},
-		{
-			"name": "toolsmith:ModularPartRenderingFromAttributes"
 		}
 	],
 	"attributes": {
@@ -24,8 +24,22 @@
 		}
 	},
 	"storageFlags" : 257,
-	"shape": { "base": "toolsmith:item/crudehandle" },
-	"creativeinventory": { "general": ["*"], "items": ["*"] },
+	"shapeByType": {
+		"*-plain": {
+			"base": "toolsmith:item/oldhandles/crudehandle-plain"
+		},
+		"*": {
+			"base": "toolsmith:item/oldhandles/crudehandle-wrap"
+		}
+	},
+	"texturesByType": {
+		"*-cloth": {
+			"grip": { "base": "game:block/cloth/linen/normal1" }
+		},
+		"*-leather": {
+			"grip": { "base": "game:block/leather/plain" }
+		}
+	},
 	"tpHandTransform": {
 		"translation": { "x": 0, "y": -0.4, "z": -0.2 },
 		"rotation": { "x": 111, "y": 10, "z": 10 },

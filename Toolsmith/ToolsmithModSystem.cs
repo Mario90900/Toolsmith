@@ -37,7 +37,8 @@ namespace Toolsmith {
 
         public const string ToolTinkeringPatchCategory = "toolTinkering";
 
-        public static List<CollectibleObject> TinkerableToolsList; //This will still get populated because it's used to search the recipes later, and it saves having to re-iterate over every single object a second time.
+        public static List<CollectibleObject> TinkerableToolsList => ObjectCacheUtil.GetOrCreate(Api, ToolsmithConstants.TinkerToolCacheListKey, () => new List<CollectibleObject>()); 
+                                                                   //This will still get populated because it's used to search the recipes later, and it saves having to re-iterate over every single object a second time.
                                                                    //I feel it's best to keep the recipe handling after the game expects them all to be loaded. Let me know if it might be better in the long run to just
                                                                    //do it immediately on first discovery - or push it all later? Wait that might not be a good idea either, cause Behaviors get assigned here-ish.
         public static List<CollectibleObject> HandleList; //Now populated to see if Grid Recipes can be generated with the tool heads, handles, and bindings. Will likely clear it afterwards, so do not expect it to remain populated.
@@ -45,7 +46,7 @@ namespace Toolsmith {
         public static List<CollectibleObject> GripList; //This gets populated on start during the pass through all the items. Will be used to reference back to when generating the recipes for Handles! Contains references to all collectable objects that have an entry in the GripRegistry config section.
         public static List<CollectibleObject> TreatmentList; //More CollectibleObjects to be used as treatments! Both Treatments and Grips will likely be cleared after processed on the server side for recipes.
 
-        public static Dictionary<string, Shape> AlternatePartShapes; //This is only created on the Clientside! The shapes only are used for rendering anyway.
+        //public static Dictionary<string, Shape> AlternatePartShapes; //This is only created on the Clientside! The shapes only are used for rendering anyway.
 
         public static List<string> IgnoreCodes;
 
@@ -55,12 +56,11 @@ namespace Toolsmith {
             Api = api;
             TryToLoadConfig(api);
             TryToLoadStats(api);
-            TinkerableToolsList = new List<CollectibleObject>();
             HandleList = new List<CollectibleObject>();
             BindingList = new List<CollectibleObject>();
             GripList = new List<CollectibleObject>();
             TreatmentList = new List<CollectibleObject>();
-            AlternatePartShapes = new Dictionary<string, Shape>();
+            //AlternatePartShapes = new Dictionary<string, Shape>();
             IgnoreCodes = new List<string>();
         }
 
@@ -87,7 +87,9 @@ namespace Toolsmith {
 
             //Blocks and Items registry
             api.RegisterBlockEntityClass($"{ModId}:EntityGrindstone", typeof(BlockEntityGrindstone));
+            api.RegisterBlockEntityClass($"{ModId}:EntityWorkbench", typeof(BlockEntityWorkbench));
             api.RegisterBlockClass($"{ModId}:BlockGrindstone", typeof(BlockGrindstone));
+            api.RegisterBlockClass($"{ModId}:BlockWorkbench", typeof(BlockWorkbench));
             api.RegisterItemClass($"{ModId}:ItemWhetstone", typeof(ItemWhetstone));
             api.RegisterItemClass($"{ModId}:ItemTinkerToolParts", typeof(ItemTinkerToolParts));
 
@@ -108,12 +110,17 @@ namespace Toolsmith {
 
             if (api.Side.IsClient()) {
                 Logger.VerboseDebug("Toolsmith getting and locally caching alternate part shapes.");
-                foreach (var pair in Config.BaseHandleRegistry) {
-                    if (pair.Value.gripShapePath != "") {
-                        var tempShape = api.Assets.TryGet(new AssetLocation(pair.Value.gripShapePath + ".json"))?.ToObject<Shape>();
+                /*foreach (var pair in Config.BaseHandleRegistry) {
+                    if (pair.Value.handleShapePath != "") {
+                        var tempShape = api.Assets.TryGet(new AssetLocation(pair.Value.handleShapePath + ".json"))?.ToObject<Shape>();
                         AlternatePartShapes.TryAdd(pair.Value.handleStatTag, tempShape.Clone());
                     }
                 }
+                foreach (var pair in Config.GripRegistry) {
+                    if (pair.Value.gripShapePath != "") {
+
+                    }
+                }*/
 
                 return;
             }
@@ -157,17 +164,13 @@ namespace Toolsmith {
                     if (!t.HasBehavior<CollectibleBehaviorToolHandle>()) {
                         t.AddBehavior<CollectibleBehaviorToolHandle>();
                     }
-                    //if (Config.PrintAllParsedToolsAndParts) { //Both Handles and Bindings don't really need to populate these lists anymore unless we are looking to actually print everything found. Should help to save some time and ram?
                     HandleList.Add(t);
-                    //}
                 } else if (ConfigUtility.IsToolBinding(t.Code.Path, bindingKeys)) {
                     if (!t.HasBehavior<CollectibleBehaviorToolBinding>()) {
                         t.AddBehavior<CollectibleBehaviorToolBinding>();
                         t.StorageFlags += 0x100;
                     }
-                    //if (Config.PrintAllParsedToolsAndParts) {
                     BindingList.Add(t);
-                    //}
                 }
 
                 if (ConfigUtility.IsValidGripMaterial(t.Code.Path, gripKeys)) {
@@ -274,12 +277,11 @@ namespace Toolsmith {
             Api = null;
             Config = null;
             Stats = null;
-            TinkerableToolsList = null;
             HandleList = null;
             BindingList = null;
             GripList = null;
             TreatmentList = null;
-            AlternatePartShapes = null;
+            //AlternatePartShapes = null;
             IgnoreCodes = null;
             base.Dispose();
         }

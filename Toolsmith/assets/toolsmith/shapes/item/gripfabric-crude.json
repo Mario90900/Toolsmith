@@ -1,0 +1,45 @@
+{
+	"editor": {
+		"collapsedPaths": "",
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"grip": "game:block/cloth/reedrope"
+	},
+	"elements": [
+		{
+			"name": "origin",
+			"from": [ 8.0, 0.0, 8.0 ],
+			"to": [ 8.0, 0.0, 8.0 ],
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"faces": {
+				"north": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"east": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"south": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"west": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"up": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"down": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] }
+			},
+			"children": [
+				{
+					"name": "Grip",
+					"from": [ -4.0, -0.125, -0.875 ],
+					"to": [ 1.5, 1.625, 0.875 ],
+					"rotationOrigin": [ -3.5, 0.0, -0.75 ],
+					"faces": {
+						"north": { "texture": "#grip", "uv": [ 0.0, 0.0, 5.5, 2.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"east": { "texture": "#grip", "uv": [ 0.0, 0.0, 2.5, 2.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"south": { "texture": "#grip", "uv": [ 0.0, 0.0, 5.5, 2.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"west": { "texture": "#grip", "uv": [ 0.0, 0.0, 2.5, 2.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"up": { "texture": "#grip", "uv": [ 0.0, 0.0, 5.5, 2.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"down": { "texture": "#grip", "uv": [ 0.0, 0.0, 5.5, 2.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+					}
+				}
+			]
+		}
+	]}

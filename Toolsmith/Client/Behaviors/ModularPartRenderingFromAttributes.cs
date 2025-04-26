@@ -24,7 +24,8 @@ namespace Toolsmith.Client.Behaviors {
         private ICoreAPI api;
         private readonly Item item;
 
-        private PartData properties;
+        private PartData properties; //This holds the static defaults that might want to be defined for the base item in question, while any dynamic addons will be defined on the passed item's attribute and parsed out like that.
+                                     //Perhaps this could be moved from the configs (for the additional part defines and such) to actual Json... But that only helps modders. Yet... at the same time, who's going to really be messing with shapes and not be familiar with Json?
 
         public ModularPartRenderingFromAttributes(CollectibleObject collObj) : base(collObj) {
             item = collObj as Item ?? throw new Exception("ModularPartRenderingFromAttributes only works on Items.");
@@ -32,11 +33,13 @@ namespace Toolsmith.Client.Behaviors {
 
         public override void OnLoaded(ICoreAPI api) {
             base.OnLoaded(api);
-
+            
             this.api = api;
             capi = api as ICoreClientAPI;
 
-            AddAllToCreativeInventory();
+            if (collObj.Code.Path != "stick" && collObj.Code.Path != "bone") {
+                AddAllToCreativeInventory();
+            }
         }
 
         public override void OnUnloaded(ICoreAPI api) {
@@ -59,7 +62,7 @@ namespace Toolsmith.Client.Behaviors {
             int meshrefID = itemstack.TempAttributes.GetInt(ToolsmithAttributes.ToolsmithMeshID);
             if (meshrefID == 0 || !meshrefs.TryGetValue(meshrefID, out renderinfo.ModelRef)) { //This checks if it has already been rendered and cached, and if so, send that again - otherwise generate one.
                 int id = meshrefs.Count + 1;
-                MultiTextureMeshRef modelref = capi.Render.UploadMultiTextureMesh(GenMesh(itemstack, capi.ItemTextureAtlas));
+                MultiTextureMeshRef modelref = capi.Render.UploadMultiTextureMesh(GenMesh(itemstack, capi.ItemTextureAtlas, null));
 
                 renderinfo.ModelRef = meshrefs[id] = modelref;
                 itemstack.TempAttributes.SetInt(ToolsmithAttributes.ToolsmithMeshID, id);
@@ -67,21 +70,43 @@ namespace Toolsmith.Client.Behaviors {
         }
 
         public MeshData GenMesh(ItemStack itemstack, ITextureAtlasAPI targetAtlas, BlockPos atBlockPos) {
-            return GenMesh(itemstack, targetAtlas);
-        }
-
-        public MeshData GenMesh(ItemStack itemstack, ITextureAtlasAPI targetAtlas) {
-            if (capi == null || properties == null) { //If not the client or there are no properties defined, just return nothing.
+            if (itemstack == null) {
                 return new MeshData();
             }
 
-            bool needFallback = (!itemstack.HasToolRenderTree() && !itemstack.HasPartRenderTree()); //Fallback to the properties defaults if this is the case.
+            var mesh = new MeshData(6, 4);
+            if (itemstack.HasMultiPartRenderTree()) {
+                ITreeAttribute partTransTree = itemstack.GetMultiPartRenderTree(); //The Multi-Part tree contains sub-trees of the PartRenderTrees paired with their render data like rotation and everything. So loop through them all and add them together on the Mesh.
+                foreach (var part in partTransTree) { //This is the PartAndTransform Tree.
+                    ITreeAttribute partTree = partTransTree.GetTreeAttribute(part.Key);
+                    Vec3f rotation = new Vec3f(partTree.GetPartRotationX(), partTree.GetPartRotationY(), partTree.GetPartRotationZ());
+                    MeshData partMesh = GenMesh(partTree.GetPartRenderTree(), targetAtlas, rotation);
+                    mesh.AddMeshData(partMesh, partTree.GetPartOffsetX(), partTree.GetPartOffsetY(), partTree.GetPartOffsetZ());
+                }
+            } else if (itemstack.HasPartRenderTree()) {
+                ITreeAttribute renderTree = itemstack.GetPartRenderTree();
+                return GenMesh(renderTree, targetAtlas);
+            } else {
+                return GenMesh(null, targetAtlas);
+            }
 
-            //CompositeShape shape = new CompositeShape();
+            return mesh;
+        }
+
+        public MeshData GenMesh(ITreeAttribute renderTree, ITextureAtlasAPI targetAtlas, Vec3f rotationInfo = null) { //This is only to handle JUST the 'PartRenderTree's, it will either render the data provided, or if the tree sent is null, just fall back to item defaults.
+            if (capi == null) { //If not the client or there are no properties defined, just return nothing.
+                return new MeshData();
+            }
+
+            bool needFallback = (renderTree == null); //Fallback to the properties defaults if this is the case.
+
             Shape shape = null;
-            ITreeAttribute renderTree = itemstack.GetPartRenderTree(); //Only works for Parts currently. Will work on multi-part renders after.
-            if (renderTree.HasPartShapeIndex()) {
-                shape = ToolsmithModSystem.AlternatePartShapes.TryGetValue(renderTree.GetPartShapeIndex());
+            if (!needFallback && renderTree.HasPartShapePath()) {
+                if (renderTree.HasShapeOverrideTag()) {
+                    shape = api.Assets.TryGet(new AssetLocation(renderTree.GetPartShapePath() + renderTree.GetShapeOverrideTag() + ".json"))?.ToObject<Shape>();
+                } else {
+                    shape = api.Assets.TryGet(new AssetLocation(renderTree.GetPartShapePath() + ".json"))?.ToObject<Shape>();
+                }
             } else {
                 shape = capi.TesselatorManager.GetCachedShape(item.Shape.Base);
             }
@@ -120,88 +145,44 @@ namespace Toolsmith.Client.Behaviors {
                     texSource.textures[entry.Key] = tex;
                 }
             } else { //Fallback to the default textures in the properties. Ideally shouldn't hit here but uhhh.
-                foreach (TextureData texConfig in properties.textures) { //Then go through each texture entry in the properties, see if the itemstack in question has that attribute set and retrieve it if so
-                    texSource.textures[texConfig.code] = new CompositeTexture(new AssetLocation(texConfig.Default + ".png"));
+                if (properties != null) {
+                    foreach (TextureData texConfig in properties.textures) { //Then go through each texture entry in the properties, see if the itemstack in question has that attribute set and retrieve it if so
+                        texSource.textures[texConfig.code] = new CompositeTexture(new AssetLocation(texConfig.Default + ".png"));
+                    }
                 }
             }
 
-            capi.Tesselator.TesselateShape("Modular Part rendering", shape, out MeshData mesh, texSource);
+            capi.Tesselator.TesselateShape("Modular Part rendering", shape, out MeshData mesh, texSource, rotationInfo);
             return mesh;
-
-            //Going to have to completely rewrite this. It's far FAR too static the original way it was implemented...
-            //Can leave in the basic woodtyping to allow for wood variants easily probably but... Can you even actively change a shape mid-runtime? - God I wasn't even USING the new shape, was I...?
-            //Need to make a few garenteed assumptions:
-            //Has to be able to have access to all the data for rendering purposes in the original GenMesh call.
-            // -- This means the shape, textures, everything, needs to be saved TO THE ITEMSTACK. Pull data from the ItemStack PRIMARILY. Use the Wood defaults as a fallback, since that's hardcoded in the Json.
-            // Important Data for Handles so far:
-            // - Shape if it's a Gripped handle or not.
-            // -- Both the grip tag being saved and the presence of the saved shape can be a sign the handle has a grip, and use the tag to get the stat information.
-            // - Treatment tag and then if it is currently still 'wet', once I get the transition working.
-            // -- It is wet if it currently has the TreatmentOverlay set
-            // - Wood typing is done and dusted, it's working thankfully without a hitch really.
-            // --- This above information needs to be able to be abstracted and rendered generic enough so that all the Rendering can take place right here, no matter what the part.
-            // - - The Paths can be tossed in the Render tree. For data purposes, things like the 'tags' can be left on the main part itself.
-            // - - Ideally if all the render information can be stored in one render tree and all shapes (if multiple - can you even have multiple shapes in one...?)
-            // - - Can be read from this tree and just rendered easy.
-            //
-            // Things to note from that damn testing: Shapes that are NOT part of any json file are NOT pre-cached in the TesselatorManager. They have to be grabbed with that
-            //   bit of code in AssetsFinalize in ToolsmithModSystem, then added to a local cache. They should be saved using the StatTag for that handle. It's stupid to anything else.
-            //   -- Limitation -- Requires unique part tags. But that's fine really, it was already assumed since Dictionaries were being used from the start.
-            //   Make sure to update caching all possible part shapes any time an additional part is able to have a shape.
-            //
-            // Will actually have to compile this all into the shape and tesselate the shape itself with the textures and return that - this currently was only ever caring about the textures. That was silly.
-            // If this works out though, that means having the parts fully rendered in a neat little package being shipped out from here? Might be easier to mash two parts together later down the line...
-            // Make this my code now, not gifted code, it gave me a springboard, but there's no reason I can't change every little part of this code. REMEBER THAT. Whatever works for me will work, it's not like I'm making a libarary mod right now.
-            //
-            // Each part is composed of 1 shape object to keep things simple. This object can change though!
-            //   Can start with a Shape tag on the first layer of the tree, a Default 'Fallback' texture, likely can be grabbed from the base shape of the item actually, followed by a Textures AttributesTree - Each entry on this tree is a key-value pair, where the Key can 
-            // -- How are the trees organized? Can they be iterated through reliably? Will likely need to set up the reading and breakdown into info into an initial step, then run the rendering once all the information is sorted.
-            // -- Does this effect the original tree? Will have to experiment.
-            //
-            //Likely have to revisit that idea of building a Render Data AttributeTree. ... Yep that's what I gotta do.
-            //This data needs to be preserved between saving and loading of an area, and full reboots.
-            //The base foundation of alternate wood textures can be enough to not care about the wood as long as it's already saved to attributes, which all of them should be.
-            // - That much is solved at least.
-            //
-            // If I ever find myself floundering for a while and getting frustrated, stop just slamming my head on the wall. I can do this. It helped to stop slamming and run tests.
-            // And writing all this down and actually _thinking_ it through.
-            //
-            //COMPOSITE SHAPE IS WHAT I NEED!!! ITS GOING TO MAKE THE TOOLS EASY TO RENDER! CompositeShape compShape = new CompositeShape();
-            //Tesselator.TesselateItem also has MANY overloads with different options.
-            //It looks like Texture Source will probably just hold the strings of the various texture entries of the shape as the key, then give the assets as the return. It likely just matches to the shapes like that.
-            //Probably the same is true for a CompositeShape.
-
-            /*foreach ((string texCode, AssetLocation assetLoc) in shape.Textures) { //Go through the shape's textures and populate the texSource with any that the item already has defined
-                if (item.Textures.TryGetValue(texCode, out CompositeTexture texture)) {
-                    texSource.Textures[texCode] = texture.Base;
-                } else { //If the item doesn't have any texture overrides defined, then use the shape's default.
-                    texSource.Textures[texCode] = assetLoc;
-                }
-            }
-
-            foreach (TextureData texConfig in properties.textures) { //Then go through each texture entry in the properties, see if the itemstack in question has that attribute set and retrieve it if so
-                string texPath = itemstack.Attributes.GetString(texConfig.attribute) ?? texConfig.Default;
-                if (!texConfig.overlay) {
-                    texSource.Textures[texConfig.code] = new AssetLocation(texPath + ".png");
-                } else {
-                    var baseTexture = properties.textures[texConfig.overlayTargetIndex].values[texConfig.overlayTargetIndex]; //There has to be a better way to get this base wood texture but uhhh.
-                    CompositeTexture overlayedTexture = new CompositeTexture(new AssetLocation(baseTexture + ".png"));
-                    BlendedOverlayTexture overlay = new BlendedOverlayTexture();
-                    overlay.Base = new AssetLocation(texPath + ".png");
-                    overlayedTexture.BlendedOverlays = new BlendedOverlayTexture[] { overlay };
-                    overlayedTexture.RuntimeBake(capi, targetAtlas);
-                    texSource.Textures[texConfig.code] = overlayedTexture.Baked.BakedName;
-                }
-            }*/
         }
 
-        public string GetMeshCacheKey(ItemStack itemstack) { //Oh god this doesn't work at all but needs fixing badly.
+        public string GetMeshCacheKey(ItemStack itemstack) {
             string cacheKey = item.Code.ToShortString();
             
-            foreach (TextureData textures in properties.textures) {
-                cacheKey += "-" + itemstack.Attributes.GetString(textures.code)?.Replace('/', '-') ?? "default";
+            if (itemstack.HasPartRenderTree()) {
+                var renderTree = itemstack.GetPartRenderTree();
+                GetMeshCacheKeyFromSubTrees(ref cacheKey, renderTree);
+            } else if (itemstack.HasMultiPartRenderTree()) {
+                var renderTree = itemstack.GetMultiPartRenderTree();
+                foreach (var part in renderTree) {
+                    cacheKey += part.Key;
+                    var partRenderTree = renderTree.GetTreeAttribute(part.Key);
+                    GetMeshCacheKeyFromSubTrees(ref cacheKey, partRenderTree);
+                }
             }
             return cacheKey;
+        }
+
+        private void GetMeshCacheKeyFromSubTrees(ref string cacheKey, ITreeAttribute renderTree) {
+            if (renderTree.HasPartShapePath()) {
+                cacheKey += renderTree.GetPartShapePath().Replace('/', '-');
+            } else {
+                cacheKey += "itemdefault";
+            }
+            var textureTree = renderTree.GetPartTextureTree();
+            foreach (var texEntry in textureTree) {
+                cacheKey += textureTree.GetString(texEntry.Key)?.Replace('/', '-') ?? "default";
+            }
         }
 
         private void AddAllToCreativeInventory() {
@@ -213,6 +194,8 @@ namespace Toolsmith.Client.Behaviors {
             ITreeAttribute tree = new TreeAttribute();
             var top = tree.GetOrAddTreeAttribute(ToolsmithAttributes.ModularPartDataTree);
             top.GetPartTextureTree();
+            var handleStatsPair = ToolsmithModSystem.Config.BaseHandleRegistry[item.Code.Path];
+            top.SetPartShapePath(handleStatsPair.handleShapePath);
             ConstructStacksWithRecursion(stacks, tree, 0);
             
             JsonItemStack stackWithNoAttributes = new() {

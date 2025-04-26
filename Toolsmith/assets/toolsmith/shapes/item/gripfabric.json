@@ -1,0 +1,115 @@
+{
+	"editor": {
+		"collapsedPaths": "",
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"grip": "game:block/cloth/reedrope"
+	},
+	"elements": [
+		{
+			"name": "origin",
+			"from": [ 8.0, 0.0, 8.0 ],
+			"to": [ 8.0, 0.0, 8.0 ],
+			"rotationOrigin": [ 8.0, 0.75, 8.0 ],
+			"faces": {
+				"north": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"east": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"south": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"west": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"up": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"down": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 0.5 ] }
+			},
+			"children": [
+				{
+					"name": "Grip",
+					"from": [ -3.5, -0.12, -0.45 ],
+					"to": [ 2.5, 1.63, 0.55 ],
+					"rotationOrigin": [ 3.0, 0.0, 0.0 ],
+					"faces": {
+						"east": { "texture": "#grip", "uv": [ 12.0, 0.0, 14.0, 2.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"west": { "texture": "#grip", "uv": [ 12.0, 2.0, 14.0, 4.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"up": { "texture": "#grip", "uv": [ 0.0, 0.0, 13.0, 2.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+						"down": { "texture": "#grip", "uv": [ 0.0, 4.0, 13.0, 6.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+					},
+					"children": [
+						{
+							"name": "GripN",
+							"from": [ 0.0, 0.37, -0.37 ],
+							"to": [ 6.0, 1.37, 0.0 ],
+							"rotationOrigin": [ 6.5, 0.12, 0.45 ],
+							"faces": {
+								"north": { "texture": "#grip", "uv": [ 0.0, 2.0, 13.0, 4.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"east": { "texture": "#grip", "uv": [ 11.5, 0.5, 12.0, 2.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"west": { "texture": "#grip", "uv": [ 14.0, 2.5, 14.5, 4.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "GripS",
+							"from": [ 0.0, 0.37, 1.0 ],
+							"to": [ 6.0, 1.37, 1.37 ],
+							"rotationOrigin": [ 6.5, 0.12, 1.45 ],
+							"faces": {
+								"east": { "texture": "#grip", "uv": [ 15.0, 0.5, 15.5, 2.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"south": { "texture": "#grip", "uv": [ 0.0, 6.0, 13.0, 8.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"west": { "texture": "#grip", "uv": [ 12.5, 2.5, 13.0, 4.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "GripCurveUN",
+							"from": [ 0.0, -0.06, 0.14 ],
+							"to": [ 6.0, 0.31, 0.68 ],
+							"rotationOrigin": [ 6.5, 0.87, 0.45 ],
+							"rotationX": 135.0,
+							"faces": {
+								"east": { "texture": "#grip", "uv": [ 1.0, 0.0, 1.5, 0.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"west": { "texture": "#grip", "uv": [ 1.0, 0.0, 1.5, 0.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#grip", "uv": [ 0.0, 8.5, 13.0, 9.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "GripCurveUS",
+							"from": [ 0.0, -0.14, 0.16 ],
+							"to": [ 6.0, 0.23, 0.69 ],
+							"rotationOrigin": [ 6.5, 0.87, 0.45 ],
+							"rotationX": -135.0,
+							"faces": {
+								"east": { "texture": "#grip", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "windMode": [-1,-1,-1,-1] },
+								"west": { "texture": "#grip", "uv": [ 0.0, 0.0, 0.5, 0.5 ], "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#grip", "uv": [ 0.0, 9.0, 6.0, 9.5 ], "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "GripCurveDN",
+							"from": [ 0.0, -0.06, 0.22 ],
+							"to": [ 6.0, 0.31, 0.75 ],
+							"rotationOrigin": [ 6.5, 0.87, 0.45 ],
+							"rotationX": 45.0,
+							"faces": {
+								"east": { "texture": "#grip", "uv": [ 1.0, 1.0, 1.5, 1.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"west": { "texture": "#grip", "uv": [ 1.0, 1.0, 1.5, 1.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#grip", "uv": [ 0.0, 8.0, 13.0, 8.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						},
+						{
+							"name": "GripCurveDS",
+							"from": [ 0.0, -0.14, 0.22 ],
+							"to": [ 6.0, 0.23, 0.75 ],
+							"rotationOrigin": [ 6.5, 0.87, 0.45 ],
+							"rotationX": -45.0,
+							"faces": {
+								"east": { "texture": "#grip", "uv": [ 0.0, 1.0, 0.5, 1.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"west": { "texture": "#grip", "uv": [ 0.0, 1.0, 0.5, 1.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1] },
+								"down": { "texture": "#grip", "uv": [ 0.0, 9.5, 13.0, 10.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+							}
+						}
+					]
+				}
+			]
+		}
+	]}

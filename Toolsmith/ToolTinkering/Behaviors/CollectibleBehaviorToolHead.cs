@@ -23,6 +23,8 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         }
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling) { //Handle the grinding code here as well as the tool itself! Probably can offload the core interaction to a helper utility function?
+            var entPlayer = (byEntity as EntityPlayer);
+            
             if (TinkeringUtility.ValidHandleInOffhand(byEntity)) { //Check for Handle in Offhand
                 handHandling = EnumHandHandling.PreventDefault;
                 handling = EnumHandling.PreventSubsequent;
@@ -36,6 +38,8 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 handling = EnumHandling.PreventSubsequent;
                 sharpening = true;
                 return;
+            } else if (entPlayer != null && entPlayer.Controls.ShiftKey && blockSel.Block.Code.FirstCodePart() == "toolsmith:grindstone") {
+                ToolsmithModSystem.Logger.Warning("Found a grindstone!"); //TODO - This doesn't exactly work, maybe the grindstone intercepts it.
             }
 
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);

@@ -1,0 +1,29 @@
+[
+	{
+		"ingredientPattern": "H",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:oldcrudehandle-*" }
+		},
+		"width": 1,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:crudehandle", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "H",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:oldhandle-*" }
+		},
+		"width": 1,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:handle", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "H",
+		"ingredients": {
+			"H": { "type": "item", "code": "toolsmith:oldcarpentedhandle-*" }
+		},
+		"width": 1,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:carpentedhandle", "quantity": 1 }
+	}
+]

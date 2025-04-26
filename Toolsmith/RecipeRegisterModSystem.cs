@@ -13,11 +13,15 @@ using Vintagestory.API.Datastructures;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
 using Vintagestory.Client.NoObf;
+using Vintagestory.GameContent;
 
 namespace Toolsmith {
     public class RecipeRegisterModSystem : ModSystem {
 
-        public static Dictionary<string, CollectibleObject> TinkerToolGridRecipes; //A Dictionary to give it the Tool Head's Code.ToString to retreive the Tool CollectibleObject it should create
+        //A Dictionary to give it the Tool Head's Code.ToString to retreive the Tool CollectibleObject it should create
+        public static Dictionary<string, CollectibleObject> TinkerToolGridRecipes => ObjectCacheUtil.GetOrCreate(ToolsmithModSystem.Api, ToolsmithConstants.TinkerToolMadeFromGridRecipeKey, () => new Dictionary<string, CollectibleObject>());
+        //A Dictionary to supply it with a tool head when looking to reforge it, getting the recipe back that produces the item to generate the WorkPiece similar to Smithing Plus
+        public static Dictionary<string, SmithingRecipe> ToolHeadSmithingRecipes => ObjectCacheUtil.GetOrCreate(ToolsmithModSystem.Api, ToolsmithConstants.ToolHeadMadeFromSmithingRecipesKey, () => new Dictionary<string, SmithingRecipe>());
 
         public override bool ShouldLoad(EnumAppSide forSide) {
             return forSide == EnumAppSide.Server;
@@ -28,7 +32,6 @@ namespace Toolsmith {
         }
 
         public override void StartPre(ICoreAPI api) {
-            TinkerToolGridRecipes = new Dictionary<string, CollectibleObject>();
         }
 
         public override void AssetsFinalize(ICoreAPI api) {
@@ -54,8 +57,16 @@ namespace Toolsmith {
 
                         toolRecipes.AddRange(GenerateToolGridRecipes(api, ingredient, tool));
 
-                        if (!TinkerToolGridRecipes.ContainsKey(ingredient.Code.ToString())) {
-                            TinkerToolGridRecipes.Add(ingredient.Code.ToString(), tool);
+                        var gridRecipeTag = ingredient.Code.ToString();
+                        foreach (var otherIngredients in recipe.resolvedIngredients.Where(o => (o != null) && (o.ResolvedItemstack.Collectible.Code.Path == "bone"))) { //Is this one of the bone + head recipes?
+                            if (otherIngredients.ResolvedItemstack.Collectible.Code == ToolsmithConstants.BoneHandleCode) {
+                                gridRecipeTag += "-bone";
+                                break;
+                            }
+                        }
+
+                        if (!TinkerToolGridRecipes.ContainsKey(gridRecipeTag)) {
+                            TinkerToolGridRecipes.Add(gridRecipeTag, tool);
                             if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) {
                                 ToolsmithModSystem.Logger.Debug(ingredient.Code.ToString());
                             }
@@ -63,6 +74,7 @@ namespace Toolsmith {
                     }
                 }
             }
+
             var handleRecipes = GenerateHandleRecipes(api);
 
             //Make sure to clean up the four lists that were used in all this here! Would be nice not to leave that overhead information when it likely won't be needed after this point.
@@ -193,7 +205,6 @@ namespace Toolsmith {
         }
 
         public override void Dispose() {
-            TinkerToolGridRecipes = null;
             base.Dispose();
         }
     }
