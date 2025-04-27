@@ -56,8 +56,26 @@
 		"rotation": { "x": 90, "y": -10, "z": -75 },
 		"origin": { "x": 0.5, "y": 0.55, "z": 0.7 }
 	},
-	"collisionSelectionBoxes": [
+	"collisionBoxes": [
 		{ "x1": 0, "y1": 0, "z1": 0.0625, "x2": 1, "y2": 1, "z2": 0.9375, 
+		  "rotateYByType": { "*-north": 0, "*-east": 270, "*-west": 90, "*-south": 180 }}
+	],
+	"selectionBoxes": [
+		{ "x1": 0, "y1": 0, "z1": 0.0625, "x2": 1, "y2": 1, "z2": 0.9375, 
+		  "rotateYByType": { "*-north": 0, "*-east": 270, "*-west": 90, "*-south": 180 }},
+		{ "x1": 0.4, "y1": 1, "z1": 0.3, "x2": 0.6, "y2": 1.1, "z2": 0.5, 
+		  "rotateYByType": { "*-north": 0, "*-east": 270, "*-west": 90, "*-south": 180 }},
+		{ "x1": 0.6, "y1": 1, "z1": 0.6, "x2": 0.8, "y2": 1.1, "z2": 0.8, 
+		  "rotateYByType": { "*-north": 0, "*-east": 270, "*-west": 90, "*-south": 180 }},
+		{ "x1": 0.8, "y1": 1, "z1": 0.3, "x2": 1.0, "y2": 1.1, "z2": 0.5, 
+		  "rotateYByType": { "*-north": 0, "*-east": 270, "*-west": 90, "*-south": 180 }},
+		{ "x1": 1.0, "y1": 1, "z1": 0.6, "x2": 1.2, "y2": 1.1, "z2": 0.8, 
+		  "rotateYByType": { "*-north": 0, "*-east": 270, "*-west": 90, "*-south": 180 }},
+		{ "x1": 1.2, "y1": 1, "z1": 0.3, "x2": 1.4, "y2": 1.1, "z2": 0.5, 
+		  "rotateYByType": { "*-north": 0, "*-east": 270, "*-west": 90, "*-south": 180 }},
+		{ "x1": 0.05, "y1": 1, "z1": 0.8, "x2": 0.45, "y2": 1.2, "z2": 1,
+		  "rotateYByType": { "*-north": 0, "*-east": 270, "*-west": 90, "*-south": 180 }},
+		{ "x1": 1.55, "y1": 1, "z1": 0.55, "x2": 1.85, "y2": 1.1, "z2": 0.7,
 		  "rotateYByType": { "*-north": 0, "*-east": 270, "*-west": 90, "*-south": 180 }}
 	]
 }

@@ -7,5 +7,7 @@ using Vintagestory.API.Common;
 
 namespace Toolsmith.ToolTinkering.Blocks {
     public class BlockEntityWorkbench : BlockEntity {
+
+        public WorkbenchInventory Inventory { get; private set; }
     }
 }

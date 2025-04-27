@@ -33,11 +33,11 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
             ICoreClientAPI capi = api as ICoreClientAPI;
 
-            interactions = ObjectCacheUtil.GetOrCreate(api, "grindstoneInteractions", () => {
+            interactions = ObjectCacheUtil.GetOrCreate(capi, "grindstoneInteractions", () => {
                 List<ItemStack> honeables = new List<ItemStack>();
                 List<ItemStack> tinkerableTools = new List<ItemStack>();
 
-                foreach (Item i in api.World.Items) {
+                foreach (Item i in capi.World.Items) {
                     if (i.Code == null) {
                         continue;
                     }

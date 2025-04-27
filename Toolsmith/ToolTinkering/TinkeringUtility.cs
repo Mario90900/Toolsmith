@@ -13,6 +13,7 @@ using Vintagestory.API.MathTools;
 using Vintagestory.ServerMods.NoObf;
 using Toolsmith.ToolTinkering.Items;
 using Toolsmith.ToolTinkering.Behaviors;
+using Toolsmith.Client;
 
 namespace Toolsmith.ToolTinkering {
     //This is beginning to hold the MEAT of the whole tinkering system. It has various helper functions that are being used in multiple places to help keep everything just running the single code calls and ensuring it isn't spaghetti while I add more ways to do the same things.
@@ -302,6 +303,30 @@ namespace Toolsmith.ToolTinkering {
         public static void AssemblePartBundle(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel) {
             ItemStack bundle = new ItemStack(byEntity.World.GetItem(ToolsmithConstants.ToolBundleCode), 1);
             ItemSlot handleSlot = byEntity.LeftHandItemSlot;
+            ItemStack head = slot.Itemstack;
+            ItemStack handle = handleSlot.Itemstack;
+
+            var bundleMultiPartRenderTree = bundle.GetMultiPartRenderTree(); //Time to assign the data for rendering the Bundle!
+            var headPartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHeadName);
+            var handlePartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
+
+            //Set up the Head tree!
+            //Set Transform here!
+            //Set Rotation here! - Will have to make a command ingame to help assist setting this up in real-time then copy over the info here.
+            var headPartTree = headPartAndTransformTree.GetPartRenderTree();
+            ToolsmithModSystem.Logger.Warning("Does this code need a tweak? " + head.Collectible.Code);
+            headPartTree.SetPartShapePath(head.Collectible.Code);
+            var headTextureTree = headPartTree.GetPartTextureTree();
+            var headShape = byEntity.Api.Assets.TryGet(new AssetLocation(head.Collectible.Code + ".json"))?.ToObject<Shape>();
+            if (headShape != null) {
+                ToolsmithModSystem.Logger.Warning("Same for the texture? " + head.Item.Shape);
+                //Handle grabbing the textures and names for them here! Finish setting up the trees!
+            } else {
+                ToolsmithModSystem.Logger.Warning("Uh. Headshape null! AAAA. It probably needs Shapes added to it.");
+            }
+            
+            //Handle time for the Render Data! But at least that's already part of the handle by now. Most likely.
+            //TODO - My head hurts and I'm tired. Tomorrow. What else was I doing...? Oh yeah. The Workbench! Finish that too!!!
 
             bundle.SetToolhead(slot.TakeOut(1));
             bundle.SetToolhandle(handleSlot.TakeOut(1)); //Take out one, and set it as the Bundle's tool handle!
