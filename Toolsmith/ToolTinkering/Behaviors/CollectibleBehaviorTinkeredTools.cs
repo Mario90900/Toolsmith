@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Config;
+using Toolsmith.ToolTinkering.Items;
 using Toolsmith.Utils;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -64,7 +65,9 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             workingDsc.Insert(startIndex, Lang.Get("toolbindingdurability", curBindingDur, maxBindingDur) + '\n'); //Insert in the part durabilities in the place of it
             workingDsc.Insert(startIndex, Lang.Get("toolhandledurability", curHandleDur, maxHandleDur) + '\n');
             workingDsc.Insert(startIndex, Lang.Get("toolheaddurability", curHeadDur, maxHeadDur) + '\n');
-            workingDsc.Insert(startIndex, Lang.Get("toolsharpness", curSharp, maxSharp) + '\n');
+            if (!inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
+                workingDsc.Insert(startIndex, Lang.Get("toolsharpness", curSharp, maxSharp) + '\n');
+            }
 
             dsc.Clear();
             dsc.Append(workingDsc);
@@ -141,18 +144,20 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     }
                 }
             }
+
             //Once all (up to) three possible parts are found, access the stats for the handle and binding! The Head doesn't need much done to it, it's the simplest to handle.
             HandleStatPair handle;
+            bool handleSuccess;
             if (handleStack != null) { //It probably shouldn't ever be the case it gets here and Handle is still null but hey.
-                if (handleStack.HasHandleStatTag()) {
-                    handle = ToolsmithModSystem.Config.BaseHandleRegistry.Get(handleStack.GetHandleStatTag());
-                } else {
-                    handle = ToolsmithModSystem.Config.BaseHandleRegistry.Get(handleStack.Collectible.Code.Path);
-                }
+                handleSuccess = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handleStack.Collectible.Code.Path, out handle);
             } else {
-                handle = ToolsmithModSystem.Config.BaseHandleRegistry.Get(ToolsmithConstants.DefaultHandlePartKey); //Probably shouldn't ever run into this, but just incase something does go wrong, this might prevent a crash - and default to a stick used. Maybe if configs are not configured right this could happen!
+                handleSuccess = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(ToolsmithConstants.DefaultHandlePartKey, out handle); //Probably shouldn't ever run into this, but just incase something does go wrong, this might prevent a crash - and default to a stick used. Maybe if configs are not configured right this could happen!
                 handleStack = new ItemStack(ToolsmithModSystem.Api.World.GetItem(new AssetLocation(ToolsmithConstants.DefaultHandleCode)), 1);
             }
+            if (!handleSuccess) {
+                handle = ToolsmithModSystem.Config.BaseHandleRegistry.First().Value;
+            }
+
             BindingStatPair binding;
             if (bindingStack != null) { //If there is a binding used, then get that one.
                 if (bindingStack.Attributes != null) {

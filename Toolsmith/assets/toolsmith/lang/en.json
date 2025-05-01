@@ -13,7 +13,7 @@
 	"game:toolheaddirections": "Prepare this tool by holding rightclick with a handle in the offhand!\nOr simply craft it like normal for a basic one!",
 	"game:toolhandledirections": "This looks like it would make a good handle for a tool.",
 	"game:toolbindingdirections": "This looks very useful for binding a tool together.",
-	"game:tinkertoolpartscontains": "Prepared an {0}, and a {1} for crafting into a tool. Now optionally choose a binding the same as the handle!",
+	"game:tinkertoolpartscontains": "Prepared an {0}, and a {1} for crafting into a tool. Now optionally choose a binding the same way as the handle!",
 	"game:handleiswet": " (Wet)",
 	"game:toolhandlefullyprepared": "This handle has been treated with {0} and given a {1} grip.",
 	"game:toolhandletreated": "This handle has been treated with {0}.",
@@ -97,6 +97,9 @@
 	
 	"toolsmith:block-workbench-north": "Workbench",
 	
-	"game:blockhelp-workbench-reforge": "Reforge tool head",
+	"game:blockhelp-workbench-reforge": "Reforge tool or tool head",
 	"game:blockhelp-workbench-deconstruct": "Take apart tool",
+	"game:blockhelp-workbench-craftingspot": "Place tool part for crafting",
+	"game:blockhelp-workbench-retrieve-item": "Take tool part",
+	"game:blockhelp-workbench-reforge-head": "Prepare piece for reforging",
 }

@@ -36,6 +36,7 @@
 						]
 					}
 				],
+				"skipCreativeInventoryAdditions": false,
 				"creativeTabs": [ "general", "items" ]
 			}
 		}

@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Toolsmith.Client;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.Datastructures;
 
 namespace Toolsmith.ToolTinkering.Items {
-    public class ItemTinkerToolParts : Item {
+    public class ItemTinkerToolParts : Item, IModularPartRenderer {
         protected bool crafting = false;
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling) {
-            if (TinkeringUtility.ValidBindingInOffhand(byEntity)) { //Check for Handle in Offhand
+            var entPlayer = (byEntity as EntityPlayer);
+
+            if (firstEvent && entPlayer != null && !entPlayer.Controls.ShiftKey && TinkeringUtility.ValidBindingInOffhand(byEntity)) { //Check for Handle in Offhand
                 handling = EnumHandHandling.PreventDefault;
                 if (byEntity.World.Side == EnumAppSide.Server) {
                     byEntity.World.PlaySoundAt(new AssetLocation("sounds/player/messycraft.ogg"), byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z, null, true, 32f, 1f);
@@ -55,6 +59,14 @@ namespace Toolsmith.ToolTinkering.Items {
             }
 
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+        }
+
+        public ITreeAttribute InitializeRenderTree(ITreeAttribute tree, Item item) { //This probably won't get called, cause it's used for initializing the Creative stacks, and this is set to skip that. Keeping it here just in case though!
+            return tree;
+        }
+
+        public void ResetRotationAndOffset(ITreeAttribute tree) {
+            return;
         }
     }
 }

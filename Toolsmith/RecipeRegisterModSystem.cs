@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
+using SmithingPlus.Metal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Toolsmith.Client;
 using Toolsmith.Config;
 using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.Utils;
@@ -19,9 +21,19 @@ namespace Toolsmith {
     public class RecipeRegisterModSystem : ModSystem {
 
         //A Dictionary to give it the Tool Head's Code.ToString to retreive the Tool CollectibleObject it should create
-        public static Dictionary<string, CollectibleObject> TinkerToolGridRecipes => ObjectCacheUtil.GetOrCreate(ToolsmithModSystem.Api, ToolsmithConstants.TinkerToolMadeFromGridRecipeKey, () => new Dictionary<string, CollectibleObject>());
+        public static Dictionary<string, CollectibleObject> TinkerToolGridRecipes;
         //A Dictionary to supply it with a tool head when looking to reforge it, getting the recipe back that produces the item to generate the WorkPiece similar to Smithing Plus
-        public static Dictionary<string, SmithingRecipe> ToolHeadSmithingRecipes => ObjectCacheUtil.GetOrCreate(ToolsmithModSystem.Api, ToolsmithConstants.ToolHeadMadeFromSmithingRecipesKey, () => new Dictionary<string, SmithingRecipe>());
+        public static Dictionary<string, SmithingRecipe> ToolHeadSmithingRecipes;
+        //Textures are grabbed from the ToolHeads once found
+        public static Dictionary<string, ToolHeadTextureData> ToolHeadTexturesCache;
+
+        //This is instantiated and populated in the ToolsmithModSystem, then used here to parse through the recipes once they have loaded, nulled afterwards for space.
+        public static List<CollectibleObject> TinkerableToolsList;
+
+        public static List<CollectibleObject> HandleList; //Now populated to generate Grid Recipes with the tool heads, handles, and bindings. Is cleared afterwards to free space, so do not expect it to remain populated.
+        public static List<CollectibleObject> BindingList; //^^^
+        public static List<CollectibleObject> GripList; //^^^
+        public static List<CollectibleObject> TreatmentList; //^^^
 
         public override bool ShouldLoad(EnumAppSide forSide) {
             return forSide == EnumAppSide.Server;
@@ -32,6 +44,9 @@ namespace Toolsmith {
         }
 
         public override void StartPre(ICoreAPI api) {
+            TinkerToolGridRecipes = new Dictionary<string, CollectibleObject>();
+            ToolHeadSmithingRecipes = new Dictionary<string, SmithingRecipe>();
+            ToolHeadTexturesCache = new Dictionary<string, ToolHeadTextureData>();
         }
 
         public override void AssetsFinalize(ICoreAPI api) {
@@ -43,7 +58,7 @@ namespace Toolsmith {
             //Oh god this pains me. This does NOT feel optimal at all. But it works?
             List<GridRecipe> toolRecipes = new List<GridRecipe>();
             foreach (var recipe in api.World.GridRecipes) { //Check each recipe...
-                foreach (var tool in ToolsmithModSystem.TinkerableToolsList.Where(t => recipe.Output.Code.Equals(t.Code))) { //Where the output code matches anything on the Tinkered Tool List (from the configs)...
+                foreach (var tool in TinkerableToolsList.Where(t => recipe.Output.Code.Equals(t.Code))) { //Where the output code matches anything on the Tinkered Tool List (from the configs)...
                     foreach (var ingredient in recipe.resolvedIngredients.Where(i => (i != null) && (i.ResolvedItemstack != null) && (ConfigUtility.IsToolHead(i.ResolvedItemstack.Collectible?.Code.ToString())))) { //And the recipe in question has a Tool Head item that is on the Tool Head Config List
                         if (!ingredient.ResolvedItemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
                             ingredient.ResolvedItemstack.Collectible.AddBehavior<CollectibleBehaviorToolHead>(); //Therefore it is a Tool Head! Give it the behavior.
@@ -65,6 +80,26 @@ namespace Toolsmith {
                             }
                         }
 
+                        if (!ToolHeadTexturesCache.ContainsKey(ingredient.Code)) {
+                            if (ingredient.Type == EnumItemClass.Item) {
+                                Item item = ingredient.ResolvedItemstack.Item;
+                                ToolHeadTextureData textures = new ToolHeadTextureData();
+                                foreach (var tex in item.Textures) {
+                                    textures.Tags.Add(tex.Key);
+                                    textures.Paths.Add(tex.Value.Base);
+                                }
+                                ToolHeadTexturesCache.Add(item.Code, textures);
+                            } else {
+                                Block block = ingredient.ResolvedItemstack.Block;
+                                ToolHeadTextureData textures = new ToolHeadTextureData();
+                                foreach (var tex in block.Textures) {
+                                    textures.Tags.Add(tex.Key);
+                                    textures.Paths.Add(tex.Value.Base);
+                                }
+                                ToolHeadTexturesCache.Add(block.Code, textures);
+                            }
+                        }
+
                         if (!TinkerToolGridRecipes.ContainsKey(gridRecipeTag)) {
                             TinkerToolGridRecipes.Add(gridRecipeTag, tool);
                             if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) {
@@ -77,11 +112,12 @@ namespace Toolsmith {
 
             var handleRecipes = GenerateHandleRecipes(api);
 
-            //Make sure to clean up the four lists that were used in all this here! Would be nice not to leave that overhead information when it likely won't be needed after this point.
-            ToolsmithModSystem.HandleList = null;
-            ToolsmithModSystem.BindingList = null;
-            ToolsmithModSystem.GripList = null;
-            ToolsmithModSystem.BindingList = null;
+            //Make sure to clean up the five lists that were used in all this here! Would be nice not to leave that overhead information when it likely won't be needed after this point.
+            TinkerableToolsList = null;
+            HandleList = null;
+            BindingList = null;
+            GripList = null;
+            BindingList = null;
 
             if (toolRecipes != null && toolRecipes.Count > 0) {
                 api.World.GridRecipes.AddRange(toolRecipes);
@@ -93,8 +129,8 @@ namespace Toolsmith {
 
         private List<GridRecipe> GenerateToolGridRecipes(ICoreAPI api, GridRecipeIngredient head, CollectibleObject tool) {
             var list = new List<GridRecipe>();
-            foreach (var handle in ToolsmithModSystem.HandleList) {
-                foreach (var binding in ToolsmithModSystem.BindingList) {
+            foreach (var handle in HandleList) {
+                foreach (var binding in BindingList) {
                     var recipe = new GridRecipe {
                         IngredientPattern = "hb,r_",
                         Width = 2,
@@ -124,16 +160,16 @@ namespace Toolsmith {
 
         private List<GridRecipe> GenerateHandleRecipes(ICoreAPI api) {
             var list = new List<GridRecipe>();
-            foreach (var handle in ToolsmithModSystem.HandleList) { //For every handle base that was found...
+            foreach (var handle in HandleList) { //For every handle base that was found...
                 //if (handle.Code.Path == "stick" || handle.Code.Path == "bone") {
                 //    continue;
                 //}
-                HandleStatPair handlesStats = ToolsmithModSystem.Config.BaseHandleRegistry.Get(handle.Code.Path); //Grab the stat pair that should be registered in the configs here.
+                HandleStatPair handlesStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handle.Code.Path); //Grab the stat pair that should be registered in the configs here.
                 if (handlesStats != null) { //Just in case, ensure it was found!
                     //Check the stats of the handle found, see what recipes are required to make for this one. Grip? Treatment? Both or neither?
                     //If Grip is allowed on this handle, generate a recipe with each of the Grip ingredients and add to list. Leave the actual assigning of attributes to the Handle Behavior's OnCreatedByCrafting call
                     if (handlesStats.canHaveGrip) {
-                        foreach (var gripMat in ToolsmithModSystem.GripList) {
+                        foreach (var gripMat in GripList) {
                             var recipe = new GridRecipe {
                                 IngredientPattern = "hg",
                                 Width = 2,
@@ -155,7 +191,7 @@ namespace Toolsmith {
                     //Same for Treatments here! Add to the list afterwards!
                     if (handlesStats.canBeTreated) {
                         var bucket = api.World.GetBlock(new AssetLocation("game:woodbucket"));
-                        foreach (var treatmentMat in ToolsmithModSystem.TreatmentList) {
+                        foreach (var treatmentMat in TreatmentList) {
                             var treatmentStats = ToolsmithModSystem.Config.TreatmentRegistry.Get(treatmentMat.Code.Path);
                             if (treatmentStats != null && !treatmentStats.isLiquid) {
                                 var recipe = new GridRecipe {
@@ -182,7 +218,7 @@ namespace Toolsmith {
                                         ["h"] = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code },
                                         ["t"] = new CraftingRecipeIngredient { Type = bucket.ItemClass, Code = bucket.Code }
                                     },
-                                    Attributes = new JsonObject(JToken.Parse($"liquidContainerProps: {{ requiresContent: {{ type: {treatmentMat.ItemClass}, code: {treatmentMat.Code} }}, requiresLitres: {treatmentStats.litersUsed}}}")),
+                                    Attributes = new JsonObject(JToken.Parse("{liquidContainerProps: {requiresContent: {type: \"item\", code: \"" + treatmentMat.Code + "\" }, requiresLitres: " + treatmentStats.litersUsed + "}}")),
                                     RecipeGroup = 3,
                                     ShowInCreatedBy = false,
                                     Name = "Add " + treatmentMat.Code + " as a handle treatment.",
@@ -205,6 +241,10 @@ namespace Toolsmith {
         }
 
         public override void Dispose() {
+            TinkerToolGridRecipes = null;
+            ToolHeadSmithingRecipes = null;
+            TinkerableToolsList = null;
+            ToolHeadTexturesCache = null;
             base.Dispose();
         }
     }

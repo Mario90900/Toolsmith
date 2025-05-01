@@ -107,6 +107,9 @@ namespace Toolsmith.ToolTinkering {
                     }
                 }
                 itemStack.SetToolheadCurrentDurability(remainingHeadDur);
+                if (remainingHeadDur <= 0) {
+                    headBroke = true;
+                }
 
                 if (doDamageHandle && chanceToDamage < 1.0f) {
                     var damageToTake = 0;

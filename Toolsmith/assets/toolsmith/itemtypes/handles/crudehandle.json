@@ -13,7 +13,10 @@
 			}
 		},
 		{
-			"name": "toolsmith:ModularPartRenderingFromAttributes"
+			"name": "toolsmith:ModularPartRenderingFromAttributes",
+			"properties": {
+				"skipCreativeInventoryAdditions": false
+			}
 		}
 	],
 	"attributes": {

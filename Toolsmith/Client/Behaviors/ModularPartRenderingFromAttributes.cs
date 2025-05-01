@@ -29,6 +29,7 @@ namespace Toolsmith.Client.Behaviors {
 
         public ModularPartRenderingFromAttributes(CollectibleObject collObj) : base(collObj) {
             item = collObj as Item ?? throw new Exception("ModularPartRenderingFromAttributes only works on Items.");
+            properties = new PartData();
         }
 
         public override void OnLoaded(ICoreAPI api) {
@@ -36,10 +37,8 @@ namespace Toolsmith.Client.Behaviors {
             
             this.api = api;
             capi = api as ICoreClientAPI;
-
-            if (collObj.Code.Path != "stick" && collObj.Code.Path != "bone") {
-                AddAllToCreativeInventory();
-            }
+            
+            AddAllToCreativeInventory();
         }
 
         public override void OnUnloaded(ICoreAPI api) {
@@ -145,7 +144,7 @@ namespace Toolsmith.Client.Behaviors {
                     texSource.textures[entry.Key] = tex;
                 }
             } else { //Fallback to the default textures in the properties. Ideally shouldn't hit here but uhhh.
-                if (properties != null) {
+                if (properties != null && properties.textures?.Length > 0) {
                     foreach (TextureData texConfig in properties.textures) { //Then go through each texture entry in the properties, see if the itemstack in question has that attribute set and retrieve it if so
                         texSource.textures[texConfig.code] = new CompositeTexture(new AssetLocation(texConfig.Default + ".png"));
                     }
@@ -165,8 +164,9 @@ namespace Toolsmith.Client.Behaviors {
             } else if (itemstack.HasMultiPartRenderTree()) {
                 var renderTree = itemstack.GetMultiPartRenderTree();
                 foreach (var part in renderTree) {
-                    cacheKey += part.Key;
-                    var partRenderTree = renderTree.GetTreeAttribute(part.Key);
+                    cacheKey += "-" + part.Key;
+                    var partRenderAndTransformTree = renderTree.GetTreeAttribute(part.Key);
+                    var partRenderTree = partRenderAndTransformTree.GetPartRenderTree();
                     GetMeshCacheKeyFromSubTrees(ref cacheKey, partRenderTree);
                 }
             }
@@ -175,27 +175,28 @@ namespace Toolsmith.Client.Behaviors {
 
         private void GetMeshCacheKeyFromSubTrees(ref string cacheKey, ITreeAttribute renderTree) {
             if (renderTree.HasPartShapePath()) {
-                cacheKey += renderTree.GetPartShapePath().Replace('/', '-');
+                cacheKey += "-" + renderTree.GetPartShapePath().Replace('/', '-');
             } else {
-                cacheKey += "itemdefault";
+                cacheKey += "-" + "itemdefault";
             }
             var textureTree = renderTree.GetPartTextureTree();
             foreach (var texEntry in textureTree) {
-                cacheKey += textureTree.GetString(texEntry.Key)?.Replace('/', '-') ?? "default";
+                cacheKey += "-" + textureTree.GetString(texEntry.Key)?.Replace('/', '-') ?? "default";
             }
         }
 
         private void AddAllToCreativeInventory() {
-            if (properties == null) { //If it's null, then we just break out.
+            if (properties == null || properties.skipCreativeInventoryAdditions) { //If it's null, or it is set to skip the creative additions step, then we just break out.
                 return;
             }
 
             List<JsonItemStack> stacks = new();
             ITreeAttribute tree = new TreeAttribute();
-            var top = tree.GetOrAddTreeAttribute(ToolsmithAttributes.ModularPartDataTree);
-            top.GetPartTextureTree();
-            var handleStatsPair = ToolsmithModSystem.Config.BaseHandleRegistry[item.Code.Path];
-            top.SetPartShapePath(handleStatsPair.handleShapePath);
+            if (item.CollectibleBehaviors?.Length > 0) {
+                foreach (var behavior in item.CollectibleBehaviors.Where(b => (b as IModularPartRenderer) != null)) {
+                    tree = (behavior as IModularPartRenderer).InitializeRenderTree(tree, item);
+                }
+            }
             ConstructStacksWithRecursion(stacks, tree, 0);
             
             JsonItemStack stackWithNoAttributes = new() {
@@ -234,7 +235,7 @@ namespace Toolsmith.Client.Behaviors {
 
             TextureData textureProp = properties.textures[index];
             foreach (string path in textureProp.values) { //Go through the whole values array, and keep adding the attributes it finds to the json string. One itemstack per each combo of attributes in the full properties.
-                tree.GetOrAddTreeAttribute(ToolsmithAttributes.ModularPartDataTree).GetPartTextureTree().SetString(textureProp.code, path);
+                tree.GetOrAddTreeAttribute(ToolsmithAttributes.ModularPartDataTree).GetPartTextureTree().SetPartTexturePathFromKey(textureProp.code, path);
                 ConstructStacksWithRecursion(stacks, tree, index + 1);
             }
         }

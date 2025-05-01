@@ -1,5 +1,6 @@
 {
 	"editor": {
+		"collapsedPaths": "",
 		"allAngles": false,
 		"entityTextureMode": false
 	},
@@ -84,20 +85,6 @@
 							}
 						},
 						{
-							"name": "ViseLeftScrew",
-							"from": [ 0.0, 17.3, -2.0 ],
-							"to": [ 0.6, 17.9, 2.0 ],
-							"rotationOrigin": [ 0.3, 17.6, 0.0 ],
-							"rotationZ": 45.0,
-							"faces": {
-								"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
-								"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 11.0 ], "rotation": 90 },
-								"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 10.5 ], "rotation": 90 },
-								"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 11.0 ] },
-								"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 11.0 ] }
-							}
-						},
-						{
 							"name": "ViseLeftScrewHandle",
 							"from": [ -0.1, 17.2, 3.0 ],
 							"to": [ 0.7, 18.0, 4.2 ],
@@ -108,21 +95,51 @@
 								"west": { "texture": "#wood", "uv": [ 14.5, 14.5, 15.5, 15.0 ] },
 								"up": { "texture": "#wood", "uv": [ 15.0, 13.5, 15.5, 14.5 ] },
 								"down": { "texture": "#wood", "uv": [ 14.5, 13.5, 15.0, 14.5 ] }
-							}
-						},
-						{
-							"name": "ViseRightScrew",
-							"from": [ 3.3, 17.3, -2.0 ],
-							"to": [ 3.9, 17.9, 2.0 ],
-							"rotationOrigin": [ 3.6, 17.6, 0.0 ],
-							"rotationZ": 45.0,
-							"faces": {
-								"north": { "texture": "#metal", "uv": [ 8.5, 3.5, 9.0, 4.0 ] },
-								"east": { "texture": "#metal", "uv": [ 9.0, 3.5, 13.0, 4.0 ] },
-								"west": { "texture": "#metal", "uv": [ 9.0, 2.5, 13.0, 3.0 ] },
-								"up": { "texture": "#metal", "uv": [ 9.0, 2.0, 13.0, 2.5 ], "rotation": 90 },
-								"down": { "texture": "#metal", "uv": [ 9.0, 3.0, 13.0, 3.5 ], "rotation": 90 }
-							}
+							},
+							"children": [
+								{
+									"name": "ViseLeftScrewHandleGrip",
+									"from": [ 0.2, -2.1, 0.6 ],
+									"to": [ 0.6, 1.3, 1.0 ],
+									"rotationOrigin": [ 0.0, -1.5, 0.0 ],
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 14.5, 13.5, 15.0, 16.5 ] },
+										"east": { "texture": "#metal", "uv": [ 13.5, 13.5, 14.0, 16.5 ] },
+										"south": { "texture": "#metal", "uv": [ 12.5, 13.5, 13.0, 16.5 ] },
+										"west": { "texture": "#metal", "uv": [ 11.5, 13.5, 12.0, 16.5 ] },
+										"up": { "texture": "#metal", "uv": [ 15.0, 13.5, 15.5, 14.0 ] },
+										"down": { "texture": "#metal", "uv": [ 14.5, 13.5, 15.0, 14.0 ] }
+									}
+								},
+								{
+									"name": "ViseLeftScrewHandleStopperTop",
+									"from": [ 0.1, 0.8, 0.5 ],
+									"to": [ 0.7, 1.2, 1.1 ],
+									"rotationOrigin": [ -0.1, 1.4, -0.1 ],
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 14.5, 13.5, 15.0, 14.0 ] },
+										"east": { "texture": "#metal", "uv": [ 13.5, 13.5, 14.0, 14.0 ] },
+										"south": { "texture": "#metal", "uv": [ 12.5, 13.5, 13.0, 14.0 ] },
+										"west": { "texture": "#metal", "uv": [ 11.5, 13.5, 12.0, 14.0 ] },
+										"up": { "texture": "#metal", "uv": [ 15.0, 13.5, 15.5, 14.0 ] },
+										"down": { "texture": "#metal", "uv": [ 14.5, 13.5, 15.0, 14.0 ] }
+									}
+								},
+								{
+									"name": "ViseLeftScrewHandleStopperBottom",
+									"from": [ 0.1, -2.0, 0.5 ],
+									"to": [ 0.7, -1.6, 1.1 ],
+									"rotationOrigin": [ -0.1, -1.4, -0.1 ],
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 14.5, 13.5, 15.0, 14.0 ] },
+										"east": { "texture": "#metal", "uv": [ 13.5, 13.5, 14.0, 14.0 ] },
+										"south": { "texture": "#metal", "uv": [ 12.5, 13.5, 13.0, 14.0 ] },
+										"west": { "texture": "#metal", "uv": [ 11.5, 13.5, 12.0, 14.0 ] },
+										"up": { "texture": "#metal", "uv": [ 15.0, 13.5, 15.5, 14.0 ] },
+										"down": { "texture": "#metal", "uv": [ 14.5, 13.5, 15.0, 14.0 ] }
+									}
+								}
+							]
 						},
 						{
 							"name": "ViseRightScrewHandle",
@@ -135,7 +152,411 @@
 								"west": { "texture": "#wood", "uv": [ 14.5, 14.0, 15.5, 14.5 ] },
 								"up": { "texture": "#wood", "uv": [ 14.5, 13.5, 15.0, 14.5 ] },
 								"down": { "texture": "#wood", "uv": [ 15.0, 13.5, 15.5, 14.5 ] }
-							}
+							},
+							"children": [
+								{
+									"name": "ViseRightScrewHandleGrip",
+									"from": [ 0.2, -2.1, 0.6 ],
+									"to": [ 0.6, 1.3, 1.0 ],
+									"rotationOrigin": [ 0.0, -1.5, 0.0 ],
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 14.5, 13.5, 15.0, 16.5 ] },
+										"east": { "texture": "#metal", "uv": [ 13.5, 13.5, 14.0, 16.5 ] },
+										"south": { "texture": "#metal", "uv": [ 12.5, 13.5, 13.0, 16.5 ] },
+										"west": { "texture": "#metal", "uv": [ 11.5, 13.5, 12.0, 16.5 ] },
+										"up": { "texture": "#metal", "uv": [ 15.0, 13.5, 15.5, 14.0 ] },
+										"down": { "texture": "#metal", "uv": [ 14.5, 13.5, 15.0, 14.0 ] }
+									}
+								},
+								{
+									"name": "ViseRightScrewHandleStopperTop",
+									"from": [ 0.1, 0.8, 0.6 ],
+									"to": [ 0.7, 1.2, 1.2 ],
+									"rotationOrigin": [ -0.1, 1.4, 0.0 ],
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 14.5, 13.5, 15.0, 14.0 ] },
+										"east": { "texture": "#metal", "uv": [ 13.5, 13.5, 14.0, 14.0 ] },
+										"south": { "texture": "#metal", "uv": [ 12.5, 13.5, 13.0, 14.0 ] },
+										"west": { "texture": "#metal", "uv": [ 11.5, 13.5, 12.0, 14.0 ] },
+										"up": { "texture": "#metal", "uv": [ 15.0, 13.5, 15.5, 14.0 ] },
+										"down": { "texture": "#metal", "uv": [ 14.5, 13.5, 15.0, 14.0 ] }
+									}
+								},
+								{
+									"name": "ViseRightScrewHandleStopperBottom",
+									"from": [ 0.1, -2.0, 0.6 ],
+									"to": [ 0.7, -1.6, 1.2 ],
+									"rotationOrigin": [ -0.1, -1.4, 0.0 ],
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 14.5, 13.5, 15.0, 14.0 ] },
+										"east": { "texture": "#metal", "uv": [ 13.5, 13.5, 14.0, 14.0 ] },
+										"south": { "texture": "#metal", "uv": [ 12.5, 13.5, 13.0, 14.0 ] },
+										"west": { "texture": "#metal", "uv": [ 11.5, 13.5, 12.0, 14.0 ] },
+										"up": { "texture": "#metal", "uv": [ 15.0, 13.5, 15.5, 14.0 ] },
+										"down": { "texture": "#metal", "uv": [ 14.5, 13.5, 15.0, 14.0 ] }
+									}
+								}
+							]
+						},
+						{
+							"name": "ViseLeftScrewAnchorPoint",
+							"from": [ 0.0, 17.3, 1.9 ],
+							"to": [ 0.0, 17.3, 1.9 ],
+							"rotationOrigin": [ 0.3, 17.6, 2.05 ],
+							"rotationZ": 45.0,
+							"faces": {
+								"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+								"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+								"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+								"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+								"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+							},
+							"children": [
+								{
+									"name": "ViseLeftScrewBase",
+									"from": [ 0.0, 0.0, -0.1 ],
+									"to": [ 0.6, 0.6, 0.2 ],
+									"rotationOrigin": [ 0.3, 0.3, 0.05 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseLeftScrewSection1",
+									"from": [ 0.0, 0.0, -0.4 ],
+									"to": [ 0.6, 0.6, -0.1 ],
+									"rotationOrigin": [ 0.3, 0.3, -0.25 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseLeftScrewSection2",
+									"from": [ 0.0, 0.0, -0.7 ],
+									"to": [ 0.6, 0.6, -0.4 ],
+									"rotationOrigin": [ 0.3, 0.3, -0.55 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseLeftScrewSection3",
+									"from": [ 0.0, 0.0, -1.0 ],
+									"to": [ 0.6, 0.6, -0.7 ],
+									"rotationOrigin": [ 0.3, 0.3, -0.85 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseLeftScrewSection4",
+									"from": [ 0.0, 0.0, -2.1 ],
+									"to": [ 0.6, 0.6, -1.8 ],
+									"rotationOrigin": [ 0.3, 0.3, -1.95 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseLeftScrewSection5",
+									"from": [ 0.0, 0.0, -2.4 ],
+									"to": [ 0.6, 0.6, -2.1 ],
+									"rotationOrigin": [ 0.3, 0.3, -2.25 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseLeftScrewSection6",
+									"from": [ 0.0, 0.0, -2.7 ],
+									"to": [ 0.6, 0.6, -2.4 ],
+									"rotationOrigin": [ 0.3, 0.3, -2.55 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseLeftScrewSection7",
+									"from": [ 0.0, 0.0, -3.0 ],
+									"to": [ 0.6, 0.6, -2.7 ],
+									"rotationOrigin": [ 0.3, 0.3, -2.85 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseLeftScrewSection8",
+									"from": [ 0.0, 0.0, -3.3 ],
+									"to": [ 0.6, 0.6, -3.0 ],
+									"rotationOrigin": [ 0.3, 0.3, -3.15 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseLeftScrewSection9",
+									"from": [ 0.0, 0.0, -3.6 ],
+									"to": [ 0.6, 0.6, -3.3 ],
+									"rotationOrigin": [ 0.3, 0.3, -3.45 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseLeftScrewSection10",
+									"from": [ 0.0, 0.0, -3.9 ],
+									"to": [ 0.6, 0.6, -3.6 ],
+									"rotationOrigin": [ 0.3, 0.3, -3.75 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								}
+							]
+						},
+						{
+							"name": "ViseRightScrewAnchorPoint",
+							"from": [ 3.3, 17.3, 1.9 ],
+							"to": [ 3.3, 17.3, 1.9 ],
+							"rotationOrigin": [ 3.6, 17.6, 2.05 ],
+							"rotationZ": 45.0,
+							"faces": {
+								"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+								"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+								"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+								"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+								"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+							},
+							"children": [
+								{
+									"name": "ViseRightScrewBase",
+									"from": [ 0.0, 0.0, -0.1 ],
+									"to": [ 0.6, 0.6, 0.2 ],
+									"rotationOrigin": [ 0.3, 0.3, 0.05 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseRightScrewSection1",
+									"from": [ 0.0, 0.0, -0.4 ],
+									"to": [ 0.6, 0.6, -0.1 ],
+									"rotationOrigin": [ 0.3, 0.3, -0.25 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseRightScrewSection2",
+									"from": [ 0.0, 0.0, -0.7 ],
+									"to": [ 0.6, 0.6, -0.4 ],
+									"rotationOrigin": [ 0.3, 0.3, -0.55 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseRightScrewSection3",
+									"from": [ 0.0, 0.0, -1.0 ],
+									"to": [ 0.6, 0.6, -0.7 ],
+									"rotationOrigin": [ 0.3, 0.3, -0.85 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseRightScrewSection4",
+									"from": [ 0.0, 0.0, -2.1 ],
+									"to": [ 0.6, 0.6, -1.8 ],
+									"rotationOrigin": [ 0.3, 0.3, -1.95 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseRightScrewSection5",
+									"from": [ 0.0, 0.0, -2.4 ],
+									"to": [ 0.6, 0.6, -2.1 ],
+									"rotationOrigin": [ 0.3, 0.3, -2.25 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseRightScrewSection6",
+									"from": [ 0.0, 0.0, -2.7 ],
+									"to": [ 0.6, 0.6, -2.4 ],
+									"rotationOrigin": [ 0.3, 0.3, -2.55 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseRightScrewSection7",
+									"from": [ 0.0, 0.0, -3.0 ],
+									"to": [ 0.6, 0.6, -2.7 ],
+									"rotationOrigin": [ 0.3, 0.3, -2.85 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseRightScrewSection8",
+									"from": [ 0.0, 0.0, -3.3 ],
+									"to": [ 0.6, 0.6, -3.0 ],
+									"rotationOrigin": [ 0.3, 0.3, -3.15 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseRightScrewSection9",
+									"from": [ 0.0, 0.0, -3.6 ],
+									"to": [ 0.6, 0.6, -3.3 ],
+									"rotationOrigin": [ 0.3, 0.3, -3.45 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								},
+								{
+									"name": "ViseRightScrewSection10",
+									"from": [ 0.0, 0.0, -3.9 ],
+									"to": [ 0.6, 0.6, -3.6 ],
+									"rotationOrigin": [ 0.3, 0.3, -3.75 ],
+									"rotationY": -10.0,
+									"faces": {
+										"north": { "texture": "#metal", "uv": [ 4.0, 6.5, 4.5, 7.0 ] },
+										"east": { "texture": "#metal", "uv": [ 4.0, 7.0, 4.5, 7.5 ], "rotation": 90 },
+										"south": { "texture": "#metal", "uv": [ 4.5, 5.0, 5.0, 5.5 ] },
+										"west": { "texture": "#metal", "uv": [ 5.0, 6.5, 5.5, 7.0 ], "rotation": 90 },
+										"up": { "texture": "#metal", "uv": [ 4.5, 7.0, 5.0, 7.5 ] },
+										"down": { "texture": "#metal", "uv": [ 5.5, 7.0, 6.0, 7.5 ] }
+									}
+								}
+							]
 						}
 					]
 				},

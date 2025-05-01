@@ -37,7 +37,9 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
         //Check for valid drawbacks for this tool type given, then try rolling for one to apply it.
         public static void ApplyRandomDrawback(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, float sharpnessPercent) {
             if (!HasDrawback(itemslot.Itemstack)) {
-                ToolsmithModSystem.Logger.Warning("A Tool should have had a Drawback applied!");
+                if (ToolsmithModSystem.Config.DebugMessages) {
+                    ToolsmithModSystem.Logger.Warning("A Tool should have had a Drawback applied!");
+                }
             }
         }
 

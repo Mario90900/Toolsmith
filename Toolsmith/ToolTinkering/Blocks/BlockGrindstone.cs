@@ -97,7 +97,11 @@ namespace Toolsmith.ToolTinkering.Blocks {
         public override bool OnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null) { //Make sure the slot isn't empty
                 int isTool = TinkeringUtility.IsValidSharpenTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world);
-                if (world.Side.IsServer() && !byPlayer.Entity.Controls.ShiftKey && isTool > 0) { //Check if it's a valid tool for repair, is made of metal and has one of the 2 behaviors, if so...
+                BlockEntityGrindstone grindstoneEnt = GetBlockEntity<BlockEntityGrindstone>(blockSel.Position);
+                if (grindstoneEnt != null && !byPlayer.Entity.Controls.ShiftKey && isTool > 0) {
+                    grindstoneEnt.ToggleHoningSound(true);
+                }
+                    if (world.Side.IsServer() && !byPlayer.Entity.Controls.ShiftKey && isTool > 0) { //Check if it's a valid tool for repair, is made of metal and has one of the 2 behaviors, if so...
                     ItemStack item = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
 
                     deltaLastTick = secondsUsed - lastInterval;
@@ -111,8 +115,10 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
                         TinkeringUtility.ActualSharpenTick(ref curDur, ref curSharp, ref totalSharpnessHoned, maxSharp, byPlayer.Entity);
 
-                        ToolsmithModSystem.Logger.Warning("Total Sharpness Percent recovered this action: " + totalSharpnessHoned);
-                        ToolsmithModSystem.Logger.Warning("Seconds the Grindstone has been going: " + secondsUsed);
+                        if (ToolsmithModSystem.Config.DebugMessages) {
+                            ToolsmithModSystem.Logger.Warning("Total Sharpness Percent recovered this action: " + totalSharpnessHoned);
+                            ToolsmithModSystem.Logger.Warning("Seconds the Grindstone has been going: " + secondsUsed);
+                        }
 
                         TinkeringUtility.SetResultsOfSharpening(curDur, curSharp, item, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, isTool);
 
@@ -144,6 +150,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             BlockEntityGrindstone grindstoneEnt = GetBlockEntity<BlockEntityGrindstone>(blockSel.Position);
             if (grindstoneEnt != null) {
                 grindstoneEnt.OnBlockInteractStop();
+                grindstoneEnt.ToggleHoningSound(false);
             }
 
             deltaLastTick = 0; //Make sure to reset these any time it's canceled
@@ -159,6 +166,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             BlockEntityGrindstone grindstoneEnt = GetBlockEntity<BlockEntityGrindstone>(blockSel.Position);
             if (grindstoneEnt != null) {
                 grindstoneEnt.OnBlockInteractStop();
+                grindstoneEnt.ToggleHoningSound(false);
             }
 
             deltaLastTick = 0; //Make sure to reset these any time it's canceled

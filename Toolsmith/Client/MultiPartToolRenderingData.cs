@@ -16,6 +16,7 @@ namespace Toolsmith.Client {
 
     public class PartData {
         public TextureData[] textures { get; set; } = Array.Empty<TextureData>();
+        public bool skipCreativeInventoryAdditions = true;
         public string[] creativeTabs { get; set; } = Array.Empty<string>(); //What tabs should these items show up in?
     }
 

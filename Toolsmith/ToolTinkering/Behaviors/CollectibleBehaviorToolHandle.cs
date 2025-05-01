@@ -17,7 +17,7 @@ using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
-    public class CollectibleBehaviorToolHandle : CollectibleBehaviorToolPartWithHealth { //Mostly here just to allow for easy detection if something is a tool handle!
+    public class CollectibleBehaviorToolHandle : CollectibleBehaviorToolPartWithHealth, IModularPartRenderer { //Mostly here just to allow for easy detection if something is a tool handle!
 
         public CollectibleBehaviorToolHandle(CollectibleObject collObj) : base(collObj) {
 
@@ -80,8 +80,8 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     ITreeAttribute handleRenderTree = handlePartAndTransformTree.GetPartRenderTree();
                     ITreeAttribute handleTextureTree = handleRenderTree.GetPartTextureTree();
                     var woodtypeTextPath = ToolsmithConstants.DebarkedWoodPathMinusType + woodtype;
-                    handleTextureTree.SetString("wood", woodtypeTextPath);
-                    HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry[outputSlot.Itemstack.Collectible.Code.Path];
+                    handleTextureTree.SetPartTexturePathFromKey("wood", woodtypeTextPath);
+                    HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(outputSlot.Itemstack.Collectible.Code.Path);
                     handleRenderTree.SetPartShapePath(handleStats.handleShapePath);
                     outputSlot.Itemstack.SetHandleStatTag(handleStats.handleStatTag);
                     outputSlot.Itemstack.SetPartCurrentDurability(1000);
@@ -119,9 +119,9 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                         gripRenderTree.SetPartShapePath(gripWithStats.gripShapePath);
                         outputSlot.Itemstack.SetHandleGripTag(gripStats.id);
                         if (gripWithStats.gripTextureOverride != "") {
-                            gripTextureTree.SetString("grip", gripWithStats.gripTextureOverride);
+                            gripTextureTree.SetPartTexturePathFromKey("grip", gripWithStats.gripTextureOverride);
                         } else {
-                            gripTextureTree.SetString("grip", gripStats.texturePath);
+                            gripTextureTree.SetPartTexturePathFromKey("grip", gripStats.texturePath);
                         }
                         bhHandling = EnumHandling.Handled;
                     }
@@ -136,21 +136,25 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                         ITreeAttribute handleRenderTree = handlePartTree.GetPartRenderTree();
                         ITreeAttribute handleTextureTree = handleRenderTree.GetPartTextureTree();
                         var treatment = gripOrTreatmentSlot.Itemstack;
-                        var treatmentStatPair = ToolsmithModSystem.Config.TreatmentRegistry[treatment.Collectible.Code.Path];
-                        var treatmentStats = ToolsmithModSystem.Stats.treatments[treatmentStatPair.treatmentStatTag];
-                        var handleStatPair = ToolsmithModSystem.Config.BaseHandleRegistry[handleSlot.Itemstack.Collectible.Code.Path];
+
+                        if (treatment.Class == EnumItemClass.Block && (treatment.Block as ILiquidInterface) != null) {
+                            treatment = (treatment.Block as ILiquidInterface).GetContent(treatment);
+                        }
+                        
+                        var treatmentStatPair = ToolsmithModSystem.Config.TreatmentRegistry.TryGetValue(treatment.Collectible.Code.Path);
+                        var treatmentStats = ToolsmithModSystem.Stats.treatments.TryGetValue(treatmentStatPair.treatmentStatTag);
+                        var handleStatPair = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handleSlot.Itemstack.Collectible.Code.Path);
                         outputSlot.Itemstack.SetHandleTreatmentTag(treatmentStats.id);
                         outputSlot.Itemstack.SetWetTreatment((int)(treatmentStatPair.dryingHours * handleStatPair.dryingTimeMult));
                         outputSlot.Itemstack.Collectible.SetTransitionState(outputSlot.Itemstack, EnumTransitionType.Dry, 0);
 
-                        if (treatmentStatPair.isLiquid && (treatment as ILiquidInterface) != null) {
-                            treatment = (treatment as ILiquidInterface).GetContent(treatment);
-                            handleTextureTree.SetString("wood-overlay", ToolsmithConstants.DarkTreatementOverlayPath);
+                        if (treatmentStatPair.isLiquid) {
+                            handleTextureTree.SetPartTexturePathFromKey("wood-overlay", ToolsmithConstants.DarkTreatementOverlayPath);
                         } else if (!treatmentStatPair.isLiquid) {
-                            handleTextureTree.SetString("wood-overlay", ToolsmithConstants.LightTreatementOverlayPath);
+                            handleTextureTree.SetPartTexturePathFromKey("wood-overlay", ToolsmithConstants.LightTreatementOverlayPath);
                         } else {
                             ToolsmithModSystem.Logger.Error("A treatment config is improperly set! This treatment - " + treatment.Collectible.Code + " - was marked as a liquid, but could not find a liquid container in this recipe. Will treat it as a non-liquid, but is worth fixing that!");
-                            handleTextureTree.SetString("wood-overlay", ToolsmithConstants.LightTreatementOverlayPath);
+                            handleTextureTree.SetPartTexturePathFromKey("wood-overlay", ToolsmithConstants.LightTreatementOverlayPath);
                         }
                         bhHandling = EnumHandling.Handled;
                     }
@@ -163,6 +167,36 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
 
             outputSlot.MarkDirty();
+        }
+
+        public ITreeAttribute InitializeRenderTree(ITreeAttribute tree, Item item) {
+            var top = tree.GetOrAddTreeAttribute(ToolsmithAttributes.ModularPartDataTree);
+            top.GetPartTextureTree();
+            var handleStatsPair = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(item.Code.Path);
+            top.SetPartShapePath(handleStatsPair.handleShapePath);
+            return tree;
+        }
+
+        public void ResetRotationAndOffset(ITreeAttribute tree) { //This is sent the MultiPartRenderTree
+            if (tree.HasAttribute(ToolsmithAttributes.ModularPartHandleName)) {
+                var handlePartAndTransform = tree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
+                handlePartAndTransform.SetPartRotationX(0);
+                handlePartAndTransform.SetPartRotationY(0);
+                handlePartAndTransform.SetPartRotationZ(0);
+                handlePartAndTransform.SetPartOffsetX(0);
+                handlePartAndTransform.SetPartOffsetY(0);
+                handlePartAndTransform.SetPartOffsetZ(0);
+            }
+
+            if (tree.HasAttribute(ToolsmithAttributes.ModularPartGripName)) {
+                var gripPartAndTransform = tree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartGripName);
+                gripPartAndTransform.SetPartRotationX(0);
+                gripPartAndTransform.SetPartRotationY(0);
+                gripPartAndTransform.SetPartRotationZ(0);
+                gripPartAndTransform.SetPartOffsetX(0);
+                gripPartAndTransform.SetPartOffsetY(0);
+                gripPartAndTransform.SetPartOffsetZ(0);
+            }
         }
     }
 }

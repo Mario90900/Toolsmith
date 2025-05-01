@@ -46,5 +46,17 @@ namespace Toolsmith.Utils {
         public static float FloorToNearestMult(float secondsUsed, float mult) {
             return MathF.Floor(secondsUsed / mult) * mult;
         }
+
+        public static int NumberOfVoxelsLeftInReforge(float damagePercent, int voxelCount) {
+            var percentVoxelRemain = (0.377778f * damagePercent) + 0.66f;
+
+            if (percentVoxelRemain >= 1.0) { //Clamp just in case!
+                percentVoxelRemain = 1.0f;
+            } else if (percentVoxelRemain <= 0.66) {
+                percentVoxelRemain = 0.66f;
+            }
+
+            return (int)(percentVoxelRemain * voxelCount);
+        }
     }
 }

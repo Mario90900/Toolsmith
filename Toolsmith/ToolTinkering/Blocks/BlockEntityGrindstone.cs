@@ -12,9 +12,12 @@ using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering.Blocks {
     public class BlockEntityGrindstone : BlockEntity {
+
         public bool grinding { get; set; }
         protected ILoadedSound grindingWheel;
+        protected ILoadedSound honingScrape;
         string rotation;
+
         public virtual string Rotation {
             get { return rotation; }
             set {
@@ -101,6 +104,36 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 }
             } else {
                 grindingWheel?.FadeOut(1.0f, (s) => { s.Dispose(); grindingWheel = null; });
+            }
+        }
+
+        public void ToggleHoningSound(bool startSound) {
+            if (startSound) {
+                if (!isClient) {
+                    return;
+                }
+                if (honingScrape == null || !honingScrape.IsPlaying) {
+                    honingScrape = ((IClientWorldAccessor)Api.World).LoadSound(new SoundParams() {
+                        Location = new AssetLocation("toolsmith:sounds/grindstone-scraping-loop.ogg"),
+                        ShouldLoop = true,
+                        Position = Pos.ToVec3f().Add(0.5f, 0.5f, 0.5f),
+                        DisposeOnFinish = false,
+                        Volume = 0,
+                        Range = 6,
+                        SoundType = EnumSoundType.Ambient
+                    });
+
+                    if (honingScrape != null) {
+                        honingScrape.Start();
+                        honingScrape.FadeTo(0.75, 1f, (s) => { });
+                    }
+                } else {
+                    if (honingScrape.IsPlaying) {
+                        honingScrape.FadeTo(0.75, 1f, (s) => { });
+                    }
+                }
+            } else {
+                honingScrape?.FadeOut(0.2f, (s) => { s.Dispose(); honingScrape = null; });
             }
         }
 

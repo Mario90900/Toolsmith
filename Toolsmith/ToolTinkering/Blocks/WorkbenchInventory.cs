@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 
 namespace Toolsmith.ToolTinkering.Blocks {
@@ -32,6 +34,38 @@ namespace Toolsmith.ToolTinkering.Blocks {
             };
         }
 
+        public bool IsSelectSlotEmpty(int slotID) {
+            ItemSlot? slot = GetSlotFromSelectionID(slotID);
+            if (slot == null) {
+                return false;
+            }
+
+            return slot.Empty;
+        }
+
+        public bool AllSlotsEmpty() {
+            return !slots.Any(x => x.Empty);
+        }
+
+        public string GetIDFromSlots() {
+            string id = "workbenchinventory-";
+            int count = 0;
+            foreach (var slot in slots) {
+                if (!slot.Empty) {
+                    id += slot.Itemstack.Collectible.Code;
+                } else {
+                    id += "empty";
+                }
+
+                count++;
+                if (count < slots.Length) {
+                    id += "-";
+                }
+            }
+
+            return id;
+        }
+
         public ItemStack? GetItemFromSlot(int slotID) {
             ItemSlot? slot = GetSlotFromSelectionID(slotID);
 
@@ -57,6 +91,14 @@ namespace Toolsmith.ToolTinkering.Blocks {
             return new ItemSlot((WorkbenchInventory)self) {
                 MaxSlotStackSize = 1
             };
+        }
+
+        public override void FromTreeAttributes(ITreeAttribute treeAttribute) {
+            base.FromTreeAttributes(treeAttribute);
+        }
+
+        public override void ToTreeAttributes(ITreeAttribute invtree) {
+            base.ToTreeAttributes(invtree);
         }
     }
 }

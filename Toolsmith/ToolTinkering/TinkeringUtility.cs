@@ -226,6 +226,8 @@ namespace Toolsmith.ToolTinkering {
                     gaveHead = player.TryGiveItemStack(toolHead);
                 }
                 if (toolHandle != null) {
+                    IModularPartRenderer behavior = (IModularPartRenderer)toolHandle.Collectible.CollectibleBehaviors.FirstOrDefault(b => (b as IModularPartRenderer) != null);
+                    behavior.ResetRotationAndOffset(toolHandle.GetMultiPartRenderTree());
                     gaveHandle = player.TryGiveItemStack(toolHandle);
                 }
                 if (toolBinding != null) {
@@ -245,10 +247,10 @@ namespace Toolsmith.ToolTinkering {
                     if (world.Side.IsServer()) {
                         world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), player);
                     }
-                } else {
+                } /*else {
                     itemslot.Itemstack.SetToolheadCurrentDurability(1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
                                                                         //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
-                }
+                }*/ //This should not be needed anymore!
             } else {
                 if (!headBroke) { //This needs to be in here as well since no matter what, this needs to run
                     itemslot.Itemstack = null; //Actually 'break' the original item, but only if the head part isn't broken yet. Handle the 'falling apart' of the tools here, but let the 'breaking' happen elsewhere if the head DID fully break.
@@ -266,6 +268,8 @@ namespace Toolsmith.ToolTinkering {
                 world.SpawnItemEntity(toolHead, byEntity.Pos.XYZ);
             }
             if (toolHandle != null && !gaveHandle) {
+                IModularPartRenderer behavior = (IModularPartRenderer)toolHandle.Collectible.CollectibleBehaviors.FirstOrDefault(b => (b as IModularPartRenderer) != null);
+                behavior.ResetRotationAndOffset(toolHandle.GetMultiPartRenderTree());
                 world.SpawnItemEntity(toolHandle, byEntity.Pos.XYZ);
             }
             if (toolBinding != null && !gaveBinding) {
@@ -308,25 +312,66 @@ namespace Toolsmith.ToolTinkering {
 
             var bundleMultiPartRenderTree = bundle.GetMultiPartRenderTree(); //Time to assign the data for rendering the Bundle!
             var headPartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHeadName);
-            var handlePartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
 
             //Set up the Head tree!
-            //Set Transform here!
-            //Set Rotation here! - Will have to make a command ingame to help assist setting this up in real-time then copy over the info here.
+            headPartAndTransformTree.SetPartOffsetX(0);
+            headPartAndTransformTree.SetPartOffsetY(0);
+            headPartAndTransformTree.SetPartOffsetZ(0.2f);
+            headPartAndTransformTree.SetPartRotationX(0);
+            headPartAndTransformTree.SetPartRotationY(45);
+            headPartAndTransformTree.SetPartRotationZ(0);
             var headPartTree = headPartAndTransformTree.GetPartRenderTree();
-            ToolsmithModSystem.Logger.Warning("Does this code need a tweak? " + head.Collectible.Code);
-            headPartTree.SetPartShapePath(head.Collectible.Code);
+            headPartTree.SetPartShapePath(head.Item.Shape.Base.Domain + ":shapes/" + head.Item.Shape.Base.Path);
             var headTextureTree = headPartTree.GetPartTextureTree();
-            var headShape = byEntity.Api.Assets.TryGet(new AssetLocation(head.Collectible.Code + ".json"))?.ToObject<Shape>();
-            if (headShape != null) {
-                ToolsmithModSystem.Logger.Warning("Same for the texture? " + head.Item.Shape);
-                //Handle grabbing the textures and names for them here! Finish setting up the trees!
+            if (byEntity.Api.Side.IsServer()) {
+                ToolHeadTextureData textures;
+                var success = RecipeRegisterModSystem.ToolHeadTexturesCache.TryGetValue(head.Item.Code, out textures);
+                if (success) {
+                    for (int i = 0; i < textures.Tags.Count; i++) {
+                        headTextureTree.SetPartTexturePathFromKey(textures.Tags[i], textures.Paths[i]);
+                    }
+                } else {
+                    ToolsmithModSystem.Logger.Error("Could not find the tool head's ToolHeadTextureData entry when crafting a Part Bundle. Might not render right.");
+                }
             } else {
-                ToolsmithModSystem.Logger.Warning("Uh. Headshape null! AAAA. It probably needs Shapes added to it.");
+                foreach (var tex in head.Item.Textures) {
+                    headTextureTree.SetPartTexturePathFromKey(tex.Key, tex.Value.Base);
+                }
             }
             
             //Handle time for the Render Data! But at least that's already part of the handle by now. Most likely.
-            //TODO - My head hurts and I'm tired. Tomorrow. What else was I doing...? Oh yeah. The Workbench! Finish that too!!!
+            if (handle.HasMultiPartRenderTree()) {
+                var handleMultiPartTree = handle.GetMultiPartRenderTree();
+                foreach (var tree in handleMultiPartTree) {
+                    var subPartAndTransformTree = handleMultiPartTree.GetPartAndTransformRenderTree(tree.Key);
+                    subPartAndTransformTree.SetPartOffsetX(-0.1f);
+                    subPartAndTransformTree.SetPartOffsetY(0);
+                    subPartAndTransformTree.SetPartOffsetZ(0);
+                    subPartAndTransformTree.SetPartRotationX(0);
+                    subPartAndTransformTree.SetPartRotationY(90);
+                    subPartAndTransformTree.SetPartRotationZ(0);
+                    bundleMultiPartRenderTree.SetPartAndTransformRenderTree(tree.Key, handleMultiPartTree.GetPartAndTransformRenderTree(tree.Key));
+                }
+            } else if (handle.HasPartRenderTree()) {
+                var handlePartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
+                handlePartAndTransformTree.SetPartOffsetX(-0.1f);
+                handlePartAndTransformTree.SetPartOffsetY(0);
+                handlePartAndTransformTree.SetPartOffsetZ(0);
+                handlePartAndTransformTree.SetPartRotationX(0);
+                handlePartAndTransformTree.SetPartRotationY(90);
+                handlePartAndTransformTree.SetPartRotationZ(0);
+                handlePartAndTransformTree.SetPartRenderTree(handle.GetPartRenderTree());
+            } else {
+                var handlePartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
+                handlePartAndTransformTree.SetPartOffsetX(0);
+                handlePartAndTransformTree.SetPartOffsetY(0);
+                handlePartAndTransformTree.SetPartOffsetZ(0);
+                handlePartAndTransformTree.SetPartRotationX(0);
+                handlePartAndTransformTree.SetPartRotationY(145);
+                handlePartAndTransformTree.SetPartRotationZ(0);
+                var handlePartTree = handlePartAndTransformTree.GetPartRenderTree();
+                handlePartTree.SetPartShapePath(handle.Item.Shape.Base.Domain + ":shapes/" + handle.Item.Shape.Base.Path);
+            }
 
             bundle.SetToolhead(slot.TakeOut(1));
             bundle.SetToolhandle(handleSlot.TakeOut(1)); //Take out one, and set it as the Bundle's tool handle!
@@ -356,7 +401,8 @@ namespace Toolsmith.ToolTinkering {
                     AverageDurability = false,
                     Output = new() {
                         ResolvedItemstack = craftedItemStack
-                    }
+                    },
+                    Name = new AssetLocation("toolsmith:inhandtinkertoolcrafting")
                 };
 
                 ItemStack handle = slot.Itemstack.GetToolhandle();
@@ -443,6 +489,20 @@ namespace Toolsmith.ToolTinkering {
                     }
                 }
             }
+        }
+
+        public static bool IsAnyToolPart(CollectibleObject item, IWorldAccessor world) {
+            if (world.Side.IsServer() && ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(item.Code.ToString())) {
+                return false;
+            } else if (item.HasBehavior<CollectibleBehaviorToolHead>()) {
+                return true;
+            } else if (item.HasBehavior<CollectibleBehaviorToolHandle>()) {
+                return true;
+            } else if (item.HasBehavior<CollectibleBehaviorToolBinding>()) {
+                return true;
+            }
+            
+            return false;
         }
 
         //This checks if it is a valid repair tool as well as if it is a fully tinkered tool or if it is just a tool's head, since the durabilities are stored under different attributes
@@ -548,7 +608,6 @@ namespace Toolsmith.ToolTinkering {
                 if (curSharp >= maxSharp) {
                     curSharp = maxSharp;
                 } else {
-                    byEntity.World.PlaySoundAt(new AssetLocation("sounds/block/anvil1.ogg"), byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z);
                     totalSharpnessHoned += percent;
                 }
 
@@ -649,6 +708,8 @@ namespace Toolsmith.ToolTinkering {
 
             if (player != null) {
                 gaveHead = player.TryGiveItemStack(head);
+                IModularPartRenderer handleBehavior = (IModularPartRenderer)handle.Collectible.CollectibleBehaviors.FirstOrDefault(b => (b as IModularPartRenderer) != null);
+                handleBehavior.ResetRotationAndOffset(handle.GetMultiPartRenderTree());
                 gaveHandle = player.TryGiveItemStack(handle);
                 if (binding != null) {
                     gaveBinding = player.TryGiveItemStack(binding);
@@ -662,6 +723,8 @@ namespace Toolsmith.ToolTinkering {
                 player.World.SpawnItemEntity(head, player.Pos.XYZ);
             }
             if (!gaveHandle) {
+                IModularPartRenderer handleBehavior = (IModularPartRenderer)handle.Collectible.CollectibleBehaviors.FirstOrDefault(b => (b as IModularPartRenderer) != null);
+                handleBehavior.ResetRotationAndOffset(handle.GetMultiPartRenderTree());
                 player.World.SpawnItemEntity(handle, player.Pos.XYZ);
             }
             if (binding != null && !gaveBinding) {

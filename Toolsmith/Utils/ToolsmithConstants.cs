@@ -15,6 +15,8 @@ namespace Toolsmith.Utils {
         public const string HandleBlankCode = "supportbeam"; //As in, the 'blank' that is crafted into a handle! If that recipe of Knife + this changes, make sure to change this!
         public const string SandpaperCode = "toolsmith:sandpaper";
         public const string FirewoodCode = "game:firewood";
+        public const string WorkItemCode = "game:workitem";
+        public const string IngotCode = "game:ingot";
         public const string DebarkedWoodPathMinusType = "game:block/wood/debarked/";
         public const string DefaultGripFallbackTexture = "game:block/cloth/reedrope";
         public const string LightTreatementOverlayPath = "toolsmith:block/overlays/lighter";
@@ -28,14 +30,8 @@ namespace Toolsmith.Utils {
         public const float sharpenInterval = 0.4f;
         public const int NumBitsReturnMinimum = 2;
 
-        public const string TinkerToolCacheListKey = "TinkerToolCacheList";
-
-        public const string TinkerToolMadeFromGridRecipeKey = "TinkerToolMadeFromGridRecipes";
-        public const string ToolHeadMadeFromSmithingRecipesKey = "ToolHeadMadeFromSmithingRecipes";
-
         public const string ModularPartRenderingFromAttributesMeshRefs = "ToolsmithModularPartRenderingMeshRefs";
-        public const string HandleRenderingDataRef = "ToolsmithHandleRenderingDataRef";
-        public const string MultiPartToolMeshRefs = "ToolsmithMultiPartToolMeshRefs";
+        public const string WorkbenchItemRenderingMeshRefs = "ToolsmithWorkbenchItemRenderingMeshRefs";
 
         //The keys for accessing the default part entries themselves, to recieve their stat key blocks
         public const string DefaultHandlePartKey = "stick";

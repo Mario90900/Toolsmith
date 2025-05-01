@@ -58,8 +58,8 @@ namespace Toolsmith.Client {
             return tree.GetTreeAttribute(key);
         }
 
-        public static void SetPartAndTransformRenderTree(this ITreeAttribute tree, string key) {
-            tree[key] = tree;
+        public static void SetPartAndTransformRenderTree(this ITreeAttribute tree, string key, ITreeAttribute setTree) {
+            tree[key] = setTree;
         }
 
         public static float GetPartRotationX(this ITreeAttribute tree) {
@@ -179,10 +179,23 @@ namespace Toolsmith.Client {
             main[ToolsmithAttributes.ModularPartTextureTree] = toAdd;
         }
 
+        public static string GetPartTexturePathFromKey(this ITreeAttribute tree, string key) {
+            return tree.GetString(key);
+        }
+
+        public static void SetPartTexturePathFromKey(this ITreeAttribute tree, string key, string path) {
+            tree.SetString(key, path);
+        }
+
         public static void SetOverlay(this ITreeAttribute tree, string key, string overlayPath) {
             var baseTex = tree.GetString(key);
             var woodType = baseTex.Split('/').Last();
             tree.SetString(key, overlayPath + woodType);
         }
+    }
+
+    public class ToolHeadTextureData {
+        public List<string> Tags = new List<string>();
+        public List<string> Paths = new List<string>();
     }
 }

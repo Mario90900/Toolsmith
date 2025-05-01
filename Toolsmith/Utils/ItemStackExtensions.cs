@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Client;
+using Toolsmith.Client.Behaviors;
 using Toolsmith.Config;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
@@ -209,10 +210,10 @@ namespace Toolsmith.Utils {
                 var textureTree = renderTree.GetPartTextureTree();
 
                 if (oldHandlePath[0] == "handle" || oldHandlePath[0] == "carpentedhandle") {
-                    HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry[oldHandlePath[0]];
+                    HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(oldHandlePath[0]);
                     newHandle.SetHandleStatTag(handleStats.handleStatTag);
                     renderTree.SetPartShapePath(handleStats.handleShapePath);
-                    textureTree.SetString("wood", ToolsmithConstants.DebarkedWoodPathMinusType + "oak");
+                    textureTree.SetPartTexturePathFromKey("wood", ToolsmithConstants.DebarkedWoodPathMinusType + "oak");
                 }
                 
                 if (grip != null) {
@@ -227,7 +228,7 @@ namespace Toolsmith.Utils {
                     } else {
                         gripRenderTree.SetPartShapePath("toolsmith:shapes/item/gripfabric");
                     }
-                    gripTextureTree.SetString("grip", gripStats.texturePath);
+                    gripTextureTree.SetPartTexturePathFromKey("grip", gripStats.texturePath);
                 }
 
                 if (treatment != null) {
@@ -314,6 +315,15 @@ namespace Toolsmith.Utils {
 
         public static int GetSmithedMaxDurability(this ItemStack itemStack) {
             return itemStack.Collectible.GetMaxDurability(itemStack);
+        }
+
+        public static float GetSmithedRemainingHPPercent(this ItemStack itemStack) {
+            var currentDur = itemStack.GetSmithedDurability();
+            var maxDur = itemStack.GetSmithedMaxDurability();
+            if (currentDur > 0 && maxDur > 0) {
+                return ((float)currentDur / (float)maxDur);
+            }
+            return 0.0f;
         }
 
         //Extensions to handle resetting invalid tools that are lacking any durability values
@@ -421,10 +431,10 @@ namespace Toolsmith.Utils {
                     handleCode = ToolsmithConstants.BoneHandleCode;
                 }
                 handle = new ItemStack(world.GetItem(new AssetLocation(handleCode)), 1);
-                handleWithStats = ToolsmithModSystem.Config.BaseHandleRegistry.Get(ToolsmithConstants.DefaultHandlePartKey);
+                handleWithStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(ToolsmithConstants.DefaultHandlePartKey);
             } else {
                 handle = itemStack.GetToolhandle();
-                handleWithStats = ToolsmithModSystem.Config.BaseHandleRegistry.Get(handle.Collectible.Code.Path);
+                handleWithStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handle.Collectible.Code.Path);
             }
             BindingStats bindingStats;
             if (maxBindingDur < 0) { //Since 'None' is a valid binding, it still needs setting to that, and given the default durability levels! No Itemstack needed though.
@@ -512,7 +522,7 @@ namespace Toolsmith.Utils {
         }
 
         public static int GetPartMaxDurability(this ItemStack itemStack) {
-            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolPartMaxDur, -1);
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolPartMaxDur, 1000);
         }
 
         public static float GetPartRemainingHPPercent(this ItemStack itemStack) { //Since by design of wanting to let handles and bindings scale to the Tool's vanilla HP values, this is needed to 'hold' over the damage it sustained during use if it survived.
@@ -529,7 +539,26 @@ namespace Toolsmith.Utils {
         }
 
         public static int GetPartCurrentSharpness(this ItemStack itemStack) {
-            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent, itemStack.GetPartMaxSharpness()); //If somehow this goes unset but the Max Part is set? Uh... How'd that happen for one, but oh well, reset to max I guess!
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolSharpnessCurrent)) {
+                itemStack.HandleNeedingToGetUnsetSharpness();
+            }
+
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent); //If somehow this goes unset but the Max Part is set? Uh... How'd that happen for one, but oh well, reset to max I guess!
+        }
+
+        public static int HandleNeedingToGetUnsetSharpness(this ItemStack itemStack) {
+            var max = itemStack.GetPartMaxSharpness();
+            itemStack.SetPartMaxSharpness(max);
+            float mult;
+            if (itemStack.Collectible.IsCraftableMetal()) {
+                mult = ToolsmithConstants.StartingSharpnessMult;
+            } else {
+                mult = ToolsmithConstants.NonMetalStartingSharpnessMult;
+            }
+
+            var result = (int)(mult * max);
+            itemStack.SetPartCurrentSharpness(result);
+            return result;
         }
 
         public static void SetPartMaxSharpness(this ItemStack itemStack, int sharpness) {
@@ -537,7 +566,7 @@ namespace Toolsmith.Utils {
         }
 
         public static int GetPartMaxSharpness(this ItemStack itemStack) {
-            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessMax, -1);
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessMax, 200);
         }
 
         public static float GetPartRemainingSharpnessPercent(this ItemStack itemStack) {
@@ -601,7 +630,9 @@ namespace Toolsmith.Utils {
             itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.PartWetTreatment);
             itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.TransitionState);
 
-            var renderTree = itemStack.GetPartRenderTree();
+            var multiPartTree = itemStack.GetMultiPartRenderTree();
+            var partAndTransformTree = multiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
+            var renderTree = partAndTransformTree.GetPartRenderTree();
             var textureTree = renderTree.GetPartTextureTree();
             foreach (var texture in textureTree) {
                 if (texture.Key.Contains("-overlay")) {

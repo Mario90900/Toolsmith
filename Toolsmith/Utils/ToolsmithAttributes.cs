@@ -63,6 +63,8 @@ namespace Toolsmith.Utils {
         //While these are not attributes created by the mod, I figure it might be beneficial to give them the same treatment. Just make sure they stay updated with the base game!
         public const string Durability = "durability";
         public const string TransitionState = "transitionstate";
+        public const string WorkPieceVoxels = "voxels";
+        public const string WorkPieceSelectedRecipeID = "selectedRecipeId";
 
         // -- Slated for Removal later down the line! Only kept around for the purposes of checking if they still exist and fixing them! Do not use these anymore!
         public const string ToolHeadCurrentDur = "tinkeredToolHeadDurability";
