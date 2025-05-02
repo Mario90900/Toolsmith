@@ -603,7 +603,7 @@ namespace Toolsmith.ToolTinkering {
                     percent = ((float)ToolsmithModSystem.Config.GrindstoneSharpenPerTick / 100f);
                 }
 
-                int percentSharpen = (int)(percent * maxSharp);
+                int percentSharpen = (int)Math.Ceiling(percent * maxSharp);
                 curSharp += percentSharpen;
                 if (curSharp >= maxSharp) {
                     curSharp = maxSharp;

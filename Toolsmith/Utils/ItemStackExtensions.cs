@@ -334,9 +334,9 @@ namespace Toolsmith.Utils {
             if (itemStack.Attributes == null) {
                 itemStack.Attributes = new TreeAttribute();
             }
-
+            
             //Figure out the Tool Head and add the missing stats and ItemStack!
-            if (RecipeRegisterModSystem.TinkerToolGridRecipes.Count > 0) { //If this is being ran on the server-side or it is singleplayer, then RecipeRegisterModSystem will have actually booted and everything!
+            if (RecipeRegisterModSystem.TinkerToolGridRecipes?.Count > 0) { //If this is being ran on the server-side or it is singleplayer, then RecipeRegisterModSystem will have actually booted and everything!
                 string headCode = null;
                 foreach (var t in RecipeRegisterModSystem.TinkerToolGridRecipes) {
                     if (t.Value.Code.Equals(itemStack.Collectible.Code)) {
@@ -572,7 +572,7 @@ namespace Toolsmith.Utils {
         public static float GetPartRemainingSharpnessPercent(this ItemStack itemStack) {
             var currentSharp = itemStack.GetPartCurrentSharpness();
             var maxSharp = itemStack.GetPartMaxSharpness();
-            if (currentSharp > 0 && maxSharp > 0) {
+            if (currentSharp >= 0 && maxSharp > 0) {
                 return ((float)currentSharp / (float)maxSharp);
             }
             return 0.0f;

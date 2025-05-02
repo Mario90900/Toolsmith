@@ -12,6 +12,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
 using Vintagestory.Common;
+using Vintagestory.Common.Collectible.Block;
 using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering.Blocks {
@@ -30,7 +31,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             if (api.Side.IsServer()) {
                 return;
             }
-
+            
             ICoreClientAPI capi = api as ICoreClientAPI;
 
             viseInteractions = ObjectCacheUtil.GetOrCreate(capi, "workbenchViseInteraction", () => {

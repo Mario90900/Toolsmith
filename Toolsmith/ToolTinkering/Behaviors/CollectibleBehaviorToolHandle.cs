@@ -14,6 +14,7 @@ using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
+using Vintagestory.Common;
 using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
@@ -46,6 +47,10 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         }
 
         public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, ref EnumHandling bhHandling) {
+            if (outputSlot as DummySlot != null) {
+                return;
+            }
+
             ItemSlot toolSlot = null;
             ItemSlot blankSlot = null;
             ItemSlot handleSlot = null;

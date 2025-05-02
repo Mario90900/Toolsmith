@@ -38,8 +38,6 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 handling = EnumHandling.PreventSubsequent;
                 sharpening = true;
                 return;
-            } else if (entPlayer != null && entPlayer.Controls.ShiftKey && blockSel.Block.Code.FirstCodePart() == "toolsmith:grindstone") {
-                ToolsmithModSystem.Logger.Warning("Found a grindstone!"); //TODO - This doesn't exactly work, maybe the grindstone intercepts it.
             }
 
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);

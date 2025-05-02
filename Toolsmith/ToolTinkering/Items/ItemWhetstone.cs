@@ -26,8 +26,6 @@ namespace Toolsmith.ToolTinkering.Items {
 
             TinkeringUtility.ActualSharpenTick(ref curDur, ref curSharp, ref totalSharpnessHoned, maxSharp, byEntity);
 
-            ToolsmithModSystem.Logger.Warning("Total Sharpness Percent recovered this action: " + totalSharpnessHoned);
-            ToolsmithModSystem.Logger.Warning("Seconds the Whetstone has been going: " + secondsUsed);
             whetstone.Collectible.DamageItem(byEntity.World, byEntity, offhandSlot);
 
             TinkeringUtility.SetResultsOfSharpening(curDur, curSharp, item, byEntity, mainHandSlot, isTool);

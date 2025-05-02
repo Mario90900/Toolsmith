@@ -294,7 +294,7 @@ namespace Toolsmith.ToolTinkering {
                         Type = EnumTransitionType.Dry,
                         FreshHours = NatFloat.createUniform(0, 0),
                         TransitionHours = NatFloat.createUniform(itemstack.GetWetTreatment(), 0f),
-                        TransitionedStack = new JsonItemStack { ResolvedItemstack = itemCopy }, //Type = itemCopy.Collectible.ItemClass, Code = itemCopy.Collectible.Code, Attributes = JsonObject.FromJson(itemCopy.Attributes.ToJsonToken())
+                        TransitionedStack = new JsonItemStack { ResolvedItemstack = itemCopy },
                         TransitionRatio = 1
                     };
 

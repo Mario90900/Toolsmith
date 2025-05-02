@@ -159,11 +159,12 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
         protected string GetCacheKeyForItem(ItemStack stack, int slotIndex) {
             IContainedMeshSource meshSource = stack.Collectible?.GetCollectibleInterface<IContainedMeshSource>();
+            var facing = BlockFacing.FromCode(Block.LastCodePart());
             if (meshSource != null) {
-                return "slot-" + slotIndex + "-" + meshSource.GetMeshCacheKey(stack);
+                return facing.Code + "-slot-" + slotIndex + "-" + meshSource.GetMeshCacheKey(stack);
             }
 
-            return "slot-" + slotIndex + "-" + stack.Collectible.Code.ToString();
+            return facing.Code + "-slot-" + slotIndex + "-" + stack.Collectible.Code.ToString();
         }
 
         protected MeshData GetMesh(ItemStack stack, int slotIndex) {
@@ -226,6 +227,14 @@ namespace Toolsmith.ToolTinkering.Blocks {
             var offset = offsetBySlot[slotIndex];
             mesh.Scale(new Vec3f(), 0.5f, 0.5f, 0.5f);
             mesh.Translate(offset.x - 0.15f, offset.y, offset.z - 0.15f);
+            var facing = BlockFacing.FromCode(Block.LastCodePart());
+            if (facing.Equals(BlockFacing.EAST)) {
+                mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), 0, 270 * (MathF.PI / 180), 0);
+            } else if (facing.Equals(BlockFacing.WEST)) {
+                mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), 0, 90 * (MathF.PI / 180), 0);
+            } else if (facing.Equals(BlockFacing.SOUTH)) {
+                mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), 0, 180 * (MathF.PI / 180), 0);
+            }
 
             return mesh;
         }
