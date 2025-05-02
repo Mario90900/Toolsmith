@@ -227,7 +227,7 @@ namespace Toolsmith.ToolTinkering {
                 }
                 if (toolHandle != null) {
                     IModularPartRenderer behavior = (IModularPartRenderer)toolHandle.Collectible.CollectibleBehaviors.FirstOrDefault(b => (b as IModularPartRenderer) != null);
-                    behavior.ResetRotationAndOffset(toolHandle.GetMultiPartRenderTree());
+                    behavior.ResetRotationAndOffset(toolHandle);
                     gaveHandle = player.TryGiveItemStack(toolHandle);
                 }
                 if (toolBinding != null) {
@@ -269,7 +269,7 @@ namespace Toolsmith.ToolTinkering {
             }
             if (toolHandle != null && !gaveHandle) {
                 IModularPartRenderer behavior = (IModularPartRenderer)toolHandle.Collectible.CollectibleBehaviors.FirstOrDefault(b => (b as IModularPartRenderer) != null);
-                behavior.ResetRotationAndOffset(toolHandle.GetMultiPartRenderTree());
+                behavior.ResetRotationAndOffset(toolHandle);
                 world.SpawnItemEntity(toolHandle, byEntity.Pos.XYZ);
             }
             if (toolBinding != null && !gaveBinding) {
@@ -526,6 +526,16 @@ namespace Toolsmith.ToolTinkering {
             return 0;
         }
 
+        public static bool IsDeconstructableTool(CollectibleObject item, IWorldAccessor world) {
+            if (world.Side.IsServer() && ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(item.Code.ToString())) { //First check if the ignore list has any entries, and ensure this one isn't on it. Likely means something got improperly given the Behavior on init.
+                return false;
+            } else if (item.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //This one stores it under 'tinkeredToolHead' durability
+                return true;
+            }
+
+            return false;
+        }
+
         public static bool ToolOrHeadNeedsSharpening(ItemStack item, IWorldAccessor world) {
             var curSharp = item.GetToolCurrentSharpness();
             var maxSharp = item.GetToolMaxSharpness();
@@ -630,7 +640,7 @@ namespace Toolsmith.ToolTinkering {
                 item.SetToolCurrentSharpness(curSharp);
                 if (curDur <= 0) {
                     CollectibleObject toolObj = item.Collectible;
-                    TinkeringUtility.HandleBrokenTinkeredTool(byEntity.World, byEntity, mainHandSlot, 0, curSharp, item.GetToolhandleCurrentDurability(), item.GetToolbindingCurrentDurability(), true, false);
+                    HandleBrokenTinkeredTool(byEntity.World, byEntity, mainHandSlot, 0, curSharp, item.GetToolhandleCurrentDurability(), item.GetToolbindingCurrentDurability(), true, false);
                     item.SetBrokeWhileSharpeningFlag();
                     toolObj.DamageItem(byEntity.World, byEntity, mainHandSlot);
                     if (item != null) {
@@ -657,8 +667,7 @@ namespace Toolsmith.ToolTinkering {
                     var success = RecipeRegisterModSystem.TinkerToolGridRecipes.TryGetValue(item.Collectible.Code.ToString(), out toolToBreakObj);
                     if (success) {
                         ItemStack toolToBreak = new ItemStack(byEntity.World.GetItem(toolToBreakObj.Code), 1);
-                        var toolType = TinkeringUtility.IsValidSharpenTool(toolToBreak.Collectible, byEntity.World);
-                        if (toolType == 1) { //Just to make sure it isn't on the ignore list already, but it should only come back as a Tinkered Tool.
+                        if (IsDeconstructableTool(toolToBreak.Collectible, byEntity.World)) { //Just to make sure it isn't on the ignore list already, but it should only come back as a Tinkered Tool.
                                              //Initiate that JUST to insure it breaks now! Haha!
                             item = null;
                             mainHandSlot.Itemstack = toolToBreak.Clone();
@@ -709,7 +718,7 @@ namespace Toolsmith.ToolTinkering {
             if (player != null) {
                 gaveHead = player.TryGiveItemStack(head);
                 IModularPartRenderer handleBehavior = (IModularPartRenderer)handle.Collectible.CollectibleBehaviors.FirstOrDefault(b => (b as IModularPartRenderer) != null);
-                handleBehavior.ResetRotationAndOffset(handle.GetMultiPartRenderTree());
+                handleBehavior.ResetRotationAndOffset(handle);
                 gaveHandle = player.TryGiveItemStack(handle);
                 if (binding != null) {
                     gaveBinding = player.TryGiveItemStack(binding);
@@ -724,7 +733,7 @@ namespace Toolsmith.ToolTinkering {
             }
             if (!gaveHandle) {
                 IModularPartRenderer handleBehavior = (IModularPartRenderer)handle.Collectible.CollectibleBehaviors.FirstOrDefault(b => (b as IModularPartRenderer) != null);
-                handleBehavior.ResetRotationAndOffset(handle.GetMultiPartRenderTree());
+                handleBehavior.ResetRotationAndOffset(handle);
                 player.World.SpawnItemEntity(handle, player.Pos.XYZ);
             }
             if (binding != null && !gaveBinding) {
@@ -732,6 +741,31 @@ namespace Toolsmith.ToolTinkering {
             }
 
             byPlayer.InventoryManager.ActiveHotbarSlot.MarkDirty();
+        }
+
+        public static bool CheckForAndScrubStickBone(ItemStack stack) {
+            if (IsStickOrBone(stack)) {
+                if ((!stack.HasPartCurrentDurability() && !stack.HasPartMaxDurability()) || !(stack.GetPartCurrentDurability() < stack.GetPartMaxDurability())) {
+                    if (!stack.HasHandleGripTag() && !stack.HasHandleTreatmentTag()) {
+                        stack.RemoveMultiPartRenderTree();
+                        stack.RemovePartRenderTree();
+                        stack.RemoveHandleStatTag();
+                        stack.RemovePartCurrentDurability();
+                        stack.RemovePartMaxDurability();
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsStickOrBone(ItemStack stack) {
+            if (stack.Collectible.Code == ToolsmithConstants.DefaultHandleCode || stack.Collectible.Code == ToolsmithConstants.BoneHandleCode) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }

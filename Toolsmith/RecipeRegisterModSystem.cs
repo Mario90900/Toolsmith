@@ -210,6 +210,13 @@ namespace Toolsmith {
                                 recipe.ResolveIngredients(api.World);
                                 list.Add(recipe);
                             } else if (treatmentStats != null && bucket != null) {
+                                ITreeAttribute liquidProps = new TreeAttribute();
+                                var liqProps = liquidProps.GetOrAddTreeAttribute("liquidContainerProps");
+                                var reqCont = liqProps.GetOrAddTreeAttribute("requiresContent");
+                                reqCont.SetString("type", "item");
+                                reqCont.SetString("code", treatmentMat.Code);
+                                liqProps.SetFloat("requiresLitres", treatmentStats.litersUsed);
+
                                 var recipe = new GridRecipe {
                                     IngredientPattern = "ht",
                                     Width = 2,
@@ -218,7 +225,7 @@ namespace Toolsmith {
                                         ["h"] = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code },
                                         ["t"] = new CraftingRecipeIngredient { Type = bucket.ItemClass, Code = bucket.Code }
                                     },
-                                    Attributes = new JsonObject(JToken.Parse("{liquidContainerProps: {requiresContent: {type: \"item\", code: \"" + treatmentMat.Code + "\" }, requiresLitres: " + treatmentStats.litersUsed + "}}")),
+                                    Attributes = new JsonObject(JToken.Parse(liquidProps.ToJsonToken())),//new JsonObject(JToken.Parse("{liquidContainerProps: {requiresContent: {type: \"item\", code: \"" + treatmentMat.Code + "\" }, requiresLitres: " + treatmentStats.litersUsed + "}}")),
                                     RecipeGroup = 3,
                                     ShowInCreatedBy = false,
                                     Name = "Add " + treatmentMat.Code + " as a handle treatment.",

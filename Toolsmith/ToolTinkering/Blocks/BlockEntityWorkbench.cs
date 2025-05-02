@@ -74,8 +74,11 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
         public bool InitiateReforgeAttempt(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             var reforgingSlot = Inventory.GetSlotFromSelectionID((int)WorkbenchSlots.ReforgeStaging);
+            if (reforgingSlot == null || reforgingSlot.Empty || !reforgingSlot.Itemstack.HasPartCurrentDurability()) {
+                return false;
+            }
+
             var recipe = ReforgingUtility.TryGetSmithingRecipeFromCache(reforgingSlot.Itemstack, world.Api);
-            
             if (recipe == null) {
                 return false;
             }

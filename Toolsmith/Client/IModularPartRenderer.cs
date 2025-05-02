@@ -11,6 +11,6 @@ namespace Toolsmith.Client {
 
         public abstract ITreeAttribute InitializeRenderTree(ITreeAttribute tree, Item item);
 
-        public abstract void ResetRotationAndOffset(ITreeAttribute tree);
+        public abstract void ResetRotationAndOffset(ItemStack stack);
     }
 }

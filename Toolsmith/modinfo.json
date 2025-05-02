@@ -6,7 +6,7 @@
         "Jon"
     ],
     "description": "Upgrade your tools with proper handles and bindings for durability and other buffs! Plus, returning the tool head when it wears out since they should last much longer then they do in vanilla.",
-    "version": "1.1.0-rc.2",
+    "version": "1.1.0-rc.3",
     "dependencies": {
         "game": ""
     }

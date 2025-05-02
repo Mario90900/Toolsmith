@@ -517,12 +517,28 @@ namespace Toolsmith.Utils {
             return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolPartCurrentDur, itemStack.GetPartMaxDurability());
         }
 
+        public static bool HasPartCurrentDurability(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolPartCurrentDur);
+        }
+
+        public static void RemovePartCurrentDurability(this ItemStack itemStack) {
+            itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.ToolPartCurrentDur);
+        }
+
         public static void SetPartMaxDurability(this ItemStack itemStack, int durability) {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolPartMaxDur, durability);
         }
 
         public static int GetPartMaxDurability(this ItemStack itemStack) {
             return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolPartMaxDur, 1000);
+        }
+
+        public static bool HasPartMaxDurability(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolPartMaxDur);
+        }
+
+        public static void RemovePartMaxDurability(this ItemStack itemStack) {
+            itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.ToolPartMaxDur);
         }
 
         public static float GetPartRemainingHPPercent(this ItemStack itemStack) { //Since by design of wanting to let handles and bindings scale to the Tool's vanilla HP values, this is needed to 'hold' over the damage it sustained during use if it survived.
@@ -588,6 +604,10 @@ namespace Toolsmith.Utils {
 
         public static bool HasHandleStatTag(this ItemStack itemStack) {
             return itemStack.Attributes.HasAttribute(ToolsmithAttributes.HandleStatTag);
+        }
+
+        public static void RemoveHandleStatTag(this ItemStack itemStack) {
+            itemStack.Attributes.RemoveAttribute(ToolsmithAttributes.HandleStatTag);
         }
 
         public static void SetHandleGripTag(this ItemStack itemStack, string tag) {

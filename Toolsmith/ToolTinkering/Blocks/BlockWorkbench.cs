@@ -162,7 +162,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             BlockEntityWorkbench workbenchEnt = GetBlockEntity<BlockEntityWorkbench>(blockSel.Position);
             var entPlayer = byPlayer.Entity;
             if (!entPlayer.Controls.ShiftKey && workbenchEnt != null) {
-                if (blockSel.SelectionBoxIndex >= 1 && blockSel.SelectionBoxIndex <= 5) { //Player is attempting to place something in one of the 5 crafting spots!
+                if (blockSel.SelectionBoxIndex >= (int)WorkbenchSlots.CraftingSlot1 && blockSel.SelectionBoxIndex <= (int)WorkbenchSlots.CraftingSlot5) { //Player is attempting to place something in one of the 5 crafting spots!
                     if (TryPlaceOrGetItemCraftingSlots(world, byPlayer, blockSel, workbenchEnt)) {
                         if (world.Side.IsServer()) {
                             var offset = workbenchEnt.GetOffsetBySlot(blockSel.SelectionBoxIndex);
@@ -171,7 +171,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                         workbenchEnt.MarkDirty(redrawOnClient: true);
                         return true;
                     }
-                } else if (blockSel.SelectionBoxIndex == 7) { //Player is attempting to place something in the Reforging spot!
+                } else if (blockSel.SelectionBoxIndex == (int)WorkbenchSlots.ReforgeStaging) { //Player is attempting to place something in the Reforging spot!
                     if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack?.Collectible?.Tool == EnumTool.Hammer) {
                         if (AttemptReforgingToolHead(world, byPlayer, blockSel, workbenchEnt)) {
                             if (world.Side.IsServer()) {
@@ -193,8 +193,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 }
             } else if (entPlayer.Controls.ShiftKey && blockSel.SelectionBoxIndex == (int)WorkbenchSlots.Vise) {
                 if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null) {
-                    int isTool = TinkeringUtility.IsValidSharpenTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world);
-                    if (isTool == 1) {
+                    if (TinkeringUtility.IsDeconstructableTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world)) {
                         if (world.Side == EnumAppSide.Server) {
                             world.PlaySoundAt(new AssetLocation("sounds/player/messycraft.ogg"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
                         }
@@ -208,8 +207,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
         public override bool OnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null) { //Make sure the slot isn't empty
-                int isTool = TinkeringUtility.IsValidSharpenTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world);
-                if (byPlayer.Entity.Controls.ShiftKey && isTool == 1) {
+                if (byPlayer.Entity.Controls.ShiftKey && TinkeringUtility.IsDeconstructableTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world)) {
                     if (world.Side.IsServer() && blockSel.SelectionBoxIndex == (int)WorkbenchSlots.Vise && secondsUsed > 4.5) {
                         TinkeringUtility.DisassembleTool(secondsUsed, world, byPlayer, blockSel);
                         return false;

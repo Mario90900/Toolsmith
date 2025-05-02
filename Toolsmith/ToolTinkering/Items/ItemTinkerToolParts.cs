@@ -65,7 +65,7 @@ namespace Toolsmith.ToolTinkering.Items {
             return tree;
         }
 
-        public void ResetRotationAndOffset(ITreeAttribute tree) {
+        public void ResetRotationAndOffset(ItemStack stack) {
             return;
         }
     }

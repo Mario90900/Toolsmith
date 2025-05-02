@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Client;
@@ -76,7 +77,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
             if (toolSlot != null && blankSlot != null) {
                 var woodtype = blankSlot.Itemstack.Collectible.LastCodePart();
-                if (woodtype != null) {
+                if (!TinkeringUtility.IsStickOrBone(outputSlot.Itemstack) && woodtype != null) {
                     if (woodtype == "veryaged" || woodtype == "veryagedrotten") {
                         woodtype = "aged";
                     }
@@ -165,10 +166,14 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     }
                 }
             } else if (handleSlot != null) {
-                outputSlot.Itemstack.Attributes = handleSlot.Itemstack.Attributes.Clone();
-            } else { //If it hits this, it's likely someone crafted a more basic handle somehow, like a stick or crude handle. Lets initialize it so it can at least have the trees.
-                var renderTree = outputSlot.Itemstack.GetPartRenderTree();
-                renderTree.GetPartTextureTree();
+                if (!TinkeringUtility.IsStickOrBone(outputSlot.Itemstack)) {
+                    outputSlot.Itemstack.Attributes = handleSlot.Itemstack.Attributes.Clone();
+                }
+            } else { //If it hits this, it's likely someone crafted a more basic handle somehow, like a crude handle. Lets initialize it so it can at least have the trees.
+                if (!TinkeringUtility.IsStickOrBone(outputSlot.Itemstack)) {
+                    var renderTree = outputSlot.Itemstack.GetPartRenderTree();
+                    renderTree.GetPartTextureTree();
+                }
             }
 
             outputSlot.MarkDirty();
@@ -182,7 +187,12 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             return tree;
         }
 
-        public void ResetRotationAndOffset(ITreeAttribute tree) { //This is sent the MultiPartRenderTree
+        public void ResetRotationAndOffset(ItemStack handle) { //This is sent the MultiPartRenderTree
+            if (TinkeringUtility.CheckForAndScrubStickBone(handle)) {
+                return;
+            }
+            var tree = handle.GetMultiPartRenderTree();
+
             if (tree.HasAttribute(ToolsmithAttributes.ModularPartHandleName)) {
                 var handlePartAndTransform = tree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
                 handlePartAndTransform.SetPartRotationX(0);

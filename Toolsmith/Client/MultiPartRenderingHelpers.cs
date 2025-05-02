@@ -51,6 +51,10 @@ namespace Toolsmith.Client {
             return item.Attributes.HasAttribute(ToolsmithAttributes.ModularMultiPartDataTree);
         }
 
+        public static void RemoveMultiPartRenderTree(this ItemStack item) {
+            item.Attributes.RemoveAttribute(ToolsmithAttributes.ModularMultiPartDataTree);
+        }
+
         public static ITreeAttribute GetPartAndTransformRenderTree(this ITreeAttribute tree, string key) {
             if (!tree.HasAttribute(key)) {
                 tree.GetOrAddTreeAttribute(key);

@@ -76,6 +76,9 @@ namespace Toolsmith.Client.Behaviors {
             var mesh = new MeshData(6, 4);
             if (itemstack.HasMultiPartRenderTree()) {
                 ITreeAttribute partTransTree = itemstack.GetMultiPartRenderTree(); //The Multi-Part tree contains sub-trees of the PartRenderTrees paired with their render data like rotation and everything. So loop through them all and add them together on the Mesh.
+                if (partTransTree.Count == 0) {
+                    return GenMesh(null, targetAtlas);
+                }
                 foreach (var part in partTransTree) { //This is the PartAndTransform Tree.
                     ITreeAttribute partTree = partTransTree.GetTreeAttribute(part.Key);
                     Vec3f rotation = new Vec3f(partTree.GetPartRotationX(), partTree.GetPartRotationY(), partTree.GetPartRotationZ());
@@ -100,7 +103,7 @@ namespace Toolsmith.Client.Behaviors {
             bool needFallback = (renderTree == null); //Fallback to the properties defaults if this is the case.
 
             Shape shape = null;
-            if (!needFallback && renderTree.HasPartShapePath()) {
+            if (!needFallback && renderTree.HasPartShapePath() && renderTree.GetPartShapePath() != "") {
                 if (renderTree.HasShapeOverrideTag()) {
                     shape = api.Assets.TryGet(new AssetLocation(renderTree.GetPartShapePath() + renderTree.GetShapeOverrideTag() + ".json"))?.ToObject<Shape>();
                 } else {

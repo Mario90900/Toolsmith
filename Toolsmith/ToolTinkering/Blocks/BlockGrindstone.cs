@@ -85,8 +85,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 grindstoneEnt.OnBlockInteractStart();
             } else if (entPlayer.Controls.ShiftKey) {
                 if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null) {
-                    int isTool = TinkeringUtility.IsValidSharpenTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world);
-                    if (world.Side == EnumAppSide.Server && isTool == 1) {
+                    if (world.Side == EnumAppSide.Server && TinkeringUtility.IsDeconstructableTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world)) {
                         world.PlaySoundAt(new AssetLocation("sounds/player/messycraft.ogg"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
                     }
                 }
@@ -131,7 +130,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                             doneSharpening = true;
                         }
                     }
-                } else if (byPlayer.Entity.Controls.ShiftKey && isTool == 1) {
+                } else if (byPlayer.Entity.Controls.ShiftKey && TinkeringUtility.IsDeconstructableTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world)) {
                     if (world.Side.IsServer() && secondsUsed > 4.5) {
                         TinkeringUtility.DisassembleTool(secondsUsed, world, byPlayer, blockSel);
                     }
