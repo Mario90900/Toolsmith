@@ -33,10 +33,14 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 }
                 crafting = true;
                 return;
-            } else if (TinkeringUtility.WhetstoneInOffhand(byEntity) != null && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
+            } else if (TinkeringUtility.WhetstoneInOffhand(byEntity) != null && !slot.Empty && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
                 handHandling = EnumHandHandling.PreventDefault;
                 handling = EnumHandling.PreventSubsequent;
                 sharpening = true;
+                var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
+                if (whetstone != null) {
+                    whetstone.ToggleHoningSound(true, byEntity);
+                }
                 return;
             }
 
@@ -69,6 +73,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 lastInterval = 0;
                 var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
                 if (whetstone != null) {
+                    whetstone.ToggleHoningSound(false, byEntity);
                     whetstone.DoneSharpening();
                 }
                 sharpening = false;

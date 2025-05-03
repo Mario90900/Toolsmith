@@ -19,7 +19,7 @@ namespace Toolsmith.Config {
         public string SinglePartTools = "@.*:(chisel|cleaver|shears|wrench|wedge|truechisel|rollingpin|handplaner|handwedge|laddermaker|paintbrush|paintscraper|pantograph|pathmaker|spyglass|creaser|flail).*";
         public string BluntHeadedTools = "@.*:(hammer|wrench|mallet|rubblehammer|rollingpin|handwedge|laddermaker|paintbrush|pantograph|pathmaker|spyglass|creaser|flail).*";
 
-        public string PartBlacklist = "@.*(helve|-wet-|chiseledblock|stickslayer|scrap|ruined|wfradmin|chiseled|chiselmold|wrenchmold|armory|awl-bone|awl-horn|awl-flint|awl-obsidian|sawbuck|sawhorse|sawdust|wooden).*";
+        public string PartBlacklist = "@.*(helve|-wet-|chiseledblock|stickslayer|scrap|ruined|wfradmin|chiseled|chiselmold|wrenchmold|knifemold|armory|awl-bone|awl-horn|awl-flint|awl-obsidian|sawmill|sawbuck|sawhorse|sawdust|wooden).*";
 
         //Might want to move this into the Part Stats file honestly. It's getting important that probably no one should touch anything in here without knowing what they are doing.
         public Dictionary<string, HandleStatPair> BaseHandleRegistry = new() { //Both for the Handles and Bindings, it should be simple enough to just find each

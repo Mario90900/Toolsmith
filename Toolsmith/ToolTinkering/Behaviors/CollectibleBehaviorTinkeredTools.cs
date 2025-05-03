@@ -196,8 +196,8 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             HandleExtraModCompat(allInputslots, outputSlot); //Handle some mod compatability here! Anything that needs a little bit of extra handling before getting the first BaseMaxDurability.
 
             var baseDur = outputSlot.Itemstack.Collectible.GetBaseMaxDurability(outputSlot.Itemstack);
-            int headDur = outputSlot.Itemstack.GetToolheadMaxDurability();//Start with the tool head.
-            int sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);//Calculate the sharpness next similarly to the durability.
+            int headMaxDur = outputSlot.Itemstack.GetToolheadMaxDurability();//Start with the tool head.
+            int maxSharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);//Calculate the sharpness next similarly to the durability.
 
             var handleDur = baseDur * handleStats.baseHPfactor; //Starting with the handle: Account for baseHPfactor first in the handle...
             handleDur = handleDur + handleDur * handleStats.selfHPBonus; //plus the selfDurabilityBonus
@@ -210,25 +210,25 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
             //Apply the end results of that to the tool/parts. Could the parts themselves actually hold the stats...? Eh. Might be faster to just directly apply them to the tool and then update the current HP when it breaks.
             var currentHeadPer = headStack.GetPartRemainingHPPercent(); //If this returns 0, then assume it's full durability since something is unset. Keep this assumption in mind!!!
-            headStack.SetPartMaxDurability(headDur);
+            headStack.SetPartMaxDurability(headMaxDur);
             if (currentHeadPer <= 0) {
                 currentHeadPer = 1.0f;
             }
-            headStack.SetPartCurrentDurability((int)(headDur * currentHeadPer));
+            headStack.SetPartCurrentDurability((int)(headMaxDur * currentHeadPer));
             var currentHeadSharpPer = headStack.GetPartRemainingSharpnessPercent();
-            headStack.SetPartMaxSharpness(sharpness);
-            if (currentHeadSharpPer <= 0) {
+            headStack.SetPartMaxSharpness(maxSharpness);
+            if (currentHeadSharpPer < 0) {
                 if (isHeadMetal) {
                     currentHeadSharpPer = ToolsmithConstants.StartingSharpnessMult;
                 } else {
                     currentHeadSharpPer = ToolsmithConstants.NonMetalStartingSharpnessMult;
                 }
             }
-            headStack.SetPartCurrentSharpness((int)(sharpness * currentHeadSharpPer));
+            headStack.SetPartCurrentSharpness((int)(currentHeadSharpPer * maxSharpness));
 
-            outputSlot.Itemstack.SetToolheadCurrentDurability((int)(headDur * currentHeadPer));
-            outputSlot.Itemstack.SetToolMaxSharpness(sharpness);
-            outputSlot.Itemstack.SetToolCurrentSharpness((int)(sharpness * currentHeadSharpPer));
+            outputSlot.Itemstack.SetToolheadCurrentDurability((int)(headMaxDur * currentHeadPer));
+            outputSlot.Itemstack.SetToolMaxSharpness(maxSharpness);
+            outputSlot.Itemstack.SetToolCurrentSharpness((int)(maxSharpness * currentHeadSharpPer));
 
             var currentHandlePer = handleStack.GetPartRemainingHPPercent();
             handleStack.SetPartMaxDurability((int)handleDur);
@@ -249,10 +249,10 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
             if (ToolsmithModSystem.Config.DebugMessages) {
                 ToolsmithModSystem.Logger.Debug("Tool's durability is: " + baseDur);
-                ToolsmithModSystem.Logger.Debug("Thus, the Tool Head's durability is: " + headDur);
-                ToolsmithModSystem.Logger.Debug("And the current Head Durability is: " + (int)(headDur * currentHeadPer));
-                ToolsmithModSystem.Logger.Debug("The tool's maximum sharpness is: " + sharpness);
-                ToolsmithModSystem.Logger.Debug("This tool's current sharpness is: " + (int)(sharpness * currentHeadSharpPer));
+                ToolsmithModSystem.Logger.Debug("Thus, the Tool Head's durability is: " + headMaxDur);
+                ToolsmithModSystem.Logger.Debug("And the current Head Durability is: " + (int)(headMaxDur * currentHeadPer));
+                ToolsmithModSystem.Logger.Debug("The tool's maximum sharpness is: " + maxSharpness);
+                ToolsmithModSystem.Logger.Debug("This tool's current sharpness is: " + (int)(maxSharpness * currentHeadSharpPer));
                 ToolsmithModSystem.Logger.Debug("Handle Max Durability: " + handleDur);
                 ToolsmithModSystem.Logger.Debug("Handle Current Durability: " + (int)(handleDur * currentHandlePer));
                 ToolsmithModSystem.Logger.Debug("Binding Durability: " + bindingDur);
@@ -305,10 +305,14 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         }
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling) { //Handle the grinding code here as well as the tool itself! Probably can offload the core interaction to a helper utility function?
-            if (TinkeringUtility.WhetstoneInOffhand(byEntity) != null && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
+            if (TinkeringUtility.WhetstoneInOffhand(byEntity) != null && !slot.Empty && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
                 handHandling = EnumHandHandling.PreventDefault;
                 handling = EnumHandling.PreventSubsequent;
                 sharpening = true;
+                var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
+                if (whetstone != null) {
+                    whetstone.ToggleHoningSound(true, byEntity);
+                }
                 return;
             }
 
@@ -331,6 +335,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 lastInterval = 0;
                 var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
                 if (whetstone != null) {
+                    whetstone.ToggleHoningSound(false, byEntity);
                     whetstone.DoneSharpening();
                 }
                 sharpening = false;

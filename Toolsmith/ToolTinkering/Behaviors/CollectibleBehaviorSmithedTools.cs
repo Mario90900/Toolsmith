@@ -87,10 +87,14 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         }
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling) { //Handle the grinding code here as well as the tool itself! Probably can offload the core interaction to a helper utility function?
-            if (TinkeringUtility.WhetstoneInOffhand(byEntity) != null && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
+            if (TinkeringUtility.WhetstoneInOffhand(byEntity) != null && !slot.Empty && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
                 handHandling = EnumHandHandling.PreventDefault;
                 handling = EnumHandling.PreventSubsequent;
                 sharpening = true;
+                var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
+                if (whetstone != null) {
+                    whetstone.ToggleHoningSound(true, byEntity);
+                }
                 return;
             }
 
@@ -113,6 +117,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 lastInterval = 0;
                 var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
                 if (whetstone != null) {
+                    whetstone.ToggleHoningSound(false, byEntity);
                     whetstone.DoneSharpening();
                 }
                 sharpening = false;

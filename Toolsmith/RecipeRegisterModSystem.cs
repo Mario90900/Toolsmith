@@ -73,7 +73,7 @@ namespace Toolsmith {
                         toolRecipes.AddRange(GenerateToolGridRecipes(api, ingredient, tool));
 
                         var gridRecipeTag = ingredient.Code.ToString();
-                        foreach (var otherIngredients in recipe.resolvedIngredients.Where(o => (o != null) && (o.ResolvedItemstack.Collectible.Code.Path == "bone"))) { //Is this one of the bone + head recipes?
+                        foreach (var otherIngredients in recipe.resolvedIngredients.Where(o => (o != null) && (o.ResolvedItemstack != null) && (o.ResolvedItemstack.Collectible.Code.Path == "bone"))) { //Is this one of the bone + head recipes?
                             if (otherIngredients.ResolvedItemstack.Collectible.Code == ToolsmithConstants.BoneHandleCode) {
                                 gridRecipeTag += "-bone";
                                 break;
@@ -112,6 +112,13 @@ namespace Toolsmith {
 
             var handleRecipes = GenerateHandleRecipes(api);
 
+            if (toolRecipes != null && toolRecipes.Count > 0) {
+                api.World.GridRecipes.AddRange(toolRecipes);
+            }
+            if (handleRecipes != null && handleRecipes.Count > 0) {
+                api.World.GridRecipes.AddRange(handleRecipes);
+            }
+
             //Make sure to clean up the five lists that were used in all this here! Would be nice not to leave that overhead information when it likely won't be needed after this point.
             TinkerableToolsList = null;
             HandleList = null;
@@ -119,12 +126,8 @@ namespace Toolsmith {
             GripList = null;
             BindingList = null;
 
-            if (toolRecipes != null && toolRecipes.Count > 0) {
-                api.World.GridRecipes.AddRange(toolRecipes);
-            }
-            if (handleRecipes != null && handleRecipes.Count > 0) {
-                api.World.GridRecipes.AddRange(handleRecipes);
-            }
+            toolRecipes = null;
+            handleRecipes = null;
         }
 
         private List<GridRecipe> GenerateToolGridRecipes(ICoreAPI api, GridRecipeIngredient head, CollectibleObject tool) {

@@ -562,7 +562,7 @@ namespace Toolsmith.ToolTinkering {
                 if (deltaLastTick >= ToolsmithConstants.sharpenInterval) { //Try not to repair EVERY single tick to space it out some. Cause of this, repair 5 durability each time so it doesn't take forever.
                     var whetstone = WhetstoneInOffhand(byEntity);
 
-                    if (whetstone != null) { //If the offhand is still a Whetstone, sharpen! Otherwise break out of this entirely and end the action.
+                    if (whetstone != null && !slot.Empty) { //If the offhand is still a Whetstone, sharpen! Otherwise break out of this entirely and end the action.
                         var isTool = IsValidSharpenTool(slot.Itemstack.Collectible, byEntity.World);
                         whetstone.HandleSharpenTick(secondsUsed, slot, byEntity.LeftHandItemSlot, byEntity, isTool);
                     } else {
