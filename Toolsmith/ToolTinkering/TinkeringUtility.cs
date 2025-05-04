@@ -555,7 +555,7 @@ namespace Toolsmith.ToolTinkering {
             return (curSharp < maxSharp && curDur > 0);
         }
 
-        public static bool TryWhetstoneSharpening(ref float deltaLastTick, ref float lastInterval, float secondsUsed, ItemSlot slot, EntityAgent byEntity, ref EnumHandling handling) {
+        public static bool TryWhetstoneSharpening(ref float deltaLastTick, ref float lastInterval, float secondsUsed, ItemSlot slot, EntityAgent byEntity) {
             if (byEntity.World.Side.IsServer()) {
                 deltaLastTick = secondsUsed - lastInterval;
 

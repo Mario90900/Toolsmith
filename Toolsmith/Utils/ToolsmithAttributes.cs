@@ -72,7 +72,7 @@ namespace Toolsmith.Utils {
         public const string OldHandlePrefix = "old"; //Adding this here so that I can reference specifically this from here, and later on when removing all these bits of old code later, it'll be easy to find all the errors just by commenting out this bit!
 
         // -- This just helps to organize it in this file, and pile them into one easy constant to call. Generally for Smithing Plus's Compat and the forgettable attributes there when a Workpiece is made.
-        public const string ToolsmithForgettableAttributes = "," + ToolHead + "," + ToolSharpnessCurrent + "," + ToolSharpnessMax + "," + ToolHandle + "," + ToolHandleCurrentDur + "," + ToolHandleMaxDur + "," + ToolBinding + "," + ToolBindingCurrentDur + "," + ToolBindingMaxDur + "," + GripChanceToDamage + "," + SpeedBonus + "," + Drawback + "," + BrokeWhileSharpening;
+        public const string ToolsmithForgettableAttributes = "," + ToolHead + "," + ToolSharpnessCurrent + "," + ToolSharpnessMax + "," + ToolHandle + "," + ToolHandleCurrentDur + "," + ToolHandleMaxDur + "," + ToolBinding + "," + ToolBindingCurrentDur + "," + ToolBindingMaxDur + "," + GripChanceToDamage + "," + SpeedBonus + "," + Drawback + "," + BrokeWhileSharpening + "," + ModularMultiPartDataTree + "," + ModularPartDataTree;
         public static readonly string[] ToolsmithIgnoreAttributesArray = new string[13] { ToolHead, ToolSharpnessCurrent, ToolSharpnessMax, ToolHandle, ToolHandleCurrentDur, ToolHandleMaxDur, ToolBinding, ToolBindingCurrentDur, ToolBindingMaxDur, GripChanceToDamage, SpeedBonus, Drawback, BrokeWhileSharpening };
     }
 }

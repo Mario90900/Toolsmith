@@ -123,9 +123,11 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
             if (firstVoxel.Item1 + 2 < voxels.GetLength(0)) { //For the second and third slices, ensure they are valid first before attempting to grab them. In all likelyhood they _should_ be valid always? But better to be safe. I've crashed things enough already :P
                 voxelsInRightSlice = FindNumVoxelsAlongSlice(voxels, firstVoxel.Item1 + 2);
             }
-            ToolsmithModSystem.Logger.Warning("Number of Voxels to mess with: " + numToEffect);
-            ToolsmithModSystem.Logger.Warning("FirstVoxel is " + firstVoxel.Item1 + ", " + firstVoxel.Item2 + ", " + firstVoxel.Item3);
-            ToolsmithModSystem.Logger.Warning("There are " + voxelsInLeftSlice.Length + " voxels along the slice");
+            if (ToolsmithModSystem.Config.DebugMessages) {
+                ToolsmithModSystem.Logger.Warning("Number of Voxels to mess with: " + numToEffect);
+                ToolsmithModSystem.Logger.Warning("FirstVoxel is " + firstVoxel.Item1 + ", " + firstVoxel.Item2 + ", " + firstVoxel.Item3);
+                ToolsmithModSystem.Logger.Warning("There are " + voxelsInLeftSlice.Length + " voxels along the slice");
+            }
 
             int whichSlot;
             int action;
@@ -552,11 +554,28 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
         }
 
         public static void SerializeVoxelsToWorkPiece(ItemStack workpiece, bool[,,] voxels) {
-            workpiece.Attributes.SetBytes(ToolsmithAttributes.WorkPieceVoxels, BlockEntityAnvil.serializeVoxels(voxels.ToByteArray()));
+            workpiece.Attributes.SetBytes(ToolsmithAttributes.WorkPieceVoxels, BlockEntityAnvil.serializeVoxels(ConvertBoolToByteArray(voxels)));
         }
 
         public static void SetRecipeIDToWorkPiece(ItemStack workpiece, SmithingRecipe recipe) {
             workpiece.Attributes.SetInt(ToolsmithAttributes.WorkPieceSelectedRecipeID, recipe.RecipeId);
+        }
+
+        public static byte[,,] ConvertBoolToByteArray(bool[,,] source) {
+            byte[,,] destination = new byte[source.GetLength(0), source.GetLength(1), source.GetLength(2)];
+            for (int x = 0; x < source.GetLength(0); x++) {
+                for (int y = 0; y < source.GetLength(1); y++) {
+                    for (int z = 0; z < source.GetLength(2); z++) {
+                        if (source[x,y,z] == true) {
+                            destination[x, y, z] = 1;
+                        } else {
+                            destination[x, y, z] = 0;
+                        }
+                    }
+                }
+            }
+
+            return destination;
         }
     }
 }

@@ -14,10 +14,8 @@ using Vintagestory.API.Util;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorTinkeredTools : CollectibleBehavior {
+        
 
-        protected bool sharpening = false;
-        protected float deltaLastTick = 0;
-        protected float lastInterval = 0;
 
         public CollectibleBehaviorTinkeredTools(CollectibleObject collObj) : base(collObj) {
 
@@ -302,46 +300,6 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
             var rarity = Rarity.GetRandomRarity();
             itemStack.SetRarity(rarity.Key);
-        }
-
-        public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling) { //Handle the grinding code here as well as the tool itself! Probably can offload the core interaction to a helper utility function?
-            if (TinkeringUtility.WhetstoneInOffhand(byEntity) != null && !slot.Empty && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
-                handHandling = EnumHandHandling.PreventDefault;
-                handling = EnumHandling.PreventSubsequent;
-                sharpening = true;
-                var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
-                if (whetstone != null) {
-                    whetstone.ToggleHoningSound(true, byEntity);
-                }
-                return;
-            }
-
-            base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);
-        }
-
-        public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
-            if (sharpening) {
-                handling = EnumHandling.PreventSubsequent;
-                return TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, slot, byEntity, ref handling);
-            }
-
-            return base.OnHeldInteractStep(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);
-        }
-
-        public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
-            if (sharpening) {
-                handling = EnumHandling.PreventDefault;
-                deltaLastTick = 0;
-                lastInterval = 0;
-                var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
-                if (whetstone != null) {
-                    whetstone.ToggleHoningSound(false, byEntity);
-                    whetstone.DoneSharpening();
-                }
-                sharpening = false;
-            }
-
-            base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);
         }
     }
 }

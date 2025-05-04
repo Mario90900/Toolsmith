@@ -348,6 +348,74 @@ namespace Toolsmith.ToolTinkering {
             return codes.AsEnumerable();
         }
 
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CollectibleObject.OnHeldUseStart))]
+        private static bool OnHeldUseStartDominantOffhandInteractionPrefix(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumHandInteract useType, bool firstEvent, ref EnumHandHandling handling) {
+            if (useType == EnumHandInteract.HeldItemInteract) {
+                if (byEntity != null && byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
+                    var bh = byEntity.LeftHandItemSlot.Itemstack.Collectible.GetBehavior<CollectibleBehaviorOffhandDominantInteraction>();
+                    bh.OnHeldOffhandDominantStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CollectibleObject.OnHeldUseStep))]
+        private static bool OnHeldUseStepDominantOffhandInteractionPrefix(ref EnumHandInteract __result, float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
+            if (byEntity != null && byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
+                EnumHandInteract handUse = byEntity.Controls.HandUse;
+                if (handUse != EnumHandInteract.HeldItemAttack) {
+                    var bh = byEntity.LeftHandItemSlot.Itemstack.Collectible.GetBehavior<CollectibleBehaviorOffhandDominantInteraction>();
+                    var retBool = bh.OnHeldOffhandDominantStep(secondsPassed, slot, byEntity, blockSel, entitySel);
+                    if (retBool) {
+                        __result = handUse;
+                    } else {
+                        __result = EnumHandInteract.None;
+                    }
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CollectibleObject.OnHeldUseCancel))]
+        private static bool OnHeldUseCancelDominantOffhandInteractionPrefix(ref EnumHandInteract __result, float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason) {
+            if (byEntity != null && byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
+                EnumHandInteract handUse = byEntity.Controls.HandUse;
+                if (handUse != EnumHandInteract.HeldItemAttack) {
+                    var bh = byEntity.LeftHandItemSlot.Itemstack.Collectible.GetBehavior<CollectibleBehaviorOffhandDominantInteraction>();
+                    var retBool = bh.OnHeldOffhandDominantCancel(secondsPassed, slot, byEntity, blockSel, entitySel, cancelReason);
+                    if (retBool) {
+                        __result = EnumHandInteract.None;
+                    } else {
+                        __result = handUse;
+                    }
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CollectibleObject.OnHeldUseStop))]
+        private static bool OnHeldUseStopDominantOffhandInteractionPrefix(float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumHandInteract useType) {
+            if (useType == EnumHandInteract.HeldItemInteract) {
+                if (byEntity != null && byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
+                    var bh = byEntity.LeftHandItemSlot.Itemstack.Collectible.GetBehavior<CollectibleBehaviorOffhandDominantInteraction>();
+                    bh.OnHeldOffhandDominantStop(secondsPassed, slot, byEntity, blockSel, entitySel);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         //Patching the GuiElementItemSlotGridBase now! Anything patching CollectibleObject is above!
         [HarmonyPatch(typeof(GuiElementItemSlotGridBase))]
         [HarmonyTranspiler]

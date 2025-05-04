@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Utils;
@@ -13,8 +14,11 @@ using Vintagestory.ServerMods.NoObf;
 
 namespace Toolsmith.ToolTinkering.Items {
     public class ItemWhetstone : Item {
-        protected float totalSharpnessHoned = 0;
         protected ILoadedSound honingScrape;
+        protected bool sharpening = false;
+        protected float totalSharpnessHoned = 0;
+        protected float deltaLastTick = 0;
+        protected float lastInterval = 0;
 
         //Copied over from the Grindstone but changed to instead be done in-hand with the items instead of on a block. It's slightly different handling.
         public void HandleSharpenTick(float secondsUsed, ItemSlot mainHandSlot, ItemSlot offhandSlot, EntityAgent byEntity, int isTool) { //"isTool" is fed by the respective items in question when they call this to try and sharpen.
@@ -70,6 +74,52 @@ namespace Toolsmith.ToolTinkering.Items {
             } else {
                 honingScrape?.FadeOut(0.2f, (s) => { s.Dispose(); honingScrape = null; });
             }
+        }
+
+        public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling) {
+            base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
+            if (handling == EnumHandHandling.PreventDefault) {
+                return;
+            }
+
+            if (!slot.Empty && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
+                handling = EnumHandHandling.PreventDefault;
+                sharpening = true;
+                ToggleHoningSound(true, byEntity);
+                return;
+            }
+        }
+
+        public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
+            if (sharpening) {
+                return TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, slot, byEntity);
+            }
+
+            return base.OnHeldInteractStep(secondsUsed, slot, byEntity, blockSel, entitySel);
+        }
+
+        public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
+            if (sharpening) {
+                deltaLastTick = 0;
+                lastInterval = 0;
+                ToggleHoningSound(false, byEntity);
+                DoneSharpening();
+                sharpening = false;
+            }
+
+            base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
+        }
+
+        public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason) {
+            if (sharpening) {
+                deltaLastTick = 0;
+                lastInterval = 0;
+                ToggleHoningSound(false, byEntity);
+                DoneSharpening();
+                sharpening = false;
+            }
+
+            return base.OnHeldInteractCancel(secondsUsed, slot, byEntity, blockSel, entitySel, cancelReason);
         }
     }
 }

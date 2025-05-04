@@ -14,9 +14,6 @@ namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorToolHead : CollectibleBehaviorToolPartWithHealth {
 
         private bool crafting = false;
-        private bool sharpening = false;
-        protected float deltaLastTick = 0;
-        protected float lastInterval = 0;
 
         public CollectibleBehaviorToolHead(CollectibleObject collObj) : base(collObj) {
 
@@ -33,15 +30,6 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 }
                 crafting = true;
                 return;
-            } else if (TinkeringUtility.WhetstoneInOffhand(byEntity) != null && !slot.Empty && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
-                handHandling = EnumHandHandling.PreventDefault;
-                handling = EnumHandling.PreventSubsequent;
-                sharpening = true;
-                var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
-                if (whetstone != null) {
-                    whetstone.ToggleHoningSound(true, byEntity);
-                }
-                return;
             }
 
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);
@@ -51,9 +39,6 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             if (crafting) {
                 handling = EnumHandling.PreventSubsequent;
                 return crafting && secondsUsed < ToolsmithConstants.TimeToCraftTinkerTool; //Time for crafting is now a constant variable!
-            } else if (sharpening) {
-                handling = EnumHandling.PreventSubsequent;
-                return TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, slot, byEntity, ref handling);
             }
 
             return base.OnHeldInteractStep(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);
@@ -67,16 +52,6 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 }
                 crafting = false;
                 return;
-            } else if (sharpening) {
-                handling = EnumHandling.PreventDefault;
-                deltaLastTick = 0;
-                lastInterval = 0;
-                var whetstone = TinkeringUtility.WhetstoneInOffhand(byEntity);
-                if (whetstone != null) {
-                    whetstone.ToggleHoningSound(false, byEntity);
-                    whetstone.DoneSharpening();
-                }
-                sharpening = false;
             }
 
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);

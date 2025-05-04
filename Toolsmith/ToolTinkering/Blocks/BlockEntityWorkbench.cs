@@ -11,6 +11,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
+using Vintagestory.Common.Collectible.Block;
 using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering.Blocks {
@@ -19,8 +20,8 @@ namespace Toolsmith.ToolTinkering.Blocks {
         protected WorkbenchInventory Inventory { get; private set; }
         protected ICoreClientAPI capi;
         protected Dictionary<string, MeshData> WorkbenchItemMeshCache => ObjectCacheUtil.GetOrCreate(Api, ToolsmithConstants.WorkbenchItemRenderingMeshRefs, () => new Dictionary<string, MeshData>());
-        protected (float x, float y, float z)[] offsetBySlot = { (0f,0f,0f), (0.4f, 1f, 0.3f), (0.6f, 1f, 0.6f), (0.8f, 1f, 0.3f), (1.0f, 1f, 0.6f), (1.2f, 1f, 0.3f), (0f,0f,0f), (1.55f, 1f, 0.55f)};
-
+        private (float x, float y, float z)[] offsetBySlot = { (0f, 0f, 0f), (0.4f, 1f, 0.3f), (0.6f, 1f, 0.6f), (0.8f, 1f, 0.3f), (1.0f, 1f, 0.6f), (1.2f, 1f, 0.3f), (0f, 0f, 0f), (1.55f, 1f, 0.55f) };
+        
         public override void Initialize(ICoreAPI api) {
             base.Initialize(api);
             capi = api as ICoreClientAPI;
@@ -59,9 +60,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             }
 
             if (!byPlayer.InventoryManager.TryGiveItemstack(gotItem, slotNotifyEffect: true)) {
-                var slotOffset = offsetBySlot[slotSelection];
-                var posForSpawn = Pos.ToVec3d() + new Vec3d(slotOffset.x, slotOffset.y, slotOffset.z);
-                var ent = world.SpawnItemEntity(gotItem, posForSpawn);
+                var ent = world.SpawnItemEntity(gotItem, new Vec3d(byPlayer.Entity.Pos.X, byPlayer.Entity.Pos.Y, byPlayer.Entity.Pos.Z));
                 if (ent != null) {
                     return true;
                 } else {
@@ -74,7 +73,12 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
         public bool InitiateReforgeAttempt(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             var reforgingSlot = Inventory.GetSlotFromSelectionID((int)WorkbenchSlots.ReforgeStaging);
-            if (reforgingSlot == null || reforgingSlot.Empty || !reforgingSlot.Itemstack.HasPartCurrentDurability()) {
+            if (reforgingSlot == null || reforgingSlot.Empty) {
+                return false;
+            }
+
+            var percentDamage = ReforgingUtility.GetReforgablePercentDamage(reforgingSlot.Itemstack);
+            if (percentDamage > 0.9f) {
                 return false;
             }
 
@@ -89,20 +93,23 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 ToolsmithModSystem.Logger.Warning("Could not get a metal or material variant from " + reforgingSlot.Itemstack.Collectible.Code + ". Cannot start a reforge!");
                 return false;
             }
-            ToolsmithModSystem.Logger.Warning("Here we go! What is the metal? " + metal);
+            if (ToolsmithModSystem.Config.DebugMessages) {
+                ToolsmithModSystem.Logger.Warning("Here we go! What is the metal? " + metal);
+            }
             ItemStack workItem = ReforgingUtility.GetWorkItemFromMetalType(world.Api, metal);
             if (workItem == null) {
                 ToolsmithModSystem.Logger.Warning("Could not generate a workitem from this metal - " + metal + " | Unable to start a reforge!");
                 return false;
             }
-            ToolsmithModSystem.Logger.Warning("What is the workitem? " + workItem.Collectible.Code);
+            if (ToolsmithModSystem.Config.DebugMessages) {
+                ToolsmithModSystem.Logger.Warning("What is the workitem? " + workItem.Collectible.Code);
+            }
             
             //Generate the complete work item voxel data from the recipe.
             var recipeVoxels = ReforgingUtility.GetVoxelCopyFromRecipe(recipe); //Smithing Plus trims and modifies this array before Serializing it through the Anvil and applying the data to the WorkItem Attributes. It's likely better to follow suit.
 
             //Calculate the average number of voxels that should be removed from the full piece, then trim off or move around a few voxels to simulate the damage
             var totalVoxels = ReforgingUtility.TotalVoxelsInRecipe(recipe);
-            var percentDamage = ReforgingUtility.GetReforgablePercentDamage(reforgingSlot.Itemstack);
             var remainingVoxels = MathUtility.NumberOfVoxelsLeftInReforge(percentDamage, totalVoxels);
 
             recipeVoxels = ReforgingUtility.DamageWorkpieceForReforge(recipeVoxels, totalVoxels, remainingVoxels, world.Api);
@@ -116,8 +123,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             ReforgingUtility.SetRecipeIDToWorkPiece(workItem, recipe);
             reforgingSlot.Itemstack = null;
             reforgingSlot.MarkDirty();
-            var offset = offsetBySlot[(int)WorkbenchSlots.ReforgeStaging];
-            world.SpawnItemEntity(workItem, new Vec3d(Pos.X + offset.x, Pos.Y + offset.y, Pos.Z + offset.z) );
+            world.SpawnItemEntity(workItem, new Vec3d(byPlayer.Entity.Pos.X, byPlayer.Entity.Pos.Y, byPlayer.Entity.Pos.Z) );
             MarkDirty(redrawOnClient: true);
 
             return true;

@@ -165,8 +165,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 if (blockSel.SelectionBoxIndex >= (int)WorkbenchSlots.CraftingSlot1 && blockSel.SelectionBoxIndex <= (int)WorkbenchSlots.CraftingSlot5) { //Player is attempting to place something in one of the 5 crafting spots!
                     if (TryPlaceOrGetItemCraftingSlots(world, byPlayer, blockSel, workbenchEnt)) {
                         if (world.Side.IsServer()) {
-                            var offset = workbenchEnt.GetOffsetBySlot(blockSel.SelectionBoxIndex);
-                            world.PlaySoundAt(new AssetLocation("sounds/player/build"), (blockSel.Position.Add(offset.x + 0.05f, offset.y + 0.05f, offset.z + 0.05f)), 0);
+                            world.PlaySoundAt(new AssetLocation("sounds/player/build"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
                         }
                         workbenchEnt.MarkDirty(redrawOnClient: true);
                         return true;
@@ -175,16 +174,14 @@ namespace Toolsmith.ToolTinkering.Blocks {
                     if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack?.Collectible?.Tool == EnumTool.Hammer) {
                         if (AttemptReforgingToolHead(world, byPlayer, blockSel, workbenchEnt)) {
                             if (world.Side.IsServer()) {
-                                var offset = workbenchEnt.GetOffsetBySlot(blockSel.SelectionBoxIndex);
-                                world.PlaySoundAt(new AssetLocation("sounds/block/meteoriciron-hit-pickaxe"), (blockSel.Position.Add(offset.x + 0.05f, offset.y + 0.05f, offset.z + 0.05f)), 0);
+                                world.PlaySoundAt(new AssetLocation("sounds/block/meteoriciron-hit-pickaxe"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
                             }
                             return true;
                         }
-                    } else if (byPlayer.InventoryManager.ActiveHotbarSlot != null) {
+                    } else /*if (byPlayer.InventoryManager.ActiveHotbarSlot != null)*/ {
                         if (TryPlaceOrGetItemReforgeSlot(world, byPlayer, blockSel, workbenchEnt)) {
                             if (world.Side.IsServer()) {
-                                var offset = workbenchEnt.GetOffsetBySlot(blockSel.SelectionBoxIndex);
-                                world.PlaySoundAt(new AssetLocation("sounds/player/build"), (blockSel.Position.Add(offset.x + 0.05f, offset.y + 0.05f, offset.z + 0.05f)), 0);
+                                world.PlaySoundAt(new AssetLocation("sounds/player/build"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
                             }
                             workbenchEnt.MarkDirty(redrawOnClient: true);
                             return true;
