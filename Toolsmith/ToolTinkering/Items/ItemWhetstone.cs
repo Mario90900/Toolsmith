@@ -77,12 +77,15 @@ namespace Toolsmith.ToolTinkering.Items {
         }
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling) {
-            base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
+            if (!(slot is ItemSlotOffhand)) {
+                base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
+            }
+            var mainHandSlot = byEntity.RightHandItemSlot;
             if (handling == EnumHandHandling.PreventDefault) {
                 return;
             }
 
-            if (!slot.Empty && TinkeringUtility.ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
+            if (!mainHandSlot.Empty && TinkeringUtility.ToolOrHeadNeedsSharpening(mainHandSlot.Itemstack, byEntity.World)) {
                 handling = EnumHandHandling.PreventDefault;
                 sharpening = true;
                 ToggleHoningSound(true, byEntity);
@@ -92,10 +95,15 @@ namespace Toolsmith.ToolTinkering.Items {
 
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
             if (sharpening) {
-                return TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, slot, byEntity);
+                var mainHandSlot = byEntity.RightHandItemSlot;
+                return TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, mainHandSlot, byEntity);
             }
 
-            return base.OnHeldInteractStep(secondsUsed, slot, byEntity, blockSel, entitySel);
+            if (!(slot is ItemSlotOffhand)) {
+                return base.OnHeldInteractStep(secondsUsed, slot, byEntity, blockSel, entitySel);
+            } else {
+                return true;
+            }
         }
 
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
@@ -107,7 +115,9 @@ namespace Toolsmith.ToolTinkering.Items {
                 sharpening = false;
             }
 
-            base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
+            if (!(slot is ItemSlotOffhand)) {
+                base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
+            }
         }
 
         public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason) {
@@ -119,7 +129,11 @@ namespace Toolsmith.ToolTinkering.Items {
                 sharpening = false;
             }
 
-            return base.OnHeldInteractCancel(secondsUsed, slot, byEntity, blockSel, entitySel, cancelReason);
+            if (!(slot is ItemSlotOffhand)) {
+                return base.OnHeldInteractCancel(secondsUsed, slot, byEntity, blockSel, entitySel, cancelReason);
+            } else {
+                return true;
+            }
         }
     }
 }
