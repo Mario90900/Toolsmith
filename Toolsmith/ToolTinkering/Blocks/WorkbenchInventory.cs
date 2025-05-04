@@ -87,7 +87,30 @@ namespace Toolsmith.ToolTinkering.Blocks {
             return true;
         }
 
+        public bool AddAdditionalToSlot(int slotID, ItemSlot fromSlot) { //Currently only the Reforging Slot can hold more then one item at a time
+            if (slotID == (int)WorkbenchSlots.ReforgeStaging) {
+                ItemSlot? slot = GetSlotFromSelectionID(slotID);
+
+                if (slot == null || fromSlot.Itemstack.Collectible.Code != slot.Itemstack.Collectible.Code || slot.MaxSlotStackSize == slot.StackSize) {
+                    return false;
+                }
+
+                var count = fromSlot.TryPutInto(Api.World, slot, quantity : 1);
+                if (count > 0) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private static ItemSlot OnNewSlot(int id, InventoryGeneric self) {
+            if (id == 0) { //Kinda have to hardcode this index, but it's probably fine since it's pretty unlikely I'll be reusing this anywhere?
+                return new ItemSlot((WorkbenchInventory)self) {
+                    MaxSlotStackSize = 4
+                };
+            }
+
             return new ItemSlot((WorkbenchInventory)self) {
                 MaxSlotStackSize = 1
             };

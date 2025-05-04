@@ -42,7 +42,11 @@ namespace Toolsmith.ToolTinkering.Blocks {
         public bool TryGetOrPutItemOnWorkbench(int slotSelection, ItemSlot mainHandSlot, IPlayer byPlayer, IWorldAccessor world) { //The item is valid for fitting in the slot, see if it is empty and if so, stick one in! Otherwise try and remove the existing item.
             var workbenchSlotSelection = Inventory.GetSlotFromSelectionID(slotSelection);
             if (workbenchSlotSelection != null && !workbenchSlotSelection.Empty) {
-                return TryGetItemFromWorkbench(slotSelection, mainHandSlot, byPlayer, world);
+                if (!Inventory.AddAdditionalToSlot(slotSelection, mainHandSlot)) {
+                    return TryGetItemFromWorkbench(slotSelection, mainHandSlot, byPlayer, world);
+                } else {
+                    return true;
+                }
             }
 
             return Inventory.AddItemToSlot(slotSelection, mainHandSlot);
@@ -87,6 +91,10 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 return false;
             }
 
+            if (recipe.Output.Quantity != reforgingSlot.StackSize) {
+                return false;
+            }
+
             //Get the metal type from the item in the slot, then generate a work item for that type of metal
             string metal = reforgingSlot.Itemstack.Collectible.GetMetalItem(world.Api);
             if (metal == null) {
@@ -123,7 +131,18 @@ namespace Toolsmith.ToolTinkering.Blocks {
             ReforgingUtility.SetRecipeIDToWorkPiece(workItem, recipe);
             reforgingSlot.Itemstack = null;
             reforgingSlot.MarkDirty();
-            world.SpawnItemEntity(workItem, new Vec3d(byPlayer.Entity.Pos.X, byPlayer.Entity.Pos.Y, byPlayer.Entity.Pos.Z) );
+
+            var facing = BlockFacing.FromCode(Block.LastCodePart());
+            if (facing == BlockFacing.WEST) {
+                world.SpawnItemEntity(workItem, new Vec3d(Pos.X + 0.5, Pos.Y + 1.1, Pos.Z - 0.5));
+            } else if (facing == BlockFacing.EAST) {
+                world.SpawnItemEntity(workItem, new Vec3d(Pos.X + 0.5, Pos.Y + 1.1, Pos.Z + 1.5));
+            } else if (facing == BlockFacing.SOUTH) {
+                world.SpawnItemEntity(workItem, new Vec3d(Pos.X - 0.5, Pos.Y + 1.1, Pos.Z + 0.5));
+            } else {
+                world.SpawnItemEntity(workItem, new Vec3d(Pos.X + 1.5, Pos.Y + 1.1, Pos.Z + 0.5));
+            }
+            
             MarkDirty(redrawOnClient: true);
 
             return true;
