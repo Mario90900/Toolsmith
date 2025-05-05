@@ -19,10 +19,10 @@
 	"game:toolhandletreated": "Эта рукоять была обработана {0}.",
 	"game:toolhandlegripped": "Эта рукоять имеет оплетку из {0}.",
 	
-    	"item-crudehandle": "Грубая рукоять инструмента",
+	"item-crudehandle": "Грубая рукоять инструмента",
 	"item-handle": "Резная рукоять инструмента",
 	"item-carpentedhandle": "Профессиональная рукоять инструмента",
-	"item-sandpaper": "Наждачка",						   
+	"item-sandpaper": "Наждачка",
 	
 	"game:grip-twine": "Шпагат",
 	"game:grip-cloth": "Полотно",
