@@ -55,6 +55,10 @@ namespace Toolsmith.Utils {
             itemStack.Collectible.SetDurability(itemStack, dur);
         }
 
+        public static bool HasToolheadCurrentDurability(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.Durability);
+        }
+
         public static int GetToolheadMaxDurability(this ItemStack itemStack) {
             return itemStack.Collectible.GetMaxDurability(itemStack);
         }
@@ -88,6 +92,10 @@ namespace Toolsmith.Utils {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolSharpnessCurrent, sharp);
         }
 
+        public static bool HasToolCurrentSharpness(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolSharpnessCurrent);
+        }
+
         public static int GetToolMaxSharpness(this ItemStack itemStack) {
             if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolSharpnessMax)) {
                 itemStack.ResetSharpness(ToolsmithModSystem.Api.World);
@@ -97,6 +105,10 @@ namespace Toolsmith.Utils {
 
         public static void SetToolMaxSharpness(this ItemStack itemStack, int sharp) {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolSharpnessMax, sharp);
+        }
+
+        public static bool HasToolMaxSharpness(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolSharpnessMax);
         }
 
         public static float GetToolSharpnessPercent(this ItemStack itemStack) {
@@ -154,6 +166,10 @@ namespace Toolsmith.Utils {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolHandleCurrentDur, dur);
         }
 
+        public static bool HasToolhandleCurrentDurability(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHandleCurrentDur);
+        }
+
         public static int GetToolhandleMaxDurability(this ItemStack itemStack) {
             if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHandleMaxDur)) {
                 itemStack.ResetNullHandleOrBinding(ToolsmithModSystem.Api.World);
@@ -163,6 +179,10 @@ namespace Toolsmith.Utils {
 
         public static void SetToolhandleMaxDurability(this ItemStack itemStack, int dur) {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolHandleMaxDur, dur);
+        }
+
+        public static bool HasToolhandleMaxDurability(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHandleMaxDur);
         }
 
         public static void EnsureHandleIsNotOverMax(this ItemStack itemStack) {
@@ -263,6 +283,10 @@ namespace Toolsmith.Utils {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolBindingCurrentDur, dur);
         }
 
+        public static bool HasToolbindingCurrentDurability(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolBindingCurrentDur);
+        }
+
         public static int GetToolbindingMaxDurability(this ItemStack itemStack) {
             if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolBindingMaxDur)) {
                 itemStack.ResetNullHandleOrBinding(ToolsmithModSystem.Api.World);
@@ -272,6 +296,10 @@ namespace Toolsmith.Utils {
 
         public static void SetToolbindingMaxDurability(this ItemStack itemStack, int dur) {
             itemStack.Attributes.SetInt(ToolsmithAttributes.ToolBindingMaxDur, dur);
+        }
+
+        public static bool HasToolbindingMaxDurability(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolBindingMaxDur);
         }
 
         public static void EnsureBindingIsNotOverMax(this ItemStack itemStack) {

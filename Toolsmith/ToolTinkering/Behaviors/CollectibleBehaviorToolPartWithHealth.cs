@@ -14,11 +14,11 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {
-            if (!inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
-                if (inSlot.Itemstack == null || inSlot.Inventory == null || inSlot.Inventory.GetType() == typeof(DummyInventory) || inSlot.Inventory.GetType() == typeof(CreativeInventoryTab)) {
-                    return;
-                }
+            if (inSlot.Itemstack == null || inSlot.Inventory == null || inSlot.Inventory.GetType() == typeof(DummyInventory) || inSlot.Inventory.GetType() == typeof(CreativeInventoryTab)) {
+                return;
+            }
 
+            if (!inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
                 if (inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
                     if (inSlot.Itemstack.GetPartMaxSharpness() > 0) {
                         var remainingSharpPercent = inSlot.Itemstack.GetPartRemainingSharpnessPercent();

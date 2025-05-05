@@ -1,9 +1,0 @@
-[
-    {
-        "file": "game:itemtypes/resource/bone",
-        "op": "add",
-        "path": "/storageFlags",
-        "value": 257,
-		"side": "server"
-    }
-]

@@ -96,7 +96,11 @@ namespace Toolsmith.ToolTinkering.Items {
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
             if (sharpening) {
                 var mainHandSlot = byEntity.RightHandItemSlot;
-                return TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, mainHandSlot, byEntity);
+                var retVal = TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, mainHandSlot, byEntity);
+                if (slot.Empty || slot.Itemstack.Collectible.GetRemainingDurability(slot.Itemstack) <= 1) {
+                    ToggleHoningSound(false, byEntity);
+                }
+                return retVal;
             }
 
             if (!(slot is ItemSlotOffhand)) {

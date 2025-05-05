@@ -25,12 +25,12 @@ using Vintagestory.GameContent;
 namespace Toolsmith.ToolTinkering {
 
     [HarmonyPatch(typeof(CollectibleObject))]
-    [HarmonyPatchCategory(ToolsmithModSystem.ToolTinkeringPatchCategory)]
+    [HarmonyPatchCategory(ToolsmithModSystem.ToolTinkeringDamagePatchCategory)]
     public class ToolTinkeringPatches {
 
         //This Prefix Patch is for Smithed Tools, the ones that are simply smithed on an anvil and then you get the finished item. Mostly for just checking for 'Blunt' Tools.
         //Since it is probably impossible to tell what called to damage the tool, through an attack or just using the tool, it might just be simpler to render blunt tools undamagable.
-        [HarmonyPrefix]
+        /*[HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
         private static bool SmithedToolsDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) {
             if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>() && !itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Api.Side.IsServer()) {
@@ -40,7 +40,7 @@ namespace Toolsmith.ToolTinkering {
             } else { //If it's not a Smithed Tool, don't touch anything.
                 return true; //Run default and others
             }
-        }
+        }*/
 
         //This Prefix Patch is entirely to hook into the DamageItem calls and see if the item in question is a Tinkered Tool, and if it is, manage the Damage to the 3 tool parts instead of the base item durability
         [HarmonyPrefix]
@@ -199,20 +199,11 @@ namespace Toolsmith.ToolTinkering {
             //If it's not a tinkered or smithed tool, then let everything else run as well!
             return true;
         }
+    }
 
-        [HarmonyPrefix]
-        [HarmonyPatch(nameof(CollectibleObject.ConsumeCraftingIngredients))]
-        private static bool ConsumeCraftingIngredientsModularPartPrefix(ItemSlot[] slots, ItemSlot outputSlot, GridRecipe matchingRecipe, ref bool __result) {
-            if (outputSlot.Itemstack.HasDisposeMeNowPlease()) {
-                outputSlot.Itemstack = null;
-                outputSlot.MarkDirty();
-
-                __result = true;
-                return false;
-            }
-
-            return true;
-        }
+    [HarmonyPatch(typeof(CollectibleObject))]
+    [HarmonyPatchCategory(ToolsmithModSystem.ToolTinkeringToolUseStatsPatchCategory)]
+    public class ToolTinkeringDurabilityPatches {
 
         [HarmonyPostfix]
         [HarmonyPatch(nameof(CollectibleObject.GetMaxDurability))]
@@ -220,21 +211,6 @@ namespace Toolsmith.ToolTinkering {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
                 __result = (int)((double)__result * ToolsmithModSystem.Config.HeadDurabilityMult);
             }
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(nameof(CollectibleObject.ShouldDisplayItemDamage))]
-        private static bool TinkeredToolShouldDisplayItemDamagePrefix(ItemStack itemstack, ref bool __result) {
-            if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                var lowestCurrent = TinkeringUtility.FindLowestCurrentDurabilityForBar(itemstack);
-                var lowestMax = TinkeringUtility.FindLowestMaxDurabilityForBar(itemstack);
-
-                __result = (lowestCurrent != lowestMax);
-
-                return false;
-            }
-
-            return true;
         }
 
         [HarmonyPrefix]
@@ -274,7 +250,7 @@ namespace Toolsmith.ToolTinkering {
                     newMiningSpeed += newMiningSpeed * ToolsmithConstants.LowSharpnessSpeedMalusMult;
                 }
             }
-            
+
             if (isTinkeredTool) {
                 var speedBonus = ((ItemStack)itemstack).GetSpeedBonus();
                 newMiningSpeed += newMiningSpeed * speedBonus;
@@ -282,6 +258,11 @@ namespace Toolsmith.ToolTinkering {
 
             __result = newMiningSpeed;
         }
+    }
+
+    [HarmonyPatch(typeof(CollectibleObject))]
+    [HarmonyPatchCategory(ToolsmithModSystem.ToolTinkeringTransitionalPropsPatchCategory)]
+    public class ToolTinkeringTransitionalPropsPatches {
 
         [HarmonyPostfix]
         [HarmonyPatch(nameof(CollectibleObject.GetTransitionableProperties))] //For NOW lets assume Result will likely always be Null and ignore the Result, just override it with the part's own.
@@ -347,6 +328,50 @@ namespace Toolsmith.ToolTinkering {
 
             return codes.AsEnumerable();
         }
+    }
+
+    [HarmonyPatch(typeof(CollectibleObject))]
+    [HarmonyPatchCategory(ToolsmithModSystem.ToolTinkeringCraftingPatchCategory)]
+    public class ToolTinkeringCraftingPatches {
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CollectibleObject.ConsumeCraftingIngredients))]
+        private static bool ConsumeCraftingIngredientsModularPartPrefix(ItemSlot[] slots, ItemSlot outputSlot, GridRecipe matchingRecipe, ref bool __result) {
+            if (outputSlot.Itemstack.HasDisposeMeNowPlease()) {
+                outputSlot.Itemstack = null;
+                outputSlot.MarkDirty();
+
+                __result = true;
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(CollectibleObject))]
+    [HarmonyPatchCategory(ToolsmithModSystem.ToolTinkeringRenderPatchCategory)]
+    public class ToolTinkeringRenderPatches {
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CollectibleObject.ShouldDisplayItemDamage))]
+        private static bool TinkeredToolShouldDisplayItemDamagePrefix(ItemStack itemstack, ref bool __result) {
+            if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                var lowestCurrent = TinkeringUtility.FindLowestCurrentDurabilityForBar(itemstack);
+                var lowestMax = TinkeringUtility.FindLowestMaxDurabilityForBar(itemstack);
+
+                __result = (lowestCurrent != lowestMax);
+
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(CollectibleObject))]
+    [HarmonyPatchCategory(ToolsmithModSystem.OffhandDominantInteractionUsePatchCategory)]
+    public class OffhandDominantInteractionUsePatches {
 
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.OnHeldUseStart))]
@@ -415,9 +440,13 @@ namespace Toolsmith.ToolTinkering {
 
             return true;
         }
+    }
 
-        //Patching the GuiElementItemSlotGridBase now! Anything patching CollectibleObject is above!
-        [HarmonyPatch(typeof(GuiElementItemSlotGridBase))]
+    //Patching the GuiElementItemSlotGridBase now! Anything patching CollectibleObject is above!
+    [HarmonyPatch(typeof(GuiElementItemSlotGridBase))]
+    [HarmonyPatchCategory(ToolsmithModSystem.ToolTinkeringGuiElementPatchCategory)]
+    public class ToolTinkeringGuiElementPatches {
+
         [HarmonyTranspiler]
         [HarmonyPatch("ComposeSlotOverlays")]
         private static IEnumerable<CodeInstruction> ComposeSlotOverlaysTranspiler(IEnumerable<CodeInstruction> instructions) { //WOW Transpilers are FUN. And actually I do understand them better now having written this.
@@ -480,7 +509,7 @@ namespace Toolsmith.ToolTinkering {
                 CodeInstruction.LoadArgument(3),
                 CodeInstruction.LoadLocal(2),
                 CodeInstruction.LoadArgument(0),
-                CodeInstruction.Call(typeof(ToolTinkeringPatches), "DrawSharpnessBar", new Type[5] { typeof(ItemSlot), typeof(int), typeof(int), typeof(Context), typeof(GuiElementItemSlotGridBase) })
+                CodeInstruction.Call(typeof(ToolTinkeringGuiElementPatches), "DrawSharpnessBar", new Type[5] { typeof(ItemSlot), typeof(int), typeof(int), typeof(Context), typeof(GuiElementItemSlotGridBase) })
             };
 
             var toolsmithGetItemDamage = AccessTools.Method(typeof(TinkeringUtility), "ToolsmithGetItemDamageColor", new Type[1] { typeof(ItemStack) });
@@ -525,7 +554,7 @@ namespace Toolsmith.ToolTinkering {
                     ToolsmithModSystem.Logger.Error("Could not locate the GetRemainingDurability call.");
                 }
             }
-            
+
             return codes.AsEnumerable();
         }
 

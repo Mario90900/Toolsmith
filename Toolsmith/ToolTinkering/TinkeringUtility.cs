@@ -86,6 +86,9 @@ namespace Toolsmith.ToolTinkering {
         }
 
         public static bool ShouldRenderSharpnessBar(ItemStack item) {
+            if (!item.HasToolCurrentSharpness() || !item.HasToolMaxSharpness()) {
+                return false;
+            }
             if ((item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || item.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) && !item.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
                 return item.GetToolCurrentSharpness() != item.GetToolMaxSharpness();
             } else {
@@ -120,6 +123,9 @@ namespace Toolsmith.ToolTinkering {
         //For rendering the durability bar to be used in the transpiler. Generally for just Tinkered Tools here, smithed ones can use the default!
         public static int FindLowestCurrentDurabilityForBar(ItemStack itemStack) {
             if (itemStack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                if (!itemStack.HasToolheadCurrentDurability() || !itemStack.HasToolhandleCurrentDurability() || !itemStack.HasToolbindingCurrentDurability()) {
+                    return itemStack.Collectible.GetRemainingDurability(itemStack);
+                }
                 var head = itemStack.GetToolheadCurrentDurability();
                 var handle = itemStack.GetToolhandleCurrentDurability();
                 var binding = itemStack.GetToolbindingCurrentDurability();
@@ -143,6 +149,9 @@ namespace Toolsmith.ToolTinkering {
         //Used just like the above, but for the max durabilities!
         public static int FindLowestMaxDurabilityForBar(ItemStack itemStack) {
             if (itemStack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                if (!itemStack.HasToolhandleMaxDurability() || !itemStack.HasToolbindingMaxDurability()) {
+                    return itemStack.Collectible.GetMaxDurability(itemStack);
+                }
                 var head = itemStack.GetToolheadMaxDurability();
                 var handle = itemStack.GetToolhandleMaxDurability();
                 var binding = itemStack.GetToolbindingMaxDurability();

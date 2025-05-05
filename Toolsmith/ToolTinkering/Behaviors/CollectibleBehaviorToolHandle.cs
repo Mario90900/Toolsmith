@@ -30,6 +30,12 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {
+            if (inSlot is ItemSlotCreative) {
+                dsc.AppendLine(Lang.Get("toolhandledirections"));
+                base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+                return;
+            }
+
             dsc.AppendLine(Lang.Get("toolhandledirections"));
             if (inSlot.Itemstack.HasHandleGripTag() && inSlot.Itemstack.HasHandleTreatmentTag()) {
                 dsc.AppendLine(Lang.Get("toolhandlefullyprepared", inSlot.Itemstack.GetHandleTreatmentTag(), inSlot.Itemstack.GetHandleGripTag()));

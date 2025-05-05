@@ -35,7 +35,14 @@ namespace Toolsmith {
         public static ToolsmithPartStats Stats;
         public static int GradientSelection = 0;
 
-        public const string ToolTinkeringPatchCategory = "toolTinkering";
+        public const string ToolTinkeringDamagePatchCategory = "toolTinkeringDamage";
+        public const string ToolTinkeringToolUseStatsPatchCategory = "toolTinkeringToolUseStats";
+        public const string ToolTinkeringTransitionalPropsPatchCategory = "toolTinkeringTransitionalProps";
+        public const string ToolTinkeringCraftingPatchCategory = "toolTinkeringCrafting";
+        public const string ToolTinkeringRenderPatchCategory = "toolTinkeringRender";
+        public const string ToolTinkeringGuiElementPatchCategory = "toolTinkeringGuiElement";
+
+        public const string OffhandDominantInteractionUsePatchCategory = "offhandDominantInteractionUse";
 
         public static List<string> IgnoreCodes;
 
@@ -143,10 +150,15 @@ namespace Toolsmith {
                     if (!t.HasBehavior<CollectibleBehaviorToolHandle>()) {
                         t.AddBehavior<CollectibleBehaviorToolHandle>();
                     }
+                    if (!t.StorageFlags.HasFlag(EnumItemStorageFlags.Offhand)) {
+                        t.StorageFlags += 0x100;
+                    }
                     RecipeRegisterModSystem.HandleList.Add(t);
                 } else if (ConfigUtility.IsToolBinding(t.Code.Path, bindingKeys)) {
                     if (!t.HasBehavior<CollectibleBehaviorToolBinding>()) {
                         t.AddBehavior<CollectibleBehaviorToolBinding>();
+                    }
+                    if (!t.StorageFlags.HasFlag(EnumItemStorageFlags.Offhand)) {
                         t.StorageFlags += 0x100;
                     }
                     RecipeRegisterModSystem.BindingList.Add(t);
@@ -232,8 +244,15 @@ namespace Toolsmith {
             }
             HarmonyInstance = new Harmony(ModId);
             Logger.VerboseDebug("Harmony is starting Patches!");
-            HarmonyInstance.PatchCategory(ToolTinkeringPatchCategory);
+            HarmonyInstance.PatchCategory(ToolTinkeringDamagePatchCategory);
+            HarmonyInstance.PatchCategory(ToolTinkeringToolUseStatsPatchCategory);
+            HarmonyInstance.PatchCategory(ToolTinkeringTransitionalPropsPatchCategory);
+            HarmonyInstance.PatchCategory(ToolTinkeringCraftingPatchCategory);
+            HarmonyInstance.PatchCategory(ToolTinkeringRenderPatchCategory);
+            HarmonyInstance.PatchCategory(ToolTinkeringGuiElementPatchCategory); // <-- This is causing turbo lag. Fix it tomorrow. Likely it's the fact I removed that ret call I'm realizing now. That was stupid, cause now it's probably going through and checking a LOT more then it needs to.
             Logger.VerboseDebug("Patched functions for Tool Tinkering purposes.");
+            HarmonyInstance.PatchCategory(OffhandDominantInteractionUsePatchCategory);
+            Logger.VerboseDebug("Patched functions for Offhand Dominant Interaction purposes.");
         }
 
         private static void HarmonyUnpatch() {
