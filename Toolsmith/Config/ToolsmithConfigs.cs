@@ -12,6 +12,7 @@ namespace Toolsmith.Config {
         public double HeadDurabilityMult = 5.0;
         public double SharpnessMult = 1.5;
         public int GrindstoneSharpenPerTick = 1;
+        public double SharpWear = 0.25;
         public double BluntWear = 0.02;
         public float PercentDamageForReforge = 0.9f;
         public string ToolHeads = "@.*(head|blade|thorn|finishingchiselhead|wedgechiselhead).*";

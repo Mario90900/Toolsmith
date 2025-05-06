@@ -57,7 +57,7 @@ namespace Toolsmith.ToolTinkering {
 
                 //Time for SHARPNESS and WEAR! Lets a go!
                 bool doDamageHead = false;
-                bool chanceForDoubleHeadDamage = false;
+                bool doubleHeadDamage = false;
                 bool doDamageHandle = false;
                 bool doDamageBinding = false;
 
@@ -72,7 +72,7 @@ namespace Toolsmith.ToolTinkering {
                 if (currentSharpness > 0) {
                     currentSharpness -= amount;
                 } else {
-                    chanceForDoubleHeadDamage = true;
+                    doubleHeadDamage = true;
                 }
 
                 if (!isBluntTool) {
@@ -92,17 +92,14 @@ namespace Toolsmith.ToolTinkering {
                     doDamageHandle = true;
                 }
 
-                if (sharpnessPer < 0.98f && sharpnessPer >= 0.33) {
-                    //Starting at 5% chance-to-damage at 0.98, quartic curve to get the chance-to-damage the head up to 100% at 0.33 sharpness left.
-                    doDamageHead = MathUtility.ShouldDamageHeadFromCurveChance(world, sharpnessPer);
-                } else if (sharpnessPer < 0.33) {
+                if (sharpnessPer < 0.98f) {
                     doDamageHead = true;
                 }
 
                 //Handle damaging each part, the handle only if it should based on the chance to damage it
-                if (doDamageHead && (!isBluntTool || world.Rand.NextDouble() <= ToolsmithModSystem.Config.BluntWear)) { //If this Tinkered Tool is also marked as a blunted tool, then apply the much much smaller chance to damage it. Damage the other parts though!
+                if (doDamageHead && ((!isBluntTool && world.Rand.NextDouble() <= ToolsmithModSystem.Config.SharpWear) || world.Rand.NextDouble() <= ToolsmithModSystem.Config.BluntWear)) { //If this Tinkered Tool is also marked as a blunted tool, then apply the much much smaller chance to damage it. Damage the other parts though!
                     remainingHeadDur -= amount;
-                    if (chanceForDoubleHeadDamage && world.Rand.NextDouble() <= 0.5) {
+                    if (doubleHeadDamage) {
                         remainingHeadDur -= amount;
                     }
                 }
@@ -158,7 +155,7 @@ namespace Toolsmith.ToolTinkering {
 
                 //Time for SHARPNESS and WEAR! Lets a go!
                 bool doDamageTool = false;
-                bool chanceForDoubleToolDamage = false;
+                bool doubleToolDamage = false;
                 int currentSharpness = itemStack.GetToolCurrentSharpness();
                 int maxSharpness = itemStack.GetToolMaxSharpness();
                 float sharpnessPer = itemStack.GetToolSharpnessPercent();
@@ -169,26 +166,22 @@ namespace Toolsmith.ToolTinkering {
                 if (currentSharpness > 0) {
                     currentSharpness -= amount;
                 } else {
-                    chanceForDoubleToolDamage = true;
+                    doubleToolDamage = true;
                 }
 
                 if (!isBluntTool) {
                     itemStack.SetToolCurrentSharpness(currentSharpness);
                 }
 
-                if (sharpnessPer < 0.98f && sharpnessPer >= 0.33) {
-                    //Starting at 5% chance-to-damage at 0.98, quartic curve to get the chance-to-damage the head up to 100% at 0.33 sharpness left.
-                    doDamageTool = MathUtility.ShouldDamageHeadFromCurveChance(world, sharpnessPer);
-                } else if (sharpnessPer < 0.33) {
-                    doDamageTool = true;
+                if (sharpnessPer < 0.98f) {
+                    if (!isBluntTool) {
+                        doDamageTool = world.Rand.NextDouble() <= ToolsmithModSystem.Config.SharpWear;
+                    } else {
+                        doDamageTool = world.Rand.NextDouble() <= ToolsmithModSystem.Config.BluntWear;
+                    }
                 }
 
-                //Handle damaging each part, the handle only if it should based on the chance to damage it
-                if (doDamageTool && isBluntTool && world.Rand.NextDouble() >= ToolsmithModSystem.Config.BluntWear) { //If this Tinkered Tool is also marked as a blunted tool, then apply the much much smaller chance to damage it. Damage the other parts though!
-                    doDamageTool = false;
-                }
-
-                if (chanceForDoubleToolDamage && doDamageTool && world.Rand.NextDouble() <= 0.5) { //The 50/50 chance for double damage roll
+                if (doubleToolDamage && doDamageTool) { //The 50/50 chance for double damage roll
                     currentDur -= amount;
                 }
 
@@ -449,12 +442,13 @@ namespace Toolsmith.ToolTinkering {
 
         [HarmonyTranspiler]
         [HarmonyPatch("ComposeSlotOverlays")]
-        private static IEnumerable<CodeInstruction> ComposeSlotOverlaysTranspiler(IEnumerable<CodeInstruction> instructions) { //WOW Transpilers are FUN. And actually I do understand them better now having written this.
+        private static IEnumerable<CodeInstruction> ComposeSlotOverlaysTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator ilGenerator) { //WOW Transpilers are FUN. And actually I do understand them better now having written this.
 
             int retCount = 0;
             int shadePathCount = 0;
             int index = -1;
-            int indexOfThirdRet = -1;
+            int indexOfSecondRet = -1;
+            int indexOfShouldRenderDamageCheck = -1;
             int indexOfDamageColor = -1;
             var targetDamageColor = AccessTools.Method(typeof(CollectibleObject), nameof(CollectibleObject.GetItemDamageColor));
             int indexOfGetMaxDur = -1;
@@ -465,15 +459,21 @@ namespace Toolsmith.ToolTinkering {
             var codes = new List<CodeInstruction>(instructions);
 
             for (int i = 0; i < codes.Count; i++) {
-                if (retCount < 3 && codes[i].opcode == OpCodes.Ret) { //Don't need to look at anything until after we have found three 'ret' calls
+                if (retCount < 2 && codes[i].opcode == OpCodes.Ret) { //Don't need to look at anything until after we have found three 'ret' calls
                     retCount++;
-                    if (retCount == 3 && codes[i - 1].opcode == OpCodes.Ldc_I4_1) {
-                        indexOfThirdRet = i;
+                    if (retCount == 2 && codes[i - 1].opcode == OpCodes.Ldc_I4_1) {
+                        indexOfSecondRet = i; //Since I don't need to change this now anymore, using it as a stepping stone to find the nearest entry point to the check for if damage should be rendered
                     }
                     continue;
                 }
 
-                if (retCount == 3 && shadePathCount < 2 && codes[i].opcode == OpCodes.Callvirt) {
+                if (retCount == 2 && indexOfSecondRet > 1 && codes[i].opcode == OpCodes.Brtrue_S) {
+                    indexOfShouldRenderDamageCheck = i;
+                    indexOfSecondRet = 1;
+                    continue;
+                }
+
+                if (retCount == 2 && shadePathCount < 2 && codes[i].opcode == OpCodes.Callvirt) {
                     if ((MethodInfo)codes[i].operand == targetDamageColor) {
                         indexOfDamageColor = i;
                         continue;
@@ -488,7 +488,7 @@ namespace Toolsmith.ToolTinkering {
                     }
                 }
 
-                if (retCount == 3 && shadePathCount < 2 && codes[i].opcode == OpCodes.Call) {
+                if (retCount == 2 && shadePathCount < 2 && codes[i].opcode == OpCodes.Call) {
                     if (codes[i - 1].opcode == OpCodes.Ldc_R8 && (double)codes[i - 1].operand == (double)(2)) { //If a Call code is preceeded by a float 2 being loaded, it is likely the ShadePath call we are looking for.
                         if (codes[i - 2].opcode == OpCodes.Ldloc_2) { //Then just in case, lets see if before THAT was loading the textCtx on the stack. THEN we are certain. (probably? Hopefully.)
                             shadePathCount++;
@@ -515,11 +515,18 @@ namespace Toolsmith.ToolTinkering {
             var toolsmithGetItemDamage = AccessTools.Method(typeof(TinkeringUtility), "ToolsmithGetItemDamageColor", new Type[1] { typeof(ItemStack) });
             var toolsmithGetMaxDur = AccessTools.Method(typeof(TinkeringUtility), "FindLowestMaxDurabilityForBar", new Type[1] { typeof(ItemStack) });
             var toolsmithGetRemainingDur = AccessTools.Method(typeof(TinkeringUtility), "FindLowestCurrentDurabilityForBar", new Type[1] { typeof(ItemStack) });
+            var getItemStack = AccessTools.Method(typeof(ItemSlot), "get_Itemstack");
+            var toolsmithShouldRenderSharpness = AccessTools.Method(typeof(TinkeringUtility), "ShouldRenderSharpnessBar", new Type[1] { typeof(ItemStack) });
 
-            if (index >= 0 && indexOfThirdRet >= 0 && indexOfDamageColor >= 0 && indexOfGetMaxDur >= 0 && indexOfGetRemainingDur >= 0) {
+            var shouldRenderSharpnessAddition = new List<CodeInstruction> {
+                CodeInstruction.LoadArgument(1),
+                new CodeInstruction(OpCodes.Call, getItemStack),
+                new CodeInstruction(OpCodes.Call, toolsmithShouldRenderSharpness),
+                new CodeInstruction(OpCodes.Brtrue_S, codes[indexOfShouldRenderDamageCheck].operand)
+            };
+
+            if (index >= 0 && indexOfSecondRet >= 0 && indexOfShouldRenderDamageCheck >= 0 && indexOfDamageColor >= 0 && indexOfGetMaxDur >= 0 && indexOfGetRemainingDur >= 0) {
                 codeAddition[0].MoveLabelsFrom(codes[index]);
-                codes[indexOfThirdRet].opcode = OpCodes.Nop;
-                codes[indexOfThirdRet - 1].opcode = OpCodes.Nop;
                 codes.InsertRange(index, codeAddition);
                 codes[indexOfDamageColor - 5].opcode = OpCodes.Nop;
                 codes[indexOfDamageColor - 4].opcode = OpCodes.Nop;
@@ -536,13 +543,17 @@ namespace Toolsmith.ToolTinkering {
                 codes[indexOfGetRemainingDur - 3].opcode = OpCodes.Nop;
                 codes[indexOfGetRemainingDur].opcode = OpCodes.Call;
                 codes[indexOfGetRemainingDur].operand = toolsmithGetRemainingDur;
+                codes.InsertRange(indexOfShouldRenderDamageCheck + 1, shouldRenderSharpnessAddition);
             } else {
                 ToolsmithModSystem.Logger.Error("Durability and Sharpness Bar Transpiler had an error!  Will not patch anything, errors will follow:");
                 if (index < 0) {
                     ToolsmithModSystem.Logger.Error("Could not find the second call to ShadePath for the Damage Bar rendering.");
                 }
-                if (indexOfThirdRet < 0) {
-                    ToolsmithModSystem.Logger.Error("Could not locate the third return call.");
+                if (indexOfSecondRet < 0) {
+                    ToolsmithModSystem.Logger.Error("Could not locate the second return call.");
+                }
+                if (indexOfShouldRenderDamageCheck < 0) {
+                    ToolsmithModSystem.Logger.Error("Could not locate the render damage check.");
                 }
                 if (indexOfDamageColor < 0) {
                     ToolsmithModSystem.Logger.Error("Could not locate the Damage Color call.");

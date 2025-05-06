@@ -94,7 +94,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 } else if (itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBinding>()) { //And finally the (possible) binding! This isn't garenteed though remember, the others are.
                     bindingStack = itemSlot.Itemstack.Clone();
                     bindingStack.StackSize = 1;
-                } else if (itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                } else if (itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && itemSlot.Itemstack.Collectible.Code == outputSlot.Itemstack.Collectible.Code) {
                     foundToolInput = itemSlot.Itemstack.Clone();
                     foundToolInput.StackSize = 1;
                 }

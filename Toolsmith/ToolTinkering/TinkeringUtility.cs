@@ -622,8 +622,8 @@ namespace Toolsmith.ToolTinkering {
                     percent = ((float)ToolsmithModSystem.Config.GrindstoneSharpenPerTick / 100f);
                 }
 
-                int percentSharpen = (int)Math.Ceiling(percent * maxSharp);
-                curSharp += percentSharpen;
+                int amountSharpened = (int)Math.Ceiling(percent * maxSharp);
+                curSharp += amountSharpened;
                 if (curSharp >= maxSharp) {
                     curSharp = maxSharp;
                 } else {
@@ -631,14 +631,25 @@ namespace Toolsmith.ToolTinkering {
                 }
 
                 bool damageDurability = true;
-                if (totalSharpnessHoned > 0.66) {
-                    damageDurability = (byEntity.World.Rand.NextDouble() <= 0.05f);
-                } else if (totalSharpnessHoned > 0.33) {
+                bool doubleDamage = true;
+                double damageMultFromLinear = 0.0;
+
+                if (totalSharpnessHoned > 0.5) {
+                    damageDurability = byEntity.World.Rand.NextDouble() <= 0.05;
+                } else if (totalSharpnessHoned > 0.4) {
                     damageDurability = MathUtility.ShouldDamageFromSharpening(byEntity.World, totalSharpnessHoned);
+                } else if (totalSharpnessHoned > 0.2) {
+                    doubleDamage = false;
+                    damageMultFromLinear = MathUtility.GetLinearDamageMult(totalSharpnessHoned);
                 }
 
                 if (damageDurability) {
-                    curDur -= percentSharpen;
+                    if (doubleDamage) {
+                        curDur -= amountSharpened;
+                    } else if (damageMultFromLinear > 1.0) {
+                        curDur -= (int)((double)amountSharpened * damageMultFromLinear);
+                    }
+                    curDur -= amountSharpened;
                 }
             }
         }

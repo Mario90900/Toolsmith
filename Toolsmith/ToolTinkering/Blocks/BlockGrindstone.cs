@@ -138,7 +138,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             }
 
             if (doneSharpening) {
-                world.PlaySoundAt(new AssetLocation("sounds/block/hoppertumble.ogg"), blockSel.Position, 0);
+                world.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), blockSel.Position, 0);
                 return false;
             }
 

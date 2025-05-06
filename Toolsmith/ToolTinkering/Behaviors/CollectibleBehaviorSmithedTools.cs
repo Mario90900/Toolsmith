@@ -41,14 +41,14 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             ItemStack foundToolInput = null; //I do hope this gets called when Smithing completes. I think it should?
             if (allInputslots.Length > 0) {
                 foreach (var slot in allInputslots.Where(i => i.Itemstack != null)) {
-                    if (slot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
+                    if (slot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>() && slot.Itemstack.Collectible.Code == outputSlot.Itemstack.Collectible.Code) {
                         foundToolInput = slot.Itemstack.Clone();
                     }
                 }
             }
 
             bool isToolMetal = false;
-            if (foundToolInput != null) { //If it's a recipe where a tool is being converted or repaired I guess? Kind of a sanity check, but I know a few things like QP Pantograph might get caught by this.
+            if (foundToolInput != null) { //If it's a recipe where a tool is being converted or repaired I guess?
                 outputSlot.Itemstack.SetSmithedDurability(foundToolInput.GetSmithedDurability());
                 outputSlot.Itemstack.SetToolCurrentSharpness(foundToolInput.GetToolCurrentSharpness());
                 outputSlot.Itemstack.SetToolMaxSharpness(foundToolInput.GetToolMaxSharpness());
