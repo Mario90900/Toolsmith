@@ -10,16 +10,22 @@ using Toolsmith.Utils;
 namespace Toolsmith.ToolTinkering.Drawbacks {
     public static class DrawbackUtility {
 
-        //Check and see if a drawback is rolled and then have it applied.
-        public static void TryChanceForDrawback(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, float sharpnessPercent) {
+        //Check and see if a drawback is rolled and then have it applied. Returns true if drawback is applied, false if not!
+        public static bool TryChanceForDrawback(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, float sharpnessPercent) {
+            if (sharpnessPercent >= 0.8) {
+                return false;
+            }
+
             if (sharpnessPercent <= 0) {
                 ApplyRandomDrawback(world, byEntity, itemslot, sharpnessPercent);
+                return true;
             }
 
             bool shouldApplyDrawback = MathUtility.ShouldChanceForDefectCurve(world, sharpnessPercent, itemslot.Itemstack.GetToolMaxSharpness());
             if (shouldApplyDrawback) {
                 ApplyRandomDrawback(world, byEntity, itemslot, sharpnessPercent);
             }
+            return shouldApplyDrawback;
         }
 
         //Check for valid drawbacks for this tool type given, then try rolling for one to apply it.

@@ -631,25 +631,31 @@ namespace Toolsmith.ToolTinkering {
                 }
 
                 bool damageDurability = true;
-                bool doubleDamage = true;
+                bool doubleDamage = false;
                 double damageMultFromLinear = 0.0;
 
-                if (totalSharpnessHoned > 0.5) {
-                    damageDurability = byEntity.World.Rand.NextDouble() <= 0.05;
-                } else if (totalSharpnessHoned > 0.4) {
-                    damageDurability = MathUtility.ShouldDamageFromSharpening(byEntity.World, totalSharpnessHoned);
-                } else if (totalSharpnessHoned > 0.2) {
-                    doubleDamage = false;
-                    damageMultFromLinear = MathUtility.GetLinearDamageMult(totalSharpnessHoned);
+                if (ToolsmithModSystem.Config.ShouldHoningDamageHead) {
+                    if (totalSharpnessHoned > 0.5) {
+                        damageDurability = byEntity.World.Rand.NextDouble() < 0.05;
+                    } else if (totalSharpnessHoned > 0.4 && totalSharpnessHoned <= 0.5) {
+                        damageDurability = MathUtility.ShouldDamageFromSharpening(byEntity.World, totalSharpnessHoned);
+                    } else if (totalSharpnessHoned > 0.2 && totalSharpnessHoned <= 0.4) {
+                        damageMultFromLinear = MathUtility.GetLinearDamageMult(totalSharpnessHoned);
+                    } else {
+                        doubleDamage = true;
+                    }
+                } else {
+                    damageDurability = false;
                 }
 
                 if (damageDurability) {
                     if (doubleDamage) {
-                        curDur -= amountSharpened;
+                        curDur -= amountSharpened * 2;
                     } else if (damageMultFromLinear > 1.0) {
                         curDur -= (int)((double)amountSharpened * damageMultFromLinear);
+                    } else {
+                        curDur -= amountSharpened;
                     }
-                    curDur -= amountSharpened;
                 }
             }
         }

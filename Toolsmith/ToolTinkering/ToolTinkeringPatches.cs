@@ -134,7 +134,7 @@ namespace Toolsmith.ToolTinkering {
                 }
                 itemStack.SetToolbindingCurrentDurability(remainingBindingDur);
 
-                if (sharpnessPer < 0.8 && remainingHeadDur > 0) {
+                if (remainingHeadDur > 0) {
                     DrawbackUtility.TryChanceForDrawback(world, byEntity, itemslot, sharpnessPer);
                 }
 

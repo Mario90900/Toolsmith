@@ -11,6 +11,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Util;
 using Vintagestory.GameContent;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Toolsmith.ToolTinkering.Drawbacks {
     public static class ReforgingUtility {
@@ -129,8 +130,15 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
                 ToolsmithModSystem.Logger.Warning("There are " + voxelsInLeftSlice.Length + " voxels along the slice");
             }
 
+            DefaultReforgingGenerator(numToEffect, api, ref voxels, ref voxelsInLeftSlice, ref voxelsInMidSlice, ref voxelsInRightSlice);
+
+            return voxels;
+        }
+
+        public static void DefaultReforgingGenerator(int numToEffect, ICoreAPI api, ref bool[,,] voxels, ref (int, int, int)[] voxelsInLeftSlice, ref (int, int, int)[] voxelsInMidSlice, ref (int, int, int)[] voxelsInRightSlice) {
             int whichSlot;
             int action;
+
             while (numToEffect > 0) { //Now that the staging is set up, time to start actually iterating through and acting on the voxels!
                 var depth = RandomDamageDepth(api); //Choose a 'depth' to act on based on the described chances, 60% chance to act on a voxel in the leftmost slice, 30% on the middle slice, and 10% on the 'right' slice
 
@@ -389,8 +397,6 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
 
                 numToEffect--;
             }
-
-            return voxels;
         }
 
         public static (int,int,int) FindLeftmostVoxel(bool[,,] voxels) {
@@ -451,6 +457,15 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
         }
 
         public static int ChooseActionOnVoxel(ICoreAPI api) { //This will return 0 for no action, 1 for delete the voxel, 2 for move the voxel, and 3 for delete and double down.
+            if (ToolsmithModSystem.Config.NoBitLossAlternateReforgeGen) {
+                return NoBitLossGenerator(api);
+            } else {
+                return DefaultActionGenerator(api);
+            }
+        }
+
+        //Returning 0 means no action taken, a 1 means remove that bit, a 2 means move that bit around, and a 3 means double-down.
+        public static int DefaultActionGenerator(ICoreAPI api) {
             var randNum = api.World.Rand.Next(20);
 
             if (randNum < 3) { //If it is 0-2, that should be 15% likely
@@ -461,6 +476,16 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
                 return 2;
             } else {
                 return 3;
+            }
+        }
+
+        public static int NoBitLossGenerator(ICoreAPI api) {
+            var randNum = api.World.Rand.Next(20);
+
+            if (randNum < 6) {
+                return 0;
+            } else {
+                return 2;
             }
         }
 

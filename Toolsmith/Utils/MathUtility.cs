@@ -16,22 +16,21 @@ namespace Toolsmith.Utils {
             //Can tweak the /10 bit to increase or decrease the total chance. Make the 10 larger to make the total chance higher.
             double chanceToDefect = 0.001;
             if (howSharpPercent >= 0.2) {
-                chanceToDefect = 0.00277 * Math.Pow((howSharpPercent - 0.8), 2);// Old curve! (11.0813 * (Math.Pow(howSharpPercent, 4))) - (32.4235 * (Math.Pow(howSharpPercent, 3))) + (36.4908 * (Math.Pow(howSharpPercent, 2))) - (19.6091 * howSharpPercent) + 4.52141;
+                chanceToDefect = 0.00277 * Math.Pow((howSharpPercent - 0.8), 2); // Old curve! (11.0813 * (Math.Pow(howSharpPercent, 4))) - (32.4235 * (Math.Pow(howSharpPercent, 3))) + (36.4908 * (Math.Pow(howSharpPercent, 2))) - (19.6091 * howSharpPercent) + 4.52141;
 
-                if (chanceToDefect >= 1.0) { //Clamp it just in case, though it shouldn't ever hit this _probably_
-                    return true;
-                } else if (chanceToDefect <= 0) {
-                    chanceToDefect = 0.0;
+                if(chanceToDefect >= 0.002) {
+                    ToolsmithModSystem.Logger.Warning("Something went wrong with the Drawback chance math. It is over double the expected max: " + chanceToDefect);
                 }
             }
 
-
+            chanceToDefect = (chanceToDefect * 3500) / maxSharp;
             var rand = world.Rand.NextDouble();
-            shouldDefect = (rand <= chanceToDefect);
+            shouldDefect = (rand < chanceToDefect);
 
             return shouldDefect;
         }
 
+        //From 20% - 40% total sharpness honed
         public static double GetLinearDamageMult(float totalSharpened) {
             return (double)((-5 * totalSharpened) + 3);
         }
@@ -48,7 +47,7 @@ namespace Toolsmith.Utils {
                 chanceToDamage = 0.05;
             }
 
-            shouldDamage = (world.Rand.NextDouble() <= chanceToDamage);
+            shouldDamage = (world.Rand.NextDouble() < chanceToDamage);
 
             return shouldDamage;
         }
