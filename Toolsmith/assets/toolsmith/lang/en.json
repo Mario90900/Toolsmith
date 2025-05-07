@@ -109,4 +109,19 @@
 
 	"game:craftinginfo-toolsmithcraftingmethods-title": "Toolsmithing - Crafting and Deconstruction Methods",
 	"game:craftinginfo-toolsmithcraftingmethods-text": "<strong>In-Hand Crafting</strong><br>The primary method to craft your Tinkered Tools is to use the In-Hand crafting method. Just like the crafting grid, it can be accessed anywhere, since all you need are both hands freed. First, grab the parts you wish to use, for a regular Tool that will be a tool head, handle and optionally a binding. The binding is not required, but it will reinforce your tool's binding durability as well as provide some further benefits to your handle if it is of higher quality.<br>To actually use the in-hand crafting, take your tool head in the main hand, and put your handle of choice in the offhand. Check the tooltips to see what makes a valid handle and binding! Hold rightclick for a short while and you will pair that head with that handle for the first step of the crafting process. Then if you wish yto use a binding, stick that in your offhand now and rightclick with the too pair in the main hand once more, and after another short while, you will have constructed your tool!<br><br><strong>Grid Crafting</strong><br>Another option for putting together a tool is the classic option, just using the crafting grid. If you put your tool head of choice above any handle, and a binding to the right slot of the head, you can optionally use this method to craft your tools instead. It is otherwise the same as In-Hand crafting! These recipes are generated when the game loads, so they will generate more based on the configs on the server.<br><br><strong>Deconstruction</strong><br>You are also able to take a Tinkered Tool apart in the case you want to retrieve either the head or handle early! This requires either a Grindstone or a Workbench around, both of which require boards to craft, but this is generally needed only after you have gotten metal tool heads anyway. One important thing to note about Deconstructing your tool is that if you have used it at all, you will be unable to recover the binding from it since you will have to break it apart to not damage the handle or head any.<br>To deconstruct on a Grindstone, simply look at it with your tool in the main hand and hold shift while you rightclick on it. Hold this for a few seconds to take the tool apart! This is the same for the Workbench, except you simply have to look to the left of the bench at the Vise on it, and interact similarly with that.",
+
+	"game:craftinginfo-toolsmithdurabilityandwear-title": "Toolsmithing - Durability, Sharpness and Wear",
+	"game:craftinginfo-toolsmithdurabilityandwear-text": "",
+	
+	"game:craftinginfo-toolsmithreforging-title": "Toolsmithing - Secrets of the Reforge",
+	"game:craftinginfo-toolsmithreforging-text": "",
+	
+	"game:craftinginfo-toolsmithmiscaddons-title": "Toolsmithing - Misc Additions",
+	"game:craftinginfo-toolsmithmiscaddons-text": "",
+	
+	"game:craftinginfo-toolsmithtooltypes-title": "Toolsmithing - Tooltypes and You",
+	"game:craftinginfo-toolsmithtooltypes-text": "",
+	
+	"game:craftinginfo-toolsmithtoolparts-title": "Toolsmithing - Tool Parts and What To Do",
+	"game:craftinginfo-toolsmithtoolparts-text": "",
 }
