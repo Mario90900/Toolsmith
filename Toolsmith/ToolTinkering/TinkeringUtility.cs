@@ -195,10 +195,22 @@ namespace Toolsmith.ToolTinkering {
                                   //Because of this, always need to consider the possibility of dropping a handle or binder, but if the 'Head' is broken, we also want to run other mod's 'on damage' calls along with vanilla.
                                   //Anything below that checks for !headBroke is looking to see if the Tool should be "Broken" or simply "Fallen Apart" in this sense, if it's fallen apart, do similar checks to vanilla tool breaking locally here. Otherwise let Vanilla code deal with it, since it's all or nothing after this patch is done.
             }
+
             if (remainingHandleDur > 0) {
-                toolHandle = brokenToolStack.GetToolhandle();
-                toolHandle.SetPartCurrentDurability(remainingHandleDur);
-                toolHandle.SetPartMaxDurability(brokenToolStack.GetToolhandleMaxDurability());
+                var handleToCheck = brokenToolStack.GetToolhandle();
+                var handlePercentDamage = handleToCheck.GetPartRemainingHPPercent();
+                float comparedPercent = 0.0f;
+                if (handleToCheck.Collectible.Code != ToolsmithConstants.DefaultHandleCode && handleToCheck.Collectible.Code != ToolsmithConstants.BoneHandleCode) { //Is this handle not a stick or bone?
+                    comparedPercent = ToolsmithConstants.OtherHandleFailurePercent;
+                } else {
+                    comparedPercent = ToolsmithConstants.StickAndBoneFailurePercent;
+                }
+
+                if (handlePercentDamage > comparedPercent) {
+                    toolHandle = handleToCheck;
+                    toolHandle.SetPartCurrentDurability(remainingHandleDur);
+                    toolHandle.SetPartMaxDurability(brokenToolStack.GetToolhandleMaxDurability());
+                }
             }
             if (toolBinding != null) { //Binding doesn't always drop, only if the durability is above the threshold, and then if it's below, it breaks and if made of metal, drops some bits
                 BindingStats bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithModSystem.Config.BindingRegistry.Get(toolBinding.Collectible.Code.Path).bindingStatTag);

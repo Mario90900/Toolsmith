@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Toolsmith.Config {
     public class ToolsmithConfigs { //TODO for tomorrow: Time to refactor the original config file woo. Probably can/should clean this up...
+        public bool AutoUpdateConfigsOnVersionChange = true;
         public bool PrintAllParsedToolsAndParts = false;
         public bool DebugMessages = false;
         public double HeadDurabilityMult = 5.0;
@@ -50,7 +51,13 @@ namespace Toolsmith.Config {
             ["leather-normal-yellow"] = new() { gripStatTag = "leather", gripShapePath = "toolsmith:shapes/item/gripfabric", gripTextureOverride = "game:block/leather/yellow" },
             ["leather-normal-gray"] = new() { gripStatTag = "leather", gripShapePath = "toolsmith:shapes/item/gripfabric", gripTextureOverride = "game:block/leather/gray" },
             ["leather-normal-green"] = new() { gripStatTag = "leather", gripShapePath = "toolsmith:shapes/item/gripfabric", gripTextureOverride = "game:block/leather/green" },
-            ["leather-sturdy-plain"] = new() { gripStatTag = "sturdy", gripShapePath = "toolsmith:shapes/item/gripfabric" }
+            ["leather-sturdy-plain"] = new() { gripStatTag = "sturdy", gripShapePath = "toolsmith:shapes/item/gripfabric" },
+            ["twine-wool-plain"] = new() { gripStatTag = "twine", gripShapePath = "toolsmith:shapes/item/gripfabric" },
+            ["twine-wool-black"] = new() { gripStatTag = "twine", gripShapePath = "toolsmith:shapes/item/gripfabric" },
+            ["twine-wool-brown"] = new() { gripStatTag = "twine", gripShapePath = "toolsmith:shapes/item/gripfabric" },
+            ["twine-wool-gray"] = new() { gripStatTag = "twine", gripShapePath = "toolsmith:shapes/item/gripfabric" },
+            ["twine-wool-white"] = new() { gripStatTag = "twine", gripShapePath = "toolsmith:shapes/item/gripfabric" },
+            ["twine-wool-yellow"] = new() { gripStatTag = "twine", gripShapePath = "toolsmith:shapes/item/gripfabric" },
         };
 
         public Dictionary<string, TreatmentStatPair> TreatmentRegistry = new() { //All treatments will require a drying time.
@@ -65,6 +72,9 @@ namespace Toolsmith.Config {
         };
 
         public Dictionary<string, BindingStatPair> BindingRegistry = new() {
+            ["drygrass"] = new() { bindingStatTag = "reeds" },
+            ["cattailtops"] = new() { bindingStatTag = "reeds" },
+            ["papyrustops"] = new() { bindingStatTag = "reeds" },
             ["flaxtwine"] = new() { bindingStatTag = "twine" },
             ["rope"] = new() { bindingStatTag = "rope" },
             ["leather-normal-plain"] = new() { bindingStatTag = "leather" },
@@ -79,6 +89,7 @@ namespace Toolsmith.Config {
             ["leather-normal-gray"] = new() { bindingStatTag = "leather" },
             ["leather-normal-green"] = new() { bindingStatTag = "leather" },
             ["glueportion-pitch-hot"] = new() { bindingStatTag = "glue" }, //Okay Pitch Glue is just weird as hell in vanilla. It'll probably be changed somewhere down the line but, right now it's just weird. It's both a liquid, but ALSO a physical item? Can't pick it up normally like a liquid, but cannot store in a bucket like an item...
+            ["metalnailsandstrips-copper"] = new() { bindingStatTag = "coppernails" },
             ["metalnailsandstrips-tinbronze"] = new() { bindingStatTag = "tinbronzenails" },
             ["metalnailsandstrips-bismuthbronze"] = new() { bindingStatTag = "bismuthbronzenails" },
             ["metalnailsandstrips-blackbronze"] = new() { bindingStatTag = "blackbronzenails" },
@@ -98,6 +109,8 @@ namespace Toolsmith.Config {
             ["twine-wool-white"] = new() { bindingStatTag = "twine" },
             ["twine-wool-yellow"] = new() { bindingStatTag = "twine" }
         };
+
+        public string ModVersionNumber = ToolsmithModSystem.ModVersion;
     }
 
     public class HandleStatPair {

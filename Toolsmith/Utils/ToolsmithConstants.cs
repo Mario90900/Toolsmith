@@ -29,9 +29,13 @@ namespace Toolsmith.Utils {
         public const float LowSharpnessSpeedMalusMult = -0.1f;
         public const float sharpenInterval = 0.4f;
         public const int NumBitsReturnMinimum = 2;
+        public const float StickAndBoneFailurePercent = 0.25f;
+        public const float OtherHandleFailurePercent = 0.05f;
 
         public const string ModularPartRenderingFromAttributesMeshRefs = "ToolsmithModularPartRenderingMeshRefs";
         public const string WorkbenchItemRenderingMeshRefs = "ToolsmithWorkbenchItemRenderingMeshRefs";
+
+        public const string ToolsmithConfigKey = "ToolsmithConfigs";
 
         //The keys for accessing the default part entries themselves, to recieve their stat key blocks
         public const string DefaultHandlePartKey = "stick";

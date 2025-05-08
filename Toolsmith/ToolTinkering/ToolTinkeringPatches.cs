@@ -97,7 +97,7 @@ namespace Toolsmith.ToolTinkering {
                 }
 
                 //Handle damaging each part, the handle only if it should based on the chance to damage it
-                if (doDamageHead && ((!isBluntTool && world.Rand.NextDouble() <= ToolsmithModSystem.Config.SharpWear) || world.Rand.NextDouble() <= ToolsmithModSystem.Config.BluntWear)) { //If this Tinkered Tool is also marked as a blunted tool, then apply the much much smaller chance to damage it. Damage the other parts though!
+                if (doDamageHead && (doubleHeadDamage || (!isBluntTool && world.Rand.NextDouble() <= ToolsmithModSystem.Config.SharpWear) || world.Rand.NextDouble() <= ToolsmithModSystem.Config.BluntWear)) { //If this Tinkered Tool is also marked as a blunted tool, then apply the much much smaller chance to damage it. Damage the other parts though!
                     remainingHeadDur -= amount;
                     if (doubleHeadDamage) {
                         remainingHeadDur -= amount;
