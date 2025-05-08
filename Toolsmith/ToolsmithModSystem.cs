@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,11 +30,13 @@ namespace Toolsmith {
 
         public static ILogger Logger;
         public static string ModId;
+        public static string ModVersion;
         public static ICoreAPI Api;
         public static Harmony HarmonyInstance;
         public static ToolsmithConfigs Config;
         public static ToolsmithPartStats Stats;
         public static int GradientSelection = 0;
+        public static bool DoesConfigNeedRegen = false;
 
         public const string ToolTinkeringDamagePatchCategory = "toolTinkeringDamage";
         public const string ToolTinkeringToolUseStatsPatchCategory = "toolTinkeringToolUseStats";
@@ -45,10 +48,12 @@ namespace Toolsmith {
         public const string OffhandDominantInteractionUsePatchCategory = "offhandDominantInteractionUse";
 
         public static List<string> IgnoreCodes;
+        public static Dictionary<string, int> BindingTiers; //This is only initialized on the Client side! Used for just generating and storing the various bindings tier levels to display on their tooltips.
 
         public override void StartPre(ICoreAPI api) {
             Logger = Mod.Logger;
             ModId = Mod.Info.ModID;
+            ModVersion = Mod.Info.Version;
             Api = api;
             TryToLoadConfig(api);
             TryToLoadStats(api);
@@ -92,17 +97,39 @@ namespace Toolsmith {
 
         public override void StartServerSide(ICoreServerAPI api) {
             ServerCommands.RegisterServerCommands(api);
+            string configJson = JsonConvert.SerializeObject(Config);
+            byte[] configBytes = System.Text.Encoding.UTF8.GetBytes(configJson);
+            string configBase64String = Convert.ToBase64String(configBytes);
+            api.World.Config.SetString(ToolsmithConstants.ToolsmithConfigKey, configBase64String);
         }
 
         public override void StartClientSide(ICoreClientAPI api) {
             GradientSelection = 0;
             TinkeringUtility.InitializeSharpnessColorGradient();
+            string configBase64String = api.World.Config.GetString(ToolsmithConstants.ToolsmithConfigKey, "");
+            if (configBase64String != "") {
+                try {
+                    byte[] configBytes = Convert.FromBase64String(configBase64String);
+                    string configJson = System.Text.Encoding.UTF8.GetString(configBytes);
+                    Config = JsonConvert.DeserializeObject<ToolsmithConfigs>(configJson);
+                } catch (Exception ex) {
+                    Logger.Error("Failed to deserialize config from server: " + ex);
+                    Config = new ToolsmithConfigs();
+                }
+            } else {
+                Logger.Error("Failed to retrieve config from server, running with default settings.");
+                Config = new ToolsmithConfigs();
+            }
         }
 
         public override void AssetsFinalize(ICoreAPI api) {
             base.AssetsFinalize(api);
 
             if (api.Side.IsClient()) {
+                if (BindingTiers == null) {
+                    BindingTiers = new Dictionary<string, int>();
+                }
+                CalculateBindingTiers();
                 return;
             }
             
@@ -199,7 +226,8 @@ namespace Toolsmith {
         private void TryToLoadConfig(ICoreAPI api) { //Created following the tutorial on the Wiki!
             try {
                 Config = api.LoadModConfig<ToolsmithConfigs>(ConfigUtility.ConfigFilename);
-                if (Config == null) {
+                DoesConfigNeedRegen = Config.ModVersionNumber != ModVersion;
+                if (Config == null || DoesConfigNeedRegen) {
                     Config = new ToolsmithConfigs();
                 }
                 api.StoreModConfig<ToolsmithConfigs>(Config, ConfigUtility.ConfigFilename);
@@ -213,7 +241,7 @@ namespace Toolsmith {
         private void TryToLoadStats(ICoreAPI api) {
             try {
                 Stats = api.LoadModConfig<ToolsmithPartStats>(ConfigUtility.StatsFilename);
-                if (Stats == null) {
+                if (Stats == null || DoesConfigNeedRegen) {
                     Stats = new ToolsmithPartStats();
                 }
                 api.StoreModConfig<ToolsmithPartStats>(Stats, ConfigUtility.StatsFilename);
@@ -235,6 +263,47 @@ namespace Toolsmith {
                 }
             } else {
                 Logger.Error("Found Smithing Plus loaded, but could not retrieve the Core ModLoader for it! Auto compatability will not work.");
+            }
+        }
+
+        private void CalculateBindingTiers() {
+            foreach (var binding in Config.BindingRegistry) {
+                var bindingStats = Stats.bindings.Get(binding.Value.bindingStatTag);
+                if (bindingStats != null) {
+                    var bindingTotalFactor = bindingStats.baseHPfactor * (1 + bindingStats.selfHPBonus);
+                    switch(bindingTotalFactor) {
+                        case <= 1.0f:
+                            if (Config.DebugMessages) {
+                                Logger.Warning("Binding: " + binding.Key + " |Tier: " + 0);
+                            }
+                            BindingTiers.Add(binding.Key, 0);
+                            break;
+                        case < 1.75f:
+                            if (Config.DebugMessages) {
+                                Logger.Warning("Binding: " + binding.Key + " |Tier: " + 1);
+                            }
+                            BindingTiers.Add(binding.Key, 1);
+                            break;
+                        case < 2.5f:
+                            if (Config.DebugMessages) {
+                                Logger.Warning("Binding: " + binding.Key + " |Tier: " + 2);
+                            }
+                            BindingTiers.Add(binding.Key, 2);
+                            break;
+                        case < 3f:
+                            if (Config.DebugMessages) {
+                                Logger.Warning("Binding: " + binding.Key + " |Tier: " + 3);
+                            }
+                            BindingTiers.Add(binding.Key, 3);
+                            break;
+                        case >= 3f:
+                            if (Config.DebugMessages) {
+                                Logger.Warning("Binding: " + binding.Key + " |Tier: " + 4);
+                            }
+                            BindingTiers.Add(binding.Key, 4);
+                            break;
+                    }
+                }
             }
         }
 

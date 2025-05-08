@@ -112,7 +112,7 @@ namespace Toolsmith.ToolTinkering.Items {
                 lastInterval = 0;
                 ToggleHoningSound(false, byEntity);
                 if (byEntity.World.Side.IsServer()) {
-                    byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity.Pos.AsBlockPos, 0);
+                    byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity.Pos.AsBlockPos, 0, randomizePitch: false);
                 }
                 totalSharpnessHoned = 0;
                 sharpening = false;
@@ -129,7 +129,7 @@ namespace Toolsmith.ToolTinkering.Items {
                 lastInterval = 0;
                 ToggleHoningSound(false, byEntity);
                 if (byEntity.World.Side.IsServer()) {
-                    byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity.Pos.AsBlockPos, 0);
+                    byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity.Pos.AsBlockPos, 0, randomizePitch: false);
                 }
                 totalSharpnessHoned = 0;
                 sharpening = false;

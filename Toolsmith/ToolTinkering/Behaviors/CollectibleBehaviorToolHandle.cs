@@ -45,6 +45,30 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 dsc.AppendLine(Lang.Get("toolhandlegripped", inSlot.Itemstack.GetHandleGripTag()));
             }
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+
+            if (world.Api != null && world.Api.Side.IsClient() && (world.Api as ICoreClientAPI).Input.KeyboardKeyStateRaw[1]) {
+                var handleStats = ToolsmithModSystem.Stats.baseHandles.Get(ToolsmithModSystem.Config.BaseHandleRegistry.Get(inSlot.Itemstack.Collectible.Code.Path).handleStatTag);
+                if (handleStats != null) {
+                    var totalHandleMult = handleStats.baseHPfactor * (1 + handleStats.selfHPBonus);
+                    dsc.AppendLine("");
+                    dsc.AppendLine(Lang.Get("toolhandletotalmult", totalHandleMult.ToString("0.00")));
+                    dsc.AppendLine(Lang.Get("toolhandlebindingbonus", handleStats.bindingHPBonus));
+                    dsc.AppendLine(Lang.Get("toolhandleusespeedbonus", Math.Round(handleStats.speedBonus * 100)));
+                    if (inSlot.Itemstack.HasHandleTreatmentTag()) {
+                        var treatmentStats = ToolsmithModSystem.Stats.treatments.Get(inSlot.Itemstack.GetHandleTreatmentTag());
+                        if (treatmentStats != null) {
+                            dsc.AppendLine(Lang.Get("toolhandletreatmentbonus", treatmentStats.handleHPbonus));
+                        }
+                    }
+                    if (inSlot.Itemstack.HasHandleGripTag()) {
+                        var gripStats = ToolsmithModSystem.Stats.grips.Get(inSlot.Itemstack.GetHandleGripTag());
+                        if (gripStats != null) {
+                            dsc.AppendLine(Lang.Get("toolhandlegripspeedbonus", Math.Round(gripStats.speedBonus * 100)));
+                            dsc.AppendLine(Lang.Get("toolhandlegripchancenodamage", Math.Round((1 - gripStats.chanceToDamage) * 100)));
+                        }
+                    }
+                }
+            }
         }
 
         public override void GetHeldItemName(StringBuilder sb, ItemStack itemStack) {

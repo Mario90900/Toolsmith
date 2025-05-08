@@ -60,18 +60,20 @@ namespace Toolsmith.Config {
             ["oil"] = new() { id = "oil", langTag = "treatment-oil", handleHPbonus = 0.65f }
         };
         public Dictionary<string, BindingStats> bindings = new() {
-            ["none"] = new() { id = "none", baseHPfactor = 1.0f, selfHPBonus = 0.0f, handleHPBonus = 0.0f, recoveryPercent = 1.0f, isMetal = false },
-            ["twine"] = new() { id = "twine", baseHPfactor = 1.1f, selfHPBonus = 0.0f, handleHPBonus = 0.0f, recoveryPercent = 0.9f, isMetal = false },
+            ["none"] = new() { id = "none", baseHPfactor = 0.5f, selfHPBonus = 0.0f, handleHPBonus = 0.0f, recoveryPercent = 1.0f, isMetal = false },
+            ["reeds"] = new() { id = "reeds", baseHPfactor = 1.0f, selfHPBonus = 0.0f, handleHPBonus = 0.0f, recoveryPercent = 1.0f, isMetal = false },
+            ["twine"] = new() { id = "twine", baseHPfactor = 1.2f, selfHPBonus = 0.1f, handleHPBonus = 0.05f, recoveryPercent = 0.9f, isMetal = false },
             ["rope"] = new() { id = "rope", baseHPfactor = 1.25f, selfHPBonus = 0.15f, handleHPBonus = 0.05f, recoveryPercent = 0.7f, isMetal = false },
             ["leather"] = new() { id = "leather", baseHPfactor = 1.5f, selfHPBonus = 0.3f, handleHPBonus = 0.1f, recoveryPercent = 0.6f, isMetal = false },
             ["glue"] = new() { id = "glue", baseHPfactor = 2.0f, selfHPBonus = 0.3f, handleHPBonus = 0.3f, recoveryPercent = 1.0f, isMetal = false },
+            ["coppernails"] = new() { id = "coppernails", baseHPfactor = 1.4f, selfHPBonus = 0.1f, handleHPBonus = 0.1f, recoveryPercent = 0.9f, isMetal = true, metalType = "copper" },
             ["tinbronzenails"] = new() { id = "tinbronzenails", baseHPfactor = 1.7f, selfHPBonus = 0.2f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "tinbronze" },
             ["bismuthbronzenails"] = new() { id = "bismuthbronzenails", baseHPfactor = 1.7f, selfHPBonus = 0.25f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "bismuthbronze" },
             ["blackbronzenails"] = new() { id = "blackbronzenails", baseHPfactor = 1.7f, selfHPBonus = 0.3f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "blackbronze" },
             ["ironnails"] = new() { id = "ironnails", baseHPfactor = 1.8f, selfHPBonus = 0.3f, handleHPBonus = 0.2f, recoveryPercent = 0.45f, isMetal = true, metalType = "iron" },
             ["cupronickelnails"] = new() { id = "cupronickelnails", baseHPfactor = 1.7f, selfHPBonus = 0.2f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "cupronickel" },
-            ["meteoricironnails"] = new() { id = "meteoricironnails", baseHPfactor = 1.8f, selfHPBonus = 0.4f, handleHPBonus = 0.25f, recoveryPercent = 0.45f, isMetal = true, metalType = "meteoriciron" },
-            ["steelnails"] = new() { id = "steelnails", baseHPfactor = 2.0f, selfHPBonus = 0.5f, handleHPBonus = 0.35f, recoveryPercent = 0.35f, isMetal = true, metalType = "steel" }
+            ["meteoricironnails"] = new() { id = "meteoricironnails", baseHPfactor = 1.9f, selfHPBonus = 0.5f, handleHPBonus = 0.25f, recoveryPercent = 0.45f, isMetal = true, metalType = "meteoriciron" },
+            ["steelnails"] = new() { id = "steelnails", baseHPfactor = 2.2f, selfHPBonus = 0.6f, handleHPBonus = 0.4f, recoveryPercent = 0.35f, isMetal = true, metalType = "steel" }
         };
     }
 }

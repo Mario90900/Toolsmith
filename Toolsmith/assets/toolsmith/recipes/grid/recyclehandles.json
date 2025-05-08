@@ -1,0 +1,32 @@
+[
+	{
+		"ingredientPattern": "KH",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"H": { "type": "item", "code": "toolsmith:crudehandle" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "game:firewood", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "KH",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"H": { "type": "item", "code": "toolsmith:handle" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "game:firewood", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "KH",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"H": { "type": "item", "code": "toolsmith:carpentedhandle" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "game:firewood", "quantity": 1 }
+	}
+]
