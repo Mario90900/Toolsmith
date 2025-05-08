@@ -17,11 +17,10 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {
             if (world.Side.IsClient()) {
                 dsc.AppendLine(Lang.Get("toolbindingdirections"));
-                dsc.AppendLine(Lang.Get("toolbindingtier", ToolsmithModSystem.BindingTiers.Get(inSlot.Itemstack.Collectible.Code.Path)));
-            }
+                if (ToolsmithModSystem.BindingTiers != null) {
+                    dsc.AppendLine(Lang.Get("toolbindingtier", ToolsmithModSystem.BindingTiers.Get(inSlot.Itemstack.Collectible.Code.Path)));
+                }
 
-            //Shift is being held and it is the client-side if this is all true!
-            if (world.Api != null && world.Api.Side.IsClient() && (world.Api as ICoreClientAPI).Input.KeyboardKeyStateRaw[1]) {
                 var bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithModSystem.Config.BindingRegistry.Get(inSlot.Itemstack.Collectible.Code.Path).bindingStatTag);
                 if (bindingStats != null) {
                     var totalMult = bindingStats.baseHPfactor * (1 + bindingStats.selfHPBonus);

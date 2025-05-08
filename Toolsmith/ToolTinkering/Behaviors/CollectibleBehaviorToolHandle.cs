@@ -46,7 +46,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
-            if (world.Api != null && world.Api.Side.IsClient() && (world.Api as ICoreClientAPI).Input.KeyboardKeyStateRaw[1]) {
+            if (world.Api.Side.IsClient()) {
                 var handleStats = ToolsmithModSystem.Stats.baseHandles.Get(ToolsmithModSystem.Config.BaseHandleRegistry.Get(inSlot.Itemstack.Collectible.Code.Path).handleStatTag);
                 if (handleStats != null) {
                     var totalHandleMult = handleStats.baseHPfactor * (1 + handleStats.selfHPBonus);
