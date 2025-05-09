@@ -307,7 +307,7 @@
 		{
 			"name": "spinwheel",
 			"code": "spinwheel",
-			"quantityframes": 61,
+			"quantityframes": 31,
 			"onActivityStopped": "Stop",
 			"onAnimationEnd": "Repeat",
 			"keyframes": [
@@ -319,7 +319,7 @@
 					}
 				},
 				{
-					"frame": 60,
+					"frame": 30,
 					"elements": {
 						"WheelMain": { "rotationX": -359.0, "rotationY": 0.0, "rotationZ": 0.0, "rotShortestDistanceX": true },
 						"CrankMain": { "rotationX": -359.0, "rotationY": 0.0, "rotationZ": 0.0, "rotShortestDistanceX": true }

@@ -112,6 +112,7 @@ namespace Toolsmith {
                     byte[] configBytes = Convert.FromBase64String(configBase64String);
                     string configJson = System.Text.Encoding.UTF8.GetString(configBytes);
                     Config = JsonConvert.DeserializeObject<ToolsmithConfigs>(configJson);
+                    Logger.Notification("Recieved configs successfully from Server!");
                 } catch (Exception ex) {
                     Logger.Error("Failed to deserialize config from server: " + ex);
                     Config = new ToolsmithConfigs();
