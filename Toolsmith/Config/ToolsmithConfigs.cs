@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Toolsmith.Config {
     public class ToolsmithConfigs {
         public bool AutoUpdateConfigsOnVersionChange = true;
+        public bool AccessibilityDisableNeedToHoldClick = false;
         public bool PrintAllParsedToolsAndParts = false;
         public bool DebugMessages = false;
         public double HeadDurabilityMult = 5.0;
@@ -110,7 +111,7 @@ namespace Toolsmith.Config {
             ["twine-wool-yellow"] = new() { bindingStatTag = "twine" }
         };
 
-        public string ModVersionNumber = ToolsmithModSystem.ModVersion;
+        public string ModVersionNumber = "1.0.0"; //To force a reload if an old config that doesn't have this segment in it yet gains it.
     }
 
     public class HandleStatPair {

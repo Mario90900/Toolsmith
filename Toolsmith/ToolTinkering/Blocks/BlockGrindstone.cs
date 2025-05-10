@@ -100,7 +100,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 if (grindstoneEnt != null && !byPlayer.Entity.Controls.ShiftKey && isTool > 0) {
                     grindstoneEnt.ToggleHoningSound(true);
                 }
-                    if (world.Side.IsServer() && !byPlayer.Entity.Controls.ShiftKey && isTool > 0) { //Check if it's a valid tool for repair, is made of metal and has one of the 2 behaviors, if so...
+                if (world.Side.IsServer() && !byPlayer.Entity.Controls.ShiftKey && isTool > 0) { //Check if it's a valid tool for repair, is made of metal and has one of the 2 behaviors, if so...
                     ItemStack item = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
 
                     deltaLastTick = secondsUsed - lastInterval;
@@ -146,6 +146,10 @@ namespace Toolsmith.ToolTinkering.Blocks {
         }
 
         public override bool OnBlockInteractCancel(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, EnumItemUseCancelReason cancelReason) {
+            if (ToolsmithModSystem.Config.AccessibilityDisableNeedToHoldClick && byPlayer.Entity.Controls.ShiftKey) {
+                return false;
+            }
+
             BlockEntityGrindstone grindstoneEnt = GetBlockEntity<BlockEntityGrindstone>(blockSel.Position);
             if (grindstoneEnt != null) {
                 grindstoneEnt.OnBlockInteractStop();

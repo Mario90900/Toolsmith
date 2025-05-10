@@ -31,6 +31,7 @@ namespace Toolsmith.Utils {
         public const int NumBitsReturnMinimum = 2;
         public const float StickAndBoneFailurePercent = 0.25f;
         public const float OtherHandleFailurePercent = 0.05f;
+        public const int NumHammerStrikesForWorkbenchCraftAction = 3;
 
         public const string ModularPartRenderingFromAttributesMeshRefs = "ToolsmithModularPartRenderingMeshRefs";
         public const string WorkbenchItemRenderingMeshRefs = "ToolsmithWorkbenchItemRenderingMeshRefs";

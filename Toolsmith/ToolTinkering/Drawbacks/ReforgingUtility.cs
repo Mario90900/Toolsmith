@@ -591,7 +591,7 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
             for (int x = 0; x < source.GetLength(0); x++) {
                 for (int y = 0; y < source.GetLength(1); y++) {
                     for (int z = 0; z < source.GetLength(2); z++) {
-                        if (source[x,y,z] == true) {
+                        if (source[x, y, z] == true) {
                             destination[x, y, z] = 1;
                         } else {
                             destination[x, y, z] = 0;
@@ -601,6 +601,30 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
             }
 
             return destination;
+        }
+
+        //All of these slots will have an item for sure, and it should be more then 2 long.
+        public static bool CheckForPossibleMerger(ItemSlot[] slots) {
+            var firstCode = slots[0].Itemstack.Collectible.Code;
+            for (int i = 1; i < slots.Length; i++) {
+                if (firstCode != slots[i].Itemstack.Collectible.Code) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static ItemStack MergeDupesAndReturn(ItemSlot[] slots) {
+            var count = slots.Length;
+            var totalDur = slots[0].Itemstack.Collectible.GetRemainingDurability(slots[0].Itemstack);
+            var newStack = new ItemStack(slots[0].Itemstack.Collectible, count);
+
+            for (int i = 1; i < count; i++) {
+                totalDur += slots[i].Itemstack.Collectible.GetRemainingDurability(slots[i].Itemstack);
+            }
+
+            newStack.Collectible.SetDurability(newStack, (int)Math.Round((double)(totalDur / count), MidpointRounding.AwayFromZero));
+            return newStack;
         }
     }
 }

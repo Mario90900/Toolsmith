@@ -227,9 +227,13 @@ namespace Toolsmith {
         private void TryToLoadConfig(ICoreAPI api) { //Created following the tutorial on the Wiki!
             try {
                 Config = api.LoadModConfig<ToolsmithConfigs>(ConfigUtility.ConfigFilename);
-                DoesConfigNeedRegen = Config.ModVersionNumber != ModVersion;
-                if (Config == null || DoesConfigNeedRegen) {
+                if (Config == null) {
                     Config = new ToolsmithConfigs();
+                } else {
+                    DoesConfigNeedRegen = (Config.ModVersionNumber != ModVersion);
+                    if (DoesConfigNeedRegen) {
+                        Config = new ToolsmithConfigs();
+                    }
                 }
                 api.StoreModConfig<ToolsmithConfigs>(Config, ConfigUtility.ConfigFilename);
             } catch (Exception e) {
@@ -277,31 +281,41 @@ namespace Toolsmith {
                             if (Config.DebugMessages) {
                                 Logger.Warning("Binding: " + binding.Key + " |Tier: " + 0);
                             }
-                            BindingTiers.Add(binding.Key, 0);
+                            if (!BindingTiers.ContainsKey(binding.Key)) {
+                                BindingTiers.Add(binding.Key, 0);
+                            }
                             break;
                         case < 1.75f:
                             if (Config.DebugMessages) {
                                 Logger.Warning("Binding: " + binding.Key + " |Tier: " + 1);
                             }
-                            BindingTiers.Add(binding.Key, 1);
+                            if (!BindingTiers.ContainsKey(binding.Key)) {
+                                BindingTiers.Add(binding.Key, 1);
+                            }
                             break;
                         case < 2.5f:
                             if (Config.DebugMessages) {
                                 Logger.Warning("Binding: " + binding.Key + " |Tier: " + 2);
                             }
-                            BindingTiers.Add(binding.Key, 2);
+                            if (!BindingTiers.ContainsKey(binding.Key)) {
+                                BindingTiers.Add(binding.Key, 2);
+                            }
                             break;
                         case < 3f:
                             if (Config.DebugMessages) {
                                 Logger.Warning("Binding: " + binding.Key + " |Tier: " + 3);
                             }
-                            BindingTiers.Add(binding.Key, 3);
+                            if (!BindingTiers.ContainsKey(binding.Key)) {
+                                BindingTiers.Add(binding.Key, 3);
+                            }
                             break;
                         case >= 3f:
                             if (Config.DebugMessages) {
                                 Logger.Warning("Binding: " + binding.Key + " |Tier: " + 4);
                             }
-                            BindingTiers.Add(binding.Key, 4);
+                            if (!BindingTiers.ContainsKey(binding.Key)) {
+                                BindingTiers.Add(binding.Key, 4);
+                            }
                             break;
                     }
                 }

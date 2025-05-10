@@ -22,6 +22,13 @@ namespace Toolsmith.ToolTinkering.Blocks {
         protected Dictionary<string, MeshData> WorkbenchItemMeshCache => ObjectCacheUtil.GetOrCreate(Api, ToolsmithConstants.WorkbenchItemRenderingMeshRefs, () => new Dictionary<string, MeshData>());
         private (float x, float y, float z)[] offsetBySlot = { (0f, 0f, 0f), (0.4f, 1f, 0.3f), (0.6f, 1f, 0.6f), (0.8f, 1f, 0.3f), (1.0f, 1f, 0.6f), (1.2f, 1f, 0.3f), (0f, 0f, 0f), (1.55f, 1f, 0.55f) };
         
+        private int craftingHitsCount = 0;
+        private (float xoff, float yoff, float zoff, float rot) craftingSlot1Wiggle = (0f, 0f, 0f, 0f);
+        private (float xoff, float yoff, float zoff, float rot) craftingSlot2Wiggle = (0f, 0f, 0f, 0f);
+        private (float xoff, float yoff, float zoff, float rot) craftingSlot3Wiggle = (0f, 0f, 0f, 0f);
+        private (float xoff, float yoff, float zoff, float rot) craftingSlot4Wiggle = (0f, 0f, 0f, 0f);
+        private (float xoff, float yoff, float zoff, float rot) craftingSlot5Wiggle = (0f, 0f, 0f, 0f);
+
         public override void Initialize(ICoreAPI api) {
             base.Initialize(api);
             capi = api as ICoreClientAPI;
@@ -39,7 +46,56 @@ namespace Toolsmith.ToolTinkering.Blocks {
             return offsetBySlot[slotID];
         }
 
+        protected (float xoff, float yoff, float zoff, float rot) GetSlotsCraftingWiggleFactor(int slotID) {
+            switch (slotID) {
+                case 1:
+                    return craftingSlot1Wiggle;
+                case 2:
+                    return craftingSlot2Wiggle;
+                case 3:
+                    return craftingSlot3Wiggle;
+                case 4:
+                    return craftingSlot4Wiggle;
+                case 5:
+                    return craftingSlot5Wiggle;
+                default:
+                    return (0f, 0f, 0f, 0f);
+            }
+        }
+
+        protected void SetSlotsCraftingWiggleFactor(int slotID, (float x, float y, float z, float rot) wiggler) {
+            switch (slotID) {
+                case 1:
+                    craftingSlot1Wiggle = wiggler;
+                    break;
+                case 2:
+                    craftingSlot2Wiggle = wiggler;
+                    break;
+                case 3:
+                    craftingSlot3Wiggle = wiggler;
+                    break;
+                case 4:
+                    craftingSlot4Wiggle = wiggler;
+                    break;
+                case 5:
+                    craftingSlot5Wiggle = wiggler;
+                    break;
+            }
+        }
+
+        protected void ResetCraftingAttempt() {
+            craftingHitsCount = 0;
+            craftingSlot1Wiggle = (0f, 0f, 0f, 0f);
+            craftingSlot2Wiggle = (0f, 0f, 0f, 0f);
+            craftingSlot3Wiggle = (0f, 0f, 0f, 0f);
+            craftingSlot4Wiggle = (0f, 0f, 0f, 0f);
+            craftingSlot5Wiggle = (0f, 0f, 0f, 0f);
+        }
+
         public bool TryGetOrPutItemOnWorkbench(int slotSelection, ItemSlot mainHandSlot, IPlayer byPlayer, IWorldAccessor world) { //The item is valid for fitting in the slot, see if it is empty and if so, stick one in! Otherwise try and remove the existing item.
+            if (slotSelection >= (int)WorkbenchSlots.CraftingSlot1 && slotSelection <= (int)WorkbenchSlots.CraftingSlot5) {
+                ResetCraftingAttempt();
+            }
             var workbenchSlotSelection = Inventory.GetSlotFromSelectionID(slotSelection);
             if (workbenchSlotSelection != null && !workbenchSlotSelection.Empty) {
                 if (!Inventory.AddAdditionalToSlot(slotSelection, mainHandSlot)) {
@@ -53,6 +109,9 @@ namespace Toolsmith.ToolTinkering.Blocks {
         }
 
         public bool TryGetItemFromWorkbench(int slotSelection, ItemSlot mainHandslot, IPlayer byPlayer, IWorldAccessor world) { //For when we are only going to see if an item can be popped out of the slot.
+            if (slotSelection >= (int)WorkbenchSlots.CraftingSlot1 && slotSelection <= (int)WorkbenchSlots.CraftingSlot5) {
+                ResetCraftingAttempt();
+            }
             var workbenchSlotSelection = Inventory.GetSlotFromSelectionID(slotSelection);
             if (workbenchSlotSelection != null && workbenchSlotSelection.Empty) {
                 return false; //There's no item to get, so return false cause it didn't succeed in dropping anything. Just to check if the Rendering needs an update or not!
@@ -72,6 +131,55 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 }
             } else {
                 return true;
+            }
+        }
+
+        public bool AttemptToCraft(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
+            if (craftingHitsCount < ToolsmithConstants.NumHammerStrikesForWorkbenchCraftAction) {
+                craftingHitsCount++;
+                //Add Wiggles
+                return true;
+            } else {
+                ResetCraftingAttempt();
+                ItemSlot[] craftingSlots = Inventory.GetFullCraftingSlots();
+
+                if (craftingSlots.Count() > 1) {
+                    if (ReforgingUtility.CheckForPossibleMerger(craftingSlots)) {
+                        var combinedStack = ReforgingUtility.MergeDupesAndReturn(craftingSlots);
+                        var facing = BlockFacing.FromCode(Block.LastCodePart());
+                        if (facing == BlockFacing.WEST) {
+                            world.SpawnItemEntity(combinedStack, new Vec3d(Pos.X + 0.5, Pos.Y + 1.1, Pos.Z));
+                        } else if (facing == BlockFacing.EAST) {
+                            world.SpawnItemEntity(combinedStack, new Vec3d(Pos.X + 0.5, Pos.Y + 1.1, Pos.Z + 1.0));
+                        } else if (facing == BlockFacing.SOUTH) {
+                            world.SpawnItemEntity(combinedStack, new Vec3d(Pos.X, Pos.Y + 1.1, Pos.Z + 0.5));
+                        } else {
+                            world.SpawnItemEntity(combinedStack, new Vec3d(Pos.X + 1.0, Pos.Y + 1.1, Pos.Z + 0.5));
+                        }
+
+                        MarkDirty(redrawOnClient: true);
+                        return true;
+                    }
+
+                    var craftedTool = TinkeringUtility.TryCraftToolFromSlots(craftingSlots, world, blockSel);
+                    if (craftedTool != null) {
+                        var facing = BlockFacing.FromCode(Block.LastCodePart());
+                        if (facing == BlockFacing.WEST) {
+                            world.SpawnItemEntity(craftedTool, new Vec3d(Pos.X + 0.5, Pos.Y + 1.1, Pos.Z));
+                        } else if (facing == BlockFacing.EAST) {
+                            world.SpawnItemEntity(craftedTool, new Vec3d(Pos.X + 0.5, Pos.Y + 1.1, Pos.Z + 1.0));
+                        } else if (facing == BlockFacing.SOUTH) {
+                            world.SpawnItemEntity(craftedTool, new Vec3d(Pos.X, Pos.Y + 1.1, Pos.Z + 0.5));
+                        } else {
+                            world.SpawnItemEntity(craftedTool, new Vec3d(Pos.X + 1.0, Pos.Y + 1.1, Pos.Z + 0.5));
+                        }
+
+                        MarkDirty(redrawOnClient: true);
+                        return true;
+                    }
+                }
+
+                return false;
             }
         }
 
@@ -189,10 +297,10 @@ namespace Toolsmith.ToolTinkering.Blocks {
             IContainedMeshSource meshSource = stack.Collectible?.GetCollectibleInterface<IContainedMeshSource>();
             var facing = BlockFacing.FromCode(Block.LastCodePart());
             if (meshSource != null) {
-                return facing.Code + "-slot-" + slotIndex + "-" + meshSource.GetMeshCacheKey(stack);
+                return facing.Code + "-slot-" + slotIndex + "-" + craftingHitsCount + "-" + meshSource.GetMeshCacheKey(stack);
             }
 
-            return facing.Code + "-slot-" + slotIndex + "-" + stack.Collectible.Code.ToString();
+            return facing.Code + "-slot-" + slotIndex + "-" + craftingHitsCount + "-" + stack.Collectible.Code.ToString();
         }
 
         protected MeshData GetMesh(ItemStack stack, int slotIndex) {

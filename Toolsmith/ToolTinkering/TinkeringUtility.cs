@@ -14,6 +14,7 @@ using Vintagestory.ServerMods.NoObf;
 using Toolsmith.ToolTinkering.Items;
 using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.Client;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Toolsmith.ToolTinkering {
     //This is beginning to hold the MEAT of the whole tinkering system. It has various helper functions that are being used in multiple places to help keep everything just running the single code calls and ensuring it isn't spaghetti while I add more ways to do the same things.
@@ -207,7 +208,7 @@ namespace Toolsmith.ToolTinkering {
                 }
 
                 if (handlePercentDamage > comparedPercent) {
-                    toolHandle = handleToCheck;
+                    toolHandle = handleToCheck.Clone();
                     toolHandle.SetPartCurrentDurability(remainingHandleDur);
                     toolHandle.SetPartMaxDurability(brokenToolStack.GetToolhandleMaxDurability());
                 }
@@ -363,15 +364,19 @@ namespace Toolsmith.ToolTinkering {
             //Handle time for the Render Data! But at least that's already part of the handle by now. Most likely.
             if (handle.HasMultiPartRenderTree()) {
                 var handleMultiPartTree = handle.GetMultiPartRenderTree();
-                foreach (var tree in handleMultiPartTree) {
-                    var subPartAndTransformTree = handleMultiPartTree.GetPartAndTransformRenderTree(tree.Key);
-                    subPartAndTransformTree.SetPartOffsetX(-0.1f);
-                    subPartAndTransformTree.SetPartOffsetY(0);
-                    subPartAndTransformTree.SetPartOffsetZ(0);
-                    subPartAndTransformTree.SetPartRotationX(0);
-                    subPartAndTransformTree.SetPartRotationY(90);
-                    subPartAndTransformTree.SetPartRotationZ(0);
-                    bundleMultiPartRenderTree.SetPartAndTransformRenderTree(tree.Key, handleMultiPartTree.GetPartAndTransformRenderTree(tree.Key));
+                if (handleMultiPartTree.Count > 1) {
+                    foreach (var tree in handleMultiPartTree) {
+                        var subPartAndTransformTree = handleMultiPartTree.GetPartAndTransformRenderTree(tree.Key);
+                        subPartAndTransformTree.SetPartOffsetX(-0.1f);
+                        subPartAndTransformTree.SetPartOffsetY(0);
+                        subPartAndTransformTree.SetPartOffsetZ(0);
+                        subPartAndTransformTree.SetPartRotationX(0);
+                        subPartAndTransformTree.SetPartRotationY(90);
+                        subPartAndTransformTree.SetPartRotationZ(0);
+                        bundleMultiPartRenderTree.SetPartAndTransformRenderTree(tree.Key, handleMultiPartTree.GetPartAndTransformRenderTree(tree.Key));
+                    }
+                } else {
+
                 }
             } else if (handle.HasPartRenderTree()) {
                 var handlePartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
@@ -462,20 +467,71 @@ namespace Toolsmith.ToolTinkering {
             return null;
         }
 
-        //Old code now, may be repurposed for the Workbench later on.
-        public static void CraftTool(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
-            CollectibleObject craftedTool;
-            var success = RecipeRegisterModSystem.TinkerToolGridRecipes.TryGetValue(slot.Itemstack.Collectible.Code.ToString(), out craftedTool);
-            if (success) {
-                IPlayer player = ((EntityPlayer)byEntity).Player; //I THINK only a player can ever craft something? I dunno. This aint modded Minecraft though so maybe no fake players to account for woo.
-                ItemSlot bindingSlot = SearchForPossibleBindings(player); //Does the Player have a valid Binding in their hotbar? Note, this bindingSlot can be null! That means no binding found and not used.
-                if (bindingSlot == null) { //If so, grab it and the handle...
-                    bindingSlot = new DummySlot();
-                }
-                ItemSlot handleSlot = byEntity.LeftHandItemSlot;
+        //Send it an array of itemslots, and it will see if it is valid for crafting a tool, then return the ItemStacks in an array 
+        public static ItemSlot[] CheckForValidTool(ItemSlot[] slots) {
+            bool foundHead = false;
+            int headSlot = -1;
+            bool foundHandle = false;
+            int handleSlot = -1;
+            bool foundBinding = false;
+            int bindingSlot = -1;
 
-                ItemStack craftedItemStack = new ItemStack(byEntity.World.GetItem(craftedTool.Code), 1); //Create the tool in question
-                ItemSlot placeholderOutput = new ItemSlot(new DummyInventory(ToolsmithModSystem.Api));
+            for (int i = 0; i < slots.Length; i++) {
+                if (!foundHead && slots[i].Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
+                    foundHead = true;
+                    headSlot = i;
+                }
+                if (!foundHandle && slots[i].Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) {
+                    foundHandle = true;
+                    handleSlot = i;
+                }
+                if (!foundBinding && slots[i].Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBinding>()) {
+                    foundBinding = true;
+                    bindingSlot = i;
+                }
+            }
+
+            if (!foundHead) {
+                return null;
+            }
+
+            if (foundHead && foundHandle && foundBinding) {
+                ItemSlot[] returnSlots = new ItemSlot[slots.Length];
+
+                returnSlots[0] = slots[headSlot];
+                returnSlots[1] = slots[handleSlot];
+                returnSlots[2] = slots[bindingSlot];
+
+                return returnSlots;
+            } else if (foundHead && foundHandle && slots.Length == 2) {
+                ItemSlot[] returnSlots = new ItemSlot[slots.Length];
+
+                returnSlots[0] = slots[headSlot];
+                returnSlots[1] = slots[handleSlot];
+
+                return returnSlots;
+            } else {
+                return null;
+            }
+        } //TODO: Something's up with sharpening a tool head. It doesn't set it up right. Then when you craft with the Workbench and the spawned in not-initialized head, it sets the Current Sharpness to 0. Hmm.
+
+        //Send it an array of slots, and it will try to craft a tool from the parts! Otherwise it will return null.
+        public static ItemStack TryCraftToolFromSlots(ItemSlot[] slots, IWorldAccessor world, BlockSelection blockSel) {
+            if (slots.Length != 3 && slots.Length != 2) {
+                return null; //Just in case this is ever sent more then 2 or 3 slots, but it ideally shouldn't be called until after CheckForValidTool is run.
+            }
+
+            var sortedSlots = CheckForValidTool(slots);
+
+            if (sortedSlots == null) {
+                return null;
+            }
+
+            CollectibleObject craftedTool;
+            var success = RecipeRegisterModSystem.TinkerToolGridRecipes.TryGetValue(sortedSlots[0].Itemstack.Collectible.Code.ToString(), out craftedTool);
+            if (success) {
+                ItemStack craftedItemStack = new ItemStack(world.GetItem(craftedTool.Code), 1); //Create the tool in question
+                ItemSlot placeholderOutput = new ItemSlot(new DummyInventory(world.Api));
                 placeholderOutput.Itemstack = craftedItemStack;
 
                 GridRecipe DummyRecipe = new() {
@@ -484,32 +540,23 @@ namespace Toolsmith.ToolTinkering {
                         ResolvedItemstack = craftedItemStack
                     }
                 };
-                ItemSlot[] inputSlots;
-                if (bindingSlot.GetType() != typeof(DummySlot)) {
-                    inputSlots = new ItemSlot[] { slot, handleSlot, bindingSlot };
-                } else {
-                    inputSlots = new ItemSlot[] { slot, handleSlot };
+
+                craftedItemStack.Collectible.ConsumeCraftingIngredients(sortedSlots, placeholderOutput, DummyRecipe);
+                craftedItemStack.Collectible.OnCreatedByCrafting(sortedSlots, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
+
+                sortedSlots[0].TakeOut(1);
+                sortedSlots[0].MarkDirty();
+                sortedSlots[1].TakeOut(1); //Decrement inputs, and place the finished item in the ToolHead's Slot
+                sortedSlots[1].MarkDirty();
+                if (sortedSlots.Length == 3) {
+                    sortedSlots[2].TakeOut(1);
+                    sortedSlots[2].MarkDirty();
                 }
 
-                craftedItemStack.Collectible.ConsumeCraftingIngredients(inputSlots, placeholderOutput, DummyRecipe);
-                craftedItemStack.Collectible.OnCreatedByCrafting(inputSlots, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
-
-                handleSlot.TakeOut(1); //Decrement inputs, and place the finished item in the ToolHead's Slot
-                handleSlot.MarkDirty();
-                if (bindingSlot.GetType() != typeof(DummySlot)) {
-                    bindingSlot.TakeOut(1);
-                    bindingSlot.MarkDirty();
-                }
-                ItemStack tempHolder = slot.Itemstack; //I don't believe any Toolhead will actually stack more then once -- Actually they do. Huh. I never tried before. Good thing I had this!
-                slot.Itemstack = craftedItemStack; //Above holds the possible multiple-stacked Toolheads, this finally gives the crafted tool to slot that previously had the head(s)
-                slot.MarkDirty();
-                if (tempHolder.StackSize > 1) {
-                    tempHolder.StackSize -= 1;
-                    if (!byEntity.TryGiveItemStack(tempHolder)) { //This should hopefully return any remainder!
-                        byEntity.World.SpawnItemEntity(tempHolder, byEntity.Pos.XYZ);
-                    }
-                }
+                return craftedItemStack;
             }
+
+            return null;
         }
 
         public static bool IsAnyToolPart(CollectibleObject item, IWorldAccessor world) {
@@ -790,9 +837,21 @@ namespace Toolsmith.ToolTinkering {
                         stack.RemoveHandleStatTag();
                         stack.RemovePartCurrentDurability();
                         stack.RemovePartMaxDurability();
-                        return true;
+                    }
+                } else {
+                    if (stack.HasMultiPartRenderTree()) {
+                        var multiPartRenderTree = stack.GetMultiPartRenderTree();
+                        if (multiPartRenderTree.Count == 0) {
+                            stack.RemoveMultiPartRenderTree();
+                        }
+                    } else if (stack.HasPartRenderTree()) {
+                        var partRenderTree = stack.GetPartRenderTree();
+                        if (partRenderTree.Count == 0) {
+                            stack.RemovePartRenderTree();
+                        }
                     }
                 }
+                return true;
             }
 
             return false;

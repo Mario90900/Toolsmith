@@ -66,6 +66,27 @@ namespace Toolsmith.ToolTinkering.Blocks {
             return id;
         }
 
+        public ItemSlot[] GetFullCraftingSlots() {
+            List<ItemSlot> slots = new List<ItemSlot>();
+            if (!IsSelectSlotEmpty(1)) {
+                slots.Add(GetSlotFromSelectionID(1));
+            }
+            if (!IsSelectSlotEmpty(2)) {
+                slots.Add(GetSlotFromSelectionID(2));
+            }
+            if (!IsSelectSlotEmpty(3)) {
+                slots.Add(GetSlotFromSelectionID(3));
+            }
+            if (!IsSelectSlotEmpty(4)) {
+                slots.Add(GetSlotFromSelectionID(4));
+            }
+            if (!IsSelectSlotEmpty(5)) {
+                slots.Add(GetSlotFromSelectionID(5));
+            }
+
+            return slots.ToArray();
+        }
+
         public ItemStack? GetItemFromSlot(int slotID) {
             ItemSlot? slot = GetSlotFromSelectionID(slotID);
 

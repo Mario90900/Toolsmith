@@ -54,7 +54,25 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 return;
             }
 
+            crafting = false;
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);
+        }
+
+        public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason, ref EnumHandling handled) {
+            if (crafting) {
+                if (ToolsmithModSystem.Config.AccessibilityDisableNeedToHoldClick) {
+                    handled = EnumHandling.PreventSubsequent;
+                    return false;
+                } else if (secondsUsed >= ToolsmithConstants.TimeToCraftTinkerTool - 0.1) {
+                    handled = EnumHandling.PreventSubsequent;
+                    if (byEntity.World.Side.IsServer() && TinkeringUtility.ValidHandleInOffhand(byEntity)) {
+                        TinkeringUtility.AssemblePartBundle(slot, byEntity, blockSel);
+                    }
+                    crafting = false;
+                }
+            }
+
+            return base.OnHeldInteractCancel(secondsUsed, slot, byEntity, blockSel, entitySel, cancelReason, ref handled);
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {

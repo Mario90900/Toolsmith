@@ -72,10 +72,19 @@ namespace Toolsmith.ToolTinkering.Items {
             }
         }
 
+        public override void OnModifiedInInventorySlot(IWorldAccessor world, ItemSlot slot, ItemStack extractedStack = null) {
+            if (honingScrape != null && honingScrape.IsPlaying) {
+                honingScrape?.FadeOut(0.2f, (s) => { s.Dispose(); honingScrape = null; });
+            }
+
+            base.OnModifiedInInventorySlot(world, slot, extractedStack);
+        }
+
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling) {
             if (!(slot is ItemSlotOffhand)) {
                 base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
             }
+
             var mainHandSlot = byEntity.RightHandItemSlot;
             if (handling == EnumHandHandling.PreventDefault) {
                 return;
@@ -86,6 +95,8 @@ namespace Toolsmith.ToolTinkering.Items {
                 sharpening = true;
                 ToggleHoningSound(true, byEntity);
                 return;
+            } else {
+                ToggleHoningSound(false, byEntity);
             }
         }
 
@@ -124,7 +135,9 @@ namespace Toolsmith.ToolTinkering.Items {
         }
 
         public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason) {
-            if (sharpening) {
+            if (ToolsmithModSystem.Config.AccessibilityDisableNeedToHoldClick && sharpening) {
+                return false;
+            } else if (sharpening) {
                 deltaLastTick = 0;
                 lastInterval = 0;
                 ToggleHoningSound(false, byEntity);

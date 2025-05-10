@@ -113,6 +113,7 @@
 	"game:blockhelp-workbench-deconstruct": "Take apart tool",
 	"game:blockhelp-workbench-craftingspot": "Place tool part for crafting",
 	"game:blockhelp-workbench-retrieve-item": "Take tool part",
+	"game:blockhelp-workbench-strike-craft": "Strike to craft!",
 	"game:blockhelp-workbench-reforge-head": "Prepare piece for reforging",
 	
 	"game:craftinginfo-toolsmithingbasics-title": "Toolsmithing - The Basics",

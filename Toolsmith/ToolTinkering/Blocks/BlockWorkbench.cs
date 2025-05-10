@@ -23,6 +23,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
         WorldInteraction[] emptyReforgeStagingInteraction;
         WorldInteraction[] fullSlotGetItemInteraction;
         WorldInteraction[] fullReforgeStagingInteraction;
+        WorldInteraction[] fullSlotCraftingInteraction;
         Cuboidf[] offsetHalfSelections;
 
         public override void OnLoaded(ICoreAPI api) {
@@ -100,6 +101,18 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 };
             });
 
+            List<ItemStack> hammers = new List<ItemStack>();
+
+            foreach (Item i in capi.World.Items) {
+                if (i.Code == null) {
+                    continue;
+                }
+
+                if (i.Tool == EnumTool.Hammer) {
+                    hammers.Add(new ItemStack(i));
+                }
+            }
+
             fullSlotGetItemInteraction = ObjectCacheUtil.GetOrCreate(capi, "workbenchFullSlotGetItemInteraction", () => {
                 return new WorldInteraction[] {
                     new WorldInteraction() {
@@ -109,18 +122,18 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 };
             });
 
+            fullSlotCraftingInteraction = ObjectCacheUtil.GetOrCreate(capi, "workbenchStrikeCraftingInteraction", () => {
+                return new WorldInteraction[] {
+                    new WorldInteraction() {
+                        ActionLangCode = "blockhelp-workbench-strike-craft",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = hammers.ToArray()
+                    }
+                };
+            });
+
             fullReforgeStagingInteraction = ObjectCacheUtil.GetOrCreate(capi, "workbenchReadyToReforge", () => {
-                List<ItemStack> hammers = new List<ItemStack>();
-
-                foreach (Item i in capi.World.Items) {
-                    if (i.Code == null) {
-                        continue;
-                    }
-
-                    if (i.Tool == EnumTool.Hammer) {
-                        hammers.Add(new ItemStack(i));
-                    }
-                }
+                
 
                 return new WorldInteraction[] {
                     new WorldInteraction() {
@@ -143,7 +156,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 if (beWorkbench.IsSelectSlotEmpty(slotIndex)) {
                     return emptyCraftingSlotsInteraction.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
                 } else {
-                    return fullSlotGetItemInteraction.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer)); //Don't forget to update this when the Workbench can craft tools!
+                    return fullSlotGetItemInteraction.Append(fullSlotCraftingInteraction.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer))); //Don't forget to update this when the Workbench can craft tools!
                 }
             } else if (slotIndex == (int)WorkbenchSlots.Vise) {
                 return viseInteractions.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
@@ -163,12 +176,22 @@ namespace Toolsmith.ToolTinkering.Blocks {
             var entPlayer = byPlayer.Entity;
             if (!entPlayer.Controls.ShiftKey && workbenchEnt != null) {
                 if (blockSel.SelectionBoxIndex >= (int)WorkbenchSlots.CraftingSlot1 && blockSel.SelectionBoxIndex <= (int)WorkbenchSlots.CraftingSlot5) { //Player is attempting to place something in one of the 5 crafting spots!
-                    if (TryPlaceOrGetItemCraftingSlots(world, byPlayer, blockSel, workbenchEnt)) {
-                        if (world.Side.IsServer()) {
-                            world.PlaySoundAt(new AssetLocation("sounds/player/build"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
+                    if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack?.Collectible?.Tool == EnumTool.Hammer) {
+                        if (TryCraftingAction(world, byPlayer, blockSel, workbenchEnt)) {
+                            if (world.Side.IsServer()) {
+                                world.PlaySoundAt(new AssetLocation("sounds/block/meteoriciron-hit-pickaxe"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
+                            }
+                            workbenchEnt.MarkDirty(redrawOnClient: true);
+                            return true;
                         }
-                        workbenchEnt.MarkDirty(redrawOnClient: true);
-                        return true;
+                    } else {
+                        if (TryPlaceOrGetItemCraftingSlots(world, byPlayer, blockSel, workbenchEnt)) {
+                            if (world.Side.IsServer()) {
+                                world.PlaySoundAt(new AssetLocation("sounds/player/build"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
+                            }
+                            workbenchEnt.MarkDirty(redrawOnClient: true);
+                            return true;
+                        }
                     }
                 } else if (blockSel.SelectionBoxIndex == (int)WorkbenchSlots.ReforgeStaging) { //Player is attempting to place something in the Reforging spot!
                     if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack?.Collectible?.Tool == EnumTool.Hammer) {
@@ -218,7 +241,9 @@ namespace Toolsmith.ToolTinkering.Blocks {
         }
 
         public override bool OnBlockInteractCancel(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, EnumItemUseCancelReason cancelReason) {
-
+            if (ToolsmithModSystem.Config.AccessibilityDisableNeedToHoldClick && byPlayer.Entity.Controls.ShiftKey) {
+                return false;
+            }
 
             return true;
         }
@@ -240,6 +265,14 @@ namespace Toolsmith.ToolTinkering.Blocks {
                     return bench.TryGetItemFromWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
                 }
             }
+        }
+
+        protected bool TryCraftingAction(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, BlockEntityWorkbench bench) {
+            if (!bench.IsSelectSlotEmpty(blockSel.SelectionBoxIndex)) {
+                return bench.AttemptToCraft(world, byPlayer, blockSel);
+            }
+
+            return false;
         }
 
         protected bool TryPlaceOrGetItemReforgeSlot(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, BlockEntityWorkbench bench) {
