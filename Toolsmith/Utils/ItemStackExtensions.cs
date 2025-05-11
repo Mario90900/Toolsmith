@@ -63,6 +63,16 @@ namespace Toolsmith.Utils {
             return itemStack.Collectible.GetMaxDurability(itemStack);
         }
 
+        public static float GetToolheadDurabilityPercent(this ItemStack itemStack) {
+            var curDur = itemStack.GetToolheadCurrentDurability();
+            var maxDur = itemStack.GetToolheadMaxDurability();
+            if (curDur > 0 && maxDur > 0) {
+                return ((float)curDur) / ((float)maxDur);
+            }
+
+            return 0.0f;
+        }
+
         //Since this can be called or used before
         public static bool HasPlaceholderHead(this ItemStack itemStack) {
             if (itemStack.GetToolhead().Collectible.Code == ToolsmithConstants.FallbackHeadCode) {
@@ -85,7 +95,15 @@ namespace Toolsmith.Utils {
 
         //Sharpness!
         public static int GetToolCurrentSharpness(this ItemStack itemStack) {
-            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent, itemStack.GetToolMaxSharpness());
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolSharpnessCurrent)) {
+                if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHeadCurrentDur)) {
+                    itemStack.ResetNullHead(ToolsmithModSystem.Api.World);
+                } else {
+                    itemStack.ResetSharpness(ToolsmithModSystem.Api.World);
+                }
+            }
+
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent);
         }
 
         public static void SetToolCurrentSharpness(this ItemStack itemStack, int sharp) {
@@ -396,11 +414,13 @@ namespace Toolsmith.Utils {
                 var headStack = new ItemStack(world.GetItem(new AssetLocation(headCode)), 1);
                 var headDur = (int)(itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, baseDur) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
                 var headMaxDur = itemStack.GetToolheadMaxDurability();
-                var curSharpness = itemStack.GetToolCurrentSharpness();
-                var maxSharpness = itemStack.GetToolMaxSharpness();
 
                 headStack.SetPartCurrentDurability(headDur);
                 headStack.SetPartMaxDurability(headMaxDur);
+
+                var curSharpness = itemStack.GetToolCurrentSharpness();
+                var maxSharpness = itemStack.GetToolMaxSharpness();
+
                 headStack.SetPartCurrentSharpness(curSharpness);
                 headStack.SetPartMaxSharpness(maxSharpness);
                 itemStack.SetToolhead(headStack);
@@ -542,6 +562,10 @@ namespace Toolsmith.Utils {
         }
 
         public static int GetPartCurrentDurability(this ItemStack itemStack) {
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolPartCurrentDur)) {
+                itemStack.ResetHeadStats();
+            }
+
             return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolPartCurrentDur, itemStack.GetPartMaxDurability());
         }
 
@@ -584,25 +608,14 @@ namespace Toolsmith.Utils {
 
         public static int GetPartCurrentSharpness(this ItemStack itemStack) {
             if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolSharpnessCurrent)) {
-                itemStack.HandleNeedingToGetUnsetSharpness();
+                if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolPartCurrentDur)) {
+                    itemStack.ResetHeadStats();
+                } else {
+                    itemStack.ResetHeadSharpness();
+                }
             }
 
             return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent); //If somehow this goes unset but the Max Part is set? Uh... How'd that happen for one, but oh well, reset to max I guess!
-        }
-
-        public static int HandleNeedingToGetUnsetSharpness(this ItemStack itemStack) {
-            var max = itemStack.GetPartMaxSharpness();
-            itemStack.SetPartMaxSharpness(max);
-            float mult;
-            if (itemStack.Collectible.IsCraftableMetal()) {
-                mult = ToolsmithConstants.StartingSharpnessMult;
-            } else {
-                mult = ToolsmithConstants.NonMetalStartingSharpnessMult;
-            }
-
-            var result = (int)(mult * max);
-            itemStack.SetPartCurrentSharpness(result);
-            return result;
         }
 
         public static void SetPartMaxSharpness(this ItemStack itemStack, int sharpness) {
@@ -610,7 +623,11 @@ namespace Toolsmith.Utils {
         }
 
         public static int GetPartMaxSharpness(this ItemStack itemStack) {
-            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessMax, 200);
+            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolSharpnessMax)) {
+                itemStack.ResetHeadSharpness();
+            }
+
+            return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessMax);
         }
 
         public static float GetPartRemainingSharpnessPercent(this ItemStack itemStack) {
@@ -620,6 +637,70 @@ namespace Toolsmith.Utils {
                 return ((float)currentSharp / (float)maxSharp);
             }
             return 0.0f;
+        }
+
+        public static void ResetHeadStats(this ItemStack itemStack) {
+            if (itemStack.Attributes == null) {
+                itemStack.Attributes = new TreeAttribute();
+            }
+
+            float mult;
+            int maxDur;
+            int maxSharp;
+
+            if (RecipeRegisterModSystem.TinkerToolGridRecipes?.Count > 0) {
+                CollectibleObject firstTool;
+                var success = RecipeRegisterModSystem.TinkerToolGridRecipes.TryGetValue(itemStack.Collectible.Code, out firstTool);
+                if (success) {
+                    var baseDur = firstTool.GetBaseMaxDurability(new ItemStack(firstTool));
+                    maxDur = (int)(baseDur * ToolsmithModSystem.Config.HeadDurabilityMult);
+
+                    itemStack.SetPartMaxDurability(maxDur);
+                    itemStack.SetPartCurrentDurability(maxDur);
+
+                    if (itemStack.Collectible.IsCraftableMetal()) {
+                        mult = ToolsmithConstants.StartingSharpnessMult;
+                    } else {
+                        mult = ToolsmithConstants.NonMetalStartingSharpnessMult;
+                    }
+
+                    maxSharp = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
+                    itemStack.SetPartMaxSharpness(maxSharp);
+                    var result = (int)(mult * maxSharp);
+                    itemStack.SetPartCurrentSharpness(result);
+                    return;
+                }
+            }
+
+            maxDur = itemStack.GetPartMaxDurability();
+            itemStack.SetPartMaxDurability(maxDur);
+            itemStack.SetPartCurrentDurability(maxDur);
+
+            maxSharp = (int)((maxDur / ToolsmithModSystem.Config.HeadDurabilityMult) * ToolsmithModSystem.Config.SharpnessMult);
+            if (itemStack.Collectible.IsCraftableMetal()) {
+                mult = ToolsmithConstants.StartingSharpnessMult;
+            } else {
+                mult = ToolsmithConstants.NonMetalStartingSharpnessMult;
+            }
+
+            itemStack.SetPartMaxSharpness(maxSharp);
+            var curSharp = (int)(mult * maxSharp);
+            itemStack.SetPartCurrentSharpness(curSharp);
+        }
+
+        public static void ResetHeadSharpness(this ItemStack itemStack) {
+            var maxDur = itemStack.GetPartMaxDurability();
+            var maxSharp = (int)((maxDur / ToolsmithModSystem.Config.HeadDurabilityMult) * ToolsmithModSystem.Config.SharpnessMult);
+            itemStack.SetPartMaxSharpness(maxSharp);
+            float mult;
+            if (itemStack.Collectible.IsCraftableMetal()) {
+                mult = ToolsmithConstants.StartingSharpnessMult;
+            } else {
+                mult = ToolsmithConstants.NonMetalStartingSharpnessMult;
+            }
+
+            var result = (int)(mult * maxSharp);
+            itemStack.SetPartCurrentSharpness(result);
         }
 
         public static void SetHandleStatTag(this ItemStack itemStack, string tag) {

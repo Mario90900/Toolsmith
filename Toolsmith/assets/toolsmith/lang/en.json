@@ -105,6 +105,7 @@
 	"toolsmith:block-grindstone-andesite-north": "Andesite Grindstone",
 	
 	"game:blockhelp-grindstone-hone": "Hone metal item",
+	"game:honing-cutoff-message": "There's very little material left for honing. It looks like a great time for a reforge!",
 	"game:blockhelp-grindstone-deconstruct": "Take apart tool",
 	
 	"toolsmith:block-workbench-north": "Workbench",

@@ -27,7 +27,8 @@ namespace Toolsmith.Utils {
         public const float NonMetalStartingSharpnessMult = 0.66f;
         public const float HighSharpnessSpeedBonusMult = 0.05f;
         public const float LowSharpnessSpeedMalusMult = -0.1f;
-        public const float sharpenInterval = 0.4f;
+        public const float SharpenInterval = 0.4f;
+        public const float DoNotSharpenBelowPercent = 0.01f;
         public const int NumBitsReturnMinimum = 2;
         public const float StickAndBoneFailurePercent = 0.25f;
         public const float OtherHandleFailurePercent = 0.05f;

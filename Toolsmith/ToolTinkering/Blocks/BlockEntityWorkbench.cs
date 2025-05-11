@@ -23,11 +23,11 @@ namespace Toolsmith.ToolTinkering.Blocks {
         private (float x, float y, float z)[] offsetBySlot = { (0f, 0f, 0f), (0.4f, 1f, 0.3f), (0.6f, 1f, 0.6f), (0.8f, 1f, 0.3f), (1.0f, 1f, 0.6f), (1.2f, 1f, 0.3f), (0f, 0f, 0f), (1.55f, 1f, 0.55f) };
         
         private int craftingHitsCount = 0;
-        private (float xoff, float yoff, float zoff, float rot) craftingSlot1Wiggle = (0f, 0f, 0f, 0f);
-        private (float xoff, float yoff, float zoff, float rot) craftingSlot2Wiggle = (0f, 0f, 0f, 0f);
-        private (float xoff, float yoff, float zoff, float rot) craftingSlot3Wiggle = (0f, 0f, 0f, 0f);
-        private (float xoff, float yoff, float zoff, float rot) craftingSlot4Wiggle = (0f, 0f, 0f, 0f);
-        private (float xoff, float yoff, float zoff, float rot) craftingSlot5Wiggle = (0f, 0f, 0f, 0f);
+        private (float xoff, float yoff, float zoff, int rot) craftingSlot1Wiggle = (0f, 0f, 0f, 0);
+        private (float xoff, float yoff, float zoff, int rot) craftingSlot2Wiggle = (0f, 0f, 0f, 0);
+        private (float xoff, float yoff, float zoff, int rot) craftingSlot3Wiggle = (0f, 0f, 0f, 0);
+        private (float xoff, float yoff, float zoff, int rot) craftingSlot4Wiggle = (0f, 0f, 0f, 0);
+        private (float xoff, float yoff, float zoff, int rot) craftingSlot5Wiggle = (0f, 0f, 0f, 0);
 
         public override void Initialize(ICoreAPI api) {
             base.Initialize(api);
@@ -46,7 +46,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             return offsetBySlot[slotID];
         }
 
-        protected (float xoff, float yoff, float zoff, float rot) GetSlotsCraftingWiggleFactor(int slotID) {
+        protected (float xoff, float yoff, float zoff, int rot) GetSlotsCraftingWiggleFactor(int slotID) {
             switch (slotID) {
                 case 1:
                     return craftingSlot1Wiggle;
@@ -59,11 +59,11 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 case 5:
                     return craftingSlot5Wiggle;
                 default:
-                    return (0f, 0f, 0f, 0f);
+                    return (0f, 0f, 0f, 0);
             }
         }
 
-        protected void SetSlotsCraftingWiggleFactor(int slotID, (float x, float y, float z, float rot) wiggler) {
+        protected void SetSlotsCraftingWiggleFactor(int slotID, (float x, float y, float z, int rot) wiggler) {
             switch (slotID) {
                 case 1:
                     craftingSlot1Wiggle = wiggler;
@@ -85,11 +85,22 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
         protected void ResetCraftingAttempt() {
             craftingHitsCount = 0;
-            craftingSlot1Wiggle = (0f, 0f, 0f, 0f);
-            craftingSlot2Wiggle = (0f, 0f, 0f, 0f);
-            craftingSlot3Wiggle = (0f, 0f, 0f, 0f);
-            craftingSlot4Wiggle = (0f, 0f, 0f, 0f);
-            craftingSlot5Wiggle = (0f, 0f, 0f, 0f);
+            craftingSlot1Wiggle = (0f, 0f, 0f, 0);
+            craftingSlot2Wiggle = (0f, 0f, 0f, 0);
+            craftingSlot3Wiggle = (0f, 0f, 0f, 0);
+            craftingSlot4Wiggle = (0f, 0f, 0f, 0);
+            craftingSlot5Wiggle = (0f, 0f, 0f, 0);
+        }
+
+        protected void RandomizeWiggles(IWorldAccessor world) {
+            var rand = world.Rand;
+            for (int i = 1; i < 6; i++) {
+                var wiggler = GetSlotsCraftingWiggleFactor(i);
+                wiggler.xoff = (float)((rand.NextDouble() * 0.1f) - 0.05);
+                wiggler.zoff = (float)((rand.NextDouble() * 0.1f) - 0.05);
+                wiggler.rot = rand.Next(-10, 10);
+                SetSlotsCraftingWiggleFactor(i, wiggler);
+            }
         }
 
         public bool TryGetOrPutItemOnWorkbench(int slotSelection, ItemSlot mainHandSlot, IPlayer byPlayer, IWorldAccessor world) { //The item is valid for fitting in the slot, see if it is empty and if so, stick one in! Otherwise try and remove the existing item.
@@ -137,7 +148,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
         public bool AttemptToCraft(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             if (craftingHitsCount < ToolsmithConstants.NumHammerStrikesForWorkbenchCraftAction) {
                 craftingHitsCount++;
-                //Add Wiggles
+                RandomizeWiggles(world);
                 return true;
             } else {
                 ResetCraftingAttempt();
@@ -157,6 +168,9 @@ namespace Toolsmith.ToolTinkering.Blocks {
                             world.SpawnItemEntity(combinedStack, new Vec3d(Pos.X + 1.0, Pos.Y + 1.1, Pos.Z + 0.5));
                         }
 
+                        if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible.Tool == EnumTool.Hammer) {
+                            byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
+                        }
                         MarkDirty(redrawOnClient: true);
                         return true;
                     }
@@ -174,6 +188,9 @@ namespace Toolsmith.ToolTinkering.Blocks {
                             world.SpawnItemEntity(craftedTool, new Vec3d(Pos.X + 1.0, Pos.Y + 1.1, Pos.Z + 0.5));
                         }
 
+                        if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible.Tool == EnumTool.Hammer) {
+                            byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
+                        }
                         MarkDirty(redrawOnClient: true);
                         return true;
                     }
@@ -239,6 +256,9 @@ namespace Toolsmith.ToolTinkering.Blocks {
             ReforgingUtility.SetRecipeIDToWorkPiece(workItem, recipe);
             reforgingSlot.Itemstack = null;
             reforgingSlot.MarkDirty();
+            if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible.Tool == EnumTool.Hammer) {
+                byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
+            }
 
             var facing = BlockFacing.FromCode(Block.LastCodePart());
             if (facing == BlockFacing.WEST) {
@@ -361,15 +381,21 @@ namespace Toolsmith.ToolTinkering.Blocks {
             WorkbenchItemMeshCache[key] = mesh;
 
             var offset = offsetBySlot[slotIndex];
+            var wiggleFactor = GetSlotsCraftingWiggleFactor(slotIndex);
+            offset.x += wiggleFactor.xoff;
+            offset.z += wiggleFactor.zoff;
+
             mesh.Scale(new Vec3f(), 0.5f, 0.5f, 0.5f);
             mesh.Translate(offset.x - 0.15f, offset.y, offset.z - 0.15f);
             var facing = BlockFacing.FromCode(Block.LastCodePart());
             if (facing.Equals(BlockFacing.EAST)) {
-                mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), 0, 270 * (MathF.PI / 180), 0);
+                mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), 0, (270 + wiggleFactor.rot) * (MathF.PI / 180), 0);
             } else if (facing.Equals(BlockFacing.WEST)) {
-                mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), 0, 90 * (MathF.PI / 180), 0);
+                mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), 0, (90 + wiggleFactor.rot) * (MathF.PI / 180), 0);
             } else if (facing.Equals(BlockFacing.SOUTH)) {
-                mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), 0, 180 * (MathF.PI / 180), 0);
+                mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), 0, (180 + wiggleFactor.rot) * (MathF.PI / 180), 0);
+            } else {
+                mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), 0, wiggleFactor.rot * (MathF.PI / 180), 0);
             }
 
             return mesh;

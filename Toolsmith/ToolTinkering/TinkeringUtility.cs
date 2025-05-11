@@ -15,6 +15,8 @@ using Toolsmith.ToolTinkering.Items;
 using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.Client;
 using System.Reflection.Metadata.Ecma335;
+using Vintagestory.GameContent;
+using Vintagestory.API.Config;
 
 namespace Toolsmith.ToolTinkering {
     //This is beginning to hold the MEAT of the whole tinkering system. It has various helper functions that are being used in multiple places to help keep everything just running the single code calls and ensuring it isn't spaghetti while I add more ways to do the same things.
@@ -604,30 +606,49 @@ namespace Toolsmith.ToolTinkering {
             return false;
         }
 
-        public static bool ToolOrHeadNeedsSharpening(ItemStack item, IWorldAccessor world) {
-            var curSharp = item.GetToolCurrentSharpness();
-            var maxSharp = item.GetToolMaxSharpness();
+        public static bool ToolOrHeadNeedsSharpening(ItemStack item, IWorldAccessor world, EntityAgent byEntity = null) {
+            int curSharp;
+            int maxSharp;
             int curDur;
+            float durPercent;
             var toolType = IsValidSharpenTool(item.Collectible, world);
 
             if (toolType == 1) {
+                curSharp = item.GetToolCurrentSharpness();
+                maxSharp = item.GetToolMaxSharpness();
                 curDur = item.GetToolheadCurrentDurability();
+                durPercent = item.GetToolheadDurabilityPercent();
             } else if (toolType == 2) {
+                curSharp = item.GetToolCurrentSharpness();
+                maxSharp = item.GetToolMaxSharpness();
                 curDur = item.GetSmithedDurability();
+                durPercent = item.GetSmithedRemainingHPPercent();
             } else if (toolType == 3) {
+                curSharp = item.GetPartCurrentSharpness();
+                maxSharp = item.GetPartMaxSharpness();
                 curDur = item.GetPartCurrentDurability();
+                durPercent = item.GetPartRemainingHPPercent();
             } else {
+                curSharp = 0;
+                maxSharp = 0;
                 curDur = 0;
+                durPercent = 0;
             }
 
-            return (curSharp < maxSharp && curDur > 0);
+            if (byEntity != null && durPercent <= 0.01f) {
+                if (byEntity.Api.Side.IsClient()) {
+                    (byEntity.Api as ICoreClientAPI).TriggerIngameError(item, "HoningStopBeforeBreak", Lang.Get("honing-cutoff-message"));
+                }
+            }
+
+            return (curSharp < maxSharp && curDur > 0 && durPercent > 0.01f);
         }
 
         public static bool TryWhetstoneSharpening(ref float deltaLastTick, ref float lastInterval, float secondsUsed, ItemSlot slot, EntityAgent byEntity) {
             if (byEntity.World.Side.IsServer()) {
                 deltaLastTick = secondsUsed - lastInterval;
 
-                if (deltaLastTick >= ToolsmithConstants.sharpenInterval) { //Try not to repair EVERY single tick to space it out some. Cause of this, repair 5 durability each time so it doesn't take forever.
+                if (deltaLastTick >= ToolsmithConstants.SharpenInterval) { //Try not to repair EVERY single tick to space it out some. Cause of this, repair 5 durability each time so it doesn't take forever.
                     var whetstone = WhetstoneInOffhand(byEntity);
 
                     if (whetstone != null && !slot.Empty) { //If the offhand is still a Whetstone, sharpen! Otherwise break out of this entirely and end the action.
@@ -638,7 +659,7 @@ namespace Toolsmith.ToolTinkering {
                     }
 
                     deltaLastTick = 0;
-                    lastInterval = MathUtility.FloorToNearestMult(secondsUsed, ToolsmithConstants.sharpenInterval);
+                    lastInterval = MathUtility.FloorToNearestMult(secondsUsed, ToolsmithConstants.SharpenInterval);
 
                     if (!ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
                         return false; //End the interaction when it doesn't need sharpening anymore

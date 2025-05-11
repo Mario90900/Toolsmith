@@ -73,7 +73,7 @@ namespace Toolsmith.ToolTinkering.Items {
         }
 
         public override void OnModifiedInInventorySlot(IWorldAccessor world, ItemSlot slot, ItemStack extractedStack = null) {
-            if (honingScrape != null && honingScrape.IsPlaying) {
+            if (extractedStack != null && honingScrape != null && honingScrape.IsPlaying) {
                 honingScrape?.FadeOut(0.2f, (s) => { s.Dispose(); honingScrape = null; });
             }
 
@@ -90,7 +90,7 @@ namespace Toolsmith.ToolTinkering.Items {
                 return;
             }
 
-            if (!mainHandSlot.Empty && TinkeringUtility.ToolOrHeadNeedsSharpening(mainHandSlot.Itemstack, byEntity.World)) {
+            if (!mainHandSlot.Empty && TinkeringUtility.ToolOrHeadNeedsSharpening(mainHandSlot.Itemstack, byEntity.World, byEntity)) {
                 handling = EnumHandHandling.PreventDefault;
                 sharpening = true;
                 ToggleHoningSound(true, byEntity);
@@ -123,7 +123,7 @@ namespace Toolsmith.ToolTinkering.Items {
                 lastInterval = 0;
                 ToggleHoningSound(false, byEntity);
                 if (byEntity.World.Side.IsServer()) {
-                    byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity.Pos.AsBlockPos, 0, randomizePitch: false);
+                    byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity, randomizePitch: false);
                 }
                 totalSharpnessHoned = 0;
                 sharpening = false;
@@ -142,7 +142,7 @@ namespace Toolsmith.ToolTinkering.Items {
                 lastInterval = 0;
                 ToggleHoningSound(false, byEntity);
                 if (byEntity.World.Side.IsServer()) {
-                    byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity.Pos.AsBlockPos, 0, randomizePitch: false);
+                    byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity, randomizePitch: false);
                 }
                 totalSharpnessHoned = 0;
                 sharpening = false;
