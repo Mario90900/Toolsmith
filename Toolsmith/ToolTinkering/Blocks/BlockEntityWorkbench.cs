@@ -363,14 +363,24 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
                 ShapeTextureSource texSource = new(capi, shape, "For rendering item on a Workbench");
                 texSource.textures.Clear();
-                
-                foreach ((string texCode, AssetLocation assetLoc) in shape.Textures) { //Go through the shape's textures and populate the texSource with any that the shape already has defined
-                    if (stack.Class == EnumItemClass.Item && stack.Item.Textures.TryGetValue(texCode, out CompositeTexture texture)) { //Grab the item's own textures to slap on instead of the shape's base, or just run with the base.
-                        texSource.textures[texCode] = texture;
-                    } else if (stack.Class == EnumItemClass.Block && stack.Block.Textures.TryGetValue(texCode, out CompositeTexture blockTexture)) {
-                        texSource.textures[texCode] = blockTexture;
-                    } else {
-                        texSource.textures[texCode] = new CompositeTexture(assetLoc);
+
+                if (shape.Textures == null || shape.Textures.Count > 0) {
+                    foreach ((string texCode, AssetLocation assetLoc) in shape.Textures) { //Go through the shape's textures and populate the texSource with any that the shape already has defined
+                        if (stack.Class == EnumItemClass.Item && stack.Item.Textures.TryGetValue(texCode, out CompositeTexture texture)) { //Grab the item's own textures to slap on instead of the shape's base, or just run with the base.
+                            texSource.textures[texCode] = texture;
+                        } else if (stack.Class == EnumItemClass.Block && stack.Block.Textures.TryGetValue(texCode, out CompositeTexture blockTexture)) {
+                            texSource.textures[texCode] = blockTexture;
+                        } else {
+                            texSource.textures[texCode] = new CompositeTexture(assetLoc);
+                        }
+                    }
+                } else if (stack.Item != null && stack.Item.Textures != null && stack.Item.Textures.Count > 0) {
+                    foreach ((string texCode, CompositeTexture tex) in stack.Item.Textures) {
+                        texSource.textures.Add(texCode, tex);
+                    }
+                } else if (stack.Block != null && stack.Block.Textures != null && stack.Block.Textures.Count > 0) {
+                    foreach ((string texCode, CompositeTexture tex) in stack.Block.Textures) {
+                        texSource.textures.Add(texCode, tex);
                     }
                 }
 

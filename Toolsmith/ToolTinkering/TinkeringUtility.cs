@@ -629,10 +629,7 @@ namespace Toolsmith.ToolTinkering {
                 curDur = item.GetPartCurrentDurability();
                 durPercent = item.GetPartRemainingHPPercent();
             } else {
-                curSharp = 0;
-                maxSharp = 0;
-                curDur = 0;
-                durPercent = 0;
+                return false;
             }
 
             if (byEntity != null && durPercent <= 0.01f) {

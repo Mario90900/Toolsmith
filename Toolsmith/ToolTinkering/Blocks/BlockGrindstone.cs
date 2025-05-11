@@ -43,15 +43,15 @@ namespace Toolsmith.ToolTinkering.Blocks {
                     }
 
                     if (i.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                        if (i.IsCraftableMetal() && !i.HasBehavior<CollectibleBehaviorToolBlunt>()) { //If it's a tinkered tool and it's not blunt, it can be honed.
+                        if (!i.HasBehavior<CollectibleBehaviorToolBlunt>()) { //If it's a tinkered tool and it's not blunt, it can be honed.
                             honeables.Add(new ItemStack(i));
                         }
                         tinkerableTools.Add(new ItemStack(i)); //All tinkered tools can be deconstructed!
                         continue;
-                    } else if (i.HasBehavior<CollectibleBehaviorSmithedTools>() && i.IsCraftableMetal() && !i.HasBehavior<CollectibleBehaviorToolBlunt>()) { //If it's a smithed tool and not blunt, it can be honed.
+                    } else if (i.HasBehavior<CollectibleBehaviorSmithedTools>() && !i.HasBehavior<CollectibleBehaviorToolBlunt>()) { //If it's a smithed tool and not blunt, it can be honed.
                         honeables.Add(new ItemStack(i));
                         continue;
-                    } else if (i.HasBehavior<CollectibleBehaviorToolHead>() && i.IsCraftableMetal() && !i.HasBehavior<CollectibleBehaviorToolBlunt>()) {
+                    } else if (i.HasBehavior<CollectibleBehaviorToolHead>() && !i.HasBehavior<CollectibleBehaviorToolBlunt>()) {
                         honeables.Add(new ItemStack(i));
                         continue;
                     }

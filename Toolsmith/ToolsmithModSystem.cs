@@ -235,6 +235,7 @@ namespace Toolsmith {
                         Config = new ToolsmithConfigs();
                     }
                 }
+                Config.ModVersionNumber = ModVersion;
                 api.StoreModConfig<ToolsmithConfigs>(Config, ConfigUtility.ConfigFilename);
             } catch (Exception e) {
                 Mod.Logger.Error("Could not load config, using default settings instead!");

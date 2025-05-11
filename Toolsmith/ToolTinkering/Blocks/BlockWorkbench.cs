@@ -259,7 +259,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 return bench.TryGetItemFromWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
             } else {
                 ItemStack stack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
-                if (TinkeringUtility.IsAnyToolPart(stack.Collectible, world)) {
+                if (TinkeringUtility.IsAnyToolPart(stack.Collectible, world) || ReforgingUtility.IsPossibleMergeItem(stack, world)) {
                     return bench.TryGetOrPutItemOnWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
                 } else {
                     return bench.TryGetItemFromWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);

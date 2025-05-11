@@ -603,6 +603,18 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
             return destination;
         }
 
+        public static bool IsPossibleMergeItem(ItemStack item, IWorldAccessor world) {
+            if (world.Side.IsServer() && ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(item.Collectible.Code.ToString())) {
+                return false;
+            }
+            var recipe = TryGetSmithingRecipeFromCache(item, world.Api);
+            if (recipe != null && recipe.Output.StackSize > 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         //All of these slots will have an item for sure, and it should be more then 2 long.
         public static bool CheckForPossibleMerger(ItemSlot[] slots) {
             var firstCode = slots[0].Itemstack.Collectible.Code;
@@ -621,6 +633,9 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
 
             for (int i = 1; i < count; i++) {
                 totalDur += slots[i].Itemstack.Collectible.GetRemainingDurability(slots[i].Itemstack);
+            }
+            foreach (var slot in slots) {
+                slot.Itemstack = null;
             }
 
             newStack.Collectible.SetDurability(newStack, (int)Math.Round((double)(totalDur / count), MidpointRounding.AwayFromZero));

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Toolsmith.Client;
 using Toolsmith.Client.Behaviors;
 using Toolsmith.Config;
+using Toolsmith.ToolTinkering.Behaviors;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.Util;
@@ -96,11 +97,7 @@ namespace Toolsmith.Utils {
         //Sharpness!
         public static int GetToolCurrentSharpness(this ItemStack itemStack) {
             if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolSharpnessCurrent)) {
-                if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolHeadCurrentDur)) {
-                    itemStack.ResetNullHead(ToolsmithModSystem.Api.World);
-                } else {
-                    itemStack.ResetSharpness(ToolsmithModSystem.Api.World);
-                }
+                itemStack.ResetSharpness(ToolsmithModSystem.Api.World);
             }
 
             return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolSharpnessCurrent);
