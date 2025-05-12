@@ -26,7 +26,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     var totalMult = bindingStats.baseHPfactor * (1 + bindingStats.selfHPBonus);
                     dsc.AppendLine("");
                     dsc.AppendLine(Lang.Get("toolbindingtotalmult", totalMult.ToString("0.00")));
-                    dsc.AppendLine(Lang.Get("toolbindinghandlebonus", bindingStats.handleHPBonus));
+                    dsc.AppendLine(Lang.Get("toolbindinghandlebonus", Math.Round(bindingStats.handleHPBonus * 100)));
                     dsc.AppendLine(Lang.Get("toolbindingrecoverychance", Math.Round(bindingStats.recoveryPercent * 100)));
                     if (bindingStats.isMetal) {
                         dsc.AppendLine(Lang.Get("toolbindingmetaldrops"));

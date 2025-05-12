@@ -52,12 +52,12 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     var totalHandleMult = handleStats.baseHPfactor * (1 + handleStats.selfHPBonus);
                     dsc.AppendLine("");
                     dsc.AppendLine(Lang.Get("toolhandletotalmult", totalHandleMult.ToString("0.00")));
-                    dsc.AppendLine(Lang.Get("toolhandlebindingbonus", handleStats.bindingHPBonus));
+                    dsc.AppendLine(Lang.Get("toolhandlebindingbonus", Math.Round(handleStats.bindingHPBonus * 100)));
                     dsc.AppendLine(Lang.Get("toolhandleusespeedbonus", Math.Round(handleStats.speedBonus * 100)));
                     if (inSlot.Itemstack.HasHandleTreatmentTag()) {
                         var treatmentStats = ToolsmithModSystem.Stats.treatments.Get(inSlot.Itemstack.GetHandleTreatmentTag());
                         if (treatmentStats != null) {
-                            dsc.AppendLine(Lang.Get("toolhandletreatmentbonus", treatmentStats.handleHPbonus));
+                            dsc.AppendLine(Lang.Get("toolhandletreatmentbonus", Math.Round(treatmentStats.handleHPbonus * 100)));
                         }
                     }
                     if (inSlot.Itemstack.HasHandleGripTag()) {
