@@ -16,7 +16,7 @@ namespace Toolsmith.Config {
 
     public class GripStats {
         public string id;
-        public string texturePath = "plain"; 
+        public string texturePath = "plain";
         public string langTag = ""; //A tag to set for localization purposes that describes the grip on the tool IE: "grip-cloth" for cloth
         public float speedBonus; //The best speed bonuses come from the grip of the tool. If you can hold it better, you can use it faster...
         public float chanceToDamage; //And more efficiently too. Gives the handle a chance to ignore damage!
@@ -30,7 +30,7 @@ namespace Toolsmith.Config {
 
     public class BindingStats {
         public string id;
-        public float baseHPfactor; 
+        public float baseHPfactor;
         public float selfHPBonus;
         public float handleHPBonus;
         public float recoveryPercent; //If the HP is below this percent, then the binding is ruined if another part breaks

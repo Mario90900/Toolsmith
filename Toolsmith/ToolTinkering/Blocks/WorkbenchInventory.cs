@@ -90,7 +90,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
         public ItemStack? GetItemFromSlot(int slotID) {
             ItemSlot? slot = GetSlotFromSelectionID(slotID);
 
-            if (slot == null || slot.Empty) { 
+            if (slot == null || slot.Empty) {
                 return null;
             }
 

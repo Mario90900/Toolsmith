@@ -250,7 +250,7 @@ namespace Toolsmith.Utils {
                     renderTree.SetPartShapePath(handleStats.handleShapePath);
                     textureTree.SetPartTexturePathFromKey("wood", ToolsmithConstants.DebarkedWoodPathMinusType + "oak");
                 }
-                
+
                 if (grip != null) {
                     var gripTree = multiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartGripName);
                     var gripRenderTree = gripTree.GetPartRenderTree();
@@ -377,7 +377,7 @@ namespace Toolsmith.Utils {
             if (itemStack.Attributes == null) {
                 itemStack.Attributes = new TreeAttribute();
             }
-            
+
             //Figure out the Tool Head and add the missing stats and ItemStack!
             if (RecipeRegisterModSystem.TinkerToolGridRecipes?.Count > 0) { //If this is being ran on the server-side or it is singleplayer, then RecipeRegisterModSystem will have actually booted and everything!
                 string headCode = null;
@@ -429,7 +429,7 @@ namespace Toolsmith.Utils {
                 var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
                 var headStack = new ItemStack(world.GetItem(new AssetLocation(ToolsmithConstants.FallbackHeadCode)), 1); //Placeholder Candle! Wow! It'll be something so it actually _have_ something in there. No more nulls.
                 var curHeadDur = (int)(itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, baseDur) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
-                var sharpness = itemStack.GetToolCurrentSharpness(); //Even though this isn't used, this call is important because it will 
+                var sharpness = itemStack.GetToolCurrentSharpness(); //Even though this isn't used, this call is important because it will
 
                 itemStack.SetToolhead(headStack);
                 itemStack.SetToolheadCurrentDurability(curHeadDur);
@@ -489,7 +489,7 @@ namespace Toolsmith.Utils {
                 bindingWithStats = ToolsmithModSystem.Config.BindingRegistry.Get(binding.Collectible.Code.Path);
                 bindingStats = ToolsmithModSystem.Stats.bindings.Get(bindingWithStats.bindingStatTag);
             }
-            
+
             var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
             var handleStats = ToolsmithModSystem.Stats.baseHandles.Get(handleWithStats.handleStatTag);
 
@@ -798,7 +798,7 @@ namespace Toolsmith.Utils {
             return ingotItem?.Variant["metal"] ?? ingotItem?.Variant["material"];
         }
 
-        //Will return null if the given CollectibleObject does not have a 'metal' or 'material' variant typing! 
+        //Will return null if the given CollectibleObject does not have a 'metal' or 'material' variant typing!
         public static string GetMetalMaterial(this CollectibleObject collectibleObject) {
             return collectibleObject.Variant["metal"] ?? collectibleObject.Variant["material"];
         }

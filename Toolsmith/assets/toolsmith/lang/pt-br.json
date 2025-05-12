@@ -18,26 +18,26 @@
 	"game:toolhandlefullyprepared": "Este cabo foi tratado com {0} e recebeu uma empunhadura de {1}.",
 	"game:toolhandletreated": "Este cabo foi tratado com {0}.",
 	"game:toolhandlegripped": "Este cabo tem uma empunhadura de {0}.",
-	
+
 	"item-crudehandle": "Cabo de Ferramenta Bruto",
 	"item-handle": "Cabo de Ferramenta Entalhado",
 	"item-carpentedhandle": "Cabo de Ferramenta Profissional",
 	"item-sandpaper": "Lixa",
-	
+
 	"game:grip-twine": "Barbante",
 	"game:grip-cloth": "Pano",
 	"game:grip-leather": "Couro",
 	"game:grip-sturdy": "Resistente",
-	
+
 	"game:treatment-fat": "Engraxado",
 	"game:treatment-wax": "Encerado",
 	"game:treatment-oil": "Oliado",
-	
+
 	"item-oldcrudehandle-plain": "Cabo Velho - Por favor, me fabrique!",
 	"item-oldcrudehandle-twine": "Cabo Velho - Por favor, me fabrique!",
 	"item-oldcrudehandle-cloth": "Cabo Velho - Por favor, me fabrique!",
 	"item-oldcrudehandle-leather": "Cabo Velho - Por favor, me fabrique!",
-	
+
 	"item-oldhandle-none-finished-plain": "Cabo Velho - Por favor, me fabrique!",
 	"item-oldhandle-none-finished-twine": "Cabo Velho - Por favor, me fabrique!",
 	"item-oldhandle-none-finished-cloth": "Cabo Velho - Por favor, me fabrique!",
@@ -58,7 +58,7 @@
 	"item-oldhandle-oil-finished-cloth": "Cabo Velho - Por favor, me fabrique!",
 	"item-oldhandle-oil-finished-leather": "Cabo Velho - Por favor, me fabrique!",
 	"item-oldhandle-oil-finished-sturdy": "Cabo Velho - Por favor, me fabrique!",
-	
+
 	"item-oldcarpentedhandle-none-finished-plain": "Cabo Velho - Por favor, me fabrique!",
 	"item-oldcarpentedhandle-none-finished-twine": "Cabo Velho - Por favor, me fabrique!",
 	"item-oldcarpentedhandle-none-finished-cloth": "Cabo Velho - Por favor, me fabrique!",
@@ -79,25 +79,25 @@
 	"item-oldcarpentedhandle-oil-finished-cloth": "Cabo Velho - Por favor, me fabrique!",
 	"item-oldcarpentedhandle-oil-finished-leather": "Cabo Velho - Por favor, me fabrique!",
 	"item-oldcarpentedhandle-oil-finished-sturdy": "Cabo Velho - Por favor, me fabrique!",
-	
+
 	"toolsmith:item-whetstone-chert": "Pedra de Afiar de Sílex",
 	"toolsmith:item-whetstone-granite": "Pedra de Afiar de Granito",
 	"toolsmith:item-whetstone-andesite": "Pedra de Afiar de Andesito",
 	"toolsmith:item-whetstone-basalt": "Pedra de Afiar de Basalto",
 	"toolsmith:item-whetstone-peridotite": "Pedra de Afiar de Peridotito",
-	
+
 	"toolsmith:item-tinkertoolparts": "Cabeça e Cabo de Ferramenta",
-	
+
 	"toolsmith:block-grindstone-granite-north": "roda de amolar de Granito",
 	"toolsmith:block-grindstone-sandstone-north": "roda de amolar de Arenito",
 	"toolsmith:block-grindstone-shale-north": "roda de amolar de Xisto",
 	"toolsmith:block-grindstone-andesite-north": "roda de amolar de Andesito",
-	
+
 	"game:blockhelp-grindstone-hone": "Afiar item metálico",
 	"game:blockhelp-grindstone-deconstruct": "Desmontar ferramenta",
-	
+
 	"toolsmith:block-workbench-north": "Bancada de Trabalho",
-	
+
 	"game:blockhelp-workbench-reforge": "Reforjar ferramenta ou cabeça",
 	"game:blockhelp-workbench-deconstruct": "Desmontar ferramenta",
 	"game:blockhelp-workbench-craftingspot": "Colocar parte da ferramenta para montagem",

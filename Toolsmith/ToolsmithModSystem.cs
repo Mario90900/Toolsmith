@@ -133,7 +133,7 @@ namespace Toolsmith {
                 CalculateBindingTiers();
                 return;
             }
-            
+
             if (Config.PrintAllParsedToolsAndParts) {
                 Logger.Debug("Single Part Tools:");
             }

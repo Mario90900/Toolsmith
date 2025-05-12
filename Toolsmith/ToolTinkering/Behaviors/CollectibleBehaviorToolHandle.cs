@@ -176,7 +176,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                         if (treatment.Class == EnumItemClass.Block && (treatment.Block as ILiquidInterface) != null) {
                             treatment = (treatment.Block as ILiquidInterface).GetContent(treatment);
                         }
-                        
+
                         var treatmentStatPair = ToolsmithModSystem.Config.TreatmentRegistry.TryGetValue(treatment.Collectible.Code.Path);
                         var treatmentStats = ToolsmithModSystem.Stats.treatments.TryGetValue(treatmentStatPair.treatmentStatTag);
                         var handleStatPair = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handleSlot.Itemstack.Collectible.Code.Path);

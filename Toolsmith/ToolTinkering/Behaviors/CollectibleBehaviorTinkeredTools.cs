@@ -14,7 +14,7 @@ using Vintagestory.API.Util;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorTinkeredTools : CollectibleBehavior {
-        
+
 
 
         public CollectibleBehaviorTinkeredTools(CollectibleObject collObj) : base(collObj) {

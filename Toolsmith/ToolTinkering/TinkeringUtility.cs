@@ -379,7 +379,7 @@ namespace Toolsmith.ToolTinkering {
                     headTextureTree.SetPartTexturePathFromKey(tex.Key, tex.Value.Base);
                 }
             }
-            
+
             //Handle time for the Render Data! But at least that's already part of the handle by now. Most likely.
             if (handle.HasMultiPartRenderTree()) {
                 var handleMultiPartTree = handle.GetMultiPartRenderTree();
@@ -486,7 +486,7 @@ namespace Toolsmith.ToolTinkering {
             return null;
         }
 
-        //Send it an array of itemslots, and it will see if it is valid for crafting a tool, then return the ItemStacks in an array 
+        //Send it an array of itemslots, and it will see if it is valid for crafting a tool, then return the ItemStacks in an array
         public static ItemSlot[] CheckForValidTool(ItemSlot[] slots) {
             bool foundHead = false;
             int headSlot = -1;
@@ -588,7 +588,7 @@ namespace Toolsmith.ToolTinkering {
             } else if (item.HasBehavior<CollectibleBehaviorToolBinding>()) {
                 return true;
             }
-            
+
             return false;
         }
 

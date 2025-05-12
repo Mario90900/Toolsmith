@@ -10,7 +10,7 @@ using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorSmithedTools : CollectibleBehavior {
-        
+
 
 
         public CollectibleBehaviorSmithedTools(CollectibleObject collObj) : base(collObj) {

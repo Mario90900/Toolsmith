@@ -21,7 +21,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling) { //Handle the grinding code here as well as the tool itself! Probably can offload the core interaction to a helper utility function?
             var entPlayer = (byEntity as EntityPlayer);
-            
+
             if (TinkeringUtility.ValidHandleInOffhand(byEntity)) { //Check for Handle in Offhand
                 handHandling = EnumHandHandling.PreventDefault;
                 handling = EnumHandling.PreventSubsequent;

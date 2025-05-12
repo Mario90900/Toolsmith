@@ -35,7 +35,7 @@ namespace Toolsmith.Utils {
             return (double)((-5 * totalSharpened) + 3);
         }
 
-        //A linear change from 40% sharpened giving 100% chance to damage, down to a 5% chance at 50% Sharp! 
+        //A linear change from 40% sharpened giving 100% chance to damage, down to a 5% chance at 50% Sharp!
         public static bool ShouldDamageFromSharpening(IWorldAccessor world, float totalSharpnessHoned) {
             bool shouldDamage = false;
             //Once again thanks Wolfram Alpha! Figured I'd just make this one Linear cause it really isn't that meaningful to have a curve here.

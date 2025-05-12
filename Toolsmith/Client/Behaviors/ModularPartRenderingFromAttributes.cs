@@ -34,10 +34,10 @@ namespace Toolsmith.Client.Behaviors {
 
         public override void OnLoaded(ICoreAPI api) {
             base.OnLoaded(api);
-            
+
             this.api = api;
             capi = api as ICoreClientAPI;
-            
+
             AddAllToCreativeInventory();
         }
 
@@ -160,7 +160,7 @@ namespace Toolsmith.Client.Behaviors {
 
         public string GetMeshCacheKey(ItemStack itemstack) {
             string cacheKey = item.Code.ToShortString();
-            
+
             if (itemstack.HasPartRenderTree()) {
                 var renderTree = itemstack.GetPartRenderTree();
                 GetMeshCacheKeyFromSubTrees(ref cacheKey, renderTree);
@@ -201,7 +201,7 @@ namespace Toolsmith.Client.Behaviors {
                 }
             }
             ConstructStacksWithRecursion(stacks, tree, 0);
-            
+
             JsonItemStack stackWithNoAttributes = new() {
                 Code = item.Code,
                 Type = EnumItemClass.Item
@@ -225,12 +225,12 @@ namespace Toolsmith.Client.Behaviors {
             }
         }
 
-        //This will parse through the Behavior's properties and all the data that had been entered there, compiling all of the "variant" 
+        //This will parse through the Behavior's properties and all the data that had been entered there, compiling all of the "variant"
         private void ConstructStacksWithRecursion(List<JsonItemStack> stacks, ITreeAttribute tree, int index) { //Will likely not be able to construct full modular tools.
             if (properties == null) { //If it's null, then we just break out. Probably something went wrong and we shoudn't have gotten here anyway.
                 return;
             }
-            
+
             if (properties.textures.Length <= index) { //If the current step is beyond the length of the Textures array, then we can cap it off and collapse this line of calls here.
                 stacks.Add(GenJsonStack(tree)); //Add it to the list of itemstacks, and then collapse
                 return;
