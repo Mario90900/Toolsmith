@@ -372,6 +372,9 @@ namespace Toolsmith.ToolTinkering {
             if (useType == EnumHandInteract.HeldItemInteract) {
                 if (byEntity != null && byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
                     var bh = byEntity.LeftHandItemSlot.Itemstack.Collectible.GetBehavior<CollectibleBehaviorOffhandDominantInteraction>();
+                    if (bh.AskItemForHasInteractionAvailable(byEntity.LeftHandItemSlot, slot, byEntity, blockSel, entitySel, firstEvent)) {
+                        return true;
+                    }
                     bh.OnHeldOffhandDominantStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
                     return false;
                 }
@@ -387,6 +390,9 @@ namespace Toolsmith.ToolTinkering {
                 EnumHandInteract handUse = byEntity.Controls.HandUse;
                 if (handUse != EnumHandInteract.HeldItemAttack) {
                     var bh = byEntity.LeftHandItemSlot.Itemstack.Collectible.GetBehavior<CollectibleBehaviorOffhandDominantInteraction>();
+                    if (bh.AskItemForHasInteractionAvailable(byEntity.LeftHandItemSlot, slot, byEntity, blockSel, entitySel)) {
+                        return true;
+                    }
                     var retBool = bh.OnHeldOffhandDominantStep(secondsPassed, slot, byEntity, blockSel, entitySel);
                     if (retBool) {
                         __result = handUse;
@@ -407,6 +413,9 @@ namespace Toolsmith.ToolTinkering {
                 EnumHandInteract handUse = byEntity.Controls.HandUse;
                 if (handUse != EnumHandInteract.HeldItemAttack) {
                     var bh = byEntity.LeftHandItemSlot.Itemstack.Collectible.GetBehavior<CollectibleBehaviorOffhandDominantInteraction>();
+                    if (bh.AskItemForHasInteractionAvailable(byEntity.LeftHandItemSlot, slot, byEntity, blockSel, entitySel)) {
+                        return true;
+                    }
                     var retBool = bh.OnHeldOffhandDominantCancel(secondsPassed, slot, byEntity, blockSel, entitySel, cancelReason);
                     if (retBool) {
                         __result = EnumHandInteract.None;
@@ -426,6 +435,9 @@ namespace Toolsmith.ToolTinkering {
             if (useType == EnumHandInteract.HeldItemInteract) {
                 if (byEntity != null && byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
                     var bh = byEntity.LeftHandItemSlot.Itemstack.Collectible.GetBehavior<CollectibleBehaviorOffhandDominantInteraction>();
+                    if (bh.AskItemForHasInteractionAvailable(byEntity.LeftHandItemSlot, slot, byEntity, blockSel, entitySel)) {
+                        return true;
+                    }
                     bh.OnHeldOffhandDominantStop(secondsPassed, slot, byEntity, blockSel, entitySel);
                     return false;
                 }

@@ -152,8 +152,11 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 return true;
             } else {
                 ResetCraftingAttempt();
-                ItemSlot[] craftingSlots = Inventory.GetFullCraftingSlots();
+                if (world.Side.IsClient()) {
+                    return true;
+                }
 
+                ItemSlot[] craftingSlots = Inventory.GetFullCraftingSlots();
                 if (craftingSlots.Count() > 1) {
                     if (ReforgingUtility.CheckForPossibleMerger(craftingSlots)) {
                         var combinedStack = ReforgingUtility.MergeDupesAndReturn(craftingSlots);

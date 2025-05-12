@@ -175,6 +175,23 @@ namespace Toolsmith.ToolTinkering {
             }
         }
 
+        //Helper method to centralize the checks for if something should attempt to access this Slot or Itemstack generally for purposes of handling or accessing any Attribute data. This is important to prevent it from assigning attribute data to something that shouldn't get it, IE trader inventories or creative before it's actually pulled out.
+        public static bool ShouldNotAccessStats(ItemSlot slot) {
+            if (slot == null) {
+                return true;
+            }
+
+            if (slot.Itemstack == null || slot.Inventory == null) {
+                return true;
+            }
+
+            if (slot.Inventory.GetType() == typeof(DummyInventory) || slot.Inventory.GetType() == typeof(CreativeInventoryTab) || slot.Inventory.GetType() == typeof(InventoryTrader)) {
+                return true;
+            }
+
+            return false;
+        }
+
         public static void HandleBrokenTinkeredTool(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int remainingHeadDur, int remainingSharpness, int remainingHandleDur, int remainingBindingDur, bool headBroke, bool refillSlot) {
             ItemStack brokenToolStack = itemslot.Itemstack;
             CollectibleObject toolObject = brokenToolStack.Collectible;

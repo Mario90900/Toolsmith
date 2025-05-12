@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorSmithedTools : CollectibleBehavior {
@@ -17,7 +18,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {
-            if (inSlot.Itemstack == null || inSlot.Inventory == null || inSlot.Inventory.GetType() == typeof(DummyInventory) || inSlot.Inventory.GetType() == typeof(CreativeInventoryTab)) {
+            if (TinkeringUtility.ShouldNotAccessStats(inSlot)) {
                 return;
             }
 

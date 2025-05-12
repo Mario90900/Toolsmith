@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.Utils;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -13,7 +14,7 @@ using Vintagestory.GameContent;
 using Vintagestory.ServerMods.NoObf;
 
 namespace Toolsmith.ToolTinkering.Items {
-    public class ItemWhetstone : Item {
+    public class ItemWhetstone : Item, IOffhandDominantInteractionItem {
         protected ILoadedSound honingScrape;
         protected bool sharpening = false;
         protected float totalSharpnessHoned = 0;
@@ -153,6 +154,16 @@ namespace Toolsmith.ToolTinkering.Items {
             } else {
                 return true;
             }
+        }
+
+        //It is important to know that this will send the OffhandItem the Main Hand slot! And not the Offhand one like in the _actual_ calls above.
+        //This returns false if it should steal the call, and true if it should let it keep going.
+        public bool HasOffhandInteractionAvailable(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent) {
+            if (!slot.Empty && TinkeringUtility.IsValidSharpenTool(slot.Itemstack.Collectible, byEntity.World) > 0) {
+                return false;
+            }
+            
+            return true;
         }
     }
 }
