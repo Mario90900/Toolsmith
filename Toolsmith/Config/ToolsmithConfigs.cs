@@ -141,18 +141,18 @@ namespace Toolsmith.Config {
 
     /*
      * Organizing thoughts for the multi-shape rendering and changing handles further to use that:
-     * 
+     *
      * No more testing if a segment has a shape, all of them _should_ have a shape set, except for Handles in which the default item's shape will still be used, IE: Stick and Bone. It just won't be modular for the textures.
      *  - So if something isn't set, just use the item's default shape in general. Bindings and other parts will likely _want_ to define a shape though to actually have it look good.
-     *  
+     *
      * The tesselator will probably not be bothered by excess data if given it, probably? Hopefully.
      * Not every texture must be used for the provided shape?
-     * 
+     *
      * Two types of rendering, multi-shape and single 'parts' ie single shapes. Bindings would be a single shape, a Tool's Head is a single shape, it's just the head. Multi-Shape is where you expect a tree containing trees of the indidivual 'part' data and handle them!
      *  - Perhaps it might help in general to use the 'Shape' path to just include an indentifier for said part's shape? Then grab it from the stored cache... It's what I was doing for handles.
-     * 
+     *
      * Probably make some more shapes for the Grips and such another day haha. Or after the code bit is 'done'?
-     * 
+     *
      * Important to remember: A Multi Part Render can have anywhere from 1 to a ton of parts. Must be able to handle individual ones as well as all.
      */
 }

@@ -24,7 +24,7 @@ namespace Toolsmith.ToolTinkering.Items {
                 crafting = true;
                 return;
             }
-            
+
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
         }
 

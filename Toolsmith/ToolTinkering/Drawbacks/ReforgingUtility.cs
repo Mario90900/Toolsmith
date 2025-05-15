@@ -520,7 +520,7 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
                     adjacent.Item3--;
                     if (adjacent.Item3 < 0) {
                         adjacent.Item3 = 0;
-                        
+
                     }
                     break;
                 case 3:

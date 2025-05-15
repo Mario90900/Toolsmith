@@ -32,7 +32,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             if (api.Side.IsServer()) {
                 return;
             }
-            
+
             ICoreClientAPI capi = api as ICoreClientAPI;
 
             viseInteractions = ObjectCacheUtil.GetOrCreate(capi, "workbenchViseInteraction", () => {
@@ -133,7 +133,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             });
 
             fullReforgeStagingInteraction = ObjectCacheUtil.GetOrCreate(capi, "workbenchReadyToReforge", () => {
-                
+
 
                 return new WorldInteraction[] {
                     new WorldInteraction() {
@@ -250,7 +250,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
         //This is only hit if it actually times out from someone holding it for too long - or the tool/head is finished repairing
         public override void OnBlockInteractStop(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
-            
+
         }
 
         //Run the checks to see if it's a valid item to even put in the selected slot here.

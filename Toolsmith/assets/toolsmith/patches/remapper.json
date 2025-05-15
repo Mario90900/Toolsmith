@@ -8,7 +8,7 @@
 			"/iir remapq toolsmith:oldcrudehandle-twine toolsmith:crudehandle-twine force",
 			"/iir remapq toolsmith:oldcrudehandle-cloth toolsmith:crudehandle-cloth force",
 			"/iir remapq toolsmith:oldcrudehandle-leather toolsmith:crudehandle-leather force",
-			
+
 			"/iir remapq toolsmith:oldhandle-none-finished-plain toolsmith:handle-none-finished-plain force",
 			"/iir remapq toolsmith:oldhandle-none-finished-twine toolsmith:handle-none-finished-twine force",
 			"/iir remapq toolsmith:oldhandle-none-finished-cloth toolsmith:handle-none-finished-cloth force",
@@ -32,7 +32,7 @@
 			"/iir remapq toolsmith:oldhandle-oil-finished-cloth toolsmith:handle-oil-finished-cloth force",
 			"/iir remapq toolsmith:oldhandle-oil-finished-leather toolsmith:handle-oil-finished-leather force",
 			"/iir remapq toolsmith:oldhandle-oil-finished-sturdy toolsmith:handle-oil-finished-sturdy force",
-			
+
 			"/iir remapq toolsmith:oldcarpentedhandle-none-finished-plain toolsmith:carpentedhandle-none-finished-plain force",
 			"/iir remapq toolsmith:oldcarpentedhandle-none-finished-twine toolsmith:carpentedhandle-none-finished-twine force",
 			"/iir remapq toolsmith:oldcarpentedhandle-none-finished-cloth toolsmith:carpentedhandle-none-finished-cloth force",

@@ -21,7 +21,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
         protected ICoreClientAPI capi;
         protected Dictionary<string, MeshData> WorkbenchItemMeshCache => ObjectCacheUtil.GetOrCreate(Api, ToolsmithConstants.WorkbenchItemRenderingMeshRefs, () => new Dictionary<string, MeshData>());
         private (float x, float y, float z)[] offsetBySlot = { (0f, 0f, 0f), (0.4f, 1f, 0.3f), (0.6f, 1f, 0.6f), (0.8f, 1f, 0.3f), (1.0f, 1f, 0.6f), (1.2f, 1f, 0.3f), (0f, 0f, 0f), (1.55f, 1f, 0.55f) };
-        
+
         private int craftingHitsCount = 0;
         private (float xoff, float yoff, float zoff, int rot) craftingSlot1Wiggle = (0f, 0f, 0f, 0);
         private (float xoff, float yoff, float zoff, int rot) craftingSlot2Wiggle = (0f, 0f, 0f, 0);
@@ -240,7 +240,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             if (ToolsmithModSystem.Config.DebugMessages) {
                 ToolsmithModSystem.Logger.Warning("What is the workitem? " + workItem.Collectible.Code);
             }
-            
+
             //Generate the complete work item voxel data from the recipe.
             var recipeVoxels = ReforgingUtility.GetVoxelCopyFromRecipe(recipe); //Smithing Plus trims and modifies this array before Serializing it through the Anvil and applying the data to the WorkItem Attributes. It's likely better to follow suit.
 
@@ -273,7 +273,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             } else {
                 world.SpawnItemEntity(workItem, new Vec3d(Pos.X + 1.5, Pos.Y + 1.1, Pos.Z + 0.5));
             }
-            
+
             MarkDirty(redrawOnClient: true);
 
             return true;

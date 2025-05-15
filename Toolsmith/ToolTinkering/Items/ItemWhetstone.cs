@@ -162,7 +162,7 @@ namespace Toolsmith.ToolTinkering.Items {
             if (!slot.Empty && TinkeringUtility.IsValidSharpenTool(slot.Itemstack.Collectible, byEntity.World) > 0) {
                 return false;
             }
-            
+
             return true;
         }
     }
