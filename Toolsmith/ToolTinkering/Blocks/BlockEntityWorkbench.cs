@@ -210,7 +210,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             }
 
             var percentDamage = ReforgingUtility.GetReforgablePercentDamage(reforgingSlot.Itemstack);
-            if (percentDamage > 0.9f) {
+            if (percentDamage > ToolsmithModSystem.Config.PercentDamageForReforge) {
                 return false;
             }
 

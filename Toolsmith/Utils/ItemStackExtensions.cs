@@ -559,10 +559,6 @@ namespace Toolsmith.Utils {
         }
 
         public static int GetPartCurrentDurability(this ItemStack itemStack) {
-            if (!itemStack.Attributes.HasAttribute(ToolsmithAttributes.ToolPartCurrentDur)) {
-                itemStack.ResetHeadStats();
-            }
-
             return itemStack.Attributes.GetInt(ToolsmithAttributes.ToolPartCurrentDur, itemStack.GetPartMaxDurability());
         }
 
