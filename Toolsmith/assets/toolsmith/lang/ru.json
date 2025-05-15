@@ -105,6 +105,7 @@
 	"toolsmith:block-grindstone-andesite-north": "Точило (Андезит)",
 	
 	"game:blockhelp-grindstone-hone": "Точить металлическое изделие",
+	"game:honing-cutoff-message": "Осталось совсем мало материала для заточки. Похоже, сейчас самое время для перековки!",
 	"game:blockhelp-grindstone-deconstruct": "Разобрать инструмент",
 	
 	"toolsmith:block-workbench-north": "Верстак",
@@ -113,6 +114,7 @@
 	"game:blockhelp-workbench-deconstruct": "Разобрать инструмент",
 	"game:blockhelp-workbench-craftingspot": "Положить деталь инструмента для изготовления",
 	"game:blockhelp-workbench-retrieve-item": "Взять деталь инструмента",
+	"game:blockhelp-workbench-strike-craft": "Ударь, чтобы изготовить!",
 	"game:blockhelp-workbench-reforge-head": "Подготовьте деталь к повторной ковке",
 	
 	"game:craftinginfo-toolsmithingbasics-title": "Toolsmithing - Основы",
