@@ -19,15 +19,28 @@ namespace Toolsmith.ToolTinkering.Blocks {
     public class BlockWorkbench : Block, IMultiBlockColSelBoxes, IMultiBlockInteract {
 
         WorldInteraction[] viseInteractions;
-        WorldInteraction[] emptyCraftingSlotsInteraction;
+        WorldInteraction[] emptyHeadCraftingSlotsInteraction;
+        WorldInteraction[] emptyHandleCraftingSlotsInteraction;
+        WorldInteraction[] emptyBindingCraftingSlotsInteraction;
+        WorldInteraction[] emptyMergableCraftingSlotsInteraction;
         WorldInteraction[] emptyReforgeStagingInteraction;
         WorldInteraction[] fullSlotGetItemInteraction;
         WorldInteraction[] fullReforgeStagingInteraction;
         WorldInteraction[] fullSlotCraftingInteraction;
         Cuboidf[] offsetHalfSelections;
+        float offsetInteractionYOffset = 0f;
+
+        Dictionary<string, List<ItemStack>> bundledItemLists;
+        List<ItemStack> tinkerableTools;
+        List<ItemStack> toolHeads;
+        List<ItemStack> toolHandles;
+        List<ItemStack> toolBindings;
+        List<ItemStack> reforgables;
+        List<ItemStack> hammers;
 
         public override void OnLoaded(ICoreAPI api) {
             base.OnLoaded(api);
+            InteractionHelpYOffset = 1.3f;
 
             if (api.Side.IsServer()) {
                 return;
@@ -35,19 +48,9 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
             ICoreClientAPI capi = api as ICoreClientAPI;
 
+            GetOrInitItemLists(capi);
+
             viseInteractions = ObjectCacheUtil.GetOrCreate(capi, "workbenchViseInteraction", () => {
-                List<ItemStack> tinkerableTools = new List<ItemStack>();
-
-                foreach (Item i in capi.World.Items) {
-                    if (i.Code == null) {
-                        continue;
-                    }
-
-                    if (i.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
-                        tinkerableTools.Add(new ItemStack(i)); //All tinkered tools can be deconstructed!
-                    }
-                }
-
                 return new WorldInteraction[] {
                     new WorldInteraction() {
                         ActionLangCode = "blockhelp-workbench-deconstruct",
@@ -58,40 +61,46 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 };
             });
 
-            emptyCraftingSlotsInteraction = ObjectCacheUtil.GetOrCreate(capi, "workbenchEmptyCraftingSlotsInteraction", () => {
-                List<ItemStack> toolParts = new List<ItemStack>();
-
-                foreach (Item i in capi.World.Items) {
-                    if (i.Code == null) {
-                        continue;
-                    }
-
-                    if (i.HasBehavior<CollectibleBehaviorToolHead>() || i.HasBehavior<CollectibleBehaviorToolHandle>() || i.HasBehavior<CollectibleBehaviorToolBinding>()) {
-                        toolParts.Add(new ItemStack(i)); //Contains all the possible parts that can be crafting with on the bench! Will need to expand this when adding new parts.
-                    }
-                }
-
+            emptyHeadCraftingSlotsInteraction = ObjectCacheUtil.GetOrCreate(capi, "workbenchEmptyHeadCraftingSlotsInteraction", () => {
                 return new WorldInteraction[] {
                     new WorldInteraction() {
-                        ActionLangCode = "blockhelp-workbench-craftingspot",
+                        ActionLangCode = "blockhelp-workbench-craftingspot-head",
                         MouseButton = EnumMouseButton.Right,
-                        Itemstacks = toolParts.ToArray()
+                        Itemstacks = toolHeads.ToArray()
+                    }
+                };
+            });
+
+            emptyHandleCraftingSlotsInteraction = ObjectCacheUtil.GetOrCreate(capi, "workbenchEmptyHandleCraftingSlotsInteraction", () => {
+                return new WorldInteraction[] {
+                    new WorldInteraction() {
+                        ActionLangCode = "blockhelp-workbench-craftingspot-handle",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = toolHandles.ToArray()
+                    }
+                };
+            });
+
+            emptyBindingCraftingSlotsInteraction = ObjectCacheUtil.GetOrCreate(capi, "workbenchEmptyBindingCraftingSlotsInteraction", () => {
+                return new WorldInteraction[] {
+                    new WorldInteraction() {
+                        ActionLangCode = "blockhelp-workbench-craftingspot-binding",
+                        MouseButton = EnumMouseButton.Right,
+                        Itemstacks = toolBindings.ToArray()
+                    }
+                };
+            });
+
+            emptyMergableCraftingSlotsInteraction = ObjectCacheUtil.GetOrCreate(capi, "workbenchEmptyMergableCraftingSlotsInteraction", () => {
+                return new WorldInteraction[] {
+                    new WorldInteraction() {
+                        ActionLangCode = "blockhelp-workbench-craftingspot-mergable",
+                        MouseButton = EnumMouseButton.Right
                     }
                 };
             });
 
             emptyReforgeStagingInteraction = ObjectCacheUtil.GetOrCreate(capi, "workbenchEmptyReforgeStagingInteraction", () => {
-                List<ItemStack> reforgables = new List<ItemStack>();
-
-                foreach (Item i in capi.World.Items) {
-                    if (i.Code == null) {
-                        continue;
-                    }
-                    if ((i.HasBehavior<CollectibleBehaviorToolHead>() || i.HasBehavior<CollectibleBehaviorSmithedTools>()) && i.IsCraftableMetal()) {
-                        reforgables.Add(new ItemStack(i)); //And all tool heads can be converted into a workpiece when you want to reforge.
-                    }
-                }
-
                 return new WorldInteraction[] {
                     new WorldInteraction() {
                         ActionLangCode = "blockhelp-workbench-reforge",
@@ -100,18 +109,6 @@ namespace Toolsmith.ToolTinkering.Blocks {
                     }
                 };
             });
-
-            List<ItemStack> hammers = new List<ItemStack>();
-
-            foreach (Item i in capi.World.Items) {
-                if (i.Code == null) {
-                    continue;
-                }
-
-                if (i.Tool == EnumTool.Hammer) {
-                    hammers.Add(new ItemStack(i));
-                }
-            }
 
             fullSlotGetItemInteraction = ObjectCacheUtil.GetOrCreate(capi, "workbenchFullSlotGetItemInteraction", () => {
                 return new WorldInteraction[] {
@@ -134,7 +131,6 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
             fullReforgeStagingInteraction = ObjectCacheUtil.GetOrCreate(capi, "workbenchReadyToReforge", () => {
 
-
                 return new WorldInteraction[] {
                     new WorldInteraction() {
                         ActionLangCode = "blockhelp-workbench-reforge-head",
@@ -143,6 +139,82 @@ namespace Toolsmith.ToolTinkering.Blocks {
                     }
                 };
             });
+
+            CleanUpItemLists();
+        }
+
+        protected void GetOrInitItemLists(ICoreClientAPI capi) {
+            bundledItemLists = ObjectCacheUtil.GetOrCreate(capi, "workbenchDisplayTinkerableToolsList", () => {
+                List<ItemStack> tinkerables = new List<ItemStack>();
+                List<ItemStack> heads = new List<ItemStack>();
+                List<ItemStack> handles = new List<ItemStack>();
+                List<ItemStack> bindings = new List<ItemStack>();
+                List<ItemStack> reforge = new List<ItemStack>();
+                List<ItemStack> craftTools = new List<ItemStack>();
+
+                foreach (Item i in capi.World.Items) {
+                    if (i.Code == null) {
+                        continue;
+                    }
+
+                    if (i.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+                        tinkerables.Add(new ItemStack(i)); //All tinkered tools can be deconstructed!
+                    }
+
+                    if (i.HasBehavior<CollectibleBehaviorToolHead>()) {
+                        heads.Add(new ItemStack(i)); //All tool heads!
+                    }
+
+                    if (i.HasBehavior<CollectibleBehaviorToolHandle>()) {
+                        handles.Add(new ItemStack(i)); //All handles!
+                    }
+
+                    if (i.HasBehavior<CollectibleBehaviorToolBinding>()) {
+                        bindings.Add(new ItemStack(i)); //All bindings!
+                    }
+
+                    if ((i.HasBehavior<CollectibleBehaviorToolHead>() || i.HasBehavior<CollectibleBehaviorSmithedTools>()) && i.IsCraftableMetal()) {
+                        reforge.Add(new ItemStack(i)); //And all tool heads can be converted into a workpiece when you want to reforge.
+                    }
+
+                    if (i.Tool == EnumTool.Hammer) {
+                        craftTools.Add(new ItemStack(i));
+                    }
+                }
+
+                return new Dictionary<string, List<ItemStack>>() {
+                    ["tinkerableTools"] = tinkerables,
+                    ["heads"] = heads,
+                    ["handles"] = handles,
+                    ["bindings"] = bindings,
+                    ["reforgables"] = reforge,
+                    ["hammers"] = craftTools
+                };
+            });
+
+            bundledItemLists.TryGetValue("tinkerableTools", out tinkerableTools);
+            bundledItemLists.TryGetValue("heads", out toolHeads);
+            bundledItemLists.TryGetValue("handles", out toolHandles);
+            bundledItemLists.TryGetValue("bindings", out toolBindings);
+            bundledItemLists.TryGetValue("reforgables", out reforgables);
+            bundledItemLists.TryGetValue("hammers", out hammers);
+        }
+
+        protected void CleanUpItemLists() {
+            bundledItemLists.Clear();
+            bundledItemLists = null;
+            tinkerableTools?.Clear();
+            tinkerableTools = null;
+            toolHeads?.Clear();
+            toolHeads = null;
+            toolHandles?.Clear();
+            toolHandles = null;
+            toolBindings?.Clear();
+            toolBindings = null;
+            reforgables?.Clear();
+            reforgables = null;
+            hammers?.Clear();
+            hammers = null;
         }
 
         public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer) {
@@ -154,9 +226,19 @@ namespace Toolsmith.ToolTinkering.Blocks {
             var slotIndex = selection.SelectionBoxIndex;
             if (slotIndex >= (int)WorkbenchSlots.CraftingSlot1 && slotIndex <= (int)WorkbenchSlots.CraftingSlot5) {
                 if (beWorkbench.IsSelectSlotEmpty(slotIndex)) {
-                    return emptyCraftingSlotsInteraction.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
+                    var slotExpecting = beWorkbench.WhatSlotMarkerIndicator(slotIndex);
+                    switch (slotExpecting) {
+                        case "head":
+                            return emptyHeadCraftingSlotsInteraction.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
+                        case "handle":
+                            return emptyHandleCraftingSlotsInteraction.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
+                        case "binding":
+                            return emptyBindingCraftingSlotsInteraction.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
+                        default:
+                            return emptyMergableCraftingSlotsInteraction.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
+                    }
                 } else {
-                    return fullSlotGetItemInteraction.Append(fullSlotCraftingInteraction.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer))); //Don't forget to update this when the Workbench can craft tools!
+                    return fullSlotGetItemInteraction.Append(fullSlotCraftingInteraction.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer)));
                 }
             } else if (slotIndex == (int)WorkbenchSlots.Vise) {
                 return viseInteractions.Append(base.GetPlacedBlockInteractionHelp(world, selection, forPlayer));
@@ -180,16 +262,16 @@ namespace Toolsmith.ToolTinkering.Blocks {
                         if (TryCraftingAction(world, byPlayer, blockSel, workbenchEnt)) {
                             if (world.Side.IsServer()) {
                                 world.PlaySoundAt(new AssetLocation("sounds/block/meteoriciron-hit-pickaxe"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
+                                workbenchEnt.MarkDirty(redrawOnClient: true);
                             }
-                            workbenchEnt.MarkDirty(redrawOnClient: true);
                             return true;
                         }
                     } else {
                         if (TryPlaceOrGetItemCraftingSlots(world, byPlayer, blockSel, workbenchEnt)) {
                             if (world.Side.IsServer()) {
                                 world.PlaySoundAt(new AssetLocation("sounds/player/build"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
+                                workbenchEnt.MarkDirty(redrawOnClient: true);
                             }
-                            workbenchEnt.MarkDirty(redrawOnClient: true);
                             return true;
                         }
                     }
@@ -198,15 +280,16 @@ namespace Toolsmith.ToolTinkering.Blocks {
                         if (AttemptReforgingToolHead(world, byPlayer, blockSel, workbenchEnt)) {
                             if (world.Side.IsServer()) {
                                 world.PlaySoundAt(new AssetLocation("sounds/block/meteoriciron-hit-pickaxe"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
+                                workbenchEnt.MarkDirty(redrawOnClient: true);
                             }
                             return true;
                         }
-                    } else /*if (byPlayer.InventoryManager.ActiveHotbarSlot != null)*/ {
+                    } else {
                         if (TryPlaceOrGetItemReforgeSlot(world, byPlayer, blockSel, workbenchEnt)) {
                             if (world.Side.IsServer()) {
                                 world.PlaySoundAt(new AssetLocation("sounds/player/build"), entPlayer.Pos.X, entPlayer.Pos.Y, entPlayer.Pos.Z, null, true, 32f, 1f);
+                                workbenchEnt.MarkDirty(redrawOnClient: true);
                             }
-                            workbenchEnt.MarkDirty(redrawOnClient: true);
                             return true;
                         }
                     }
@@ -259,8 +342,33 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 return bench.TryGetItemFromWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
             } else {
                 ItemStack stack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
-                if (TinkeringUtility.IsAnyToolPart(stack.Collectible, world) || ReforgingUtility.IsPossibleMergeItem(stack, world)) {
-                    return bench.TryGetOrPutItemOnWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
+                var isPart = TinkeringUtility.IsAnyToolPart(stack.Collectible, world);
+                if (bench.IsSelectSlotEmpty(blockSel.SelectionBoxIndex) && (isPart > 0 || ReforgingUtility.IsPossibleMergeItem(stack, world))) {
+                    if (isPart == 0) {
+                        return bench.TryGetOrPutItemOnWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
+                    } else {
+                        if (blockSel.SelectionBoxIndex == (int)WorkbenchSlots.CraftingSlot3) {
+                            if (isPart == 1) {
+                                return bench.TryGetOrPutItemOnWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
+                            } else {
+                                return false;
+                            }
+                        } else if (blockSel.SelectionBoxIndex == (int)WorkbenchSlots.CraftingSlot2) {
+                            if (bench.GetSlotsHoldsString((int)WorkbenchSlots.CraftingSlot3) == "head" && isPart == 2) {
+                                return bench.TryGetOrPutItemOnWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
+                            } else {
+                                return false;
+                            }
+                        } else if (blockSel.SelectionBoxIndex == (int)WorkbenchSlots.CraftingSlot4) {
+                            if (bench.GetSlotsHoldsString((int)WorkbenchSlots.CraftingSlot3) == "head" && isPart == 3) {
+                                return bench.TryGetOrPutItemOnWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                    }
                 } else {
                     return bench.TryGetItemFromWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
                 }
@@ -301,7 +409,20 @@ namespace Toolsmith.ToolTinkering.Blocks {
         }
 
         public override Cuboidf[] GetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos) {
-            return base.GetSelectionBoxes(blockAccessor, pos);
+            var originalBoxes = base.GetSelectionBoxes(blockAccessor, pos);
+            var selectionBoxes = originalBoxes.FastCopy(originalBoxes.Length);
+            var workbenchEnt = blockAccessor.GetBlockEntity(pos) as BlockEntityWorkbench;
+
+            if (workbenchEnt != null) {
+                var slotsToShow = workbenchEnt.GetWhatSlotsAreVisible();
+                for (int i = 1; i < 6; i++) {
+                    if (!slotsToShow.Contains(i)) {
+                        selectionBoxes[i] = new Cuboidf(0, 0, 0, 0, 0, 0);
+                    }
+                }
+            }
+
+            return selectionBoxes;
         }
 
         public Cuboidf[] MBGetCollisionBoxes(IBlockAccessor blockAccessor, BlockPos pos, Vec3i offset) {
@@ -320,11 +441,21 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 }
             }
 
-            if (blockAccessor.GetBlockEntity(pos) is BlockEntityWorkbench) {
-                return SelectionBoxes;
-            } else {
-                return offsetHalfSelections;
+            var mainSelection = pos.Copy();
+            mainSelection += offset.AsBlockPos;
+            var workbenchEnt = blockAccessor.GetBlockEntity(mainSelection) as BlockEntityWorkbench;
+            var offsetHalfSelectionsCopy = offsetHalfSelections.FastCopy(offsetHalfSelections.Length);
+
+            if (workbenchEnt != null) {
+                var slotsToShow = workbenchEnt.GetWhatSlotsAreVisible();
+                for (int i = 1; i < 6; i++) {
+                    if (!slotsToShow.Contains(i)) {
+                        offsetHalfSelectionsCopy[i] = new Cuboidf(0, 0, 0, 0, 0, 0);
+                    }
+                }
             }
+
+            return offsetHalfSelectionsCopy;
         }
 
         public bool MBDoParticalSelection(IWorldAccessor world, BlockPos pos, Vec3i offset) {
@@ -362,6 +493,13 @@ namespace Toolsmith.ToolTinkering.Blocks {
         public WorldInteraction[] MBGetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection blockSel, IPlayer forPlayer, Vec3i offset) {
             var mainSelection = blockSel.Clone();
             mainSelection.Position += offset.AsBlockPos;
+            if (offsetInteractionYOffset == 0) {
+                var offsetBlock = world.BlockAccessor.GetBlock(blockSel.Position);
+                if (offsetBlock.Code != "air") {
+                    offsetInteractionYOffset = InteractionHelpYOffset;
+                    offsetBlock.InteractionHelpYOffset = InteractionHelpYOffset;
+                }
+            }
             return GetPlacedBlockInteractionHelp(world, mainSelection, forPlayer);
         }
 

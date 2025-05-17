@@ -36,8 +36,15 @@ namespace Toolsmith.Utils {
 
         public const string ModularPartRenderingFromAttributesMeshRefs = "ToolsmithModularPartRenderingMeshRefs";
         public const string WorkbenchItemRenderingMeshRefs = "ToolsmithWorkbenchItemRenderingMeshRefs";
+        public const string WorkbenchSlotShapesCache = "workbenchSlotMarkerTextures";
+        public const string WorkbenchSlotMarkerShapePath = "toolsmith:shapes/block/workbench-slotmarker";
+        public const string WorkbenchSlotMarkerEmptyPath = "toolsmith:block/workbenchslots/empty-slot";
+        public const string WorkbenchSlotMarkerHeadPath = "toolsmith:block/workbenchslots/toolhead-slot";
+        public const string WorkbenchSlotMarkerHandlePath = "toolsmith:block/workbenchslots/toolhandle-slot";
+        public const string WorkbenchSlotMarkerBindingPath = "toolsmith:block/workbenchslots/toolbinding-slot";
 
         public const string ToolsmithConfigKey = "ToolsmithConfigs";
+        public const string ToolsmithStatsKey = "ToolsmithPartStats";
 
         //The keys for accessing the default part entries themselves, to recieve their stat key blocks
         public const string DefaultHandlePartKey = "stick";

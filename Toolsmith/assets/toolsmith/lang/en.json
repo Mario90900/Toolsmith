@@ -112,7 +112,10 @@
 
 	"game:blockhelp-workbench-reforge": "Reforge tool or tool head",
 	"game:blockhelp-workbench-deconstruct": "Take apart tool",
-	"game:blockhelp-workbench-craftingspot": "Place tool part for crafting",
+	"game:blockhelp-workbench-craftingspot-head": "Place tool head for crafting",
+	"game:blockhelp-workbench-craftingspot-handle": "Place tool handle for crafting",
+	"game:blockhelp-workbench-craftingspot-binding": "Place tool binding for crafting",
+	"game:blockhelp-workbench-craftingspot-mergable": "Place similar item for merging",
 	"game:blockhelp-workbench-retrieve-item": "Take tool part",
 	"game:blockhelp-workbench-strike-craft": "Strike to craft!",
 	"game:blockhelp-workbench-reforge-head": "Prepare piece for reforging",

@@ -34,6 +34,7 @@ namespace Toolsmith {
         public static ICoreAPI Api;
         public static Harmony HarmonyInstance;
         public static ToolsmithConfigs Config;
+        public static ToolsmithClientConfigs ClientConfig; //Any setting in here is NOT synced from the server, and intended to control client-side changes only.
         public static ToolsmithPartStats Stats;
         public static int GradientSelection = 0;
         public static bool DoesConfigNeedRegen = false;
@@ -56,6 +57,7 @@ namespace Toolsmith {
             ModVersion = Mod.Info.Version;
             Api = api;
             TryToLoadConfig(api);
+            TryToLoadClientConfig(api);
             TryToLoadStats(api);
             IgnoreCodes = new List<string>();
         }
@@ -101,11 +103,17 @@ namespace Toolsmith {
             byte[] configBytes = System.Text.Encoding.UTF8.GetBytes(configJson);
             string configBase64String = Convert.ToBase64String(configBytes);
             api.World.Config.SetString(ToolsmithConstants.ToolsmithConfigKey, configBase64String);
+
+            string statsJson = JsonConvert.SerializeObject(Stats);
+            byte[] statsBytes = System.Text.Encoding.UTF8.GetBytes(statsJson);
+            string statsBase64String = Convert.ToBase64String(statsBytes);
+            api.World.Config.SetString(ToolsmithConstants.ToolsmithStatsKey, statsBase64String);
         }
 
         public override void StartClientSide(ICoreClientAPI api) {
             GradientSelection = 0;
             TinkeringUtility.InitializeSharpnessColorGradient();
+
             string configBase64String = api.World.Config.GetString(ToolsmithConstants.ToolsmithConfigKey, "");
             if (configBase64String != "") {
                 try {
@@ -121,6 +129,22 @@ namespace Toolsmith {
                 Logger.Error("Failed to retrieve config from server, running with default settings.");
                 Config = new ToolsmithConfigs();
             }
+
+            string statsBase64String = api.World.Config.GetString(ToolsmithConstants.ToolsmithStatsKey, "");
+            if (configBase64String != "") {
+                try {
+                    byte[] statsBytes = Convert.FromBase64String(statsBase64String);
+                    string statsJson = System.Text.Encoding.UTF8.GetString(statsBytes);
+                    Stats = JsonConvert.DeserializeObject<ToolsmithPartStats>(statsJson);
+                    Logger.Notification("Recieved part stats successfully from Server!");
+                } catch (Exception ex) {
+                    Logger.Error("Failed to deserialize part stats from server: " + ex);
+                    Stats = new ToolsmithPartStats();
+                }
+            } else {
+                Logger.Error("Failed to retrieve part stats from server, running with default settings.");
+                Config = new ToolsmithConfigs();
+            }
         }
 
         public override void AssetsFinalize(ICoreAPI api) {
@@ -131,6 +155,7 @@ namespace Toolsmith {
                     BindingTiers = new Dictionary<string, int>();
                 }
                 CalculateBindingTiers();
+                CacheAlternateWorkbenchSlots(api as ICoreClientAPI);
                 return;
             }
 
@@ -230,17 +255,33 @@ namespace Toolsmith {
                 if (Config == null) {
                     Config = new ToolsmithConfigs();
                 } else {
-                    DoesConfigNeedRegen = (Config.ModVersionNumber != ModVersion);
-                    if (DoesConfigNeedRegen) {
-                        Config = new ToolsmithConfigs();
+                    if (Config.AutoUpdateConfigsOnVersionChange) {
+                        DoesConfigNeedRegen = (Config.ModVersionNumber != ModVersion);
+                        if (DoesConfigNeedRegen) {
+                            Config = new ToolsmithConfigs();
+                        }
                     }
                 }
                 Config.ModVersionNumber = ModVersion;
-                api.StoreModConfig<ToolsmithConfigs>(Config, ConfigUtility.ConfigFilename);
+                api.StoreModConfig(Config, ConfigUtility.ConfigFilename);
             } catch (Exception e) {
                 Mod.Logger.Error("Could not load config, using default settings instead!");
                 Mod.Logger.Error(e);
                 Config = new ToolsmithConfigs();
+            }
+        }
+
+        private void TryToLoadClientConfig(ICoreAPI api) {
+            try {
+                ClientConfig = api.LoadModConfig<ToolsmithClientConfigs>(ConfigUtility.ClientConfigFilename);
+                if (ClientConfig == null || DoesConfigNeedRegen) {
+                    ClientConfig = new ToolsmithClientConfigs();
+                }
+                api.StoreModConfig(ClientConfig, ConfigUtility.ClientConfigFilename);
+            } catch (Exception e) {
+                Mod.Logger.Error("Could not load stats, using default settings instead!");
+                Mod.Logger.Error(e);
+                ClientConfig = new ToolsmithClientConfigs();
             }
         }
 
@@ -250,7 +291,7 @@ namespace Toolsmith {
                 if (Stats == null || DoesConfigNeedRegen) {
                     Stats = new ToolsmithPartStats();
                 }
-                api.StoreModConfig<ToolsmithPartStats>(Stats, ConfigUtility.StatsFilename);
+                api.StoreModConfig(Stats, ConfigUtility.StatsFilename);
             } catch (Exception e) {
                 Mod.Logger.Error("Could not load stats, using default settings instead!");
                 Mod.Logger.Error(e);
@@ -323,6 +364,36 @@ namespace Toolsmith {
             }
         }
 
+        private void CacheAlternateWorkbenchSlots(ICoreClientAPI capi) {
+            Dictionary<string, MeshData> slotMarkerTextures = ObjectCacheUtil.GetOrCreate(capi, ToolsmithConstants.WorkbenchSlotShapesCache, () => {
+                Shape emptySlot = capi.Assets.TryGet(new AssetLocation(ToolsmithConstants.WorkbenchSlotMarkerShapePath + ".json"))?.ToObject<Shape>();
+                ShapeTextureSource markerTexSource = new(capi, emptySlot, "For rendering a slot marker for any Workbench Slot");
+                
+                markerTexSource.textures.Clear();
+                markerTexSource.textures["slot"] = new CompositeTexture(new AssetLocation(ToolsmithConstants.WorkbenchSlotMarkerEmptyPath + ".png"));
+                capi.Tesselator.TesselateShape("EmptySlot for Workbench Crafting Slot", emptySlot, out MeshData emptyMarkerData, markerTexSource);
+
+                markerTexSource.textures.Clear();
+                markerTexSource.textures["slot"] = new CompositeTexture(new AssetLocation(ToolsmithConstants.WorkbenchSlotMarkerHeadPath + ".png"));
+                capi.Tesselator.TesselateShape("HeadSlot for Workbench Crafting Slot", emptySlot, out MeshData headMarkerData, markerTexSource);
+
+                markerTexSource.textures.Clear();
+                markerTexSource.textures["slot"] = new CompositeTexture(new AssetLocation(ToolsmithConstants.WorkbenchSlotMarkerHandlePath + ".png"));
+                capi.Tesselator.TesselateShape("HandleSlot for Workbench Crafting Slot", emptySlot, out MeshData handleMarkerData, markerTexSource);
+
+                markerTexSource.textures.Clear();
+                markerTexSource.textures["slot"] = new CompositeTexture(new AssetLocation(ToolsmithConstants.WorkbenchSlotMarkerBindingPath + ".png"));
+                capi.Tesselator.TesselateShape("BindingSlot for Workbench Crafting Slot", emptySlot, out MeshData bindingMarkerData, markerTexSource);
+
+                return new Dictionary<string, MeshData>() {
+                    [ToolsmithConstants.WorkbenchSlotMarkerEmptyPath] = emptyMarkerData,
+                    [ToolsmithConstants.WorkbenchSlotMarkerHeadPath] = headMarkerData,
+                    [ToolsmithConstants.WorkbenchSlotMarkerHandlePath] = handleMarkerData,
+                    [ToolsmithConstants.WorkbenchSlotMarkerBindingPath] = bindingMarkerData
+                };
+            });
+        }
+
         private static void HarmonyPatch() {
             if (HarmonyInstance != null) {
                 return;
@@ -352,6 +423,7 @@ namespace Toolsmith {
             ModId = null;
             Api = null;
             Config = null;
+            ClientConfig = null;
             Stats = null;
             IgnoreCodes = null;
             base.Dispose();

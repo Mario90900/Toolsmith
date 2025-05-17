@@ -11,6 +11,7 @@ namespace Toolsmith.Utils {
     public static class ConfigUtility {
 
         public static string ConfigFilename = "Toolsmith.json";
+        public static string ClientConfigFilename = "ToolsmithClient.json";
         public static string StatsFilename = "ToolsmithPartsStats.json";
 
         //Send a CollectibleObject's Code.toString() these to check if they are contained in the respective config. Used to assign the Behaviors at loadtime, probably better to look for the Behaviors themselves during runtime.

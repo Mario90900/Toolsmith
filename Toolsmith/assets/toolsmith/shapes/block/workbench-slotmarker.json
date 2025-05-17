@@ -1,0 +1,22 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"slot": "toolsmith:block/workbenchslots/empty-slot"
+	},
+	"elements": [
+		{
+			"name": "WorkbenchCraftSlotMarker",
+			"from": [ 0.0, 0.0, 0.0 ],
+			"to": [ 3.2, 0.0, 3.2 ],
+			"faces": {
+				"up": { "texture": "#slot", "uv": [ 0.0, 0.0, 16.0, 16.0 ], "autoUv": false, "windMode": [-1,-1,-1,-1] }
+			}
+		}
+	]}

@@ -11,7 +11,9 @@
 	"textures": {
 		"metal": "game:block/metal/plate/lead",
 		"secondarywood": "game:block/wood/debarked/birch",
-		"wood": "game:block/wood/oak"
+		"wood": "game:block/wood/oak",
+		"craftmat": "toolsmith:block/workbench-crafting-mat",
+		"reforgemat": "toolsmith:block/workbench-reforge-mat"
 	},
 	"elements": [
 		{
@@ -1092,6 +1094,24 @@
 								"south": { "texture": "#wood", "uv": [ 13.0, 0.0, 16.0, 10.0 ], "rotation": 90 },
 								"up": { "texture": "#wood", "uv": [ 0.0, 0.0, 12.0, 10.0 ], "rotation": 90 },
 								"down": { "texture": "#wood", "uv": [ 0.0, 6.0, 12.0, 16.0 ], "rotation": 90 }
+							}
+						},
+						{
+							"name": "ReforgeMat",
+							"from": [ 19.0, 3.01, 5.5 ],
+							"to": [ 27.0, 3.01, 10.0 ],
+							"rotationOrigin": [ 19.0, 3.0, 5.5 ],
+							"faces": {
+								"up": { "texture": "#reforgemat", "uv": [ 0.0, 0.0, 8.0, 4.5 ], "windMode": [-1,-1,-1,-1], "windData": [1,1,1,1] }
+							}
+						},
+						{
+							"name": "CraftingMat",
+							"from": [ -1.0, 3.01, 1.0 ],
+							"to": [ 18.0, 3.01, 11.5 ],
+							"rotationOrigin": [ -1.0, 3.0, 1.0 ],
+							"faces": {
+								"up": { "texture": "#craftmat", "uv": [ 0.0, 0.0, 9.5, 10.5 ], "autoUv": false, "windMode": [-1,-1,-1,-1], "windData": [1,1,1,1] }
 							}
 						}
 					]

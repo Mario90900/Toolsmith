@@ -9,6 +9,7 @@ using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 using static System.Collections.Specialized.BitVector32;
@@ -575,6 +576,87 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
                 midSlice = midSlice.Append(voxel);
             } else if (rightSlice.Length > 0 && voxX == rightSlice[0].Item1) {
                 rightSlice = rightSlice.Append(voxel);
+            }
+        }
+
+        //Ross's Generate Tendrils code to use as inspiration for the Crack generation! Thank you for letting me look at it and use it!
+        public static void GenerateTendrils(IBlockAccessor blockAccessor, BlockPos origin, int count, NatFloat branchLength, int height, int gradeIndex, bool taper, int startRadius, double pocketChance, double branchChance) {
+            Random DepositRand = new Random();
+            for (int i = 0; i < count; i++) {
+                int length = (int)branchLength.nextFloat(1, DepositRand);
+
+                // Flat or slightly upward starting direction
+                Vec3d direction = new Vec3d(
+                    (DepositRand.NextDouble() - 0.5) * 2.5,
+                    DepositRand.NextDouble() * 0.5, // Mostly flat or gently rising
+                    (DepositRand.NextDouble() - 0.5) * 2.5
+                ).Normalize();
+
+                int startYOffset = height * 0;
+                BlockPos start = origin.AddCopy(0, startYOffset + DepositRand.Next(height - startYOffset), 0); //Originally was NextInt instead of Next
+
+
+                //Api.World.Logger.Notification($"[TENDRIL START] Starting tendril at {start} with baseX:{baseX}, baseZ:{baseZ}");
+
+
+
+                Queue<(BlockPos, Vec3d, int)> activeTendrils = new Queue<(BlockPos, Vec3d, int)>();
+                activeTendrils.Enqueue((start, direction, length));
+
+                while (activeTendrils.Count > 0) {
+                    var (pos, dir, remaining) = activeTendrils.Dequeue();
+                    BlockPos curPos = pos.Copy();
+
+                    for (int step = 0; step < remaining; step++) {
+                        curPos.X += (int)Math.Round(dir.X);
+                        curPos.Y += (int)Math.Round(dir.Y);
+                        curPos.Z += (int)Math.Round(dir.Z);
+
+                        // Tapering radius (starts thicker, ends thin)
+                        float taperFactor = taper ? (1f - (float)step / remaining) : 1f;
+                        int radius = Math.Max(0, (int)(taperFactor * startRadius));
+
+                        for (int dx = -radius; dx <= radius; dx++) {
+                            for (int dy = -radius; dy <= radius; dy++) {
+                                for (int dz = -radius; dz <= radius; dz++) {
+                                    if (dx * dx + dy * dy + dz * dz <= radius * radius) {
+                                        BlockPos veinPos = curPos.AddCopy(dx, dy, dz);
+
+
+                                        if (DepositRand.NextDouble() < pocketChance)//This is resolved per-block, not per "section" the wider the tube the more pockets there are!
+                                        {
+                                            // Generate a disc-shaped pocket at the current position
+                                            int discMinRadius = 3;
+                                            int discMaxRadius = 8;
+                                            int depRad = discMinRadius + DepositRand.Next(discMaxRadius - discMinRadius + 1); //Originally was NextInt instead of Next
+                                            //GenerateOrePocket(blockAccessor, veinPos, depRad, gradeIndex);
+                                        } else {
+
+                                            //TryPlaceMainOre(blockAccessor, veinPos, gradeIndex);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Fork new tendril
+                        if (DepositRand.NextDouble() < branchChance && remaining - step > 5) {
+                            Vec3d forkDir = new Vec3d(
+                                dir.X + (DepositRand.NextDouble() - 0.5) * 0.6,
+                                dir.Y + (DepositRand.NextDouble() - 0.4) * 0.3,
+                                dir.Z + (DepositRand.NextDouble() - 0.5) * 0.6
+                            ).Normalize();
+
+                            activeTendrils.Enqueue((curPos.Copy(), forkDir, DepositRand.Next(10))); //Originally was NextInt instead of Next
+                        }
+
+                        // Wiggle the direction slightly
+                        dir.X += (DepositRand.NextDouble() - 0.5) * 0.3;
+                        dir.Y += (DepositRand.NextDouble() - 0.5) * 0.2;
+                        dir.Z += (DepositRand.NextDouble() - 0.5) * 0.3;
+                        dir.Normalize();
+                    }
+                }
             }
         }
 

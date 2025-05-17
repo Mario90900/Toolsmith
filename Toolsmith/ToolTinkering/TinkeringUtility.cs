@@ -578,18 +578,18 @@ namespace Toolsmith.ToolTinkering {
             return null;
         }
 
-        public static bool IsAnyToolPart(CollectibleObject item, IWorldAccessor world) {
+        public static int IsAnyToolPart(CollectibleObject item, IWorldAccessor world) {
             if (world.Side.IsServer() && ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(item.Code.ToString())) {
-                return false;
+                return 0;
             } else if (item.HasBehavior<CollectibleBehaviorToolHead>()) {
-                return true;
+                return 1;
             } else if (item.HasBehavior<CollectibleBehaviorToolHandle>()) {
-                return true;
+                return 2;
             } else if (item.HasBehavior<CollectibleBehaviorToolBinding>()) {
-                return true;
+                return 3;
             }
 
-            return false;
+            return 0;
         }
 
         //This checks if it is a valid repair tool as well as if it is a fully tinkered tool or if it is just a tool's head, since the durabilities are stored under different attributes
