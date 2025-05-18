@@ -345,6 +345,9 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 var isPart = TinkeringUtility.IsAnyToolPart(stack.Collectible, world);
                 if (bench.IsSelectSlotEmpty(blockSel.SelectionBoxIndex) && (isPart > 0 || ReforgingUtility.IsPossibleMergeItem(stack, world))) {
                     if (isPart == 0) {
+                        if (world.Side.IsClient()) {
+                            return true;
+                        }
                         return bench.TryGetOrPutItemOnWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
                     } else {
                         if (blockSel.SelectionBoxIndex == (int)WorkbenchSlots.CraftingSlot3) {

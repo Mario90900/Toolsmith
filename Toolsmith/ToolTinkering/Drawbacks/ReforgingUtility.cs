@@ -686,6 +686,10 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
         }
 
         public static bool IsPossibleMergeItem(ItemStack item, IWorldAccessor world) {
+            if (world.Side.IsClient()) {
+                return true; //If it's the client, defer to the server-side to handle it.
+            }
+
             if (world.Side.IsServer() && ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(item.Collectible.Code.ToString())) {
                 return false;
             }
@@ -710,16 +714,19 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
 
         public static ItemStack MergeDupesAndReturn(ItemSlot[] slots) {
             var count = slots.Length;
+            var totalSharp = slots[0].Itemstack.GetToolCurrentSharpness(); //This technically assumes that it shouldn't matter if it's assumed it's a tool or a head, but since _most likely_ it'll probably be a Tool since I made this cause of Ancient Tools, it's likely fine? Will I eat these words? Maybe!
             var totalDur = slots[0].Itemstack.Collectible.GetRemainingDurability(slots[0].Itemstack);
             var newStack = new ItemStack(slots[0].Itemstack.Collectible, count);
 
             for (int i = 1; i < count; i++) {
+                totalSharp += slots[i].Itemstack.GetToolCurrentSharpness();
                 totalDur += slots[i].Itemstack.Collectible.GetRemainingDurability(slots[i].Itemstack);
             }
             foreach (var slot in slots) {
                 slot.Itemstack = null;
             }
 
+            newStack.SetToolCurrentSharpness((int)Math.Round((double)(totalSharp / count), MidpointRounding.AwayFromZero));
             newStack.Collectible.SetDurability(newStack, (int)Math.Round((double)(totalDur / count), MidpointRounding.AwayFromZero));
             return newStack;
         }

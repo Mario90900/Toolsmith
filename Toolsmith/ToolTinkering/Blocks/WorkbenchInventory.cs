@@ -105,6 +105,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             }
 
             slot.Itemstack = fromSlot.TakeOut(1);
+            fromSlot.MarkDirty();
             return true;
         }
 
@@ -117,6 +118,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 }
 
                 var count = fromSlot.TryPutInto(Api.World, slot, quantity : 1);
+                fromSlot.MarkDirty();
                 if (count > 0) {
                     return true;
                 }

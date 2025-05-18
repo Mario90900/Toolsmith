@@ -638,12 +638,13 @@ namespace Toolsmith.ToolTinkering.Blocks {
             }
 
             var offset = offsetBySlot[slotIndex];
+            var wiggledOffset = offset;
             var wiggleFactor = GetSlotsCraftingWiggleFactor(slotIndex);
-            offset.x += wiggleFactor.xoff;
-            offset.z += wiggleFactor.zoff;
+            wiggledOffset.x += wiggleFactor.xoff;
+            wiggledOffset.z += wiggleFactor.zoff;
 
             mesh.Scale(new Vec3f(), 0.5f, 0.5f, 0.5f);
-            mesh.Translate(offset.x - 0.15f, offset.y, offset.z - 0.15f);
+            mesh.Translate(wiggledOffset.x - 0.15f, wiggledOffset.y, wiggledOffset.z - 0.15f);
             if (markerMeshData != null) {
                 markerMeshData.Translate(offset.x, offset.y + 0.01f, offset.z);
             }
