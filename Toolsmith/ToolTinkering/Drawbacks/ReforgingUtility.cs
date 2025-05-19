@@ -86,6 +86,18 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
             return copyVoxels;
         }
 
+        public static byte[,,] GetVoxelCopyFromByteVoxels(byte[,,] sourceVoxels) {
+            byte[,,] copyVoxels = new byte[sourceVoxels.GetLength(0), sourceVoxels.GetLength(1), sourceVoxels.GetLength(2)];
+            for (int x = 0; x < sourceVoxels.GetLength(0); x++) {
+                for (int y = 0; y < sourceVoxels.GetLength(1); y++) {
+                    for (int z = 0; z < sourceVoxels.GetLength(2); z++) {
+                        copyVoxels[x, y, z] = sourceVoxels[x, y, z];
+                    }
+                }
+            }
+            return copyVoxels;
+        }
+
         public static int TotalVoxelsInRecipe(SmithingRecipe recipe) {
             var recipeVoxels = recipe.Voxels;
             return recipeVoxels.Cast<bool>().Count(voxel => voxel);

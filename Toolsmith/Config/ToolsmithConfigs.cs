@@ -19,6 +19,8 @@ namespace Toolsmith.Config {
         public float PercentDamageForReforge = 1.0f;
         public bool ShouldHoningDamageHead = true;
         public bool NoBitLossAlternateReforgeGen = false;
+        public bool UseBitsForSmithing = true;
+        public float ExtraBitVoxelChance = 0.1f;
         public string ToolHeads = "@.*(head|blade|thorn|finishingchiselhead|wedgechiselhead).*";
         public string TinkerableTools = "@.*:(axe|hammer|hoe|knife|pickaxe|prospectingpick|saw|scythe|shovel|adze|mallet|awl|chisel-finishing|chisel-wedge|rubblehammer|forestaxe|grubaxe|maul|hayfork).*";
         public string SinglePartTools = "@.*:(chisel|cleaver|shears|wrench|wedge|truechisel|rollingpin|handplaner|handwedge|laddermaker|paintbrush|paintscraper|pantograph|pathmaker|spyglass|creaser|flail).*";
