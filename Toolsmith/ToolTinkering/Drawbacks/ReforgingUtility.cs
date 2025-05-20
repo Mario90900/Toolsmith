@@ -103,6 +103,16 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
             return recipeVoxels.Cast<bool>().Count(voxel => voxel);
         }
 
+        public static int TotalVoxelsInWorkItem(ItemStack workitem) {
+            var item = workitem.Item as ItemWorkItem;
+            if (item == null) {
+                return 0;
+            }
+
+            var actualVoxels = ItemWorkItem.GetVoxels(workitem);
+            return actualVoxels.Cast<byte>().Count(b => b > 0);
+        }
+
         public static bool[,,] DamageWorkpieceForReforge(bool[,,] voxels, int totalVoxels, int targetVoxels, ICoreAPI api) {
             //A 3D array of bools. True is a Voxel, false is air.
             //Incrementing X determines the horizontal direction across the recipe, while incrementing Z is the vertical one. Y is what layer UP from the surface of the Anvil the whole plane is.

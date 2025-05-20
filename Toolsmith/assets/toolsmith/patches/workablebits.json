@@ -1,0 +1,30 @@
+[
+  {
+    "file": "game:itemtypes/resource/nugget.json",
+    "op": "addmerge",
+    "path": "/classByType",
+    "value": {
+      "@*-(limonite|hematite|magnetite)": "ItemNugget"
+    },
+    "side": "Server",
+    "condition": { "when": "Toolsmith_SmithWithBits", "isValue": "true" }
+  },
+  {
+    "file": "game:itemtypes/resource/nugget.json",
+    "op": "addmerge",
+    "path": "/classByType",
+    "value": {
+      "*": "toolsmith:WorkableBits"
+    },
+    "side": "Server",
+    "condition": { "when": "Toolsmith_SmithWithBits", "isValue": "true" }
+  },
+  {
+    "file": "game:itemtypes/resource/metalbit.json",
+    "op": "replace",
+    "path": "/class",
+    "value": "toolsmith:WorkableBits",
+    "side": "Server",
+    "condition": { "when": "Toolsmith_SmithWithBits", "isValue": "true" }
+  }
+]

@@ -77,6 +77,7 @@ namespace Toolsmith.ToolTinkering {
 
                 if (!isBluntTool) {
                     itemStack.SetToolCurrentSharpness(currentSharpness);
+                    itemStack.SetTotalHoneValue(0);
                 }
 
                 //Then based on the percentage, which parts do we actually damage?
@@ -171,6 +172,7 @@ namespace Toolsmith.ToolTinkering {
 
                 if (!isBluntTool) {
                     itemStack.SetToolCurrentSharpness(currentSharpness);
+                    itemStack.SetTotalHoneValue(0);
                 }
 
                 if (sharpnessPer < 0.98f) {
@@ -183,8 +185,10 @@ namespace Toolsmith.ToolTinkering {
 
                 if (doubleToolDamage && doDamageTool) { //The 50/50 chance for double damage roll
                     currentDur -= amount;
+                    itemStack.SetSmithedDurability(currentDur);
                 }
 
+                itemslot.MarkDirty();
                 return doDamageTool;
             } /*else if (!world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>())) {
                 return false; //Clientside Catch for hitting this point, wait for the server sync to update everything to hopefully prevent that desync from the client

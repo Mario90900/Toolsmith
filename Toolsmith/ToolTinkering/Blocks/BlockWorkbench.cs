@@ -57,6 +57,11 @@ namespace Toolsmith.ToolTinkering.Blocks {
                         HotKeyCode = "shift",
                         MouseButton = EnumMouseButton.Right,
                         Itemstacks = tinkerableTools.ToArray()
+                    },
+                    new WorldInteraction() {
+                        ActionLangCode = "blockhelp-workbench-breakdownworkpiece",
+                        HotKeyCode = "shift",
+                        MouseButton = EnumMouseButton.Right
                     }
                 };
             });
@@ -310,9 +315,9 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
         public override bool OnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null) { //Make sure the slot isn't empty
-                if (byPlayer.Entity.Controls.ShiftKey && TinkeringUtility.IsDeconstructableTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world)) {
+                if (byPlayer.Entity.Controls.ShiftKey && TinkeringUtility.IsDeconstructableTool(byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible, world)) {
                     if (world.Side.IsServer() && blockSel.SelectionBoxIndex == (int)WorkbenchSlots.Vise && secondsUsed > 4.5) {
-                        TinkeringUtility.DisassembleTool(secondsUsed, world, byPlayer, blockSel);
+                        TinkeringUtility.HandleBreakdown(secondsUsed, world, byPlayer, blockSel);
                         return false;
                     }
 

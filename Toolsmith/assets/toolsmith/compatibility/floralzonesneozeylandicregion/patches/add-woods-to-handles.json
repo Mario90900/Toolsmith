@@ -1,0 +1,24 @@
+[
+	{
+		"op": "addeach",
+		"path": "/behaviors/1/properties/textures/0/values/-",
+		"file": "toolsmith:itemtypes/handles/handle.json",
+		"value": [
+			"floralzonesneozeylandicregion:block/wood/debarked/araucariaheterophylla",
+			"floralzonesneozeylandicregion:block/wood/debarked/dacrydiumcupressinum",
+			"floralzonesneozeylandicregion:block/wood/debarked/nothofagusmenziesii",
+			"floralzonesneozeylandicregion:block/wood/debarked/podocarpustotara"
+		]
+	},
+	{
+		"op": "addeach",
+		"path": "/behaviors/1/properties/textures/0/values/-",
+		"file": "toolsmith:itemtypes/handles/carpentedhandle.json",
+		"value": [
+			"floralzonesneozeylandicregion:block/wood/debarked/araucariaheterophylla",
+			"floralzonesneozeylandicregion:block/wood/debarked/dacrydiumcupressinum",
+			"floralzonesneozeylandicregion:block/wood/debarked/nothofagusmenziesii",
+			"floralzonesneozeylandicregion:block/wood/debarked/podocarpustotara"
+		]
+	}
+]

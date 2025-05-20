@@ -632,6 +632,18 @@ namespace Toolsmith.Utils {
             return 0.0f;
         }
 
+        public static void SetTotalHoneValue(this ItemStack itemStack, float honed) {
+            itemStack.Attributes.SetFloat(ToolsmithAttributes.TotalHonedPercentSinceLastUse, honed);
+        }
+
+        public static float GetTotalHoneValue(this ItemStack itemStack) {
+            return itemStack.Attributes.GetFloat(ToolsmithAttributes.TotalHonedPercentSinceLastUse); //If unset, it means it should get the 'first time honing' bonus of no durability loss.
+        }
+
+        public static bool HasTotalHoneValue(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.TotalHonedPercentSinceLastUse);
+        }
+
         public static void ResetHeadStats(this ItemStack itemStack) {
             if (itemStack.Attributes == null) {
                 itemStack.Attributes = new TreeAttribute();

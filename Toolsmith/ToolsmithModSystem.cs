@@ -66,6 +66,9 @@ namespace Toolsmith {
             if (api.ModLoader.IsModEnabled("smithingplus")) {
                 Logger.VerboseDebug("Smithing Plus found, trying to patch in attributes to the forgettable config!");
                 HandleSmithingPlusStartCompat(api);
+                api.World.Config.SetBool(ToolsmithConstants.SmithWithBitsEnabled, false); //If Smithing Plus is enabled, just always defer to it for Smithing With Bits.
+            } else {
+                api.World.Config.SetBool(ToolsmithConstants.SmithWithBitsEnabled, Config.UseBitsForSmithing); //If it's not, then check the config.
             }
 
             //This is important to let the Treasure Hunter Trader accept a Toolsmith Pick to get the map for Story Content! Thank you Item Rarity for also having the issue and both leaving a comment in their code and pushing the commit not too long before I had the same problem :P
@@ -93,6 +96,7 @@ namespace Toolsmith {
             api.RegisterBlockClass($"{ModId}:BlockWorkbench", typeof(BlockWorkbench));
             api.RegisterItemClass($"{ModId}:ItemWhetstone", typeof(ItemWhetstone));
             api.RegisterItemClass($"{ModId}:ItemTinkerToolParts", typeof(ItemTinkerToolParts));
+            api.RegisterItemClass($"{ModId}:WorkableBits", typeof(ItemWorkableNugget));
 
             HarmonyPatch();
         }

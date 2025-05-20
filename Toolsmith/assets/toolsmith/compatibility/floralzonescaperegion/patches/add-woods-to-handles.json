@@ -1,0 +1,22 @@
+[
+	{
+		"op": "addeach",
+		"path": "/behaviors/1/properties/textures/0/values/-",
+		"file": "toolsmith:itemtypes/handles/handle.json",
+		"value": [
+			"floralzonescaperegion:block/wood/debarked/afrocarpusfalcatus",
+			"floralzonescaperegion:block/wood/debarked/ocoteabullata",
+			"floralzonescaperegion:block/wood/debarked/searsialancea"
+		]
+	},
+	{
+		"op": "addeach",
+		"path": "/behaviors/1/properties/textures/0/values/-",
+		"file": "toolsmith:itemtypes/handles/carpentedhandle.json",
+		"value": [
+			"floralzonescaperegion:block/wood/debarked/afrocarpusfalcatus",
+			"floralzonescaperegion:block/wood/debarked/ocoteabullata",
+			"floralzonescaperegion:block/wood/debarked/searsialancea"
+		]
+	}
+]

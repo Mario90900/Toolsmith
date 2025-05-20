@@ -1,0 +1,18 @@
+[
+	{
+		"op": "addeach",
+		"path": "/behaviors/1/properties/textures/0/values/-",
+		"file": "toolsmith:itemtypes/handles/handle.json",
+		"value": [
+			"floralzonescaribbeanregion:block/wood/debarked/lysilomalatisiliquum"
+		]
+	},
+	{
+		"op": "addeach",
+		"path": "/behaviors/1/properties/textures/0/values/-",
+		"file": "toolsmith:itemtypes/handles/carpentedhandle.json",
+		"value": [
+			"floralzonescaribbeanregion:block/wood/debarked/lysilomalatisiliquum"
+		]
+	}
+]

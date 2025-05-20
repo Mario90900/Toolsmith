@@ -1,0 +1,13 @@
+[
+	{
+		"ingredientPattern": "PPP,QSQ,Q_Q",
+		"ingredients": {
+			"S": { "type": "item", "code": "game:saw-*", "isTool": true },
+			"P": { "type": "item", "code": "floralzonescaribbeanregion:plank-*", "quantity" : 3 },
+			"Q": { "type": "item", "code": "floralzonescaribbeanregion:plank-*", "quantity": 2 }
+		},
+		"width": 3,
+		"height": 3,
+		"output": { "type": "block", "code": "toolsmith:workbench-north", "quantity": 1 }
+	}
+]

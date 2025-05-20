@@ -17,6 +17,7 @@ namespace Toolsmith.ToolTinkering.Items {
     public class ItemWhetstone : Item, IOffhandDominantInteractionItem {
         protected ILoadedSound honingScrape;
         protected bool sharpening = false;
+        protected bool firstHoning = false;
         protected float totalSharpnessHoned = 0;
         protected float deltaLastTick = 0;
         protected float lastInterval = 0;
@@ -29,14 +30,15 @@ namespace Toolsmith.ToolTinkering.Items {
             int maxSharp = 0;
             ItemStack item = mainHandSlot.Itemstack;
             ItemStack whetstone = offhandSlot.Itemstack;
+            firstHoning = !(item.HasTotalHoneValue());
 
-            TinkeringUtility.RecieveDurabilitiesAndSharpness(ref curDur, ref maxDur, ref curSharp, ref maxSharp, item, isTool);
+            TinkeringUtility.RecieveDurabilitiesAndSharpness(ref curDur, ref maxDur, ref curSharp, ref maxSharp, ref totalSharpnessHoned, item, isTool);
 
-            TinkeringUtility.ActualSharpenTick(ref curDur, ref curSharp, ref totalSharpnessHoned, maxSharp, byEntity);
+            TinkeringUtility.ActualSharpenTick(ref curDur, ref curSharp, maxSharp, ref totalSharpnessHoned, firstHoning, byEntity);
 
             whetstone.Collectible.DamageItem(byEntity.World, byEntity, offhandSlot);
 
-            TinkeringUtility.SetResultsOfSharpening(curDur, curSharp, item, byEntity, mainHandSlot, isTool);
+            TinkeringUtility.SetResultsOfSharpening(curDur, curSharp, totalSharpnessHoned, firstHoning, item, byEntity, mainHandSlot, isTool);
 
             mainHandSlot.MarkDirty();
             offhandSlot.MarkDirty();

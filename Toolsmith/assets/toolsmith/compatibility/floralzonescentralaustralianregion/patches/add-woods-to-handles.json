@@ -1,0 +1,20 @@
+[
+	{
+		"op": "addeach",
+		"path": "/behaviors/1/properties/textures/0/values/-",
+		"file": "toolsmith:itemtypes/handles/handle.json",
+		"value": [
+			"floralzonescentralaustralianregion:block/wood/debarked/corymbiaaparrerinja",
+			"floralzonescentralaustralianregion:block/wood/debarked/eucalyptuscamaldulensis"
+		]
+	},
+	{
+		"op": "addeach",
+		"path": "/behaviors/1/properties/textures/0/values/-",
+		"file": "toolsmith:itemtypes/handles/carpentedhandle.json",
+		"value": [
+			"floralzonescentralaustralianregion:block/wood/debarked/corymbiaaparrerinja",
+			"floralzonescentralaustralianregion:block/wood/debarked/eucalyptuscamaldulensis"
+		]
+	}
+]

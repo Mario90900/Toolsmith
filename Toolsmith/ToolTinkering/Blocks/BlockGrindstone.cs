@@ -17,6 +17,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
     public class BlockGrindstone : Block {
 
         protected bool doneSharpening = false;
+        protected bool firstHoning = false;
         protected float deltaLastTick = 0;
         protected float lastInterval = 0;
         protected float totalSharpnessHoned = 0;
@@ -109,17 +110,18 @@ namespace Toolsmith.ToolTinkering.Blocks {
                         int maxDur = 0;
                         int curSharp = 0;
                         int maxSharp = 0;
+                        firstHoning = !(item.HasTotalHoneValue());
 
-                        TinkeringUtility.RecieveDurabilitiesAndSharpness(ref curDur, ref maxDur, ref curSharp, ref maxSharp, item, isTool);
+                        TinkeringUtility.RecieveDurabilitiesAndSharpness(ref curDur, ref maxDur, ref curSharp, ref maxSharp, ref totalSharpnessHoned, item, isTool);
 
-                        TinkeringUtility.ActualSharpenTick(ref curDur, ref curSharp, ref totalSharpnessHoned, maxSharp, byPlayer.Entity);
+                        TinkeringUtility.ActualSharpenTick(ref curDur, ref curSharp, maxSharp, ref totalSharpnessHoned, firstHoning, byPlayer.Entity);
 
                         if (ToolsmithModSystem.Config.DebugMessages) {
                             ToolsmithModSystem.Logger.Warning("Total Sharpness Percent recovered this action: " + totalSharpnessHoned);
                             ToolsmithModSystem.Logger.Warning("Seconds the Grindstone has been going: " + secondsUsed);
                         }
 
-                        TinkeringUtility.SetResultsOfSharpening(curDur, curSharp, item, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, isTool);
+                        TinkeringUtility.SetResultsOfSharpening(curDur, curSharp, totalSharpnessHoned, firstHoning, item, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, isTool);
 
                         byPlayer.InventoryManager.ActiveHotbarSlot.MarkDirty();
 

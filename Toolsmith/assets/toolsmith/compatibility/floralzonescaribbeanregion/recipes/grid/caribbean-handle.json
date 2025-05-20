@@ -1,0 +1,12 @@
+[
+	{
+		"ingredientPattern": "K,W",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"W": { "type": "block", "code": "floralzonescaribbeanregion:supportbeam-*" }
+		},
+		"width": 1,
+		"height": 2,
+		"output": { "type": "item", "code": "toolsmith:handle", "quantity": 1 }
+	}
+]

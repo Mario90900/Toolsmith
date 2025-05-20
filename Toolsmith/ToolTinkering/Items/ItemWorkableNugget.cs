@@ -26,7 +26,11 @@ namespace Toolsmith.ToolTinkering.Items {
         }
 
         public List<SmithingRecipe> GetMatchingRecipes(ItemStack stack) {
-            ItemStack ingot = new ItemStack(api.World.GetItem(new AssetLocation("ingot-" + Variant["metal"])));
+            string metalcode = GetMetalType();
+            if (metalcode == null) {
+                return Array.Empty<SmithingRecipe>().ToList();
+            }
+            ItemStack ingot = new ItemStack(api.World.GetItem(new AssetLocation("ingot-" + metalcode)));
 
             return api.GetSmithingRecipes()
                 .Where(r => r.Ingredient.SatisfiesAsIngredient(ingot))
@@ -35,7 +39,10 @@ namespace Toolsmith.ToolTinkering.Items {
         }
 
         public int GetRequiredAnvilTier(ItemStack stack) {
-            string metalcode = Variant["metal"];
+            string metalcode = GetMetalType();
+            if (metalcode == null) {
+                return 10;
+            }
             int tier = 0;
 
             MetalPropertyVariant var;
@@ -55,7 +62,12 @@ namespace Toolsmith.ToolTinkering.Items {
                 return null;
             }
 
-            var workItemToAdd = api.World.GetItem(new AssetLocation("workitem-" + Variant["metal"]));
+            string metalcode = GetMetalType();
+            if (metalcode == null) {
+                return null;
+            }
+
+            var workItemToAdd = api.World.GetItem(new AssetLocation("workitem-" + metalcode));
             if (workItemToAdd == null) {
                 return null;
             }
@@ -75,6 +87,8 @@ namespace Toolsmith.ToolTinkering.Items {
                 }
                 return null;
             }
+
+            return toAddItemStack;
         }
 
         public ItemStack GetBaseMaterial(ItemStack stack) {
@@ -116,6 +130,14 @@ namespace Toolsmith.ToolTinkering.Items {
             }
 
             return 0;
+        }
+
+        public string GetMetalType() {
+            var smeltedCode = CombustibleProps?.SmeltedStack?.ResolvedItemstack?.Collectible.LastCodePart();
+            if (smeltedCode == null) {
+                ToolsmithModSystem.Logger.Error("Something is being given the Workable Nugget Class but has no combustible props. This will cause the item to not function like a proper workable item. The item in question is: " + Code);
+            }
+            return smeltedCode;
         }
     }
 }

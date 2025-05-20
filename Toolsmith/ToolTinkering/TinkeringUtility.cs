@@ -17,6 +17,7 @@ using Toolsmith.Client;
 using System.Reflection.Metadata.Ecma335;
 using Vintagestory.GameContent;
 using Vintagestory.API.Config;
+using Toolsmith.ToolTinkering.Drawbacks;
 
 namespace Toolsmith.ToolTinkering {
     //This is beginning to hold the MEAT of the whole tinkering system. It has various helper functions that are being used in multiple places to help keep everything just running the single code calls and ensuring it isn't spaghetti while I add more ways to do the same things.
@@ -618,6 +619,8 @@ namespace Toolsmith.ToolTinkering {
                 return false;
             } else if (item.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //This one stores it under 'tinkeredToolHead' durability
                 return true;
+            } else if (item is ItemWorkItem) {
+                return true;
             }
 
             return false;
@@ -685,7 +688,7 @@ namespace Toolsmith.ToolTinkering {
         }
 
         //The next three methods are for the three steps of handling the sharpness honing. It helped to encapsulate it all to handle both the Grindstone and the Whetstones here.
-        public static void RecieveDurabilitiesAndSharpness(ref int curDur, ref int maxDur, ref int curSharp, ref int maxSharp, ItemStack item, int isTool) {
+        public static void RecieveDurabilitiesAndSharpness(ref int curDur, ref int maxDur, ref int curSharp, ref int maxSharp, ref float totalHoned, ItemStack item, int isTool) {
             if (isTool == 1) { //The item is a Tinkered Tool! Use the extensions for the tool's head durability.
                 curDur = item.GetToolheadCurrentDurability();
                 maxDur = item.GetToolheadMaxDurability();
@@ -707,9 +710,13 @@ namespace Toolsmith.ToolTinkering {
                 curSharp = item.GetPartCurrentSharpness();
                 maxSharp = item.GetPartMaxSharpness();
             }
+
+            if (item.HasTotalHoneValue()) {
+                totalHoned = item.GetTotalHoneValue();
+            }
         }
 
-        public static void ActualSharpenTick(ref int curDur, ref int curSharp, ref float totalSharpnessHoned, int maxSharp, EntityAgent byEntity) {
+        public static void ActualSharpenTick(ref int curDur, ref int curSharp, int maxSharp, ref float totalSharpnessHoned, bool firstHoning, EntityAgent byEntity) {
             if (curSharp < maxSharp && curDur > 0) {
                 float percent = 1.0f;
                 if (ToolsmithModSystem.Config.GrindstoneSharpenPerTick >= 1 && ToolsmithModSystem.Config.GrindstoneSharpenPerTick <= 100) {
@@ -728,7 +735,7 @@ namespace Toolsmith.ToolTinkering {
                 bool doubleDamage = false;
                 double damageMultFromLinear = 0.0;
 
-                if (ToolsmithModSystem.Config.ShouldHoningDamageHead) {
+                if (!firstHoning && ToolsmithModSystem.Config.ShouldHoningDamageHead) {
                     if (totalSharpnessHoned > 0.5) {
                         damageDurability = byEntity.World.Rand.NextDouble() < 0.05;
                     } else if (totalSharpnessHoned > 0.4 && totalSharpnessHoned <= 0.5) {
@@ -754,10 +761,13 @@ namespace Toolsmith.ToolTinkering {
             }
         }
 
-        public static void SetResultsOfSharpening(int curDur, int curSharp, ItemStack item, EntityAgent byEntity, ItemSlot mainHandSlot, int isTool) {
+        public static void SetResultsOfSharpening(int curDur, int curSharp, float totalSharpnessHoned, bool firstHoning, ItemStack item, EntityAgent byEntity, ItemSlot mainHandSlot, int isTool) {
             if (isTool == 1) {
                 item.SetToolheadCurrentDurability(curDur);
                 item.SetToolCurrentSharpness(curSharp);
+                if (!firstHoning) {
+                    item.SetTotalHoneValue(totalSharpnessHoned);
+                }
                 if (curDur <= 0) {
                     CollectibleObject toolObj = item.Collectible;
                     HandleBrokenTinkeredTool(byEntity.World, byEntity, mainHandSlot, 0, curSharp, item.GetToolhandleCurrentDurability(), item.GetToolbindingCurrentDurability(), true, false);
@@ -770,6 +780,9 @@ namespace Toolsmith.ToolTinkering {
             } else if (isTool == 2) {
                 item.SetSmithedDurability(curDur);
                 item.SetToolCurrentSharpness(curSharp);
+                if (!firstHoning) {
+                    item.SetTotalHoneValue(totalSharpnessHoned);
+                }
                 if (curDur <= 0) {
                     item.SetSmithedDurability(1);
                     item.SetBrokeWhileSharpeningFlag();
@@ -781,6 +794,9 @@ namespace Toolsmith.ToolTinkering {
             } else {
                 item.SetPartCurrentDurability(curDur);
                 item.SetPartCurrentSharpness(curSharp);
+                if (!firstHoning) {
+                    item.SetTotalHoneValue(totalSharpnessHoned);
+                }
                 if (curDur <= 0) {
                     //Wait... This might be silly and may be hacky but... Can I just make it into an item AND break it right here right now? Lmao
                     CollectibleObject toolToBreakObj; //This might proc other mod's on damage stuff for the head as if it were a real tool.
@@ -806,6 +822,15 @@ namespace Toolsmith.ToolTinkering {
             }
         }
 
+        public static void HandleBreakdown(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
+            var inhand = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible;
+            if (inhand.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //This one stores it under 'tinkeredToolHead' durability
+                DisassembleTool(secondsUsed, world, byPlayer, blockSel);
+            } else if (inhand is ItemWorkItem) {
+                BreakDownIntoBits(secondsUsed, world, byPlayer, blockSel);
+            }
+        }
+
         public static void DisassembleTool(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             //Actually take apart the tool here!
             //Get the parts of the tool from it
@@ -826,6 +851,9 @@ namespace Toolsmith.ToolTinkering {
             head.SetPartMaxDurability(tool.GetToolheadMaxDurability());
             head.SetPartCurrentSharpness(tool.GetToolCurrentSharpness());
             head.SetPartMaxSharpness(tool.GetToolMaxSharpness());
+            if (tool.HasTotalHoneValue()) {
+                head.SetTotalHoneValue(tool.GetTotalHoneValue());
+            }
             handle.SetPartCurrentDurability(tool.GetToolhandleCurrentDurability());
             handle.SetPartMaxDurability(tool.GetToolhandleMaxDurability());
 
@@ -860,6 +888,30 @@ namespace Toolsmith.ToolTinkering {
                 player.World.SpawnItemEntity(binding, player.Pos.XYZ);
             }
 
+            byPlayer.InventoryManager.ActiveHotbarSlot.MarkDirty();
+        }
+
+        public static void BreakDownIntoBits(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
+            var workpieceStack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
+            var numVoxels = ReforgingUtility.TotalVoxelsInWorkItem(workpieceStack);
+
+            if (numVoxels > 0) {
+                var metal = workpieceStack.Collectible.GetMetalMaterial();
+                var bitStack = new ItemStack(world.GetItem(new AssetLocation("metalbit-" + metal)));
+                var numBits = Math.Truncate(numVoxels / 2.1);
+                var remainder = (numVoxels / 2.1) - numBits;
+
+                if (world.Rand.NextDouble() <= remainder) {
+                    numBits++;
+                }
+
+                bitStack.StackSize = (int)numBits;
+                if (!byPlayer.InventoryManager.TryGiveItemstack(bitStack, true)) {
+                    world.SpawnItemEntity(bitStack, byPlayer.Entity.Pos.XYZ);
+                }
+            }
+
+            byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack = null;
             byPlayer.InventoryManager.ActiveHotbarSlot.MarkDirty();
         }
 

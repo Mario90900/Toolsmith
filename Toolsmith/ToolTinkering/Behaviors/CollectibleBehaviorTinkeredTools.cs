@@ -112,6 +112,9 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 outputSlot.Itemstack.SetToolheadCurrentDurability(foundToolInput.GetToolheadCurrentDurability());
                 outputSlot.Itemstack.SetToolCurrentSharpness(foundToolInput.GetToolCurrentSharpness());
                 outputSlot.Itemstack.SetToolMaxSharpness(foundToolInput.GetToolMaxSharpness());
+                if (foundToolInput.HasTotalHoneValue()) {
+                    outputSlot.Itemstack.SetTotalHoneValue(foundToolInput.GetTotalHoneValue());
+                }
                 outputSlot.Itemstack.SetToolhandle(foundToolInput.GetToolhandle());
                 outputSlot.Itemstack.SetToolhandleCurrentDurability(foundToolInput.GetToolhandleCurrentDurability());
                 outputSlot.Itemstack.SetToolhandleMaxDurability(foundToolInput.GetToolhandleMaxDurability());
@@ -227,6 +230,9 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             outputSlot.Itemstack.SetToolheadCurrentDurability((int)(headMaxDur * currentHeadPer));
             outputSlot.Itemstack.SetToolMaxSharpness(maxSharpness);
             outputSlot.Itemstack.SetToolCurrentSharpness((int)(maxSharpness * currentHeadSharpPer));
+            if (headStack.HasTotalHoneValue()) {
+                outputSlot.Itemstack.SetTotalHoneValue(headStack.GetTotalHoneValue());
+            }
 
             var currentHandlePer = handleStack.GetPartRemainingHPPercent();
             handleStack.SetPartMaxDurability((int)handleDur);
@@ -264,9 +270,6 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             if (bindingStack != null) {
                 outputSlot.Itemstack.SetToolbinding(bindingStack);
             }
-            //outputSlot.MarkDirty();
-
-            //outputSlot.Itemstack.Attributes.SetInt(ToolsmithAttributes.Durability, outputSlot.Itemstack.Collectible.GetMaxDurability(outputSlot.Itemstack));
         }
 
         private void HandleExtraModCompat(ItemSlot[] allInputslots, ItemSlot outputSlot) {
