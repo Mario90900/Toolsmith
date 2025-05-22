@@ -18,6 +18,8 @@ using System.Reflection.Metadata.Ecma335;
 using Vintagestory.GameContent;
 using Vintagestory.API.Config;
 using Toolsmith.ToolTinkering.Drawbacks;
+using Vintagestory.API.Datastructures;
+using canjewelry.src;
 
 namespace Toolsmith.ToolTinkering {
     //This is beginning to hold the MEAT of the whole tinkering system. It has various helper functions that are being used in multiple places to help keep everything just running the single code calls and ensuring it isn't spaghetti while I add more ways to do the same things.
@@ -204,8 +206,8 @@ namespace Toolsmith.ToolTinkering {
             bool gaveBinding = false;
             ItemStack bitsDrop = null;
 
+            toolHead = brokenToolStack.GetToolhead();
             if (remainingHeadDur > 0 && !brokenToolStack.HasPlaceholderHead()) {
-                toolHead = brokenToolStack.GetToolhead();
                 toolHead.SetPartCurrentDurability(remainingHeadDur);
                 toolHead.SetPartMaxDurability(brokenToolStack.GetToolheadMaxDurability());
                 toolHead.SetPartCurrentSharpness(remainingSharpness);
@@ -215,6 +217,10 @@ namespace Toolsmith.ToolTinkering {
                                   //Thus, it can be considered that a tool does not fully "break" in the vanilla sense until the Head itself breaks, it only "falls apart" ie: the tool head flies off the handle, there's possible durability left on both.
                                   //Because of this, always need to consider the possibility of dropping a handle or binder, but if the 'Head' is broken, we also want to run other mod's 'on damage' calls along with vanilla.
                                   //Anything below that checks for !headBroke is looking to see if the Tool should be "Broken" or simply "Fallen Apart" in this sense, if it's fallen apart, do similar checks to vanilla tool breaking locally here. Otherwise let Vanilla code deal with it, since it's all or nothing after this patch is done.
+            }
+
+            if (ToolsmithModSystem.Api.ModLoader.IsModEnabled("canjewelry")) {
+                CheckAndHandleJewelryStatTransfer(brokenToolStack, toolHead);
             }
 
             if (remainingHandleDur > 0) {
@@ -261,6 +267,11 @@ namespace Toolsmith.ToolTinkering {
                 ToolsmithModSystem.Logger.Debug("Binding has durability: " + remainingBindingDur);
             }
 
+            //Handle any mod compat drops here for when a tool breaks!
+            if (headBroke && world.Api.ModLoader.IsModEnabled("canjewelry")) {
+                HandleGemDropsForJewelry(byEntity, toolHead);
+            }
+
             EntityPlayer player = byEntity as EntityPlayer;
             if (player != null) {
                 //Try to give the player each part, if given successfully, set the stack to null again to represent this
@@ -289,19 +300,13 @@ namespace Toolsmith.ToolTinkering {
                     if (world.Side.IsServer()) {
                         world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), player);
                     }
-                } /*else {
-                    itemslot.Itemstack.SetToolheadCurrentDurability(1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
-                                                                        //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
-                }*/ //This should not be needed anymore!
+                }
             } else {
                 if (!headBroke) { //This needs to be in here as well since no matter what, this needs to run
                     itemslot.Itemstack = null; //Actually 'break' the original item, but only if the head part isn't broken yet. Handle the 'falling apart' of the tools here, but let the 'breaking' happen elsewhere if the head DID fully break.
                     if (world.Side.IsServer()) {
                         world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), byEntity.SidedPos.X, byEntity.SidedPos.Y, byEntity.SidedPos.Z, null, 1f, 16f);
                     }
-                } else {
-                    itemslot.Itemstack.SetToolheadCurrentDurability(1); //Set it to 1 just in case setting it to 0 gets the game to just delete it from existance. This also works for checks similar to Smithing Plus, which checks if 'remaining dur' is greater then the damage it will take.
-                                                                        //But this is a failsafe if another mod does not use the Collectable.GetRemainingDurability call and instead just directly reads the Attributes. Smithing Plus... :P
                 }
             }
 
@@ -824,7 +829,7 @@ namespace Toolsmith.ToolTinkering {
 
         public static void HandleBreakdown(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             var inhand = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible;
-            if (inhand.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //This one stores it under 'tinkeredToolHead' durability
+            if (inhand.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
                 DisassembleTool(secondsUsed, world, byPlayer, blockSel);
             } else if (inhand is ItemWorkItem) {
                 BreakDownIntoBits(secondsUsed, world, byPlayer, blockSel);
@@ -853,6 +858,9 @@ namespace Toolsmith.ToolTinkering {
             head.SetPartMaxSharpness(tool.GetToolMaxSharpness());
             if (tool.HasTotalHoneValue()) {
                 head.SetTotalHoneValue(tool.GetTotalHoneValue());
+            }
+            if (world.Api.ModLoader.IsModEnabled("canjewelry")) {
+                CheckAndHandleJewelryStatTransfer(tool, head);
             }
             handle.SetPartCurrentDurability(tool.GetToolhandleCurrentDurability());
             handle.SetPartMaxDurability(tool.GetToolhandleMaxDurability());
@@ -889,6 +897,66 @@ namespace Toolsmith.ToolTinkering {
             }
 
             byPlayer.InventoryManager.ActiveHotbarSlot.MarkDirty();
+        }
+
+        public static void CheckAndHandleJewelryStatTransfer(ItemStack source, ItemStack destination) {
+            if (source != null && destination != null && source.Attributes.HasAttribute(CANJWConstants.ITEM_ENCRUSTED_STRING)) {
+                ITreeAttribute sourceEncrustedTree = source.Attributes.GetTreeAttribute(CANJWConstants.ITEM_ENCRUSTED_STRING);
+                ITreeAttribute destinationEncrustedTree = destination.Attributes.GetOrAddTreeAttribute(CANJWConstants.ITEM_ENCRUSTED_STRING);
+                destinationEncrustedTree = sourceEncrustedTree.Clone();
+                destination.Attributes[CANJWConstants.ITEM_ENCRUSTED_STRING] = destinationEncrustedTree;
+            }
+        }
+
+        //This is copied from CAN Jewelry and edited since it uh, doesn't appear to actually work on the Jewelry side? Even with the chance to drop at 1.0, it simply doesn't. I think it's cause it's trying to access SAPI on the client side?
+        //Might need updating if Jewelry updates
+        public static void HandleGemDropsForJewelry(Entity byEntity, ItemStack itemstack) {
+            if (byEntity == null || (byEntity.Api != null && byEntity.Api.Side == EnumAppSide.Client)) {
+                return;
+            }
+
+            if (itemstack != null && itemstack.Attributes.HasAttribute(CANJWConstants.ITEM_ENCRUSTED_STRING)) {
+                Random r = new Random();
+
+
+                var tree = itemstack.Attributes.GetTreeAttribute(CANJWConstants.ITEM_ENCRUSTED_STRING);
+                for (int i = 0; i < tree.GetAsInt(CANJWConstants.SOCKET_ADDED_NUMBER); i++) {
+                    if (canjewelry.src.canjewelry.config.chance_gem_drop_on_item_broken == 0 || r.NextDouble() > canjewelry.src.canjewelry.config.chance_gem_drop_on_item_broken) {
+                        continue;
+                    }
+
+                    ITreeAttribute socketSlot = tree.GetTreeAttribute("slot" + i.ToString());
+                    if (socketSlot != null) {
+                        int size = socketSlot.GetInt("size");
+                        string gemType = socketSlot.GetString("gemtype");
+                        string gemSize;
+                        switch (size) {
+                            case 1:
+                                gemSize = "normal";
+                                break;
+                            case 2:
+                                gemSize = "flawless";
+                                break;
+                            case 3:
+                                gemSize = "exquisite";
+                                break;
+                            default:
+                                continue;
+                        }
+
+                        string[] buffNames = (socketSlot[CANJWConstants.ENCRUSTABLE_BUFFS_NAMES] as StringArrayAttribute).value;
+                        float[] buffValues = (socketSlot[CANJWConstants.ENCRUSTABLE_BUFFS_VALUES] as FloatArrayAttribute).value;
+                        ITreeAttribute gemTree = new TreeAttribute();
+                        gemTree[CANJWConstants.ENCRUSTABLE_BUFFS_NAMES] = new StringArrayAttribute(buffNames);
+                        gemTree[CANJWConstants.ENCRUSTABLE_BUFFS_VALUES] = new FloatArrayAttribute(buffValues);
+                        gemTree.SetString(CANJWConstants.CUTTING_TYPE, socketSlot.GetString(CANJWConstants.CUTTING_TYPE));
+                        Item currentItem = byEntity.World.GetItem(new AssetLocation("canjewelry:" + "gem-cut-" + gemSize + "-" + gemType));
+                        ItemStack newIS = new ItemStack(currentItem, 1);
+                        newIS.Attributes[CANJWConstants.CUT_GEM_TREE] = gemTree;
+                        byEntity.World.SpawnItemEntity(newIS, byEntity.Pos.XYZ.Clone().Add(0.5f, 0.25f, 0.5f));
+                    }
+                }
+            }
         }
 
         public static void BreakDownIntoBits(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {

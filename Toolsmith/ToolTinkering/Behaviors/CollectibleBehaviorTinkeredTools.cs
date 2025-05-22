@@ -11,6 +11,7 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Util;
+using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorTinkeredTools : CollectibleBehavior {
@@ -279,6 +280,13 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
             if (ToolsmithModSystem.Api.ModLoader.IsModEnabled("itemrarity")) {
                 HandleItemRarityCompat(allInputslots, outputSlot);
+            }
+
+            if (ToolsmithModSystem.Api.ModLoader.IsModEnabled("canjewelry")) {
+                foreach (var input in allInputslots.Where(i => i.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>())) {
+                    TinkeringUtility.CheckAndHandleJewelryStatTransfer(input.Itemstack, outputSlot.Itemstack);
+                    break;
+                }
             }
         }
 

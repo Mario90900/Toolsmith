@@ -46,7 +46,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
         private static bool TinkeredToolDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) { //The Itemslot in question has to finish this call Null if the item is broken, other parts of the game, IE Treecutting code, only check for if the slot is null to keep on cutting the tree. This works for vanilla, cause when a tool breaks, it WILL be gone.
-            if (!itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && (!world.Side.IsServer() || (ToolsmithModSystem.IgnoreCodes.Count == 0 || !ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString())))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
+            if (world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && (ToolsmithModSystem.IgnoreCodes.Count == 0 || !ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString()))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
                 ItemStack itemStack = itemslot.Itemstack;
                 int remainingHeadDur = itemStack.GetToolheadCurrentDurability(); //Grab all the current durabilities of the parts!
                 int remainingHandleDur = itemStack.GetToolhandleCurrentDurability(); //But none should be -1 already, if any are, it means it's likely a Creative-spawned tool, or the mod was added to a world -- ((world.Side.IsClient()) || (
@@ -144,12 +144,12 @@ namespace Toolsmith.ToolTinkering {
                 if (remainingBindingDur <= 0 || remainingHandleDur <= 0 || remainingHeadDur <= 0) {
                     TinkeringUtility.HandleBrokenTinkeredTool(world, byEntity, itemslot, remainingHeadDur, currentSharpness, remainingHandleDur, remainingBindingDur, headBroke, !headBroke);
                 }
-
+                
                 itemslot.MarkDirty();
                 if (!headBroke) { //If the head did not break, then don't run everything!
                     return false; //Skip default and others
                 }
-            } else if (!itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) { //If it's a smithed tool, only need to deal with the Sharpness, and any extra "head" damage. Head in this case is just the tool as a whole.
+            } else if (world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) { //If it's a smithed tool, only need to deal with the Sharpness, and any extra "head" damage. Head in this case is just the tool as a whole.
                 ItemStack itemStack = itemslot.Itemstack;
                 bool isBluntTool = itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>();
                 var currentDur = itemStack.GetSmithedDurability();
@@ -190,9 +190,9 @@ namespace Toolsmith.ToolTinkering {
 
                 itemslot.MarkDirty();
                 return doDamageTool;
-            } /*else if (!world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>())) {
+            } else if (!world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>())) {
                 return false; //Clientside Catch for hitting this point, wait for the server sync to update everything to hopefully prevent that desync from the client
-            }*/
+            }
             //If it's not a tinkered or smithed tool, then let everything else run as well!
             return true;
         }
@@ -610,6 +610,54 @@ namespace Toolsmith.ToolTinkering {
                 textCtx.FillPreserve();
                 instance.ShadePath(textCtx, 2);
             }
+        }
+    }
+
+    //Patching ItemAxe to ideally keep marking all Wood Blocks as Dirty to send them to the client, hopefully solving the Ghost Trees once and for all and not causing an RNG desync in the process.
+    [HarmonyPatch(typeof(ItemAxe))]
+    [HarmonyPatchCategory(ToolsmithModSystem.ToolTinkeringItemAxePatchCategory)]
+    public class ItemAxePatches {
+
+        [HarmonyTranspiler]
+        [HarmonyPatch(nameof(ItemAxe.OnBlockBrokenWith))]
+        public static IEnumerable<CodeInstruction> OnBlockBrokenWithTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator ilGenerator) {
+            var codes = new List<CodeInstruction>(instructions);
+
+            int indexBeforeBreakBlock = -1;
+            int indexAfterBreakBlock = -1;
+            var breakBlockMethod = AccessTools.Method(typeof(IBlockAccessor), "BreakBlock", new Type[] { typeof(BlockPos), typeof(IPlayer), typeof(float) });
+
+            for (int i = 0; i < codes.Count(); i++) {
+                if (codes[i].opcode == OpCodes.Callvirt && (MethodInfo)codes[i].operand == breakBlockMethod) {
+                    indexAfterBreakBlock = i + 1;
+                    if (codes[i - 12].opcode == OpCodes.Callvirt) {
+                        indexBeforeBreakBlock = i - 13;
+                    }
+                }
+            }
+
+            if (indexAfterBreakBlock >= 0 && indexBeforeBreakBlock >= 0) {
+                var newLabel = ilGenerator.DefineLabel();
+                var serverSideBreakBlock = new List<CodeInstruction>() {
+                    codes[indexAfterBreakBlock].Clone(),
+                    codes[indexAfterBreakBlock+1].Clone(),
+                    new CodeInstruction(OpCodes.Ldc_I4_1),
+                    new CodeInstruction(OpCodes.Bne_Un, newLabel)
+                };
+
+                codes[indexAfterBreakBlock].labels.Add(newLabel);
+                codes.InsertRange(indexBeforeBreakBlock, serverSideBreakBlock);
+            } else {
+                ToolsmithModSystem.Logger.Error("ItemAxe Transpiler had an error! Will not patch anything, and Ghost Trees will occur. More specifics will follow:");
+                if (indexAfterBreakBlock < 0) {
+                    ToolsmithModSystem.Logger.Error("Could not find the BreakBlock call.");
+                }
+                if (indexBeforeBreakBlock < 0) {
+                    ToolsmithModSystem.Logger.Error("Could not locate the start of the BreakBlock call. Did something else change it?");
+                }
+            }
+
+            return codes.AsEnumerable();
         }
     }
 }

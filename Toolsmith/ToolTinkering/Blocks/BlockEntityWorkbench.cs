@@ -10,6 +10,7 @@ using Toolsmith.ToolTinkering.Drawbacks;
 using Toolsmith.Utils;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
@@ -329,6 +330,10 @@ namespace Toolsmith.ToolTinkering.Blocks {
             }
             if (ToolsmithModSystem.Config.DebugMessages) {
                 ToolsmithModSystem.Logger.Warning("What is the workitem? " + workItem.Collectible.Code);
+            }
+
+            if (world.Api.ModLoader.IsModEnabled("canjewelry")) {
+                TinkeringUtility.HandleGemDropsForJewelry(byPlayer.Entity, reforgingSlot.Itemstack);
             }
 
             //Generate the complete work item voxel data from the recipe.

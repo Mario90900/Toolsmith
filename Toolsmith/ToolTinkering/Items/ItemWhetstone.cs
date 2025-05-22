@@ -10,6 +10,7 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
+using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 using Vintagestory.ServerMods.NoObf;
 
@@ -54,7 +55,7 @@ namespace Toolsmith.ToolTinkering.Items {
                     honingScrape = ((IClientWorldAccessor)api.World).LoadSound(new SoundParams() {
                         Location = new AssetLocation("toolsmith:sounds/whetstone-scraping-loop.ogg"),
                         ShouldLoop = true,
-                        Position = byEntity.Pos.AsBlockPos.ToVec3f().Add(0.5f, 0.5f, 0.5f),
+                        Position = byEntity.Pos.XYZFloat,
                         DisposeOnFinish = false,
                         Volume = 0,
                         Range = 6,
@@ -72,6 +73,16 @@ namespace Toolsmith.ToolTinkering.Items {
                 }
             } else {
                 honingScrape?.FadeOut(0.2f, (s) => { s.Dispose(); honingScrape = null; });
+            }
+        }
+
+        public void UpdateSoundPosition(ICoreAPI api, Vec3f pos) {
+            if (!api.Side.IsClient()) {
+                return;
+            }
+
+            if (honingScrape != null && honingScrape.IsPlaying) {
+                honingScrape.SetPosition(pos);
             }
         }
 
@@ -106,6 +117,7 @@ namespace Toolsmith.ToolTinkering.Items {
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
             if (sharpening) {
                 var mainHandSlot = byEntity.RightHandItemSlot;
+                UpdateSoundPosition(byEntity.Api, byEntity.Pos.XYZFloat);
                 var retVal = TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, mainHandSlot, byEntity);
                 if (slot.Empty || slot.Itemstack.Collectible.GetRemainingDurability(slot.Itemstack) <= 1) {
                     ToggleHoningSound(false, byEntity);

@@ -45,6 +45,7 @@ namespace Toolsmith {
         public const string ToolTinkeringCraftingPatchCategory = "toolTinkeringCrafting";
         public const string ToolTinkeringRenderPatchCategory = "toolTinkeringRender";
         public const string ToolTinkeringGuiElementPatchCategory = "toolTinkeringGuiElement";
+        public const string ToolTinkeringItemAxePatchCategory = "itemAxeOnBrokenWith";
 
         public const string OffhandDominantInteractionUsePatchCategory = "offhandDominantInteractionUse";
 
@@ -388,7 +389,7 @@ namespace Toolsmith {
                 markerTexSource.textures.Clear();
                 markerTexSource.textures["slot"] = new CompositeTexture(new AssetLocation(ToolsmithConstants.WorkbenchSlotMarkerBindingPath + ".png"));
                 capi.Tesselator.TesselateShape("BindingSlot for Workbench Crafting Slot", emptySlot, out MeshData bindingMarkerData, markerTexSource);
-
+                
                 return new Dictionary<string, MeshData>() {
                     [ToolsmithConstants.WorkbenchSlotMarkerEmptyPath] = emptyMarkerData,
                     [ToolsmithConstants.WorkbenchSlotMarkerHeadPath] = headMarkerData,
@@ -409,7 +410,8 @@ namespace Toolsmith {
             HarmonyInstance.PatchCategory(ToolTinkeringTransitionalPropsPatchCategory);
             HarmonyInstance.PatchCategory(ToolTinkeringCraftingPatchCategory);
             HarmonyInstance.PatchCategory(ToolTinkeringRenderPatchCategory);
-            HarmonyInstance.PatchCategory(ToolTinkeringGuiElementPatchCategory); // <-- This is causing turbo lag. Fix it tomorrow. Likely it's the fact I removed that ret call I'm realizing now. That was stupid, cause now it's probably going through and checking a LOT more then it needs to.
+            HarmonyInstance.PatchCategory(ToolTinkeringGuiElementPatchCategory);
+            HarmonyInstance.PatchCategory(ToolTinkeringItemAxePatchCategory);
             Logger.VerboseDebug("Patched functions for Tool Tinkering purposes.");
             HarmonyInstance.PatchCategory(OffhandDominantInteractionUsePatchCategory);
             Logger.VerboseDebug("Patched functions for Offhand Dominant Interaction purposes.");

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="canjewelry">
+      <HintPath>..\..\Other Mod's DLLs for Integration Purposes\CANJewelry\canjewelry.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="ItemRarity">
       <HintPath>..\..\Other Mod's DLLs for Integration Purposes\ItemRarity\ItemRarity.dll</HintPath>
       <Private>False</Private>
