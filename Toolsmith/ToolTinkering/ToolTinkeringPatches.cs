@@ -188,6 +188,12 @@ namespace Toolsmith.ToolTinkering {
                     itemStack.SetSmithedDurability(currentDur);
                 }
 
+                if (doDamageTool && amount >= currentDur) {
+                    if (world.Api.ModLoader.IsModEnabled("canjewelry")) {
+                        TinkeringUtility.HandleGemDropsForJewelry(byEntity, itemStack);
+                    }
+                }
+
                 itemslot.MarkDirty();
                 return doDamageTool;
             } else if (!world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>())) {
