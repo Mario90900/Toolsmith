@@ -6,9 +6,37 @@ using System.Threading.Tasks;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Common;
 using Toolsmith.Utils;
+using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering.Drawbacks {
     public static class DrawbackUtility {
+
+        /*
+         * Things that each Drawback can be expected to have, make this into an Interface and Class eventually!
+         *  - Call that returns a list of applicable Tool Tags this Drawback can be applied on
+         *  - Method that recieves a specific rolled tag and returns if it can be applied or not - will help filter applicable tags to choose from
+         *  - Stored ID
+         *  - Method that returns it's effects on the tool's performance
+         *  - If it is Minor or Major
+         *  - If Minor, what possible Major Drawbacks can this turn into?
+         *  - Weight value to actually roll this Drawback, some might want to be rarer if they are nasty.
+         *  
+         */
+        
+        // -- Drawback Attribute Tree Example --
+        //
+        //  Drawback Tree Base
+        //      |
+        //      |-- (Drawback ID/Name) <-- Use this ID as both it's lang key and an identifier tag
+        //      |
+        //      |--
+        //
+        //
+        //
+        //
+        //
+        //
+        //
 
         //Check and see if a drawback is rolled and then have it applied. Returns true if drawback is applied, false if not!
         public static bool TryChanceForDrawback(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, float sharpnessPercent) {

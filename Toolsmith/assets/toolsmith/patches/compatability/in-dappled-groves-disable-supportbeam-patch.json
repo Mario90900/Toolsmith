@@ -1,0 +1,10 @@
+[
+	{
+		"file": "toolsmith:patches/supportbeam-output-to-4.json",
+		"op": "replace", 
+		"path": "/0/enabled", 
+		"value": "false",
+		"side": "server",
+		"dependsOn": [{ "modid": "indappledgroves" }]
+	}
+]
