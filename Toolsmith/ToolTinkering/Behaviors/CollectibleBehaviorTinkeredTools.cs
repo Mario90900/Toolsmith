@@ -283,7 +283,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
 
             if (ToolsmithModSystem.Api.ModLoader.IsModEnabled("canjewelry")) {
-                foreach (var input in allInputslots.Where(i => i.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>())) {
+                foreach (var input in allInputslots.Where(i => !i.Empty && i.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>())) {
                     TinkeringUtility.CheckAndHandleJewelryStatTransfer(input.Itemstack, outputSlot.Itemstack);
                     break;
                 }

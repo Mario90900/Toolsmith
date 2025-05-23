@@ -724,17 +724,10 @@ namespace Toolsmith.ToolTinkering {
         public static void ActualSharpenTick(ref int curDur, ref int curSharp, int maxSharp, ref float totalSharpnessHoned, bool firstHoning, EntityAgent byEntity) {
             if (curSharp < maxSharp && curDur > 0) {
                 float percent = 1.0f;
-                if (ToolsmithModSystem.Config.GrindstoneSharpenPerTick >= 1 && ToolsmithModSystem.Config.GrindstoneSharpenPerTick <= 100) {
+                if (ToolsmithModSystem.Config.GrindstoneSharpenPerTick > 0.0 && ToolsmithModSystem.Config.GrindstoneSharpenPerTick <= 100.0) {
                     percent = ((float)ToolsmithModSystem.Config.GrindstoneSharpenPerTick / 100f);
                 }
-
                 int amountSharpened = (int)Math.Ceiling(percent * maxSharp);
-                curSharp += amountSharpened;
-                if (curSharp >= maxSharp) {
-                    curSharp = maxSharp;
-                } else {
-                    totalSharpnessHoned += percent;
-                }
 
                 bool damageDurability = true;
                 bool doubleDamage = false;
@@ -755,25 +748,49 @@ namespace Toolsmith.ToolTinkering {
                 }
 
                 if (damageDurability) {
+                    int amountToDamage = amountSharpened;
                     if (doubleDamage) {
-                        curDur -= amountSharpened * 2;
+                        amountToDamage *= 2;
                     } else if (damageMultFromLinear > 1.0) {
-                        curDur -= (int)((double)amountSharpened * damageMultFromLinear);
-                    } else {
-                        curDur -= amountSharpened;
+                        amountToDamage = (int)((double)amountToDamage * damageMultFromLinear);
                     }
+
+                    if (curDur - amountToDamage <= 0) {
+                        var overflowDamage = Math.Abs(curDur - amountToDamage) + 1;
+                        amountToDamage += overflowDamage;
+
+                        if (overflowDamage > 0 && doubleDamage) {
+                            overflowDamage /= 2;
+                        } else if (damageMultFromLinear > 1.0) {
+                            overflowDamage = (int)((double)amountToDamage / damageMultFromLinear);
+                        }
+                        amountSharpened -= overflowDamage;
+                    }
+
+                    curDur -= amountToDamage;
+                }
+
+                curSharp += amountSharpened;
+                if (curSharp >= maxSharp) {
+                    curSharp = maxSharp;
+                    totalSharpnessHoned = 1.0f;
+                } else {
+                    totalSharpnessHoned += percent;
                 }
             }
         }
 
         public static void SetResultsOfSharpening(int curDur, int curSharp, float totalSharpnessHoned, bool firstHoning, ItemStack item, EntityAgent byEntity, ItemSlot mainHandSlot, int isTool) {
             if (isTool == 1) {
+                if (curDur <= 0) {
+                    curDur = 1; //Just in case this ever gets here and it's less then 0, just set it to 1 since it shouldn't be breaking tools. But leaving that bit commented out for now, perhaps can configure it as an option later? Eh!
+                }
                 item.SetToolheadCurrentDurability(curDur);
                 item.SetToolCurrentSharpness(curSharp);
                 if (!firstHoning) {
                     item.SetTotalHoneValue(totalSharpnessHoned);
                 }
-                if (curDur <= 0) {
+                /*if (curDur <= 0) {
                     CollectibleObject toolObj = item.Collectible;
                     HandleBrokenTinkeredTool(byEntity.World, byEntity, mainHandSlot, 0, curSharp, item.GetToolhandleCurrentDurability(), item.GetToolbindingCurrentDurability(), true, false);
                     item.SetBrokeWhileSharpeningFlag();
@@ -781,28 +798,34 @@ namespace Toolsmith.ToolTinkering {
                     if (item != null) {
                         item.ClearBrokeWhileSharpeningFlag();
                     }
-                }
+                }*/
             } else if (isTool == 2) {
+                if (curDur <= 0) {
+                    curDur = 1;
+                }
                 item.SetSmithedDurability(curDur);
                 item.SetToolCurrentSharpness(curSharp);
                 if (!firstHoning) {
                     item.SetTotalHoneValue(totalSharpnessHoned);
                 }
-                if (curDur <= 0) {
+                /*if (curDur <= 0) {
                     item.SetSmithedDurability(1);
                     item.SetBrokeWhileSharpeningFlag();
                     item.Collectible.DamageItem(byEntity.World, byEntity, mainHandSlot);
                     if (item != null) {
                         item.ClearBrokeWhileSharpeningFlag();
                     }
-                }
+                }*/
             } else {
+                if (curDur <= 0) {
+                    curDur = 1;
+                }
                 item.SetPartCurrentDurability(curDur);
                 item.SetPartCurrentSharpness(curSharp);
                 if (!firstHoning) {
                     item.SetTotalHoneValue(totalSharpnessHoned);
                 }
-                if (curDur <= 0) {
+                /*if (curDur <= 0) {
                     //Wait... This might be silly and may be hacky but... Can I just make it into an item AND break it right here right now? Lmao
                     CollectibleObject toolToBreakObj; //This might proc other mod's on damage stuff for the head as if it were a real tool.
                     var success = RecipeRegisterModSystem.TinkerToolGridRecipes.TryGetValue(item.Collectible.Code.ToString(), out toolToBreakObj);
@@ -823,7 +846,7 @@ namespace Toolsmith.ToolTinkering {
                             item = null;
                         }
                     }
-                }
+                }*/
             }
         }
 

@@ -183,7 +183,7 @@ namespace Toolsmith.ToolTinkering {
                     }
                 }
 
-                if (doubleToolDamage && doDamageTool) { //The 50/50 chance for double damage roll
+                if (doubleToolDamage && doDamageTool) {
                     currentDur -= amount;
                     itemStack.SetSmithedDurability(currentDur);
                 }
