@@ -49,7 +49,7 @@
 		}
 	},
 	"storageFlags" : 257,
-	"shape": { "base": "toolsmith:item/handle" },
+	"shape": { "base": "toolsmith:item/parts/handles/handle" },
 	"creativeinventory": { "general": ["*"], "items": ["*"] },
 	"tpHandTransform": {
 		"translation": { "x": 0, "y": -0.4, "z": -0.2 },

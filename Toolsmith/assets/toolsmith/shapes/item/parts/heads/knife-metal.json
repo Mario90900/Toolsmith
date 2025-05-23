@@ -1,0 +1,58 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 8,
+	"textureSizes": {
+	},
+	"textures": {
+		"material": "item/tool/material/iron"
+	},
+	"elements": [
+		{
+			"name": "metal",
+			"from": [ 4.5, 0.3, 8.3 ],
+			"to": [ 11.5, 1.3, 8.5 ],
+			"rotationOrigin": [ 8.0, 0.2, 8.4 ],
+			"rotationX": -90.0,
+			"rotationY": 0.0,
+			"faces": {
+				"north": { "texture": "#material", "uv": [ 1.0, 1.0, 8.0, 2.0 ] },
+				"east": { "texture": "#material", "uv": [ 0.0, 0.0, 0.25, 1.0 ] },
+				"south": { "texture": "#material", "uv": [ 0.0, 7.0, 7.0, 8.0 ] },
+				"west": { "texture": "#material", "uv": [ 0.0, 0.0, 0.25, 1.0 ] },
+				"up": { "texture": "#material", "uv": [ 1.0, 2.0, 8.0, 2.25 ] },
+				"down": { "texture": "#material", "uv": [ 0.0, 0.0, 7.0, 0.25 ] }
+			},
+			"children": [
+				{
+					"name": "metal3",
+					"from": [ -1.0, 0.5, 0.0 ],
+					"to": [ 0.0, 1.0, 0.2 ],
+					"rotationOrigin": [ 5.0, -0.1, -0.4 ],
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 4.0, 4.0, 5.0, 4.5 ] },
+						"south": { "texture": "#material", "uv": [ 4.0, 3.0, 5.0, 3.5 ] },
+						"west": { "texture": "#material", "uv": [ 2.0, 5.0, 2.0, 5.5 ] },
+						"up": { "texture": "#material", "uv": [ 3.0, 4.0, 4.0, 4.0 ] },
+						"down": { "texture": "#material", "uv": [ 1.0, 2.0, 2.0, 2.0 ] }
+					}
+				},
+				{
+					"name": "metal4",
+					"from": [ 2.0, -0.5, 0.0 ],
+					"to": [ 7.0, 0.0, 0.2 ],
+					"rotationOrigin": [ 5.0, -0.1, -0.4 ],
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 3.0, 6.0, 8.0, 6.5 ] },
+						"east": { "texture": "#material", "uv": [ 1.0, 2.0, 1.0, 2.5 ] },
+						"south": { "texture": "#material", "uv": [ 1.0, 3.0, 6.0, 3.5 ] },
+						"west": { "texture": "#material", "uv": [ 0.0, 1.0, 0.0, 1.5 ] },
+						"down": { "texture": "#material", "uv": [ 1.0, 2.0, 6.0, 2.0 ] }
+					}
+				}
+			]
+		}
+	]}

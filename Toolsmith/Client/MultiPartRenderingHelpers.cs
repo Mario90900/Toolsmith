@@ -149,7 +149,21 @@ namespace Toolsmith.Client {
         }
 
         public static string GetPartShapePath(this ITreeAttribute tree) {
-            return tree.GetString(ToolsmithAttributes.ModularPartShapeIndex);
+            var shapeString = tree.GetString(ToolsmithAttributes.ModularPartShapeIndex);
+            if (shapeString == "toolsmith:shapes/item/gripfabric") {
+                shapeString = "toolsmith:shapes/item/parts/handles/grips/gripfabric";
+                tree.SetString(ToolsmithAttributes.ModularPartShapeIndex, shapeString);
+            } else if (shapeString == "toolsmith:shapes/item/crudehandle") {
+                shapeString = "toolsmith:shapes/item/parts/handles/crudehandle";
+                tree.SetString(ToolsmithAttributes.ModularPartShapeIndex, shapeString);
+            } else if (shapeString == "toolsmith:shapes/item/handle") {
+                shapeString = "toolsmith:shapes/item/parts/handles/handle";
+                tree.SetString(ToolsmithAttributes.ModularPartShapeIndex, shapeString);
+            } else if (shapeString == "toolsmith:shapes/item/carpentedhandle") {
+                shapeString = "toolsmith:shapes/item/parts/handles/carpentedhandle";
+                tree.SetString(ToolsmithAttributes.ModularPartShapeIndex, shapeString);
+            }
+            return shapeString;
         }
 
         public static void SetPartShapePath(this ITreeAttribute tree, string path) { //This is only set when the part has an alternate shape, otherwise just use the Item Default.

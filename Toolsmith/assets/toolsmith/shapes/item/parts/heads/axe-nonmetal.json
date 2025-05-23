@@ -1,0 +1,63 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"material": "item/tool/material/flint",
+		"string": "item/tool/material/string"
+	},
+	"elements": [
+		{
+			"name": "origin",
+			"from": [ 11.0, 0.5, 7.7 ],
+			"to": [ 11.0, 0.5, 7.7 ],
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"faces": {
+				"north": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"east": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"south": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"west": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"up": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"down": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] }
+			},
+			"children": [
+				{
+					"name": "axe head 1",
+					"from": [ -3.4, -0.5, 1.3 ],
+					"to": [ -1.4, 0.7, 4.3 ],
+					"rotationOrigin": [ -3.4, -0.3, 1.3 ],
+					"rotationY": 90.0,
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 7.0, 3.0, 9.0, 4.0 ] },
+						"east": { "texture": "#material", "uv": [ 1.0, 2.0, 4.0, 3.0 ] },
+						"south": { "texture": "#material", "uv": [ 6.0, 4.0, 8.0, 5.0 ] },
+						"west": { "texture": "#material", "uv": [ 6.0, 2.0, 9.0, 3.0 ] },
+						"up": { "texture": "#material", "uv": [ 7.5, 6.5, 9.5, 9.5 ] },
+						"down": { "texture": "#material", "uv": [ 4.0, 3.0, 6.0, 6.0 ] }
+					},
+					"children": [
+						{
+							"name": "axe head 2",
+							"from": [ -0.5, 0.1, -2.8 ],
+							"to": [ 2.5, 1.1, 0.2 ],
+							"rotationOrigin": [ 0.5, 0.1, 0.2 ],
+							"rotationY": 6.0,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 1.0, 5.0, 4.0, 6.0 ] },
+								"east": { "texture": "#material", "uv": [ 2.0, 5.0, 5.0, 6.0 ] },
+								"south": { "texture": "#material", "uv": [ 2.0, 7.0, 5.0, 8.0 ] },
+								"west": { "texture": "#material", "uv": [ 2.0, 6.0, 5.0, 7.0 ] },
+								"up": { "texture": "#material", "uv": [ 5.5, 4.0, 8.5, 7.0 ] },
+								"down": { "texture": "#material", "uv": [ 3.0, 3.0, 6.0, 6.0 ] }
+							}
+						}
+					]
+				}
+			]
+		}
+	]}

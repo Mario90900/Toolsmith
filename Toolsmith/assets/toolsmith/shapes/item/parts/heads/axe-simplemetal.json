@@ -1,0 +1,95 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"material": "block/metal/ingot/copper",
+		"string": "item/tool/material/string"
+	},
+	"elements": [
+		{
+			"name": "origin",
+			"from": [ 11.0, 0.5, 7.7 ],
+			"to": [ 11.0, 0.5, 7.7 ],
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"faces": {
+				"north": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"east": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"south": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"west": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"up": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"down": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] }
+			},
+			"children": [
+				{
+					"name": "bladeneck",
+					"from": [ -3.0, 0.0, 0.8 ],
+					"to": [ -1.0, 0.5, 1.8 ],
+					"rotationOrigin": [ -3.0, 0.0, 0.8 ],
+					"rotationX": 1.0,
+					"rotationY": 90.0,
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 2.0, 9.0, 4.0, 9.5 ] },
+						"east": { "texture": "#material", "uv": [ 5.0, 10.0, 6.0, 10.5 ] },
+						"south": { "texture": "#material", "uv": [ 6.5, 3.5, 8.5, 4.0 ] },
+						"west": { "texture": "#material", "uv": [ 6.0, 2.0, 7.0, 2.5 ] },
+						"up": { "texture": "#material", "uv": [ 0.5, 8.5, 2.5, 9.5 ] },
+						"down": { "texture": "#material", "uv": [ 1.0, 8.5, 3.0, 9.5 ] }
+					},
+					"children": [
+						{
+							"name": "axe head 2",
+							"from": [ -0.6, 0.0, -3.4 ],
+							"to": [ 2.4, 0.5, 0.1 ],
+							"rotationOrigin": [ 0.4, 0.0, -0.4 ],
+							"rotationX": -1.0,
+							"rotationY": 2.0,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 10.0, 14.0, 13.0, 14.5 ] },
+								"east": { "texture": "#material", "uv": [ 6.5, 11.5, 10.0, 12.0 ] },
+								"south": { "texture": "#material", "uv": [ 2.0, 7.0, 5.0, 7.5 ] },
+								"west": { "texture": "#material", "uv": [ 2.5, 7.0, 6.0, 7.5 ] },
+								"up": { "texture": "#material", "uv": [ 4.5, 1.0, 7.5, 4.5 ] },
+								"down": { "texture": "#material", "uv": [ 4.5, 1.0, 7.5, 4.5 ] }
+							}
+						},
+						{
+							"name": "socket",
+							"from": [ -0.2, -0.5894, 0.6104 ],
+							"to": [ 2.3, 1.1106, 2.3104 ],
+							"rotationOrigin": [ -0.2, -0.5894, 0.6104 ],
+							"rotationX": -1.0,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 7.0, 3.0, 9.5, 4.5 ] },
+								"east": { "texture": "#material", "uv": [ 1.0, 2.0, 2.5, 3.5 ] },
+								"south": { "texture": "#material", "uv": [ 8.5, 6.5, 11.0, 8.0 ] },
+								"west": { "texture": "#material", "uv": [ 6.0, 2.0, 7.5, 3.5 ] },
+								"up": { "texture": "#material", "uv": [ 0.5, 8.0, 3.0, 9.5 ] },
+								"down": { "texture": "#material", "uv": [ 8.0, 2.5, 10.5, 4.0 ] }
+							}
+						},
+						{
+							"name": "haftstraps",
+							"from": [ -2.7, 0.0105, 0.5999 ],
+							"to": [ -0.2, 0.5105, 2.2999 ],
+							"rotationOrigin": [ -2.7, 0.0105, 0.5999 ],
+							"rotationX": -1.0,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 8.5, 3.5, 11.0, 4.0 ] },
+								"east": { "texture": "#material", "uv": [ 1.0, 2.0, 2.5, 2.5 ] },
+								"south": { "texture": "#material", "uv": [ 2.0, 14.5, 4.5, 15.0 ] },
+								"west": { "texture": "#material", "uv": [ 6.0, 2.0, 7.5, 2.5 ] },
+								"up": { "texture": "#material", "uv": [ 7.5, 6.5, 10.0, 8.0 ] },
+								"down": { "texture": "#material", "uv": [ 4.0, 3.0, 6.5, 4.5 ] }
+							}
+						}
+					]
+				}
+			]
+		}
+	]}
