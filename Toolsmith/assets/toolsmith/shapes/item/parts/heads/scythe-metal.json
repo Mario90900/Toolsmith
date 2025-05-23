@@ -8,8 +8,7 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"metal": "block/metal/ingot/copper",
-		"string": "item/tool/material/string"
+		"metal": "game:block/metal/ingot/copper"
 	},
 	"elements": [
 		{
@@ -18,12 +17,12 @@
 			"to": [ 20.0, 0.5, 8.0 ],
 			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
 			"faces": {
-				"north": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-				"east": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-				"south": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-				"west": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-				"up": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
-				"down": { "texture": "#string", "uv": [ 0.0, 0.0, 0.5, 0.5 ] }
+				"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] }
 			},
 			"children": [
 				{

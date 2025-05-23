@@ -8,7 +8,7 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"metal": "item/tool/material/iron"
+		"metal": "game:item/tool/material/iron"
 	},
 	"elements": [
 		{
