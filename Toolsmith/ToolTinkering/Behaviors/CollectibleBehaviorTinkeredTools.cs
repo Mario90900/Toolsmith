@@ -61,6 +61,13 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 workingDsc.Remove(startIndex, endIndex - startIndex + 1); //Remove the durability line
             }
 
+            if (!inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
+                if (inSlot.Itemstack.HasTotalHoneValue() && inSlot.Itemstack.GetTotalHoneValue() > 0 && inSlot.Itemstack.GetTotalHoneValue() < 1) {
+                    workingDsc.AppendLine(Lang.Get("tinkeredtoolhoninginprogress"));
+                } else if (!inSlot.Itemstack.HasTotalHoneValue()) {
+                    workingDsc.AppendLine(Lang.Get("tinkeredtoolfreehone"));
+                }
+            }
             workingDsc.Insert(startIndex, Lang.Get("toolbindingdurability", curBindingDur, maxBindingDur) + '\n'); //Insert in the part durabilities in the place of it
             workingDsc.Insert(startIndex, Lang.Get("toolhandledurability", curHandleDur, maxHandleDur) + '\n');
             workingDsc.Insert(startIndex, Lang.Get("toolheaddurability", curHeadDur, maxHeadDur) + '\n');

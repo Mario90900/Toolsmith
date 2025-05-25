@@ -32,6 +32,13 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
             StringHelpers.FindTooltipVanillaDurabilityLine(ref startIndex, ref endIndex, workingDsc, world, withDebugInfo); //Moved this code originally from TinkerTools into it's own helper function.
 
+            if (!inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
+                if (inSlot.Itemstack.HasTotalHoneValue() && inSlot.Itemstack.GetTotalHoneValue() > 0 && inSlot.Itemstack.GetTotalHoneValue() < 1) {
+                    workingDsc.AppendLine(Lang.Get("smithedtoolhoninginprogress"));
+                } else if (!inSlot.Itemstack.HasTotalHoneValue()) {
+                    workingDsc.AppendLine(Lang.Get("smithedtoolfreehone"));
+                }
+            }
             workingDsc.Insert(startIndex, Lang.Get("toolsharpness", curSharp, maxSharp) + '\n');
 
             dsc.Clear();

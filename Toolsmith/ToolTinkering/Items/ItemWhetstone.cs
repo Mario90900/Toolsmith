@@ -156,9 +156,9 @@ namespace Toolsmith.ToolTinkering.Items {
                 deltaLastTick = 0;
                 lastInterval = 0;
                 ToggleHoningSound(false, byEntity);
-                if (byEntity.World.Side.IsServer()) {
+                /*if (byEntity.World.Side.IsServer()) {
                     byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity, randomizePitch: false);
-                }
+                }*/ //Commenting this out to see how it feels/sounds without it playing the 'finish' sound when you let go of the mouse. Seems like a great idea honestly with the current changes.
                 totalSharpnessHoned = 0;
                 sharpening = false;
             }
