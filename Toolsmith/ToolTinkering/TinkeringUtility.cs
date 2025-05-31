@@ -670,7 +670,7 @@ namespace Toolsmith.ToolTinkering {
             if (byEntity.World.Side.IsServer()) {
                 deltaLastTick = secondsUsed - lastInterval;
 
-                if (deltaLastTick >= ToolsmithConstants.SharpenInterval) { //Try not to repair EVERY single tick to space it out some. Cause of this, repair 5 durability each time so it doesn't take forever.
+                if (deltaLastTick >= ToolsmithConstants.SharpenInterval) { //Try not to repair EVERY single tick to space it out some. Cause of this, repair (configurable %) durability each time so it doesn't take forever.
                     var whetstone = WhetstoneInOffhand(byEntity);
 
                     if (whetstone != null && !slot.Empty) { //If the offhand is still a Whetstone, sharpen! Otherwise break out of this entirely and end the action.
@@ -683,7 +683,7 @@ namespace Toolsmith.ToolTinkering {
                     deltaLastTick = 0;
                     lastInterval = MathUtility.FloorToNearestMult(secondsUsed, ToolsmithConstants.SharpenInterval);
 
-                    if (!ToolOrHeadNeedsSharpening(slot.Itemstack, byEntity.World)) {
+                    if (whetstone.IsDoneHoning()) {
                         return false; //End the interaction when it doesn't need sharpening anymore
                     }
                 }
@@ -896,8 +896,10 @@ namespace Toolsmith.ToolTinkering {
 
             if (player != null) {
                 gaveHead = player.TryGiveItemStack(head);
-                IModularPartRenderer handleBehavior = (IModularPartRenderer)handle.Collectible.CollectibleBehaviors.FirstOrDefault(b => (b as IModularPartRenderer) != null);
-                handleBehavior.ResetRotationAndOffset(handle);
+                IModularPartRenderer handleBehavior = (IModularPartRenderer)handle.Collectible?.CollectibleBehaviors?.FirstOrDefault(b => (b as IModularPartRenderer) != null);
+                if (handleBehavior != null) {
+                    handleBehavior.ResetRotationAndOffset(handle);
+                }
                 gaveHandle = player.TryGiveItemStack(handle);
                 if (binding != null) {
                     gaveBinding = player.TryGiveItemStack(binding);
@@ -912,7 +914,9 @@ namespace Toolsmith.ToolTinkering {
             }
             if (!gaveHandle) {
                 IModularPartRenderer handleBehavior = (IModularPartRenderer)handle.Collectible.CollectibleBehaviors.FirstOrDefault(b => (b as IModularPartRenderer) != null);
-                handleBehavior.ResetRotationAndOffset(handle);
+                if (handleBehavior != null) {
+                    handleBehavior.ResetRotationAndOffset(handle);
+                }
                 player.World.SpawnItemEntity(handle, player.Pos.XYZ);
             }
             if (binding != null && !gaveBinding) {

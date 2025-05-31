@@ -21,8 +21,8 @@ namespace Toolsmith.Config {
         public bool NoBitLossAlternateReforgeGen = false;
         public bool UseBitsForSmithing = true;
         public float ExtraBitVoxelChance = 0.1f;
-        public string ToolHeads = "@.*(head|blade|thorn|finishingchiselhead|wedgechiselhead).*";
-        public string TinkerableTools = "@.*:(axe|hammer|hoe|knife|pickaxe|prospectingpick|saw|scythe|shovel|adze|mallet|awl|chisel-finishing|chisel-wedge|rubblehammer|forestaxe|grubaxe|maul|hayfork).*";
+        public string ToolHeads = "@.*(head|blade|thorn|finishingchiselhead|wedgechiselhead|toolhead).*";
+        public string TinkerableTools = "@.*:(axe|hammer|hoe|knife|pickaxe|prospectingpick|saw|scythe|shovel|adze|mallet|awl|chisel-finishing|chisel-wedge|rubblehammer|forestaxe|grubaxe|maul|hayfork|bonepickaxe|huntingknife).*";
         public string SinglePartTools = "@.*:(chisel|cleaver|shears|wrench|wedge|truechisel|rollingpin|handplaner|handwedge|laddermaker|paintbrush|paintscraper|pantograph|pathmaker|spyglass|creaser|flail|cangemchisel).*";
         public string BluntHeadedTools = "@.*:(hammer|wrench|mallet|rubblehammer|rollingpin|handwedge|laddermaker|paintbrush|pantograph|pathmaker|spyglass|creaser|flail).*";
 

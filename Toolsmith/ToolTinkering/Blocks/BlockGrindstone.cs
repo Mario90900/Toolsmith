@@ -95,7 +95,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
         }
 
         public override bool OnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
-            if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null) { //Make sure the slot isn't empty
+            if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null && TinkeringUtility.ToolOrHeadNeedsSharpening(byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack, world, byPlayer.Entity)) { //Make sure the slot isn't empty
                 int isTool = TinkeringUtility.IsValidSharpenTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world);
                 BlockEntityGrindstone grindstoneEnt = GetBlockEntity<BlockEntityGrindstone>(blockSel.Position);
                 if (grindstoneEnt != null && !byPlayer.Entity.Controls.ShiftKey && isTool > 0) {

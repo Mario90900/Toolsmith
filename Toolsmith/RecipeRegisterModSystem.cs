@@ -194,6 +194,7 @@ namespace Toolsmith {
                     //Same for Treatments here! Add to the list afterwards!
                     if (handlesStats.canBeTreated) {
                         var bucket = api.World.GetBlock(new AssetLocation("game:woodbucket"));
+                        var bowl = api.World.GetBlock(new AssetLocation("game:bowl-fired"));
                         foreach (var treatmentMat in TreatmentList) {
                             var treatmentStats = ToolsmithModSystem.Config.TreatmentRegistry.Get(treatmentMat.Code.Path);
                             if (treatmentStats != null && !treatmentStats.isLiquid) {
@@ -212,7 +213,7 @@ namespace Toolsmith {
                                 };
                                 recipe.ResolveIngredients(api.World);
                                 list.Add(recipe);
-                            } else if (treatmentStats != null && bucket != null) {
+                            } else if (treatmentStats != null && (bucket != null || bowl != null)) {
                                 ITreeAttribute liquidProps = new TreeAttribute();
                                 var liqProps = liquidProps.GetOrAddTreeAttribute("liquidContainerProps");
                                 var reqCont = liqProps.GetOrAddTreeAttribute("requiresContent");
@@ -220,22 +221,45 @@ namespace Toolsmith {
                                 reqCont.SetString("code", treatmentMat.Code);
                                 liqProps.SetFloat("requiresLitres", treatmentStats.litersUsed);
 
-                                var recipe = new GridRecipe {
-                                    IngredientPattern = "ht",
-                                    Width = 2,
-                                    Height = 1,
-                                    Ingredients = new Dictionary<string, CraftingRecipeIngredient> {
-                                        ["h"] = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code },
-                                        ["t"] = new CraftingRecipeIngredient { Type = bucket.ItemClass, Code = bucket.Code }
-                                    },
-                                    Attributes = new JsonObject(JToken.Parse(liquidProps.ToJsonToken())),//new JsonObject(JToken.Parse("{liquidContainerProps: {requiresContent: {type: \"item\", code: \"" + treatmentMat.Code + "\" }, requiresLitres: " + treatmentStats.litersUsed + "}}")),
-                                    RecipeGroup = 3,
-                                    ShowInCreatedBy = false,
-                                    Name = "Add " + treatmentMat.Code + " as a handle treatment.",
-                                    Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
-                                };
-                                recipe.ResolveIngredients(api.World);
-                                list.Add(recipe);
+                                if (bucket != null) {
+                                    var bucketRecipe = new GridRecipe {
+                                        IngredientPattern = "ht",
+                                        Width = 2,
+                                        Height = 1,
+                                        Ingredients = new Dictionary<string, CraftingRecipeIngredient> {
+                                            ["h"] = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code },
+                                            ["t"] = new CraftingRecipeIngredient { Type = bucket.ItemClass, Code = bucket.Code }
+                                        },
+                                        Attributes = new JsonObject(JToken.Parse(liquidProps.ToJsonToken())),//new JsonObject(JToken.Parse("{liquidContainerProps: {requiresContent: {type: \"item\", code: \"" + treatmentMat.Code + "\" }, requiresLitres: " + treatmentStats.litersUsed + "}}")),
+                                        RecipeGroup = 3,
+                                        ShowInCreatedBy = false,
+                                        Name = "Add " + treatmentMat.Code + " as a handle treatment.",
+                                        Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
+                                    };
+
+                                    bucketRecipe.ResolveIngredients(api.World);
+                                    list.Add(bucketRecipe);
+                                }
+
+                                if (bowl != null) {
+                                    var bowlRecipe = new GridRecipe {
+                                        IngredientPattern = "ht",
+                                        Width = 2,
+                                        Height = 1,
+                                        Ingredients = new Dictionary<string, CraftingRecipeIngredient> {
+                                            ["h"] = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code },
+                                            ["t"] = new CraftingRecipeIngredient { Type = bowl.ItemClass, Code = bowl.Code }
+                                        },
+                                        Attributes = new JsonObject(JToken.Parse(liquidProps.ToJsonToken())),//new JsonObject(JToken.Parse("{liquidContainerProps: {requiresContent: {type: \"item\", code: \"" + treatmentMat.Code + "\" }, requiresLitres: " + treatmentStats.litersUsed + "}}")),
+                                        RecipeGroup = 3,
+                                        ShowInCreatedBy = false,
+                                        Name = "Add " + treatmentMat.Code + " as a handle treatment.",
+                                        Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
+                                    };
+
+                                    bowlRecipe.ResolveIngredients(api.World);
+                                    list.Add(bowlRecipe);
+                                }
                             }
                         }
                     }

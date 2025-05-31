@@ -259,9 +259,9 @@ namespace Toolsmith.Utils {
 
                     newHandle.SetHandleGripTag(grip);
                     if (oldHandlePath[0] == "crude") {
-                        gripRenderTree.SetPartShapePath("toolsmith:shapes/item/gripfabric-crude");
+                        gripRenderTree.SetPartShapePath("toolsmith:shapes/item/parts/handles/grips/gripfabric-crude");
                     } else {
-                        gripRenderTree.SetPartShapePath("toolsmith:shapes/item/gripfabric");
+                        gripRenderTree.SetPartShapePath("toolsmith:shapes/item/parts/handles/grips/gripfabric");
                     }
                     gripTextureTree.SetPartTexturePathFromKey("grip", gripStats.texturePath);
                 }

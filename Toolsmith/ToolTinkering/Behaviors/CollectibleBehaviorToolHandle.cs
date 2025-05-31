@@ -209,7 +209,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             outputSlot.MarkDirty();
         }
 
-        public ITreeAttribute InitializeRenderTree(ITreeAttribute tree, Item item) {
+        public ITreeAttribute InitializeRenderTree(ITreeAttribute tree, Item item) { //This is sent the MultiPartRenderTree
             var top = tree.GetOrAddTreeAttribute(ToolsmithAttributes.ModularPartDataTree);
             top.GetPartTextureTree();
             var handleStatsPair = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(item.Code.Path);
@@ -217,7 +217,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             return tree;
         }
 
-        public void ResetRotationAndOffset(ItemStack handle) { //This is sent the MultiPartRenderTree
+        public void ResetRotationAndOffset(ItemStack handle) {
             if (TinkeringUtility.CheckForAndScrubStickBone(handle)) {
                 return;
             }
