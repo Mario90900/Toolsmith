@@ -61,6 +61,8 @@ namespace Toolsmith {
             TryToLoadClientConfig(api);
             TryToLoadStats(api);
             IgnoreCodes = new List<string>();
+
+            ConfigUtility.PrepareAndSplitConfigStrings(); //After this point, mods and anyone can add to the config strings!
         }
 
         public override void Start(ICoreAPI api) {
@@ -103,6 +105,7 @@ namespace Toolsmith {
         }
 
         public override void StartServerSide(ICoreServerAPI api) {
+            ConfigUtility.MergeAndSetConfigStrings();
             ServerCommands.RegisterServerCommands(api);
             string configJson = JsonConvert.SerializeObject(Config);
             byte[] configBytes = System.Text.Encoding.UTF8.GetBytes(configJson);
