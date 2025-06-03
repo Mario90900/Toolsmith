@@ -25,7 +25,7 @@ namespace Toolsmith.Config {
         public float ExtraBitVoxelChance = 0.1f;
 
         public string ToolHeads = "@.*(head|blade|thorn|finishingchiselhead|wedgechiselhead|toolhead).*"; //This will catch Weapon Heads as well, so, filter them by the result of the recipe that crafts them.
-        public string TinkerableTools = "@.*:(axe|hammer|hoe|knife|pickaxe|prospectingpick|saw|scythe|shovel|adze|mallet|awl|chisel-finishing|chisel-wedge|rubblehammer|forestaxe|grubaxe|maul|hayfork|bonepickaxe|huntingknife|paxel).*";
+        public string TinkerableTools = "@.*:(axe|hammer|hoe|knife|pickaxe|prospectingpick|saw|scythe|shovel|adze|mallet|awl|chisel-finishing|chisel-wedge|rubblehammer|forestaxe|grubaxe|maul|hayfork|bonepickaxe|huntingknife|paxel|chiselpick).*";
         public string SinglePartTools = "@.*:(chisel|cleaver|shears|wrench|wedge|truechisel|rollingpin|handplaner|handwedge|laddermaker|paintbrush|paintscraper|pantograph|pathmaker|spyglass|creaser|flail|cangemchisel).*";
         public string BluntHeadedTools = "@.*:(hammer|wrench|mallet|rubblehammer|rollingpin|handwedge|laddermaker|paintbrush|pantograph|pathmaker|spyglass|creaser|flail).*";
 
