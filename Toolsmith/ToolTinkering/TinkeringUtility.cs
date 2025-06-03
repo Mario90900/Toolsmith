@@ -733,7 +733,7 @@ namespace Toolsmith.ToolTinkering {
                 bool doubleDamage = false;
                 double damageMultFromLinear = 0.0;
 
-                if (!firstHoning && ToolsmithModSystem.Config.ShouldHoningDamageHead) {
+                if (!firstHoning && ToolsmithModSystem.Config.ShouldHoningDamageHead && ToolsmithModSystem.Config.HoningDamageMult > 0) {
                     if (totalSharpnessHoned > 0.5) {
                         damageDurability = byEntity.World.Rand.NextDouble() < 0.05;
                     } else if (totalSharpnessHoned > 0.4 && totalSharpnessHoned <= 0.5) {
@@ -748,7 +748,7 @@ namespace Toolsmith.ToolTinkering {
                 }
 
                 if (damageDurability) {
-                    int amountToDamage = amountSharpened;
+                    int amountToDamage = (int)(amountSharpened * ToolsmithModSystem.Config.HoningDamageMult);
                     if (doubleDamage) {
                         amountToDamage *= 2;
                     } else if (damageMultFromLinear > 1.0) {

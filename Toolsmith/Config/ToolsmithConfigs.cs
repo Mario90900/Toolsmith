@@ -14,6 +14,7 @@ namespace Toolsmith.Config {
         public double HeadDurabilityMult = 5.0;
         public double SharpnessMult = 1.5;
         public double GrindstoneSharpenPerTick = 1;
+        public double HoningDamageMult = 1.0;
         public double SharpWear = 0.15;
         public double BluntWear = 0.02;
         public float PercentDamageForReforge = 1.0f;
