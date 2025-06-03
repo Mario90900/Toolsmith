@@ -112,7 +112,11 @@
 	
 	"game:blockhelp-workbench-reforge": "Перековать инструмент или оголовье инструмента",
 	"game:blockhelp-workbench-deconstruct": "Разобрать инструмент",
-	"game:blockhelp-workbench-craftingspot": "Положить деталь инструмента для изготовления",
+	"game:blockhelp-workbench-breakdownworkpiece": "Разобрать заготовку на кусочки",
+	"game:blockhelp-workbench-craftingspot-head": "Разместить оголовье инструмента для изготовления",
+	"game:blockhelp-workbench-craftingspot-handle": "Разместить рукоять инструмента для изготовления",
+	"game:blockhelp-workbench-craftingspot-binding": "Разместить крепление инструмента для изготовления",
+	"game:blockhelp-workbench-craftingspot-mergable": "Разместить похожий предмет для объединения",
 	"game:blockhelp-workbench-retrieve-item": "Взять деталь инструмента",
 	"game:blockhelp-workbench-strike-craft": "Ударь, чтобы изготовить!",
 	"game:blockhelp-workbench-reforge-head": "Подготовьте деталь к повторной ковке",
