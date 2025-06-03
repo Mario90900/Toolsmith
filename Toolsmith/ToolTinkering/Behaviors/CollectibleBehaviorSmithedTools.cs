@@ -22,27 +22,28 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 return;
             }
 
-            var curSharp = inSlot.Itemstack.GetToolCurrentSharpness(); //All that needs to be added to the stringbuilder is the Sharpness.
-            var maxSharp = inSlot.Itemstack.GetToolMaxSharpness();
-
-            StringBuilder workingDsc = new StringBuilder();
-            workingDsc.Append(dsc); //Still for safety sake, lets copy dsc into a temp one for active processing.
-            int startIndex = 0;
-            int endIndex = 0;
-
-            StringHelpers.FindTooltipVanillaDurabilityLine(ref startIndex, ref endIndex, workingDsc, world, withDebugInfo); //Moved this code originally from TinkerTools into it's own helper function.
-
             if (!inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
+                var curSharp = inSlot.Itemstack.GetToolCurrentSharpness(); //All that needs to be added to the stringbuilder is the Sharpness.
+                var maxSharp = inSlot.Itemstack.GetToolMaxSharpness();
+
+                StringBuilder workingDsc = new StringBuilder();
+                workingDsc.Append(dsc); //Still for safety sake, lets copy dsc into a temp one for active processing.
+                int startIndex = 0;
+                int endIndex = 0;
+
+                StringHelpers.FindTooltipVanillaDurabilityLine(ref startIndex, ref endIndex, workingDsc, world, withDebugInfo); //Moved this code originally from TinkerTools into it's own helper function.
+
+
                 if (inSlot.Itemstack.HasTotalHoneValue() && inSlot.Itemstack.GetTotalHoneValue() > 0 && inSlot.Itemstack.GetTotalHoneValue() < 1) {
                     workingDsc.AppendLine(Lang.Get("smithedtoolhoninginprogress"));
                 } else if (!inSlot.Itemstack.HasTotalHoneValue()) {
                     workingDsc.AppendLine(Lang.Get("smithedtoolfreehone"));
                 }
-            }
-            workingDsc.Insert(startIndex, Lang.Get("toolsharpness", curSharp, maxSharp) + '\n');
+                workingDsc.Insert(startIndex, Lang.Get("toolsharpness", curSharp, maxSharp) + '\n');
 
-            dsc.Clear();
-            dsc.Append(workingDsc);
+                dsc.Clear();
+                dsc.Append(workingDsc);
+            }
         }
 
         public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, ref EnumHandling bhHandling) {

@@ -70,7 +70,9 @@ namespace Toolsmith {
                             }
                         }
 
-                        toolRecipes.AddRange(GenerateToolGridRecipes(api, ingredient, tool));
+                        if (ToolsmithModSystem.Config.EnableOptionalGridCraftingForTools) {
+                            toolRecipes.AddRange(GenerateToolGridRecipes(api, ingredient, tool));
+                        }
 
                         var gridRecipeTag = ingredient.Code.ToString();
                         foreach (var otherIngredients in recipe.resolvedIngredients.Where(o => (o != null) && (o.ResolvedItemstack != null) && (o.ResolvedItemstack.Collectible.Code.Path == "bone"))) { //Is this one of the bone + head recipes?
@@ -112,7 +114,7 @@ namespace Toolsmith {
 
             var handleRecipes = GenerateHandleRecipes(api);
 
-            if (toolRecipes != null && toolRecipes.Count > 0) {
+            if (ToolsmithModSystem.Config.EnableOptionalGridCraftingForTools && toolRecipes != null && toolRecipes.Count > 0) {
                 api.World.GridRecipes.AddRange(toolRecipes);
             }
             if (handleRecipes != null && handleRecipes.Count > 0) {
@@ -167,7 +169,7 @@ namespace Toolsmith {
                 //if (handle.Code.Path == "stick" || handle.Code.Path == "bone") {
                 //    continue;
                 //}
-                HandleStatPair handlesStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handle.Code.Path); //Grab the stat pair that should be registered in the configs here.
+                HandleStatPair handlesStats = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(handle.Code.Path); //Grab the stat pair that should be registered in the configs here.
                 if (handlesStats != null) { //Just in case, ensure it was found!
                     //Check the stats of the handle found, see what recipes are required to make for this one. Grip? Treatment? Both or neither?
                     //If Grip is allowed on this handle, generate a recipe with each of the Grip ingredients and add to list. Leave the actual assigning of attributes to the Handle Behavior's OnCreatedByCrafting call
@@ -182,7 +184,7 @@ namespace Toolsmith {
                                     ["g"] = new CraftingRecipeIngredient { Type = gripMat.ItemClass, Code = gripMat.Code }
                                 },
                                 RecipeGroup = 2,
-                                ShowInCreatedBy = false,
+                                ShowInCreatedBy = true,
                                 Name = "Add " + gripMat.Code + " as a handle grip.",
                                 Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
                             };
@@ -196,7 +198,7 @@ namespace Toolsmith {
                         var bucket = api.World.GetBlock(new AssetLocation("game:woodbucket"));
                         var bowl = api.World.GetBlock(new AssetLocation("game:bowl-fired"));
                         foreach (var treatmentMat in TreatmentList) {
-                            var treatmentStats = ToolsmithModSystem.Config.TreatmentRegistry.Get(treatmentMat.Code.Path);
+                            var treatmentStats = ToolsmithModSystem.Stats.TreatmentRegistry.Get(treatmentMat.Code.Path);
                             if (treatmentStats != null && !treatmentStats.isLiquid) {
                                 var recipe = new GridRecipe {
                                     IngredientPattern = "ht",
@@ -207,7 +209,7 @@ namespace Toolsmith {
                                         ["t"] = new CraftingRecipeIngredient { Type = treatmentMat.ItemClass, Code = treatmentMat.Code }
                                     },
                                     RecipeGroup = 3,
-                                    ShowInCreatedBy = false,
+                                    ShowInCreatedBy = true,
                                     Name = "Add " + treatmentMat.Code + " as a handle treatment.",
                                     Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
                                 };
@@ -232,7 +234,7 @@ namespace Toolsmith {
                                         },
                                         Attributes = new JsonObject(JToken.Parse(liquidProps.ToJsonToken())),//new JsonObject(JToken.Parse("{liquidContainerProps: {requiresContent: {type: \"item\", code: \"" + treatmentMat.Code + "\" }, requiresLitres: " + treatmentStats.litersUsed + "}}")),
                                         RecipeGroup = 3,
-                                        ShowInCreatedBy = false,
+                                        ShowInCreatedBy = true,
                                         Name = "Add " + treatmentMat.Code + " as a handle treatment.",
                                         Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
                                     };
@@ -252,7 +254,7 @@ namespace Toolsmith {
                                         },
                                         Attributes = new JsonObject(JToken.Parse(liquidProps.ToJsonToken())),//new JsonObject(JToken.Parse("{liquidContainerProps: {requiresContent: {type: \"item\", code: \"" + treatmentMat.Code + "\" }, requiresLitres: " + treatmentStats.litersUsed + "}}")),
                                         RecipeGroup = 3,
-                                        ShowInCreatedBy = false,
+                                        ShowInCreatedBy = true,
                                         Name = "Add " + treatmentMat.Code + " as a handle treatment.",
                                         Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
                                     };

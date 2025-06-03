@@ -33,8 +33,12 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             var maxHandleDur = inSlot.Itemstack.GetToolhandleMaxDurability();
             var curBindingDur = inSlot.Itemstack.GetToolbindingCurrentDurability();
             var maxBindingDur = inSlot.Itemstack.GetToolbindingMaxDurability();
-            var curSharp = inSlot.Itemstack.GetToolCurrentSharpness();
-            var maxSharp = inSlot.Itemstack.GetToolMaxSharpness();
+            int curSharp = -1;
+            int maxSharp = -1;
+            if (!inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
+                curSharp = inSlot.Itemstack.GetToolCurrentSharpness();
+                maxSharp = inSlot.Itemstack.GetToolMaxSharpness();
+            }
 
             //This extra reset parts bit might be redundant now after moving the resets into the Get calls themselves. It also might not ever call because it will always be > 0?
             if (curHeadDur < 0) { //If this is 0 then assume something went wrong and reset things, it's a new item spawned in, or a player added the mod to their save.
@@ -158,13 +162,13 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             HandleStatPair handle;
             bool handleSuccess;
             if (handleStack != null) { //It probably shouldn't ever be the case it gets here and Handle is still null but hey.
-                handleSuccess = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handleStack.Collectible.Code.Path, out handle);
+                handleSuccess = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(handleStack.Collectible.Code.Path, out handle);
             } else {
-                handleSuccess = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(ToolsmithConstants.DefaultHandlePartKey, out handle); //Probably shouldn't ever run into this, but just incase something does go wrong, this might prevent a crash - and default to a stick used. Maybe if configs are not configured right this could happen!
+                handleSuccess = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(ToolsmithConstants.DefaultHandlePartKey, out handle); //Probably shouldn't ever run into this, but just incase something does go wrong, this might prevent a crash - and default to a stick used. Maybe if configs are not configured right this could happen!
                 handleStack = new ItemStack(ToolsmithModSystem.Api.World.GetItem(new AssetLocation(ToolsmithConstants.DefaultHandleCode)), 1);
             }
             if (!handleSuccess) {
-                handle = ToolsmithModSystem.Config.BaseHandleRegistry.First().Value;
+                handle = ToolsmithModSystem.Stats.BaseHandleRegistry.First().Value;
             }
 
             BindingStatPair binding;
@@ -174,9 +178,9 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                         bindingStack.Attributes.RemoveAttribute("temperature");
                     }
                 }
-                binding = ToolsmithModSystem.Config.BindingRegistry.Get(bindingStack.Collectible.Code.Path);
+                binding = ToolsmithModSystem.Stats.BindingRegistry.Get(bindingStack.Collectible.Code.Path);
             } else {
-                binding = ToolsmithModSystem.Config.BindingRegistry.Get(ToolsmithConstants.DefaultBindingPartKey);
+                binding = ToolsmithModSystem.Stats.BindingRegistry.Get(ToolsmithConstants.DefaultBindingPartKey);
             }
             var handleStats = ToolsmithModSystem.Stats.baseHandles.Get(handle.handleStatTag);
 
