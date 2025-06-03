@@ -359,7 +359,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.ShouldDisplayItemDamage))]
         private static bool TinkeredToolShouldDisplayItemDamagePrefix(ItemStack itemstack, ref bool __result) {
-            if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+            if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>() || itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) {
                 var lowestCurrent = TinkeringUtility.FindLowestCurrentDurabilityForBar(itemstack);
                 var lowestMax = TinkeringUtility.FindLowestMaxDurabilityForBar(itemstack);
 

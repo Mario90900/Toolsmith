@@ -92,10 +92,10 @@ namespace Toolsmith.ToolTinkering {
         }
 
         public static bool ShouldRenderSharpnessBar(ItemStack item) {
-            if (!item.HasToolCurrentSharpness() || !item.HasToolMaxSharpness()) {
+            if (!item.HasToolCurrentSharpness() || !item.HasToolMaxSharpness()) { //Since technically this accesses the same attribute as the Part variants, no real edit is needed here.
                 return false;
             }
-            if ((item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || item.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) && !item.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
+            if ((item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || item.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>() || item.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) && !item.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) { //Just add a check for a toolhead
                 return item.GetToolCurrentSharpness() != item.GetToolMaxSharpness();
             } else {
                 return false;
@@ -113,7 +113,7 @@ namespace Toolsmith.ToolTinkering {
         }
 
         public static int ToolsmithGetItemDamageColor(ItemStack item) {
-            if (item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
+            if (item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || item.Collectible.HasBehavior<CollectibleBehaviorToolHead>() || item.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) {
                 var max = FindLowestMaxDurabilityForBar(item);
                 if (max == 0) {
                     return 0;
@@ -126,7 +126,7 @@ namespace Toolsmith.ToolTinkering {
             }
         }
 
-        //For rendering the durability bar to be used in the transpiler. Generally for just Tinkered Tools here, smithed ones can use the default!
+        //For rendering the durability bar to be used in the transpiler. Generally for just Tinkered Tools and Parts here, smithed ones can use the default!
         public static int FindLowestCurrentDurabilityForBar(ItemStack itemStack) {
             if (itemStack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
                 if (!itemStack.HasToolheadCurrentDurability() || !itemStack.HasToolhandleCurrentDurability() || !itemStack.HasToolbindingCurrentDurability()) {
@@ -147,6 +147,8 @@ namespace Toolsmith.ToolTinkering {
                 } else {
                     return head;
                 }
+            } else if (itemStack.Collectible.HasBehavior<CollectibleBehaviorToolHead>() || itemStack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) {
+                return itemStack.GetPartCurrentDurability();
             } else {
                 return itemStack.Collectible.GetRemainingDurability(itemStack);
             }
@@ -173,6 +175,8 @@ namespace Toolsmith.ToolTinkering {
                 } else {
                     return head;
                 }
+            } else if (itemStack.Collectible.HasBehavior<CollectibleBehaviorToolHead>() || itemStack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) {
+                return itemStack.GetPartMaxDurability();
             } else {
                 return itemStack.Collectible.GetMaxDurability(itemStack);
             }
