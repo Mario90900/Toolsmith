@@ -40,6 +40,13 @@
 	"item-handle": "Carved Tool Handle",
 	"item-carpentedhandle": "Professional Tool Handle",
 	"item-sandpaper": "Sandpaper",
+	
+	"item-pikehead-tinbronze": "Tin bronze pike head",
+	"item-pikehead-bismuthbronze": "Bismuth bronze pike head",
+	"item-pikehead-blackbronze": "Black bronze pike head",
+	"item-pikehead-iron": "Iron pike head",
+	"item-pikehead-meteoriciron": "Meteoric iron pike head",
+	"item-pikehead-steel": "Steel pike head",
 
 	"game:grip-twine": "Twine",
 	"game:grip-cloth": "Cloth",

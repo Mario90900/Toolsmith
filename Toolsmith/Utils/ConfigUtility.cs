@@ -14,6 +14,7 @@ namespace Toolsmith.Utils {
         public static string ConfigFilename = "Toolsmith.json";
         public static string ClientConfigFilename = "ToolsmithClient.json";
         public static string StatsFilename = "ToolsmithPartsStats.json";
+        public static string WeaponStatsFilename = "ToolsmithWeaponStats.json";
 
         public const string AnyWildcardStringPrefix = "@.*("; //For the configs that don't want just the first part of the code, matching the Heads or the Blacklist mainly.
         public const string AnyFirstCodeStartStringPrefix = "@.*:("; //The start of the configs that look for the first part of the code for comparison purposes. Mostly looking for the actual tool/weapon codes!

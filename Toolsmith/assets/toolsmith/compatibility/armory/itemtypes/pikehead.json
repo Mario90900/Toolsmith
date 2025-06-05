@@ -1,0 +1,35 @@
+﻿{
+	"code": "pikehead",
+	"variantgroups": [
+		{"code": "material", "states": [ "tinbronze" , "bismuthbronze" , "blackbronze" , "iron" , "meteoriciron" , "steel" ] }
+	],
+	"shape": { "base": "toolsmith:item/parts/heads/pike-metal"},
+	"textures": { "metal": { "base": "game:block/metal/ingot/{material}"} },
+	"attributes": {
+		"groundStorageTransform": {
+			"translation": { "x": 0.1, "y": 0.05, "z": 0.1 },
+			"rotation": { "x": 4, "y": 0, "z": 0 },
+			"origin": { "x": 0, "y": 0, "z": 0 },
+			"scale": 0.8
+		}
+	},
+	"creativeinventory": { "general": ["*"], "armory-parts": ["*"] },
+	"guiTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": -40, "y": 45, "z": 0 },
+		"origin": { "x": 0.7799, "y": 0.35, "z": 0.2 },
+		"scaleXyz": { "x": -2.5, "y": 2.5, "z": 2.5 }
+	},
+	"tpHandTransform": { 
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 0, "y": -90, "z": 0 },
+		"origin": { "x": -0.2, "y": 0, "z": 0.425 },
+		"scale": 0.6
+	},
+	"groundTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": -0.2, "y": 0, "z": 0.425 },
+		"scale": 3
+	}
+}

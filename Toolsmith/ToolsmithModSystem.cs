@@ -36,6 +36,7 @@ namespace Toolsmith {
         public static ToolsmithConfigs Config;
         public static ToolsmithClientConfigs ClientConfig; //Any setting in here is NOT synced from the server, and intended to control client-side changes only.
         public static ToolsmithPartStats Stats;
+        public static ToolsmithWeaponStats WeaponStats;
         public static int GradientSelection = 0;
         public static bool DoesConfigNeedRegen = false;
 
@@ -60,6 +61,7 @@ namespace Toolsmith {
             TryToLoadConfig(api);
             TryToLoadClientConfig(api);
             TryToLoadStats(api);
+            TryToLoadWeaponStats(api);
             IgnoreCodes = new List<string>();
 
             ConfigUtility.PrepareAndSplitConfigStrings(); //After this point, mods and anyone can add to the config strings!
@@ -116,6 +118,11 @@ namespace Toolsmith {
             byte[] statsBytes = System.Text.Encoding.UTF8.GetBytes(statsJson);
             string statsBase64String = Convert.ToBase64String(statsBytes);
             api.World.Config.SetString(ToolsmithConstants.ToolsmithStatsKey, statsBase64String);
+
+            string weaponstatsJson = JsonConvert.SerializeObject(WeaponStats);
+            byte[] weaponStatsBytes = System.Text.Encoding.UTF8.GetBytes(weaponstatsJson);
+            string weaponStatsBase64String = Convert.ToBase64String(weaponStatsBytes);
+            api.World.Config.SetString(ToolsmithConstants.ToolsmithWeaponStatsKey, weaponStatsBase64String);
         }
 
         public override void StartClientSide(ICoreClientAPI api) {
@@ -141,7 +148,7 @@ namespace Toolsmith {
             }
 
             string statsBase64String = api.World.Config.GetString(ToolsmithConstants.ToolsmithStatsKey, "");
-            if (configBase64String != "") {
+            if (statsBase64String != "") {
                 try {
                     byte[] statsBytes = Convert.FromBase64String(statsBase64String);
                     string statsJson = System.Text.Encoding.UTF8.GetString(statsBytes);
@@ -153,7 +160,23 @@ namespace Toolsmith {
                 }
             } else {
                 Logger.Error("Failed to retrieve part stats from server, running with default settings.");
-                Config = new ToolsmithConfigs();
+                Stats = new ToolsmithPartStats();
+            }
+
+            string weaponStatsBase64String = api.World.Config.GetString(ToolsmithConstants.ToolsmithStatsKey, "");
+            if (weaponStatsBase64String != "") {
+                try {
+                    byte[] weaponStatsBytes = Convert.FromBase64String(weaponStatsBase64String);
+                    string weaponStatsJson = System.Text.Encoding.UTF8.GetString(weaponStatsBytes);
+                    WeaponStats = JsonConvert.DeserializeObject<ToolsmithWeaponStats>(weaponStatsJson);
+                    Logger.Notification("Recieved weapon stats successfully from Server!");
+                } catch (Exception ex) {
+                    Logger.Error("Failed to deserialize weapon stats from server: " + ex);
+                    WeaponStats = new ToolsmithWeaponStats();
+                }
+            } else {
+                Logger.Error("Failed to retrieve weapon stats from server, running with default settings.");
+                WeaponStats = new ToolsmithWeaponStats();
             }
         }
 
@@ -306,6 +329,20 @@ namespace Toolsmith {
                 Mod.Logger.Error("Could not load stats, using default settings instead!");
                 Mod.Logger.Error(e);
                 Stats = new ToolsmithPartStats();
+            }
+        }
+
+        private void TryToLoadWeaponStats(ICoreAPI api) {
+            try {
+                WeaponStats = api.LoadModConfig<ToolsmithWeaponStats>(ConfigUtility.WeaponStatsFilename);
+                if (WeaponStats == null || DoesConfigNeedRegen) {
+                    WeaponStats = new ToolsmithWeaponStats();
+                }
+                api.StoreModConfig(WeaponStats, ConfigUtility.WeaponStatsFilename);
+            } catch (Exception e) {
+                Mod.Logger.Error("Could not load weapon stats, using default settings instead!");
+                Mod.Logger.Error(e);
+                WeaponStats = new ToolsmithWeaponStats();
             }
         }
 

@@ -1,0 +1,9 @@
+[
+	{
+		"file": "armory:recipes/grid/weapons/pikes.json",
+        "op": "replace",
+        "path": "/0/ingredients/S/code",
+        "value": "toolsmith:pikehead-*",
+		"side": "server"
+	}
+]

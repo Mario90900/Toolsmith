@@ -1,0 +1,18 @@
+[
+	{
+		"ingredientPattern": "S",
+		"recipeGroup": 1,
+		"ingredients": {
+			"S": {
+				"type": "item",
+				"code": "game:spearhead-*",
+				"quantity": 1,
+				"name": "material",
+				"allowedVariants": [ "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel" ]
+			}
+		},
+		"width": 1,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:pikehead-{material}" }
+	}
+]
