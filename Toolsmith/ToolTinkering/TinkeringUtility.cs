@@ -64,6 +64,15 @@ namespace Toolsmith.ToolTinkering {
             ColorUtil.Hex2Int("#8080ff"),
             ColorUtil.Hex2Int("#ffffff")
         };
+        static int[] flatLevelMonHunColors = new int[7] {
+            ColorUtil.Hex2Int("#ff0f00"),
+            ColorUtil.Hex2Int("#ff6b00"),
+            ColorUtil.Hex2Int("#fff700"),
+            ColorUtil.Hex2Int("#24ff00"),
+            ColorUtil.Hex2Int("#50b0ff"),
+            ColorUtil.Hex2Int("#ffffff"),
+            ColorUtil.Hex2Int("#c050ff")
+        };
         static int[] SharpnessColorGradient;
 
         //This just sets the color gradiant for the Sharpness Bar. Only run this on the Client. This bit was copied over from GuiStyle vanilla code! And the hex values adjusted.
@@ -110,6 +119,10 @@ namespace Toolsmith.ToolTinkering {
 
             int num = GameMath.Clamp(100 * item.GetToolCurrentSharpness() / maxSharpness, 0, 99);
             return SharpnessColorGradient[num];
+        }
+
+        public static int GetFlatItemSharpnessColor(int index) {
+            return flatLevelMonHunColors[index];
         }
 
         public static int ToolsmithGetItemDamageColor(ItemStack item) {

@@ -3,6 +3,7 @@ using HarmonyLib;
 using SmithingPlus.Util;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -144,7 +145,7 @@ namespace Toolsmith.ToolTinkering {
                 if (remainingBindingDur <= 0 || remainingHandleDur <= 0 || remainingHeadDur <= 0) {
                     TinkeringUtility.HandleBrokenTinkeredTool(world, byEntity, itemslot, remainingHeadDur, currentSharpness, remainingHandleDur, remainingBindingDur, headBroke, !headBroke);
                 }
-                
+
                 itemslot.MarkDirty();
                 if (!headBroke) { //If the head did not break, then don't run everything!
                     return false; //Skip default and others
@@ -603,18 +604,75 @@ namespace Toolsmith.ToolTinkering {
                 textCtx.FillPreserve();
                 instance.ShadePath(textCtx, 2);
 
-
-                float[] color = ColorUtil.ToRGBAFloats(TinkeringUtility.GetItemSharpnessColor(slot.Itemstack));
-                textCtx.SetSourceRGB(color[0], color[1], color[2]);
-
                 int maxSharp = slot.Itemstack.GetToolMaxSharpness();
                 float remainingSharpness = (float)slot.Itemstack.GetToolCurrentSharpness() / maxSharp;
-
                 width = remainingSharpness * (instance.SlotBounds[slotIndex].InnerWidth - ElementBounds.scaled(8));
+                float[] color;
 
-                GuiElement.RoundRectangle(textCtx, x, y, width, height, 1);
-                textCtx.FillPreserve();
-                instance.ShadePath(textCtx, 2);
+                if (ToolsmithModSystem.ClientConfig?.UseGradientForSharpnessInstead == true) {
+                    color = ColorUtil.ToRGBAFloats(TinkeringUtility.GetItemSharpnessColor(slot.Itemstack));
+                    textCtx.SetSourceRGB(color[0], color[1], color[2]);
+
+                    GuiElement.RoundRectangle(textCtx, x, y, width, height, 1);
+                    textCtx.FillPreserve();
+                    instance.ShadePath(textCtx, 2);
+
+                    return;
+                }
+
+                if (ToolsmithModSystem.ClientConfig?.ShowAllSharpnessBarSections == true) {
+                    double totalBarWidth = (instance.SlotBounds[slotIndex].InnerWidth - ElementBounds.scaled(8));
+                    double dx = x;
+                    double dWidth;
+                    int count = 0;
+                    double widthPlotted = 0;
+
+                    while (count < 5) {
+                        color = ColorUtil.ToRGBAFloats(TinkeringUtility.GetFlatItemSharpnessColor(count));
+                        textCtx.SetSourceRGB(color[0], color[1], color[2]);
+
+                        if (count < 2) {
+                            dWidth = 0.15 * totalBarWidth;
+                        } else if (count < 3) {
+                            dWidth = 0.3 * totalBarWidth;
+                        } else {
+                            dWidth = 0.2 * totalBarWidth;
+                        }
+
+                        if (widthPlotted + dWidth > width) {
+                            dWidth = width - widthPlotted;
+                        }
+
+                        GuiElement.RoundRectangle(textCtx, dx, y, dWidth, height, 1);
+                        textCtx.FillPreserve();
+                        instance.ShadePath(textCtx, 2);
+                        widthPlotted += dWidth;
+
+                        if (widthPlotted == width) {
+                            break;
+                        }
+
+                        dx += dWidth;
+                        count++;
+                    }
+                } else {
+                    if (remainingSharpness < 0.15) {
+                        color = ColorUtil.ToRGBAFloats(TinkeringUtility.GetFlatItemSharpnessColor(0));
+                    } else if (remainingSharpness < 0.3) {
+                        color = ColorUtil.ToRGBAFloats(TinkeringUtility.GetFlatItemSharpnessColor(1));
+                    } else if (remainingSharpness < 0.6) {
+                        color = ColorUtil.ToRGBAFloats(TinkeringUtility.GetFlatItemSharpnessColor(2));
+                    } else if (remainingSharpness < 0.8) {
+                        color = ColorUtil.ToRGBAFloats(TinkeringUtility.GetFlatItemSharpnessColor(3));
+                    } else {
+                        color = ColorUtil.ToRGBAFloats(TinkeringUtility.GetFlatItemSharpnessColor(4));
+                    }
+                    textCtx.SetSourceRGB(color[0], color[1], color[2]);
+
+                    GuiElement.RoundRectangle(textCtx, x, y, width, height, 1);
+                    textCtx.FillPreserve();
+                    instance.ShadePath(textCtx, 2);
+                }
             }
         }
     }

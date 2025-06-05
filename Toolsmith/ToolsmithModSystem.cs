@@ -120,7 +120,9 @@ namespace Toolsmith {
 
         public override void StartClientSide(ICoreClientAPI api) {
             GradientSelection = 0;
-            TinkeringUtility.InitializeSharpnessColorGradient();
+            if (ClientConfig.UseGradientForSharpnessInstead) {
+                TinkeringUtility.InitializeSharpnessColorGradient();
+            }
 
             string configBase64String = api.World.Config.GetString(ToolsmithConstants.ToolsmithConfigKey, "");
             if (configBase64String != "") {
