@@ -32,6 +32,7 @@ namespace Toolsmith.Config {
         public string SimpleWeapons = "@.*:().*";
         public string MartialWeapons = "@.*:().*";
         public string LongWeapons = "@.*:().*";
+        public string ImprovisedWeapons = "@.*:().*";
 
         public string PartBlacklist = "@.*(helve|-wet-|chiseledblock|stickslayer|scrap|ruined|wfradmin|chiseled|chiselmold|wrenchmold|knifemold|armory|awl-bone|awl-horn|awl-flint|awl-obsidian|sawmill|sawbuck|sawhorse|sawdust|wooden).*";
 
