@@ -108,6 +108,32 @@ namespace Toolsmith.Utils
             }
         }
 
+        public static int FindTopmostVoxel(byte[,,]voxels, int x, int z, int minimumY = 0)
+        {
+            int topY = -1;
+
+            for (int y = minimumY; y < 6; y++)
+            {
+                EnumVoxelMaterial mat = (EnumVoxelMaterial)voxels[x, y, z];
+
+                if (mat != EnumVoxelMaterial.Empty)
+                {
+                    if (y + 1 > 5)
+                    {
+                        topY = y;
+                        break;
+                    }
+                    else if ((EnumVoxelMaterial)voxels[x, y + 1, z] == EnumVoxelMaterial.Empty)
+                    {
+                        topY = y;
+                        break;
+                    }
+                }
+            }
+
+            return topY;
+        }
+
         public static void Fracture(Vec3i origin, BlockEntityAnvil anvil)
         {
             Random FractureRand = new Random();
@@ -127,24 +153,20 @@ namespace Toolsmith.Utils
                 int _X = origin.X + x;
                 if (_X < 0 || _X > 16) continue;
 
-                for (int y = -1; y <= 1; y++)
+                for (int z = -1; z <= 1; z++)
                 {
-                    int _Y = origin.Y + y;
-                    if (_Y < 0 || _Y > 6) continue;
+                    int _Z = origin.Z + z;
+                    if (_Z < 0 || _Z > 16) continue;
 
-                    for (int z = -1; z <= 1; z++)
+                    int _Y = FindTopmostVoxel(voxels, _X, _Z, origin.Y);
+                    if( _Y != -1)
                     {
-                        int _Z = origin.Z + z;
-                        if (_Z < 0 || _Z > 16) continue;
-
-                        EnumVoxelMaterial mat = (EnumVoxelMaterial)voxels[_X, _Y, _Z];
-                        if (mat != EnumVoxelMaterial.Empty)
-                        {
-                            possibleCrackStarts.AddItem(new Vec3i(_X, _Y, _Z));
-                        }
+                        possibleCrackStarts.Add(new Vec3i(_X, _Y, _Z));
+                        break;
                     }
                 }
             }
+
             if(possibleCrackStarts.Count == 0)
             {
                 DestroyItem(anvil);
@@ -157,7 +179,7 @@ namespace Toolsmith.Utils
             int index = FractureRand.Next(0, possibleCrackStarts.Count);
             Vec3i startVoxel = possibleCrackStarts[index];
 
-            voxels[startVoxel.X, startVoxel.Y, startVoxel.Z] = (byte)EnumVoxelMaterial.Empty;
+            
             //Create a random direction
             Vec2d fractureDirection = new Vec2d(
                 (FractureRand.NextDouble() - 0.5) * 2.5,
@@ -168,10 +190,28 @@ namespace Toolsmith.Utils
             double slope = fractureDirection.Y / fractureDirection.X;
 
             //Remove starting voxel
-            int xOffset = 0;
+            voxels[startVoxel.X, startVoxel.Y, startVoxel.Z] = (byte)EnumVoxelMaterial.Empty;
+            voxelsRemoved++;
+
+            Vec2d fracTraveler = new Vec2d(startVoxel.X, startVoxel.Z);
+
             while (voxelsRemoved < maxFractureSize)
             {
+                fracTraveler += fractureDirection;
+                int xOffset = (int)Math.Floor(fracTraveler.X);
+                int zOffset = (int)Math.Floor(fracTraveler.Y);
 
+                int yOffset = FindTopmostVoxel(voxels, xOffset, zOffset);
+
+                if (xOffset > 0 && xOffset < 16 && zOffset > 0 && zOffset < 16)
+                {
+                    if((EnumVoxelMaterial)voxels[xOffset,yOffset,zOffset] != EnumVoxelMaterial.Empty)
+                    {
+                        voxels[xOffset, yOffset, zOffset] = (byte)EnumVoxelMaterial.Empty;
+                        voxelsRemoved++;
+                    }
+                }
+                else break;
             }   
         }
 
