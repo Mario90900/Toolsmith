@@ -21,7 +21,7 @@ namespace SmithingOverhaul
         public Dictionary<string, SmithingPropertyVariant> metalPropsByCode;
 
         public const string AnvilHammerHitPatches = "anvilHammerHitPatches";
-
+        public const string ItemWorkItemPatches = "workItemPatches";
         public override void StartPre(ICoreAPI api)
         {
             Logger = Mod.Logger;
@@ -42,6 +42,7 @@ namespace SmithingOverhaul
             HarmonyObject = new Harmony(ModId);
             Logger.VerboseDebug("Harmony is starting Patches!");
             HarmonyObject.PatchCategory(AnvilHammerHitPatches);
+            HarmonyObject.PatchCategory(ItemWorkItemPatches);
             Logger.VerboseDebug("Patched functions for Smithing purposes.");
         }
         public override void AssetsFinalize(ICoreAPI api)

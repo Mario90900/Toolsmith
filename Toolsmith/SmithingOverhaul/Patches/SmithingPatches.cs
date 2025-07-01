@@ -1,6 +1,9 @@
 ﻿using HarmonyLib;
+using SmithingOverhaul.Behaviour;
 using SmithingOverhaul.Item;
+using SmithingOverhaul.Property;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -138,6 +141,61 @@ namespace SmithingOverhaul.Patches
                 SmithingWorkItem item = (__instance.WorkItemStack.Collectible as SmithingWorkItem);
                 item.AfterOnUpset(__instance.WorkItemStack);
                 if (item.IsOverstrained(__instance.WorkItemStack)) SmithingUtils.Fracture(voxelPos, __instance);
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(ItemWorkItem))]
+    [HarmonyPatchCategory(SmithingOverhaulModSystem.ItemWorkItemPatches)]
+    public class ItemWorkItemPatches
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(ItemWorkItem.CanWork))]
+        public static void CanWork_Postfix(
+            ItemStack stack,
+            ItemWorkItem __instance,
+            ref bool __result,
+            ref ICoreAPI ___api,
+            ref SmithingPropertyVariant ___SmithProps
+        )
+        {
+            if (__instance is SmithingWorkItem)
+            {
+                bool preventDefault = false;
+                bool canWork = false;
+                SmithingWorkItem item = (SmithingWorkItem)__instance;
+
+                foreach (SmithingBehavior behavior in item.SmithingBehaviors)
+                {
+                    EnumHandling handled = EnumHandling.PassThrough;
+                    bool canWorkBh = behavior.CanWork(___api.World, stack, ref handled);
+                    if (handled != EnumHandling.PassThrough)
+                    {
+                        canWork = canWorkBh;
+                        preventDefault = true;
+                    }
+
+                    if (handled == EnumHandling.PreventSubsequent) __result = canWork;
+                }
+
+                if (preventDefault) __result = canWork;
+
+                //Default Behaviour
+
+                float temperature = stack.Collectible.GetTemperature(___api.World, stack);
+                float workTemp = 0;
+
+                if (___SmithProps != null)
+                {
+                    workTemp = ___SmithProps.WarmForgingTemp;
+                }
+
+                if (stack.Collectible.Attributes?["workableTemperature"].Exists == true)
+                {
+                    __result = stack.Collectible.Attributes["workableTemperature"].AsFloat(workTemp) <= temperature;
+                }
+
+                __result = temperature >= workTemp;
             }
         }
     }

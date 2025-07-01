@@ -1,10 +1,15 @@
-﻿using MathNet.Numerics;
+﻿using HarmonyLib;
+using MathNet.Numerics;
+using MathNet.Numerics.Random;
 using SmithingOverhaul.BlockEntity;
 using SmithingOverhaul.Property;
 using System;
+using System.Collections.Generic;
+using Toolsmith.ToolTinkering.Drawbacks;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
+using Vintagestory.Common;
 using Vintagestory.GameContent;
 
 namespace Toolsmith.Utils
@@ -104,6 +109,73 @@ namespace Toolsmith.Utils
         }
 
         public static void Fracture(Vec3i origin, BlockEntityAnvil anvil)
+        {
+            Random FractureRand = new Random();
+            int maxFractureSize = (int)(ReforgingUtility.TotalVoxelsInWorkItem(anvil.WorkItemStack) * 0.05);
+            if (maxFractureSize == 0)
+            {
+                DestroyItem(anvil);
+                return;
+            }
+
+            //Get workpiece voxels
+            byte[,,] voxels = anvil.Voxels;
+            //Choose a voxel as orgin of crack
+            List<Vec3i> possibleCrackStarts = new List<Vec3i>();
+            for (int x = -1; x <= 1; x++)
+            {
+                int _X = origin.X + x;
+                if (_X < 0 || _X > 16) continue;
+
+                for (int y = -1; y <= 1; y++)
+                {
+                    int _Y = origin.Y + y;
+                    if (_Y < 0 || _Y > 6) continue;
+
+                    for (int z = -1; z <= 1; z++)
+                    {
+                        int _Z = origin.Z + z;
+                        if (_Z < 0 || _Z > 16) continue;
+
+                        EnumVoxelMaterial mat = (EnumVoxelMaterial)voxels[_X, _Y, _Z];
+                        if (mat != EnumVoxelMaterial.Empty)
+                        {
+                            possibleCrackStarts.AddItem(new Vec3i(_X, _Y, _Z));
+                        }
+                    }
+                }
+            }
+            if(possibleCrackStarts.Count == 0)
+            {
+                DestroyItem(anvil);
+                return;
+            }
+
+            int voxelsRemoved = 0;
+            //Pick a voxel to start with
+            
+            int index = FractureRand.Next(0, possibleCrackStarts.Count);
+            Vec3i startVoxel = possibleCrackStarts[index];
+
+            voxels[startVoxel.X, startVoxel.Y, startVoxel.Z] = (byte)EnumVoxelMaterial.Empty;
+            //Create a random direction
+            Vec2d fractureDirection = new Vec2d(
+                (FractureRand.NextDouble() - 0.5) * 2.5,
+                (FractureRand.NextDouble() - 0.5) * 2.5
+            ).Normalize();
+
+            //Turn vector into line function properties
+            double slope = fractureDirection.Y / fractureDirection.X;
+
+            //Remove starting voxel
+            int xOffset = 0;
+            while (voxelsRemoved < maxFractureSize)
+            {
+
+            }   
+        }
+
+        public static void DestroyItem(BlockEntityAnvil anvil)
         {
 
         }
