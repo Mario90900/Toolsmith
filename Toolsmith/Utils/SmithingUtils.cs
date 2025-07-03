@@ -137,7 +137,7 @@ namespace Toolsmith.Utils
 
             return topY;
         }
-        public static void Fracture(Vec3i origin, BlockEntityAnvil anvil)
+        public static void Fracture(this BlockEntityAnvil anvil, Vec3i origin)
         {
             byte[,,] voxels = anvil.Voxels;
             ThreadSafeRandom FractureRand = new ThreadSafeRandom();
@@ -261,7 +261,7 @@ namespace Toolsmith.Utils
             return;
         }
 
-        public static void DestroyItem(BlockEntityAnvil anvil, byte[,,] voxels)
+        public static void DestroyItem(this BlockEntityAnvil anvil, byte[,,] voxels)
         {
             int numVoxels = voxels.Cast<byte>().Count();
             int numBits = (int)(numVoxels / SmithingPlus.Core.Config.VoxelsPerBit);
@@ -271,7 +271,7 @@ namespace Toolsmith.Utils
 
             if (numBits > 2)
             {
-                for (int i = 0; i < 1, i++)
+                for (int i = 0; i < 1; i++)
                 {
                     Vec3d fractureDirection = new Vec3d(
                         (rand.NextDouble() - 0.5) * 2.5,
@@ -288,8 +288,12 @@ namespace Toolsmith.Utils
             for (int i = 0; i < numBits; i++)
             {
                 ItemStack bit = new ItemStack(anvil.Api.World.GetItem(new AssetLocation("metalbit-" + code)));
-                anvil.Api.World.SpawnItemEntity(bit, anvil.Pos.Up(), fractureDirection.Scale(3d))
+                anvil.Api.World.SpawnItemEntity(bit, anvil.Pos.Up());
             }
+
+            anvil.Voxels = new byte[16, 6, 16];
+
+            return;
         }
     }
 }

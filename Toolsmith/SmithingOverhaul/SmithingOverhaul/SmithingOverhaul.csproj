@@ -4,21 +4,10 @@
     <TargetFramework>net7.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>bin\$(Configuration)\Mods\mod</OutputPath>
+    <Configurations>Debug;Release;DefaultBuild</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="canjewelry">
-      <HintPath>..\..\Other Mod's DLLs for Integration Purposes\CANJewelry\canjewelry.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ItemRarity">
-      <HintPath>..\..\Other Mod's DLLs for Integration Purposes\ItemRarity\ItemRarity.dll</HintPath>
-      <Private>False</Private>
-      <EmbedInteropTypes></EmbedInteropTypes>
-    </Reference>
-    <Reference Include="SmithingPlus">
-      <HintPath>..\..\..\..\..\AppData\Roaming\VintagestoryData\Mods\smithingplus_1.5.7\SmithingPlus.dll</HintPath>
-    </Reference>
     <Reference Include="VintagestoryAPI">
       <HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>
       <Private>false</Private>
@@ -47,27 +36,15 @@
       <HintPath>$(VINTAGE_STORY)/VintagestoryLib.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="protobuf-net">
-      <HintPath>$(VINTAGE_STORY)/Lib/protobuf-net.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="cairo-sharp">
-      <HintPath>$(VINTAGE_STORY)/Lib/cairo-sharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.Sqlite">
-      <HintPath>$(VINTAGE_STORY)/Lib/Microsoft.Data.Sqlite.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
 
 <ItemGroup>
   <Content Include="assets\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
-  <Compile Remove="SmithingOverhaul\BlockEntity\**" />
-  <EmbeddedResource Remove="SmithingOverhaul\BlockEntity\**" />
-  <None Remove="SmithingOverhaul\BlockEntity\**" />
+  <None Remove="assets\smithingoverhaul\lang\en.json" />
+  <None Remove="assets\smithingoverhaul\patches\survival-worldproperties-block-metal.json" />
+  <None Remove="modinfo.json" />
   <Content Include="modinfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
@@ -75,21 +52,6 @@
 
 <ItemGroup>
   <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-</ItemGroup>
-
-<ItemGroup>
-  <Compile Update="Properties\Resources.Designer.cs">
-    <DesignTime>True</DesignTime>
-    <AutoGen>True</AutoGen>
-    <DependentUpon>Resources.resx</DependentUpon>
-  </Compile>
-</ItemGroup>
-
-<ItemGroup>
-  <EmbeddedResource Update="Properties\Resources.resx">
-    <Generator>ResXFileCodeGenerator</Generator>
-    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-  </EmbeddedResource>
 </ItemGroup>
 
 </Project>

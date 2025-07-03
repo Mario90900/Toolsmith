@@ -18,7 +18,7 @@ using Vintagestory.GameContent;
 namespace SmithingOverhaul.Patches
 {
     [HarmonyPatch(typeof(BlockEntityAnvil))]
-    [HarmonyPatchCategory(SmithingOverhaulModSystem.AnvilHammerHitPatches)]
+    [HarmonyPatchCategory(SmithingOverhaulModSystem.AnvilPatches)]
     public class AnvilHammerHitPatches
     {
 

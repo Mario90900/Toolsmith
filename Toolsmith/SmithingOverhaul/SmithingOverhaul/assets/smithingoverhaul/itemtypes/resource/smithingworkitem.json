@@ -1,0 +1,44 @@
+{
+	code: "smithingworkitem",
+	class: "SmithingWorkItem",
+	variantgroups: [
+		{ code: "metal", loadFromProperties: "block/metal" }
+	],
+	texture: { base: "block/metal/ingot/{metal}" },
+	attributes: {
+		onTongTransform: {
+			translation: { x: -0.67, y: -1.2, z: -0.77 },
+			rotation: { x: -60, y: 15, z: -78 }
+		}
+	},
+    behaviors: [
+		{ name: "StressStrain",
+	creativeinventory: { "general": [""], "items": [""] },
+	maxstacksize: 1,
+	storageFlags: 5,
+	materialDensity: 7000,
+	guiTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 47, y: -42, z: 0 },
+		origin: { x: 0.43, y: 0.6, z: 0.48 },
+		scale: 2.8
+	},
+	fpHandTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 180, y: 63, z: 20 },
+		origin: { x: 0.5, y: 0.38, z: 0.5 },
+		scale: 1.47
+	},
+	tpHandTransform: {
+		translation: { x: -1.1, y: -0.85, z: -0.8 },
+		rotation: { x: -10, y: -4, z: 12 },
+		origin: { x: 0.5, y: 0.2, z: 0.5 },
+		scale: 0.55
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0.6, z: 0.5 },
+		scale: 3.69
+	}
+}

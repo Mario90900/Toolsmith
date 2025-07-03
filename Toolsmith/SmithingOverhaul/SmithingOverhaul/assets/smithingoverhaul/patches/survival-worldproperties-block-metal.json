@@ -1,0 +1,428 @@
+[
+  {
+    "op": "add",
+    "path": "/variants/0/elongation",
+    "value": 0.003,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/0/tensilestrength",
+    "value": 4,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/0/yieldstrength",
+    "value": 2,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/1/elongation",
+    "value": 0.17,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/1/tensilestrength",
+    "value": 270,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/1/yieldstrength",
+    "value": 140,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/2/elongation",
+    "value": 0.2,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/2/tensilestrength",
+    "value": 500,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/2/yieldstrength",
+    "value": 140,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/3/elongation",
+    "value": 0.073,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/3/tensilestrength",
+    "value": 490,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/3/yieldstrength",
+    "value": 270,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/4/elongation",
+    "value": 0.003,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/4/tensilestrength",
+    "value": 550,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/4/yieldstrength",
+    "value": 131,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/5/elongation",
+    "value": 0.15,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/5/tensilestrength",
+    "value": 210,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/5/yieldstrength",
+    "value": 33,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/6/elongation",
+    "value": 0.2,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/6/tensilestrength",
+    "value": 380,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/6/yieldstrength",
+    "value": 140,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/7/elongation",
+    "value": 0.25,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/7/tensilestrength",
+    "value": 280,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/7/yieldstrength",
+    "value": 120,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/8/elongation",
+    "value": 0.29,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/8/tensilestrength",
+    "value": 190,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/8/yieldstrength",
+    "value": 45,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/9/elongation",
+    "value": 0.1,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/9/tensilestrength",
+    "value": 600,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/9/yieldstrength",
+    "value": 410,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/10/elongation",
+    "value": 0.3,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/10/tensilestrength",
+    "value": 800,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/10/yieldstrength",
+    "value": 510,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/11/elongation",
+    "value": 0.5,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/11/tensilestrength",
+    "value": 17,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/11/yieldstrength",
+    "value": 6,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/12/elongation",
+    "value": 0.3,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/12/tensilestrength",
+    "value": 30,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/12/yieldstrength",
+    "value": 10,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/13/elongation",
+    "value": 0.3,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/13/tensilestrength",
+    "value": 150,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/13/yieldstrength",
+    "value": 70,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/14/density",
+    "value": 8900,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/14/elongation",
+    "value": 0.47,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/14/specificHeatCapacity",
+    "value": 0.15,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/14/tensilestrength",
+    "value": 450,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/14/yieldstrength",
+    "value": 150,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/15/elongation",
+    "value": 0.29,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/15/tensilestrength",
+    "value": 190,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/15/yieldstrength",
+    "value": 45,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/16/elongation",
+    "value": 0.13,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/16/tensilestrength",
+    "value": 758,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/16/yieldstrength",
+    "value": 448,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/17/elongation",
+    "value": 0.11,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/17/tensilestrength",
+    "value": 900,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/17/yieldstrength",
+    "value": 500,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/18/elongation",
+    "value": 0.75,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/18/tensilestrength",
+    "value": 220,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/18/yieldstrength",
+    "value": 5,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/19/elongation",
+    "value": 0.13,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/19/tensilestrength",
+    "value": 300,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/19/yieldstrength",
+    "value": 180,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/20/elongation",
+    "value": 0.54,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/20/tensilestrength",
+    "value": 220,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/20/yieldstrength",
+    "value": 140,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/21/elongation",
+    "value": 0.04,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/21/tensilestrength",
+    "value": 400,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/21/yieldstrength",
+    "value": 200,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/22/elongation",
+    "value": 0.38,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/22/tensilestrength",
+    "value": 97,
+    "file": "game:worldproperties/block/metal.json"
+  },
+  {
+    "op": "add",
+    "path": "/variants/22/yieldstrength",
+    "value": 79,
+    "file": "game:worldproperties/block/metal.json"
+  }
+]

@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolsmith", "Toolsmith\Toolsmith.csproj", "{A21240A2-684E-4BBC-BB16-FA07E2CF7683}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeBuild", "ZZCakeBuild\CakeBuild.csproj", "{B31C94F4-C239-43DA-A353-BBABDBC43F1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmithingOverhaul", "Toolsmith\SmithingOverhaul\SmithingOverhaul\SmithingOverhaul.csproj", "{353033CB-E82C-F808-07F2-D44EF1CFAF49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B31C94F4-C239-43DA-A353-BBABDBC43F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B31C94F4-C239-43DA-A353-BBABDBC43F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B31C94F4-C239-43DA-A353-BBABDBC43F1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{353033CB-E82C-F808-07F2-D44EF1CFAF49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{353033CB-E82C-F808-07F2-D44EF1CFAF49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{353033CB-E82C-F808-07F2-D44EF1CFAF49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{353033CB-E82C-F808-07F2-D44EF1CFAF49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
