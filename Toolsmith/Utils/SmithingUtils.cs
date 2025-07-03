@@ -3,14 +3,18 @@ using MathNet.Numerics;
 using MathNet.Numerics.Random;
 using SmithingOverhaul.BlockEntity;
 using SmithingOverhaul.Property;
+using SmithingPlus;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Toolsmith.ToolTinkering.Drawbacks;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Util;
 using Vintagestory.Common;
 using Vintagestory.GameContent;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Toolsmith.Utils
 {
@@ -133,19 +137,18 @@ namespace Toolsmith.Utils
 
             return topY;
         }
-
         public static void Fracture(Vec3i origin, BlockEntityAnvil anvil)
         {
-            Random FractureRand = new Random();
+            byte[,,] voxels = anvil.Voxels;
+            ThreadSafeRandom FractureRand = new ThreadSafeRandom();
             int maxFractureSize = (int)(ReforgingUtility.TotalVoxelsInWorkItem(anvil.WorkItemStack) * 0.05);
+            
             if (maxFractureSize == 0)
             {
-                DestroyItem(anvil);
+                DestroyItem(anvil, voxels);
                 return;
             }
 
-            //Get workpiece voxels
-            byte[,,] voxels = anvil.Voxels;
             //Choose a voxel as orgin of crack
             List<Vec3i> possibleCrackStarts = new List<Vec3i>();
             for (int x = -1; x <= 1; x++)
@@ -169,7 +172,7 @@ namespace Toolsmith.Utils
 
             if(possibleCrackStarts.Count == 0)
             {
-                DestroyItem(anvil);
+                DestroyItem(anvil, voxels);
                 return;
             }
 
@@ -194,6 +197,7 @@ namespace Toolsmith.Utils
             voxelsRemoved++;
 
             Vec2d fracTraveler = new Vec2d(startVoxel.X, startVoxel.Z);
+            List<Vec3i> fracVoxels = new List<Vec3i>();
 
             while (voxelsRemoved < maxFractureSize)
             {
@@ -205,19 +209,87 @@ namespace Toolsmith.Utils
 
                 if (xOffset > 0 && xOffset < 16 && zOffset > 0 && zOffset < 16)
                 {
-                    if((EnumVoxelMaterial)voxels[xOffset,yOffset,zOffset] != EnumVoxelMaterial.Empty)
+                    Vec3i newVoxel = new Vec3i(xOffset, yOffset, zOffset);
+
+                    if ((EnumVoxelMaterial)voxels[xOffset, yOffset, zOffset] != EnumVoxelMaterial.Empty)
                     {
-                        voxels[xOffset, yOffset, zOffset] = (byte)EnumVoxelMaterial.Empty;
-                        voxelsRemoved++;
+                        if (!fracVoxels.Contains(newVoxel)) 
+                        {
+                            fracVoxels.Add(new Vec3i(xOffset, yOffset, zOffset));
+                            voxelsRemoved++;
+                        }
+                        
                     }
+                    else break;
                 }
                 else break;
-            }   
+            }
+
+            fracTraveler = new Vec2d(startVoxel.X, startVoxel.Z);
+
+            while (voxelsRemoved < maxFractureSize)
+            {
+                fracTraveler -= fractureDirection;
+                int xOffset = (int)Math.Floor(fracTraveler.X);
+                int zOffset = (int)Math.Floor(fracTraveler.Y);
+
+                int yOffset = FindTopmostVoxel(voxels, xOffset, zOffset);
+
+                if (xOffset > 0 && xOffset < 16 && zOffset > 0 && zOffset < 16)
+                {
+                    Vec3i newVoxel = new Vec3i(xOffset, yOffset, zOffset);
+
+                    if ((EnumVoxelMaterial)voxels[xOffset, yOffset, zOffset] != EnumVoxelMaterial.Empty)
+                    {
+                        if (!fracVoxels.Contains(newVoxel))
+                        {
+                            fracVoxels.Add(new Vec3i(xOffset, yOffset, zOffset));
+                            voxelsRemoved++;
+                        }
+                    }
+                    else break;
+                }
+                else break;
+            }
+
+            for (int i = 0; i < fracVoxels.Count; i++)
+            {
+                Vec3i tmp = fracVoxels[i];
+                voxels[tmp.X, tmp.Y, tmp.Z] = (byte)EnumVoxelMaterial.Empty;
+            }
+
+            return;
         }
 
-        public static void DestroyItem(BlockEntityAnvil anvil)
+        public static void DestroyItem(BlockEntityAnvil anvil, byte[,,] voxels)
         {
+            int numVoxels = voxels.Cast<byte>().Count();
+            int numBits = (int)(numVoxels / SmithingPlus.Core.Config.VoxelsPerBit);
 
+            ThreadSafeRandom rand = new ThreadSafeRandom();
+            string code = anvil.WorkItemStack.Collectible.Variant["metal"];
+
+            if (numBits > 2)
+            {
+                for (int i = 0; i < 1, i++)
+                {
+                    Vec3d fractureDirection = new Vec3d(
+                        (rand.NextDouble() - 0.5) * 2.5,
+                        rand.NextDouble(),
+                        (rand.NextDouble() - 0.5) * 2.5
+                    ).Normalize();
+
+                    ItemStack bit = new ItemStack(anvil.Api.World.GetItem(new AssetLocation("metalbit-" + code)));
+                    anvil.Api.World.SpawnItemEntity(bit, anvil.Pos.Up(), fractureDirection.Scale(3d));
+                    numBits--;
+                }
+            }
+            
+            for (int i = 0; i < numBits; i++)
+            {
+                ItemStack bit = new ItemStack(anvil.Api.World.GetItem(new AssetLocation("metalbit-" + code)));
+                anvil.Api.World.SpawnItemEntity(bit, anvil.Pos.Up(), fractureDirection.Scale(3d))
+            }
         }
     }
 }
