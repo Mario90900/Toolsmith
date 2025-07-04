@@ -1,5 +1,4 @@
 ﻿using SmithingOverhaul.Behaviour;
-using SmithingOverhaul.BlockEntity;
 using SmithingOverhaul.Property;
 using System;
 using System.Linq;
