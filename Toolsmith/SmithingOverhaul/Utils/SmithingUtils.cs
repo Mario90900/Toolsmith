@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using MathNet.Numerics;
 using MathNet.Numerics.Random;
-using SmithingOverhaul.BlockEntity;
 using SmithingOverhaul.Property;
 using SmithingPlus;
 using System;
@@ -35,7 +34,7 @@ namespace Toolsmith.Utils
             double upper = Integrate.DoubleExponential(stressStrainCurve, 0.0d, (double)tensileStrength);
             return (int)Math.Round(tensileStrength * elongation - upper);
         }
-        public static float GetRecrystalization(SmithingPropertyVariant smithProps, ItemStack stack, float temp, float strain, double hourDiff)
+        public static float GetRecrystalization(this ItemStack stack, SmithingPropertyVariant smithProps, float temp, float strain, double hourDiff)
         {
             float crystalTemp = 0f;
 
@@ -61,7 +60,7 @@ namespace Toolsmith.Utils
             return (float)(CRYSTALRECOVERY * (strainFactor + tempFactor) * hourDiff * 60f);
         }
 
-        public static void SetStrain(SmithingPropertyVariant smithProps, ItemStack stack, float strain)
+        public static void SetStrain(this ItemStack stack, SmithingPropertyVariant smithProps, float strain)
         {
             float hardeningCoeff = 0f;
             float strengthCoeff = 0f;

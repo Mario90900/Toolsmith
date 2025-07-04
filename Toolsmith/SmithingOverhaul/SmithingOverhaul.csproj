@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="SmithingPlus">
+      <HintPath>..\..\..\..\..\..\..\AppData\Roaming\VintagestoryData\Mods\smithingplus_1.5.7\SmithingPlus.dll</HintPath>
+    </Reference>
     <Reference Include="VintagestoryAPI">
       <HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>
       <Private>false</Private>

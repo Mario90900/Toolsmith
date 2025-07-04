@@ -46,6 +46,21 @@ namespace SmithingOverhaul.Behaviour
             handling = EnumHandling.PassThrough;
             return;
         }
+        public virtual void TemperatureEffect(ItemStack stack, float temperature, double hourDiff, ref EnumHandling handling)
+        {
+            handling = EnumHandling.PassThrough;
+            return;
+        }
+        public virtual void CoolingEffect(ItemStack stack, float tempDiff, double hourDiff, ref EnumHandling handling)
+        {
+            handling = EnumHandling.PassThrough;
+            return;
+        }
+        public virtual void HeatingEffect(ItemStack stack, float tempDiff, double hourDiff, ref EnumHandling handling)
+        {
+            handling = EnumHandling.PassThrough;
+            return;
+        }
         public virtual bool CanWork(IWorldAccessor world, ItemStack stack, ref EnumHandling handling) 
         {
             handling = EnumHandling.PassThrough;
@@ -70,13 +85,13 @@ namespace SmithingOverhaul.Behaviour
             return;
         }
 
-        public virtual float AddStrain(float changeInStrain, ItemStack stack, ref EnumHandling handling)
+        public virtual float AddStrain(ItemStack stack, float changeInStrain, ref EnumHandling handling)
         {
             handling = EnumHandling.PassThrough;
             return 20f;
         }
 
-        public virtual void RecoverStrain(float temperature, ItemStack stack, ref EnumHandling handling)
+        public virtual void RecoverStrain(ItemStack stack, float temperature, ref EnumHandling handling)
         {
             handling = EnumHandling.PassThrough;
             return;
