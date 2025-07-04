@@ -418,6 +418,10 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
         public override Cuboidf[] GetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos) {
             var originalBoxes = base.GetSelectionBoxes(blockAccessor, pos);
+            if (originalBoxes == null) {
+                return null;
+            }
+
             var selectionBoxes = originalBoxes.FastCopy(originalBoxes.Length);
             var workbenchEnt = blockAccessor.GetBlockEntity(pos) as BlockEntityWorkbench;
 
