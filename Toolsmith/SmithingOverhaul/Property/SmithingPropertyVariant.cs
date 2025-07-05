@@ -27,18 +27,6 @@ namespace SmithingOverhaul.Property
         public float Elongation; // in %
         [JsonProperty]
         public int YoungsModulus; // in GPa
-
-        public float HardeningCoeff => (float)(Math.Log(TensileStrength / YieldStrength) / Math.Log(Elongation / 0.2));
-        public float StrengthCoeff => (float)(YieldStrength / Math.Pow(0.2, HardeningCoeff));
-        public float RecrystalizationTemp
-        {
-            get
-            {
-                if (Elemental) return 0.35f * (MeltPoint + 273.15f) - 273.15f;
-                else return 0.5f * (MeltPoint + 273.15f) -273.15f;
-            }
-        }
-        public float WarmForgingTemp => 0.6f * (RecrystalizationTemp + 273.15f) - 273.15f;
     }
 }
 

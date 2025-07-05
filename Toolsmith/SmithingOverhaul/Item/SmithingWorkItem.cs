@@ -1,8 +1,10 @@
-﻿using SmithingOverhaul.Behaviour;
+﻿using MathNet.Numerics.Statistics.Mcmc;
+using SmithingOverhaul.Behaviour;
 using SmithingOverhaul.Property;
 using System;
 using System.Linq;
 using System.Text;
+using Toolsmith.SmithingOverhaul.Utils;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -13,7 +15,6 @@ using static HarmonyLib.Code;
 
 namespace SmithingOverhaul.Item
 {
-
     public class SmithingWorkItem : ItemWorkItem
     {
         
@@ -30,6 +31,14 @@ namespace SmithingOverhaul.Item
             }
 
             base.OnLoaded(api);
+        }
+
+        public SmithingPropertyVariant GetSmithProps(ItemStack stack)
+        {
+            if (!stack.Attributes.HasAttribute("smithProps"))
+            {
+                stack.Attributes.SetBytes("smithProps")
+            }
         }
         public override float GetTemperature(IWorldAccessor world, ItemStack itemstack)
         {
@@ -216,6 +225,8 @@ namespace SmithingOverhaul.Item
             if (preventDefault) return;
 
             //Default Behaviour
+
+            stack.
         }
 
         //Handles effects resulting from heating a piece
