@@ -6,12 +6,21 @@ using System.Threading.Tasks;
 using Toolsmith.Client;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 
 namespace Toolsmith.ToolTinkering.Items {
     public class ItemTinkerToolParts : Item, IModularPartRenderer {
         protected bool crafting = false;
+
+        public override string GetHeldTpUseAnimation(ItemSlot activeHotbarSlot, Entity forEntity) {
+            if (crafting) {
+                return "craftingwinding";
+            }
+
+            return null;
+        }
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling) {
             var entPlayer = (byEntity as EntityPlayer);
@@ -41,10 +50,13 @@ namespace Toolsmith.ToolTinkering.Items {
                 if (byEntity.World.Side.IsServer() && TinkeringUtility.ValidBindingInOffhand(byEntity)) {
                     TinkeringUtility.AssembleFullTool(slot, byEntity, blockSel);
                 }
+                byEntity.AnimManager.StopAnimation("craftingwinding");
                 crafting = false;
                 return;
             }
 
+            byEntity.AnimManager.StopAnimation("craftingwinding");
+            crafting = false;
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
         }
 

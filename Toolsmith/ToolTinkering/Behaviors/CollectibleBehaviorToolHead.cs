@@ -5,9 +5,11 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Utils;
+using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
+using Vintagestory.API.Datastructures;
 using Vintagestory.Server;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
@@ -19,6 +21,15 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
         }
 
+        public override string GetHeldTpUseAnimation(ItemSlot activeHotbarSlot, Entity forEntity, ref EnumHandling bhHandling) {
+            if (crafting == true) {
+                bhHandling = EnumHandling.PreventSubsequent;
+                return "crafting";
+            }
+            
+            return null;
+        }
+        
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling) { //Handle the grinding code here as well as the tool itself! Probably can offload the core interaction to a helper utility function?
             var entPlayer = (byEntity as EntityPlayer);
 
@@ -38,6 +49,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
             if (crafting) {
                 handling = EnumHandling.PreventSubsequent;
+                byEntity.StartAnimation("crafting");
                 return crafting && secondsUsed < ToolsmithConstants.TimeToCraftTinkerTool; //Time for crafting is now a constant variable!
             }
 
@@ -54,6 +66,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 return;
             }
 
+            byEntity.StopAnimation("crafting");
             crafting = false;
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);
         }
@@ -68,10 +81,11 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     if (byEntity.World.Side.IsServer() && TinkeringUtility.ValidHandleInOffhand(byEntity)) {
                         TinkeringUtility.AssemblePartBundle(slot, byEntity, blockSel);
                     }
-                    crafting = false;
                 }
             }
 
+            byEntity.StopAnimation("crafting");
+            crafting = false;
             return base.OnHeldInteractCancel(secondsUsed, slot, byEntity, blockSel, entitySel, cancelReason, ref handled);
         }
 
