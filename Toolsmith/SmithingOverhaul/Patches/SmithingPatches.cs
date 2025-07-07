@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using Toolsmith.SmithingOverhaul.Utils;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
@@ -164,11 +165,13 @@ namespace SmithingOverhaul.Patches
                 bool preventDefault = false;
                 bool canWork = false;
                 SmithingWorkItem item = (SmithingWorkItem)__instance;
+                StressStrainHandler ssh = stack.GetStressStrainHandler(___api);
+                if (ssh == null) return;
 
                 foreach (SmithingBehavior behavior in item.SmithingBehaviors)
                 {
                     EnumHandling handled = EnumHandling.PassThrough;
-                    bool canWorkBh = behavior.OnCanWork(___api.World, stack, ref handled);
+                    bool canWorkBh = behavior.OnCanWork(ssh, stack, ___api.World, ref handled);
                     if (handled != EnumHandling.PassThrough)
                     {
                         canWork = canWorkBh;
@@ -183,17 +186,8 @@ namespace SmithingOverhaul.Patches
                 //Default Behaviour
 
                 float temperature = stack.Collectible.GetTemperature(___api.World, stack);
-                float workTemp = 0;
 
-                if (___SmithProps != null)
-                {
-                    workTemp = ___SmithProps.WarmForgingTemp;
-                }
-
-                if (stack.Collectible.Attributes?["workableTemperature"].Exists == true)
-                {
-                    __result = stack.Collectible.Attributes["workableTemperature"].AsFloat(workTemp) <= temperature;
-                }
+                float workTemp = ssh.WarmForgingTemp;
 
                 __result = temperature >= workTemp;
             }
