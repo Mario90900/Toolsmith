@@ -11,8 +11,7 @@
 			rotation: { x: -60, y: 15, z: -78 }
 		}
 	},
-    behaviors: [
-		{ name: "StressStrain",
+	behaviors: [],
 	creativeinventory: { "general": [""], "items": [""] },
 	maxstacksize: 1,
 	storageFlags: 5,

@@ -1,12 +1,18 @@
 ﻿using HarmonyLib;
 using MathNet.Numerics;
 using MathNet.Numerics.Random;
+using SmithingOverhaul.Behaviour;
+using SmithingOverhaul.Item;
 using SmithingOverhaul.Property;
 using SmithingPlus;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
+using Toolsmith.SmithingOverhaul.Utils;
 using Toolsmith.ToolTinkering.Drawbacks;
+using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
@@ -203,6 +209,108 @@ namespace Toolsmith.Utils
 
             anvil.Voxels = new byte[16, 6, 16];
 
+            return;
+        }
+        private static StressStrainHandler AssignStressStrainHandler(this ItemStack stack, ICoreAPI api)
+        {
+            StressStrainHandler ssh = null;
+            if (stack.Collectible is SmithingWorkItem)
+            {
+                ssh = StressStrainHandler.FromTreeAttribute(stack.Attributes);
+
+                int id = stack.Attributes.GetInt("stressStrainRefId", -1);
+                if (id == -1)
+                {
+                    id = SmithingWorkItem.nextHandlerRefId;
+                    ++SmithingWorkItem.nextHandlerRefId;
+                }
+                
+                ssh = ObjectCacheUtil.GetOrCreate(api, "stressStrainHandler" + id.ToString(), () =>
+                {
+                    if (ssh == null)
+                    {
+                        return new StressStrainHandler(
+                        (stack.Collectible as SmithingWorkItem).smithProps,
+                        stack);
+                    }
+                    else return ssh;
+                });
+
+                stack.Attributes.SetInt("stressStrainRefId", id);
+                ssh.ToTreeAttributes(stack.Attributes);
+            }
+            return ssh;
+
+        }
+        public static StressStrainHandler GetStressStrainHandler(this ItemStack stack, ICoreAPI api)
+        {
+            if(stack.Collectible is SmithingWorkItem)
+            {
+                StressStrainHandler ssh = null;
+                int id = stack.Attributes.GetInt("stressStrainRefId", -1);
+                ssh = ObjectCacheUtil.TryGet<StressStrainHandler>(api, "stressStrainHandler" + id.ToString());
+                if (ssh == default(StressStrainHandler))
+                {
+                    ssh = stack.AssignStressStrainHandler(api);
+                }
+                
+                return ssh;
+            }
+            else return null;
+        }
+
+        public static void AddStrain(this ItemStack stack, ICoreAPI api, float changeInStrain)
+        {
+            if (stack.Collectible is not SmithingWorkItem) return;
+
+            bool preventDefault = false;
+
+            StressStrainHandler ssh = stack.GetStressStrainHandler(api);
+            if (ssh == null) return;
+
+            SmithingWorkItem obj = stack.Collectible as SmithingWorkItem;
+            foreach (SmithingBehavior behavior in obj.SmithingBehaviors)
+            {
+                EnumHandling handled = EnumHandling.PassThrough;
+
+                behavior.OnAddStrain(ssh, stack, api.World, changeInStrain, ref handled);
+
+                if (handled != EnumHandling.PassThrough) preventDefault = true;
+
+                if (handled == EnumHandling.PreventSubsequent) return;
+            }
+            if (preventDefault) return;
+
+            //Default Behaviour
+
+            ssh.AddStrain(changeInStrain);
+            return;
+        }
+        public static void RecoverStrain(ItemStack stack, ICoreAPI api, float temperature, double hourDiff)
+        {
+            if (stack.Collectible is not SmithingWorkItem) return;
+
+            bool preventDefault = false;
+            StressStrainHandler ssh = stack.GetStressStrainHandler(api);
+            if (ssh == null) return;
+
+            SmithingWorkItem obj = stack.Collectible as SmithingWorkItem;
+            foreach (SmithingBehavior behavior in obj.SmithingBehaviors)
+            {
+                EnumHandling handled = EnumHandling.PassThrough;
+
+                behavior.OnRecoverStrain(ssh, stack, api.World, temperature, hourDiff, ref handled);
+
+                if (handled != EnumHandling.PassThrough) preventDefault = true;
+
+                if (handled == EnumHandling.PreventSubsequent) return;
+            }
+            if (preventDefault) return;
+
+
+            //Default Behaviour
+
+            ssh.RecoverStrain(stack, temperature, hourDiff);
             return;
         }
     }

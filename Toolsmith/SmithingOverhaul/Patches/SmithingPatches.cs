@@ -128,7 +128,7 @@ namespace SmithingOverhaul.Patches
             {
                 SmithingWorkItem item = (__instance.WorkItemStack.Collectible as SmithingWorkItem);
                 item.AfterOnUpset(__instance.WorkItemStack);
-                if (item.IsOverstrained(__instance.WorkItemStack)) SmithingUtils.Fracture(voxelPos, __instance);
+                if (item.IsOverstrained(__instance.WorkItemStack)) SmithingUtils.Fracture(__instance, voxelPos);
             }
         }
 
@@ -140,7 +140,7 @@ namespace SmithingOverhaul.Patches
             {
                 SmithingWorkItem item = (__instance.WorkItemStack.Collectible as SmithingWorkItem);
                 item.AfterOnUpset(__instance.WorkItemStack);
-                if (item.IsOverstrained(__instance.WorkItemStack)) SmithingUtils.Fracture(voxelPos, __instance);
+                if (item.IsOverstrained(__instance.WorkItemStack)) SmithingUtils.Fracture(__instance, voxelPos));
             }
         }
     }
@@ -168,7 +168,7 @@ namespace SmithingOverhaul.Patches
                 foreach (SmithingBehavior behavior in item.SmithingBehaviors)
                 {
                     EnumHandling handled = EnumHandling.PassThrough;
-                    bool canWorkBh = behavior.CanWork(___api.World, stack, ref handled);
+                    bool canWorkBh = behavior.OnCanWork(___api.World, stack, ref handled);
                     if (handled != EnumHandling.PassThrough)
                     {
                         canWork = canWorkBh;
