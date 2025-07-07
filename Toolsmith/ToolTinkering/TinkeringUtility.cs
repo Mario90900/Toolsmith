@@ -229,6 +229,9 @@ namespace Toolsmith.ToolTinkering {
                 toolHead.SetPartMaxDurability(brokenToolStack.GetToolheadMaxDurability());
                 toolHead.SetPartCurrentSharpness(remainingSharpness);
                 toolHead.SetPartMaxSharpness(brokenToolStack.GetToolMaxSharpness());
+                if (brokenToolStack.HasTotalHoneValue()) {
+                    toolHead.SetTotalHoneValue(brokenToolStack.GetTotalHoneValue());
+                }
             } else {
                 headBroke = true; //This right here might be key for compatability sake. The way I built the whole system runs off the assumption that the Tool's Head determines the tool.
                                   //Thus, it can be considered that a tool does not fully "break" in the vanilla sense until the Head itself breaks, it only "falls apart" ie: the tool head flies off the handle, there's possible durability left on both.

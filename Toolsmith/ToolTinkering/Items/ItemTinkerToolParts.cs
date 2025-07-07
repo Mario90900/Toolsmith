@@ -50,12 +50,12 @@ namespace Toolsmith.ToolTinkering.Items {
                 if (byEntity.World.Side.IsServer() && TinkeringUtility.ValidBindingInOffhand(byEntity)) {
                     TinkeringUtility.AssembleFullTool(slot, byEntity, blockSel);
                 }
-                byEntity.AnimManager.StopAnimation("craftingwinding");
+                byEntity.StopAnimation("craftingwinding");
                 crafting = false;
                 return;
             }
 
-            byEntity.AnimManager.StopAnimation("craftingwinding");
+            byEntity.StopAnimation("craftingwinding");
             crafting = false;
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
         }

@@ -103,6 +103,14 @@ namespace Toolsmith.ToolTinkering.Items {
             base.OnModifiedInInventorySlot(world, slot, extractedStack);
         }
 
+        public override string GetHeldTpUseAnimation(ItemSlot activeHotbarSlot, Entity forEntity) {
+            if (sharpening) {
+                return "sharpeningstone";
+            }
+
+            return null;
+        }
+
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling) {
             if (!(slot is ItemSlotOffhand)) {
                 base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
@@ -115,6 +123,7 @@ namespace Toolsmith.ToolTinkering.Items {
 
             if (firstEvent && !mainHandSlot.Empty && TinkeringUtility.ToolOrHeadNeedsSharpening(mainHandSlot.Itemstack, byEntity.World, byEntity)) {
                 handling = EnumHandHandling.PreventDefault;
+                byEntity.StartAnimation("sharpeningstone");
                 sharpening = true;
                 ToggleHoningSound(true, byEntity);
                 return;
@@ -152,6 +161,7 @@ namespace Toolsmith.ToolTinkering.Items {
                     doneHoning = false;
                 }
                 totalSharpnessHoned = 0;
+                byEntity.StopAnimation("sharpeningstone");
                 sharpening = false;
             }
 
@@ -174,6 +184,7 @@ namespace Toolsmith.ToolTinkering.Items {
                     byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity, randomizePitch: false);
                 }*/ //Commenting this out to see how it feels/sounds without it playing the 'finish' sound when you let go of the mouse. Seems like a great idea honestly with the current changes.
                 totalSharpnessHoned = 0;
+                byEntity.StopAnimation("sharpeningstone");
                 sharpening = false;
             }
 
