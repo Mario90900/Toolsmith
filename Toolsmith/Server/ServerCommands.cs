@@ -22,7 +22,7 @@ namespace Toolsmith.Server {
             sapi.ChatCommands
                 .Create("setMultiPartRenderingRotation")
                 .WithAlias("smprr")
-                .WithDescription("In-game tweaking of the Rendering on a held Multi-Part item. [Toolsmith]")
+                .WithDescription("In-game tweaking of the Rotation on a held Multi-Part item. [Toolsmith]")
                 .RequiresPrivilege("controlserver")
                 .WithArgs(sapi.ChatCommands.Parsers.Word("partKey"), sapi.ChatCommands.Parsers.Float("rotateX"), sapi.ChatCommands.Parsers.Float("rotateY"), sapi.ChatCommands.Parsers.Float("rotateZ"))
                 .HandleWith(args => OnSetMultiPartRenderingRotation(sapi, args));
@@ -101,7 +101,7 @@ namespace Toolsmith.Server {
             partTree.SetPartOffsetZ(offsetZ);
 
             args.Caller.Player.InventoryManager.ActiveHotbarSlot.MarkDirty();
-            return TextCommandResult.Success("Successfully set part '" + partKey + "' offset to X: " + offsetX + ", Y: " + ", Z: " + offsetZ);
+            return TextCommandResult.Success("Successfully set part '" + partKey + "' offset to X: " + offsetX + ", Y: " + offsetY + ", Z: " + offsetZ);
         }
 
         private static TextCommandResult OnChangeToolsmithAttribute(ICoreServerAPI sapi, TextCommandCallingArgs args) {

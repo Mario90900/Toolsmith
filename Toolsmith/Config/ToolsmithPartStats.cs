@@ -30,6 +30,8 @@ namespace Toolsmith.Config {
 
     public class BindingStats {
         public string id;
+        public string texturePath = "plain";
+        public string langTag = "";
         public float baseHPfactor;
         public float selfHPBonus;
         public float handleHPBonus;
@@ -60,20 +62,20 @@ namespace Toolsmith.Config {
             ["oil"] = new() { id = "oil", langTag = "treatment-oil", handleHPbonus = 0.65f }
         };
         public Dictionary<string, BindingStats> bindings = new() {
-            ["none"] = new() { id = "none", baseHPfactor = 0.5f, selfHPBonus = 0.0f, handleHPBonus = 0.0f, recoveryPercent = 1.0f, isMetal = false },
-            ["reeds"] = new() { id = "reeds", baseHPfactor = 1.0f, selfHPBonus = 0.0f, handleHPBonus = 0.0f, recoveryPercent = 1.0f, isMetal = false },
-            ["twine"] = new() { id = "twine", baseHPfactor = 1.2f, selfHPBonus = 0.1f, handleHPBonus = 0.05f, recoveryPercent = 0.9f, isMetal = false },
-            ["rope"] = new() { id = "rope", baseHPfactor = 1.25f, selfHPBonus = 0.15f, handleHPBonus = 0.05f, recoveryPercent = 0.7f, isMetal = false },
-            ["leather"] = new() { id = "leather", baseHPfactor = 1.5f, selfHPBonus = 0.3f, handleHPBonus = 0.1f, recoveryPercent = 0.6f, isMetal = false },
-            ["glue"] = new() { id = "glue", baseHPfactor = 2.0f, selfHPBonus = 0.3f, handleHPBonus = 0.3f, recoveryPercent = 1.0f, isMetal = false },
-            ["coppernails"] = new() { id = "coppernails", baseHPfactor = 1.4f, selfHPBonus = 0.1f, handleHPBonus = 0.1f, recoveryPercent = 0.9f, isMetal = true, metalType = "copper" },
-            ["tinbronzenails"] = new() { id = "tinbronzenails", baseHPfactor = 1.7f, selfHPBonus = 0.2f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "tinbronze" },
-            ["bismuthbronzenails"] = new() { id = "bismuthbronzenails", baseHPfactor = 1.7f, selfHPBonus = 0.25f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "bismuthbronze" },
-            ["blackbronzenails"] = new() { id = "blackbronzenails", baseHPfactor = 1.7f, selfHPBonus = 0.3f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "blackbronze" },
-            ["ironnails"] = new() { id = "ironnails", baseHPfactor = 1.8f, selfHPBonus = 0.3f, handleHPBonus = 0.2f, recoveryPercent = 0.45f, isMetal = true, metalType = "iron" },
-            ["cupronickelnails"] = new() { id = "cupronickelnails", baseHPfactor = 1.7f, selfHPBonus = 0.2f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "cupronickel" },
-            ["meteoricironnails"] = new() { id = "meteoricironnails", baseHPfactor = 1.9f, selfHPBonus = 0.5f, handleHPBonus = 0.25f, recoveryPercent = 0.45f, isMetal = true, metalType = "meteoriciron" },
-            ["steelnails"] = new() { id = "steelnails", baseHPfactor = 2.2f, selfHPBonus = 0.6f, handleHPBonus = 0.4f, recoveryPercent = 0.35f, isMetal = true, metalType = "steel" }
+            ["none"] = new() { id = "none", langTag = "binding-none", baseHPfactor = 0.5f, selfHPBonus = 0.0f, handleHPBonus = 0.0f, recoveryPercent = 1.0f, isMetal = false },
+            ["reeds"] = new() { id = "reeds", texturePath = "game:block/cloth/reedrope", langTag = "binding-reeds", baseHPfactor = 1.0f, selfHPBonus = 0.0f, handleHPBonus = 0.0f, recoveryPercent = 1.0f, isMetal = false },
+            ["twine"] = new() { id = "twine", texturePath = "game:block/cloth/basic/normal", langTag = "binding-twine", baseHPfactor = 1.2f, selfHPBonus = 0.1f, handleHPBonus = 0.05f, recoveryPercent = 0.9f, isMetal = false },
+            ["rope"] = new() { id = "rope", texturePath = "game:block/cloth/basic/brown", langTag = "binding-rope", baseHPfactor = 1.25f, selfHPBonus = 0.15f, handleHPBonus = 0.05f, recoveryPercent = 0.7f, isMetal = false },
+            ["leather"] = new() { id = "leather", texturePath = "game:block/leather/plain", langTag = "binding-leather", baseHPfactor = 1.5f, selfHPBonus = 0.3f, handleHPBonus = 0.1f, recoveryPercent = 0.6f, isMetal = false },
+            ["glue"] = new() { id = "glue", langTag = "binding-glue", baseHPfactor = 2.0f, selfHPBonus = 0.3f, handleHPBonus = 0.3f, recoveryPercent = 1.0f, isMetal = false },
+            ["coppernails"] = new() { id = "coppernails", texturePath = "game:block/metal/plate/copper", langTag = "binding-nails-copper", baseHPfactor = 1.4f, selfHPBonus = 0.1f, handleHPBonus = 0.1f, recoveryPercent = 0.9f, isMetal = true, metalType = "copper" },
+            ["tinbronzenails"] = new() { id = "tinbronzenails", texturePath = "game:block/metal/plate/tinbronze", langTag = "binding-nails-tinbronze", baseHPfactor = 1.7f, selfHPBonus = 0.2f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "tinbronze" },
+            ["bismuthbronzenails"] = new() { id = "bismuthbronzenails", texturePath = "game:block/metal/plate/bismuthbronze", langTag = "binding-nails-bismuthbronze", baseHPfactor = 1.7f, selfHPBonus = 0.25f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "bismuthbronze" },
+            ["blackbronzenails"] = new() { id = "blackbronzenails", texturePath = "game:block/metal/plate/blackbronze", langTag = "binding-nails-blackbronze", baseHPfactor = 1.7f, selfHPBonus = 0.3f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "blackbronze" },
+            ["ironnails"] = new() { id = "ironnails", texturePath = "game:block/metal/plate/iron", langTag = "binding-nails-iron", baseHPfactor = 1.8f, selfHPBonus = 0.3f, handleHPBonus = 0.2f, recoveryPercent = 0.45f, isMetal = true, metalType = "iron" },
+            ["cupronickelnails"] = new() { id = "cupronickelnails", texturePath = "game:block/metal/ingot/cupronickel", langTag = "binding-nails-cupronickel", baseHPfactor = 1.7f, selfHPBonus = 0.2f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "cupronickel" },
+            ["meteoricironnails"] = new() { id = "meteoricironnails", texturePath = "game:block/metal/plate/meteoriciron", langTag = "binding-nails-meteoriciron", baseHPfactor = 1.9f, selfHPBonus = 0.5f, handleHPBonus = 0.25f, recoveryPercent = 0.45f, isMetal = true, metalType = "meteoriciron" },
+            ["steelnails"] = new() { id = "steelnails", texturePath = "game:block/metal/plate/steel", langTag = "binding-nails-steel", baseHPfactor = 2.2f, selfHPBonus = 0.6f, handleHPBonus = 0.4f, recoveryPercent = 0.35f, isMetal = true, metalType = "steel" }
         };
     }
 }

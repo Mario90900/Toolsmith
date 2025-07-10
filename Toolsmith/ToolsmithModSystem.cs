@@ -31,7 +31,9 @@ namespace Toolsmith {
         public static ILogger Logger;
         public static string ModId;
         public static string ModVersion;
-        public static ICoreAPI Api;
+        public static ICoreAPI Api => Sapi != null ? Sapi : Capi;
+        public static ICoreServerAPI Sapi;
+        public static ICoreClientAPI Capi;
         public static Harmony HarmonyInstance;
         public static ToolsmithConfigs Config;
         public static ToolsmithClientConfigs ClientConfig; //Any setting in here is NOT synced from the server, and intended to control client-side changes only.
@@ -56,7 +58,11 @@ namespace Toolsmith {
             Logger = Mod.Logger;
             ModId = Mod.Info.ModID;
             ModVersion = Mod.Info.Version;
-            Api = api;
+            if (api as ICoreServerAPI != null) {
+                Sapi = api as ICoreServerAPI;
+            } else {
+                Capi = api as ICoreClientAPI;
+            }
             TryToLoadConfig(api);
             TryToLoadClientConfig(api);
             TryToLoadStats(api);
@@ -183,6 +189,9 @@ namespace Toolsmith {
             RecipeRegisterModSystem.TinkerableToolsList = new List<CollectibleObject>();
             foreach (var t in api.World.Collectibles.Where(t => t?.Code != null)) { //A tool/part should likely be only one of these!
                 if (ConfigUtility.IsTinkerableTool(t.Code.ToString()) && !(ConfigUtility.IsToolHead(t.Code.ToString())) && !(ConfigUtility.IsOnBlacklist(t.Code.ToString()))) { //Any tool that you actually craft from a Tool Head to create!
+                    if (!t.HasBehavior<ModularPartRenderingFromAttributes>()) {
+                        t.AddBehavior<ModularPartRenderingFromAttributes>();
+                    }
                     if (!t.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
                         t.AddBehavior<CollectibleBehaviorTinkeredTools>();
                     }
@@ -432,7 +441,8 @@ namespace Toolsmith {
             HarmonyUnpatch();
             Logger = null;
             ModId = null;
-            Api = null;
+            Sapi = null;
+            Capi = null;
             Config = null;
             ClientConfig = null;
             Stats = null;

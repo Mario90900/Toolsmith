@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Toolsmith.Config;
 using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Datastructures;
 
 namespace Toolsmith.Client {
@@ -25,7 +28,7 @@ namespace Toolsmith.Client {
         //              |
         //              |-- (Offset X-Y-Z) - Also in separate entries, and will return 0 otherwise.
         //              |
-        //              |-- (Part Tree)  <- Named "modularPartRenderData" only on part items themselves! Might need to also include rotation and transform information later on?
+        //              |-- (Part Tree)  <- Named "modularPartRenderData" only on part items themselves!
         //                      |
         //                      |-- ("partShape") = Shape AssetLoc String
         //                      |
@@ -60,6 +63,10 @@ namespace Toolsmith.Client {
                 tree.GetOrAddTreeAttribute(key);
             }
             return tree.GetTreeAttribute(key);
+        }
+
+        public static bool HasPartAndTransformRenderTree(this ITreeAttribute tree, string key) {
+            return tree.HasAttribute(key);
         }
 
         public static void SetPartAndTransformRenderTree(this ITreeAttribute tree, string key, ITreeAttribute setTree) {
@@ -209,6 +216,276 @@ namespace Toolsmith.Client {
             var baseTex = tree.GetString(key);
             var woodType = baseTex.Split('/').Last();
             tree.SetString(key, overlayPath + woodType);
+        }
+
+        public static string GetToolTypeFromHeadShapePath(string toolPath) {
+            var splitShape = toolPath.Split('/');
+            string toolType = null;
+            for (int i = 1; i < splitShape.Length; i++) {
+                if ((i + 1) < splitShape.Length && splitShape[i] == "parts") {
+                    toolType = splitShape[i + 1];
+                    break;
+                }
+            }
+            if (toolType == "handles" || toolType == "grip") {
+                return null;
+            }
+
+            return toolType;
+        }
+
+        public static string GetToolTypeFromHeadShapePathFast(string toolPath) {
+            var splitShape = toolPath.Split('/');
+            string toolType = null;
+            if (splitShape.Length > 2 && splitShape[0] == "item" && splitShape[1] == "parts") {
+                toolType = splitShape[2];
+            }
+
+            return toolType;
+        }
+
+        public static string GetHandleTypeFromShapePath(string handlePath) {
+            var splitShape = handlePath.Split("/");
+            string handleType = null;
+            for (int i = 1; i < splitShape.Length; i++) {
+                if ((i + 1) < splitShape.Length && splitShape[i] == "handles") {
+                    handleType = splitShape[i + 1];
+                    break;
+                }
+            }
+
+            return handleType;
+        }
+
+        public static string GetGenericHandleTypeFromShapePathFast(string handlePath) { //This expects a generic handle item path. 
+            var splitShape = handlePath.Split("/");
+            string handleType = null;
+            if (splitShape.Length > 4 && splitShape[1] == "parts" && splitShape[2] == "handles") {
+                handleType = splitShape[3];
+            }
+
+            return handleType;
+        }
+
+        public static string GetTypedHandleTypeFromShapePathFast(string handlePath) { //This expects a typed handle path. 
+            var splitShape = handlePath.Split("/");
+            string handleType = null;
+            if (splitShape.Length > 5 && splitShape[1] == "parts" && splitShape[3] == "handles") {
+                handleType = splitShape[4];
+            }
+
+            return handleType;
+        }
+
+        public static string ConvertFromHandlePathToShapePath(string handlePath, string tool) {
+            var splitHandle = handlePath.Split("/");
+            var retVal = splitHandle[0];
+            for (int i = 1; i < splitHandle.Length; i++) {
+                if (i == 3) {
+                    retVal = retVal + "/" + tool + "/" + splitHandle[i];
+                } else {
+                    retVal = retVal + "/" + splitHandle[i];
+                }
+            }
+
+            if (!ToolsmithModSystem.Api.Assets.Exists(new AssetLocation(retVal + ".json"))) { //This IDEALLY should never happen, but just in case it's here as a backup.
+                retVal = "toolsmith:shapes/item/parts/" + tool + "/handles/universal/handle";
+            }
+
+            return retVal;
+        }
+
+        public static string ConvertFromGenericHandlePathToGripShapePath(string handlePath, string grip) {
+            var splitHandle = handlePath.Split("/");
+            var retVal = splitHandle[0];
+            for (int i = 1; i < splitHandle.Length - 1; i++) {
+                retVal = retVal + "/" + splitHandle[i];
+            }
+            retVal = retVal + "/grip/" + grip;
+
+            if (!ToolsmithModSystem.Api.Assets.Exists(new AssetLocation(retVal + ".json"))) {
+                retVal = "toolsmith:shapes/item/parts/handles/universal/grip/" + grip;
+            }
+
+            return retVal;
+        }
+
+        public static string ConvertFromHandlePathToGripShapePath(string handlePath, string gripPath, string tool) {
+            var splitHandle = handlePath.Split("/");
+            var retVal = splitHandle[0];
+            for (int i = 1; i < splitHandle.Length - 1; i++) {
+                if (i == 3) {
+                    retVal = retVal + "/" + tool + "/" + splitHandle[i];
+                } else {
+                    retVal = retVal + "/" + splitHandle[i];
+                }
+            }
+
+            var splitGrip = gripPath.Split("/");
+            var gripType = splitGrip[splitGrip.Length - 1];
+
+            retVal = retVal + "/grip/" + gripType;
+
+            if (!ToolsmithModSystem.Api.Assets.Exists(new AssetLocation(retVal + ".json"))) {
+                retVal = "toolsmith:shapes/item/parts/" + tool + "/handles/universal/grip/" + gripType;
+            }
+
+            return retVal;
+        }
+
+        public static string ConvertFromGenericHandlePathToBindingShapePath(string handlePath, string binding, string tool, bool isMetalMat) {
+            var splitHandle = handlePath.Split("/");
+            var retVal = splitHandle[0];
+            for (int i = 1; i < splitHandle.Length - 1; i++) {
+                if (i == 3) {
+                    retVal = retVal + "/" + tool + "/" + splitHandle[i];
+                } else {
+                    retVal = retVal + "/" + splitHandle[i];
+                }
+            }
+
+            var bindingString = binding;
+            if (isMetalMat) {
+                bindingString = bindingString + "-metalhead";
+            } else {
+                bindingString = bindingString + "-stonehead";
+            }
+            retVal = retVal + "/binding/" + bindingString;
+
+            if (!ToolsmithModSystem.Api.Assets.Exists(new AssetLocation(retVal + ".json"))) {
+                retVal = "toolsmith:shapes/item/parts/" + tool + "/handles/universal/binding/" + bindingString;
+            }
+
+            return retVal;
+        }
+
+        public static string ConvertFromTypedHandlePathToBindingShapePath(string handlePath, string binding, bool isMetalMat) {
+            var splitHandle = handlePath.Split("/");
+            var retVal = splitHandle[0];
+            for (int i = 1; i < splitHandle.Length - 1; i++) {
+                retVal = retVal + "/" + splitHandle[i];
+            }
+
+            var bindingString = binding;
+            if (isMetalMat) {
+                bindingString = bindingString + "-metalhead";
+            } else {
+                bindingString = bindingString + "-stonehead";
+            }
+            retVal = retVal + "/binding/" + bindingString;
+
+            if (!ToolsmithModSystem.Api.Assets.Exists(new AssetLocation(retVal + ".json"))) {
+                retVal = "toolsmith:shapes/item/parts/" + splitHandle[3] + "/handles/universal/binding/" + bindingString;
+            }
+
+            return retVal;
+        }
+
+        public static void BuildToolRenderFromAllSeparateParts(ItemStack tool, ItemStack head, ItemStack handle, ItemStack binding = null) {
+            var toolMultiPartTree = tool.GetMultiPartRenderTree(); //Time to assign the data for rendering the Bundle!
+            var toolType = GetToolTypeFromHeadShapePath(head.Item.Shape.Base.Path);
+            var headPartAndTransformTree = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHeadName);
+            var handlePartAndTransformTree = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
+
+            headPartAndTransformTree.SetPartOffsetX(0.54f);
+            headPartAndTransformTree.SetPartOffsetY(0.01f);
+            headPartAndTransformTree.SetPartOffsetZ(-0.02f);
+            headPartAndTransformTree.SetPartRotationX(0);
+            headPartAndTransformTree.SetPartRotationY(-90);
+            headPartAndTransformTree.SetPartRotationZ(0);
+
+            var headPartTree = headPartAndTransformTree.GetPartRenderTree();
+            headPartTree.SetPartShapePath(head.Item.Shape.Base.Domain + ":shapes/" + head.Item.Shape.Base.Path);
+            var headTextureTree = headPartTree.GetPartTextureTree();
+            if (ToolsmithModSystem.Api.Side.IsServer()) {
+                ToolHeadTextureData textures;
+                var success = RecipeRegisterModSystem.ToolHeadTexturesCache.TryGetValue(head.Item.Code, out textures);
+                if (success) {
+                    for (int i = 0; i < textures.Tags.Count; i++) {
+                        headTextureTree.SetPartTexturePathFromKey(textures.Tags[i], textures.Paths[i]);
+                    }
+                } else {
+                    ToolsmithModSystem.Logger.Error("Could not find the tool head's ToolHeadTextureData entry when crafting a Part Bundle. Might not render right.");
+                }
+            } else {
+                foreach (var tex in head.Item.Textures) {
+                    headTextureTree.SetPartTexturePathFromKey(tex.Key, tex.Value.Base);
+                }
+            }
+
+            HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handle.Collectible.Code.Path);
+            string toolSpecificHandleShape = null;
+            if (toolType != null) {
+                toolSpecificHandleShape = ConvertFromHandlePathToShapePath(handleStats.handleShapePath, toolType);
+            }
+            if (handle.HasMultiPartRenderTree()) {
+                var handleMultiPartTree = handle.GetMultiPartRenderTree();
+                foreach (var tree in handleMultiPartTree) {
+                    var subPartAndTransformTree = handleMultiPartTree.GetPartAndTransformRenderTree(tree.Key);
+                    if (tree.Key == ToolsmithAttributes.ModularPartHandleName && toolSpecificHandleShape != null) {
+                        var handlePartTree = subPartAndTransformTree.GetPartRenderTree();
+                        handlePartTree.SetPartShapePath(toolSpecificHandleShape);
+                    } else if (tree.Key == ToolsmithAttributes.ModularPartGripName && toolType != null) {
+                        var gripPartTree = subPartAndTransformTree.GetPartRenderTree();
+                        var gripPath = ConvertFromHandlePathToGripShapePath(handleStats.handleShapePath, gripPartTree.GetPartShapePath(), toolType);
+                        if (gripPath != null) {
+                            gripPartTree.SetPartShapePath(gripPath);
+                            var gripTextureTree = gripPartTree.GetPartTextureTree();
+                        }
+                    }
+
+                    subPartAndTransformTree.SetPartOffsetX(0);
+                    subPartAndTransformTree.SetPartOffsetY(0);
+                    subPartAndTransformTree.SetPartOffsetZ(0);
+                    subPartAndTransformTree.SetPartRotationX(0);
+                    subPartAndTransformTree.SetPartRotationY(0);
+                    subPartAndTransformTree.SetPartRotationZ(0);
+                    toolMultiPartTree.SetPartAndTransformRenderTree(tree.Key, subPartAndTransformTree);
+                }
+            } else {
+                handlePartAndTransformTree.SetPartOffsetX(0);
+                handlePartAndTransformTree.SetPartOffsetY(0);
+                handlePartAndTransformTree.SetPartOffsetZ(0);
+                handlePartAndTransformTree.SetPartRotationX(0);
+                handlePartAndTransformTree.SetPartRotationY(0);
+                handlePartAndTransformTree.SetPartRotationZ(0);
+
+                var handlePartTree = handlePartAndTransformTree.GetPartRenderTree();
+                if (toolSpecificHandleShape == null && !handle.HasPartRenderTree()) {
+                    handlePartTree.SetPartShapePath(handle.Item.Shape.Base.Domain + ":shapes/" + handle.Item.Shape.Base.Path);
+                }
+                if (handle.HasPartRenderTree()) {
+                    handlePartAndTransformTree.SetPartRenderTree(handle.GetPartRenderTree());
+                }
+                if (toolSpecificHandleShape != null) {
+                    handlePartTree.SetPartShapePath(toolSpecificHandleShape);
+                }
+            }
+
+            if (binding != null) {
+                var bindingTransformAndPartTree = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartBindingName);
+                bindingTransformAndPartTree.SetPartOffsetX(0);
+                bindingTransformAndPartTree.SetPartOffsetY(0);
+                bindingTransformAndPartTree.SetPartOffsetZ(0);
+                bindingTransformAndPartTree.SetPartRotationX(0);
+                bindingTransformAndPartTree.SetPartRotationY(0);
+                bindingTransformAndPartTree.SetPartRotationZ(0);
+
+                BindingStatPair bindingWithStats = ToolsmithModSystem.Config.BindingRegistry.TryGetValue(binding.Collectible.Code.Path);
+                BindingStats bindingStats = ToolsmithModSystem.Stats.bindings.TryGetValue(bindingWithStats.bindingStatTag);
+                var bindingPartTree = bindingTransformAndPartTree.GetPartRenderTree();
+                if (toolSpecificHandleShape != null) {
+                    var bindingPath = ConvertFromTypedHandlePathToBindingShapePath(toolSpecificHandleShape, bindingWithStats.bindingShapePath, tool.Collectible.IsCraftableMetal());
+                    bindingPartTree.SetPartShapePath(bindingPath);
+                }
+
+                var bindingTextureTree = bindingPartTree.GetPartTextureTree();
+                if (bindingWithStats.bindingTextureOverride != "") {
+                    bindingTextureTree.SetPartTexturePathFromKey("material", bindingWithStats.bindingTextureOverride);
+                } else {
+                    bindingTextureTree.SetPartTexturePathFromKey("material", bindingStats.texturePath);
+                }
+            }
         }
     }
 

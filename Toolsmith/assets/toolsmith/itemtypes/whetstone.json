@@ -41,8 +41,9 @@
 	},
 	"creativeinventory": { "general": ["*"], "items": ["*"], "tools": ["*"] },
 	"tpHandTransform": {
-		"translation": { "x": -1, "y": -1, "z": -1.2 },
-		"rotation": { "x": -80, "y": -22, "z": 54 },
+		"translation": { "x": 0, "y": -0.4, "z": -0.05 },
+		"rotation": { "x": 90, "y": 0, "z": 0 },
+		"origin": { "x": 0, "y": 0, "z": 0 },
 		"scale": 0.45
 	},
 	"guiTransform": {

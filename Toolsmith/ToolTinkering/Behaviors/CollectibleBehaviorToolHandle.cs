@@ -149,10 +149,20 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                         ITreeAttribute gripPartTree = multiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartGripName);
                         ITreeAttribute gripRenderTree = gripPartTree.GetPartRenderTree();
                         ITreeAttribute gripTextureTree = gripRenderTree.GetPartTextureTree();
-                        if (handleSlot.Itemstack.Collectible.Code.Path == "crudehandle") {
+                        /*if (handleSlot.Itemstack.Collectible.Code.Path == "crudehandle") {
                             gripRenderTree.SetShapeOverrideTag("-crude");
+                        }*/
+
+                        HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(outputSlot.Itemstack.Collectible.Code.Path);
+                        //var splitHandlePath = handleStats.handleShapePath.Split('/');
+                        var gripPath = MultiPartRenderingHelpers.ConvertFromGenericHandlePathToGripShapePath(handleStats.handleShapePath, gripWithStats.gripShapePath);
+                            /*splitHandlePath[0];
+                        for (int i = 1; i < splitHandlePath.Length - 1; i++) {
+                            gripPath = gripPath + "/" + splitHandlePath[i];
                         }
-                        gripRenderTree.SetPartShapePath(gripWithStats.gripShapePath);
+                        gripPath = gripPath + "/grip/" + gripWithStats.gripShapePath;*/
+
+                        gripRenderTree.SetPartShapePath(gripPath);
                         outputSlot.Itemstack.SetHandleGripTag(gripStats.id);
                         if (gripWithStats.gripTextureOverride != "") {
                             gripTextureTree.SetPartTexturePathFromKey("grip", gripWithStats.gripTextureOverride);
@@ -209,7 +219,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             outputSlot.MarkDirty();
         }
 
-        public ITreeAttribute InitializeRenderTree(ITreeAttribute tree, Item item) { //This is sent the MultiPartRenderTree
+        public ITreeAttribute InitializeRenderTree(ITreeAttribute tree, Item item) { //This is sent the MultiPartRenderTree, but only ever used for Creative spawned items.
             var top = tree.GetOrAddTreeAttribute(ToolsmithAttributes.ModularPartDataTree);
             top.GetPartTextureTree();
             var handleStatsPair = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(item.Code.Path);

@@ -59,7 +59,7 @@ namespace Toolsmith.Client.Behaviors {
 
         public override void OnBeforeRender(ICoreClientAPI capi, ItemStack itemstack, EnumItemRenderTarget target, ref ItemRenderInfo renderinfo) {
             int meshrefID = itemstack.TempAttributes.GetInt(ToolsmithAttributes.ToolsmithMeshID);
-            if (meshrefID == 0 || !meshrefs.TryGetValue(meshrefID, out renderinfo.ModelRef)) { //This checks if it has already been rendered and cached, and if so, send that again - otherwise generate one.
+            if (api != null && (meshrefID == 0 || !meshrefs.TryGetValue(meshrefID, out renderinfo.ModelRef))) { //This checks if it has already been rendered and cached, and if so, send that again - otherwise generate one.
                 int id = meshrefs.Count + 1;
                 MultiTextureMeshRef modelref = capi.Render.UploadMultiTextureMesh(GenMesh(itemstack, capi.ItemTextureAtlas, null));
 
@@ -108,6 +108,10 @@ namespace Toolsmith.Client.Behaviors {
                     shape = api.Assets.TryGet(new AssetLocation(renderTree.GetPartShapePath() + renderTree.GetShapeOverrideTag() + ".json"))?.ToObject<Shape>();
                 } else {
                     shape = api.Assets.TryGet(new AssetLocation(renderTree.GetPartShapePath() + ".json"))?.ToObject<Shape>();
+                }
+
+                if (shape == null) { //If something above fails, IE it probably has busted data, lets try grabbing the item's base shape instead.
+                    shape = capi.TesselatorManager.GetCachedShape(item.Shape.Base);
                 }
             } else {
                 shape = capi.TesselatorManager.GetCachedShape(item.Shape.Base);

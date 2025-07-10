@@ -1,0 +1,86 @@
+[
+	{
+		"op": "replace",
+		"path": "/shapeByType",
+		"value": {
+			"*-copper": { "base": "toolsmith:item/parts/axe/heads/simple" },
+			"*-tinbronze": { "base": "toolsmith:item/parts/axe/heads/normal" },
+			"*-bismuthbronze": { "base": "toolsmith:item/parts/axe/heads/normal" },
+			"*-blackbronze": { "base": "toolsmith:item/parts/axe/heads/normal" },
+			"*-gold": { "base": "toolsmith:item/parts/axe/heads/advanced" },
+			"*-silver": { "base": "toolsmith:item/parts/axe/heads/advanced" },
+			"*-iron": { "base": "toolsmith:item/parts/axe/heads/advanced" },
+			"*-steel": { "base": "toolsmith:item/parts/axe/heads/advanced" },
+			"*-meteoriciron": { "base": "toolsmith:item/parts/axe/heads/advanced" },
+			"*": { "base": "toolsmith:item/parts/axe/heads/nonmetal" },
+		},
+		"file": "game:itemtypes/toolhead/axehead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/guiTransformByType",
+		"value": {
+			"@*-(gold|silver|iron|meteoriciron|steel)": {
+				"translation": { "x": 0, "y": 0, "z": 0 },
+				"rotation": { "x": -60, "y": 25, "z": 0 },
+				"origin": { "x": 0.44, "y": 0.17, "z": 0.42 },
+				"scale": 3
+			},
+			"@*-(copper|tinbronze|bismuthbronze|blackbronze)": {
+				"translation": { "x": 0, "y": 0, "z": 0 },
+				"rotation": { "x": -60, "y": 25, "z": 0 },
+				"origin": { "x": 0.47, "y": 0.17, "z": 0.42 },
+				"scale": 3.15
+			},
+			"*": {
+				"translation": { "x": 0, "y": 0, "z": 0 },
+				"rotation": { "x": -60, "y": 25, "z": 0 },
+				"origin": { "x": 0.47, "y": 0.17, "z": 0.43 },
+				"scale": 3.55
+			}
+		},
+		"file": "game:itemtypes/toolhead/axehead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/tpHandTransform",
+		"value": {
+			"translation": { "x": -0.1, "y": -0.66, "z": -0.04 },
+			"rotation": { "x": 90, "y": -29, "z": 0 },
+			"origin": { "x": 0.22, "y": 0.5, "z": 0.5 },
+			"scale": 1
+		},
+		"file": "game:itemtypes/toolhead/axehead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/onTongTransformByType",
+		"value": {
+			"@axehead-(copper|bismuthbronze|tinbronze|blackbronze)": { 
+				"translation": { "x": -0.78, "y": -0.8, "z": -0.57 },
+				"rotation": { "x": 36, "y": 0, "z": -2 }
+			},
+			"*": {
+				"translation": { "x": -0.8, "y": -0.76, "z": -0.53 },
+				"rotation": { "x": 38, "y": 0, "z": -2 }
+			}
+		},
+		"file": "game:itemtypes/toolhead/axehead.json"
+	},
+	{
+		"op": "addmerge",
+		"path": "/attributes/forgable",
+		"value": true,
+		"file": "game:itemtypes/toolhead/axehead.json"
+	},
+	{
+		"op": "addmerge",
+		"path": "/attributes/inForgeTransform",
+		"value": {
+			"translation": { "x": 0, "y": -0.15, "z": -0.05 },
+			"rotation": { "x": 0, "y": 90, "z": 0 },
+			"scale": 0.7
+		},
+		"file": "game:itemtypes/toolhead/axehead.json"
+	}
+]

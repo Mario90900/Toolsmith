@@ -119,7 +119,6 @@
 			"easeInSpeed": 1,
 			"blendMode": "Average",
 			"elementWeight": {
-				"Head": 20,
 				"UpperTorso": 20,
 				"LowerTorso": 20,
 				"UpperArmL": 20,
@@ -132,7 +131,6 @@
 				"LowerFootR": 20
 			},
 			"elementBlendMode": {
-				"Head": "AddAverage",
 				"UpperTorso": "AddAverage",
 				"LowerTorso": "AddAverage",
 				"UpperArmL": "AddAverage",
@@ -180,6 +178,97 @@
 				"LowerFootL": "AddAverage",
 				"UpperFootR": "AddAverage",
 				"LowerFootR": "AddAverage"
+			}
+		},
+		"file": "game:entities/humanoid/player.json"
+	},
+	{
+		"op": "addmerge",
+		"path": "/client/animations/-",
+		"value": {
+			"code": "sharpeningstone-fp", 
+			"animation": "sharpeningstone-fp",
+			"easeInSpeed": 1,
+			"blendMode": "Average",
+			"elementWeight": {
+				"Head": 20,
+				"UpperTorso": 20,
+				"LowerTorso": 20,
+				"UpperArmL": 20,
+				"LowerArmL": 20,
+				"UpperArmR": 20,
+				"LowerArmR": 20,
+				"UpperFootL": 20,
+				"LowerFootL": 20,
+				"UpperFootR": 20,
+				"LowerFootR": 20
+			},
+			"elementBlendMode": {
+				"Head": "AddAverage",
+				"UpperTorso": "AddAverage",
+				"LowerTorso": "AddAverage",
+				"UpperArmL": "AddAverage",
+				"LowerArmL": "AddAverage",
+				"UpperArmR": "AddAverage",
+				"LowerArmR": "AddAverage",
+				"UpperFootL": "AddAverage",
+				"LowerFootL": "AddAverage",
+				"UpperFootR": "AddAverage",
+				"LowerFootR": "AddAverage"
+			}
+		},
+		"file": "game:entities/humanoid/player.json"
+	},
+	{
+		"op": "addmerge",
+		"path": "/client/animations/-",
+		"value": {
+			"code": "grindingwheel", 
+			"animation": "grindingwheel",
+			"easeInSpeed": 1,
+			"blendMode": "Average",
+			"elementWeight": {
+				"ItemAnchor": 80,
+				"UpperTorso": 20,
+				"UpperArmL": 20,
+				"LowerArmL": 20,
+				"UpperArmR": 20,
+				"LowerArmR": 20
+			},
+			"elementBlendMode": {
+				"ItemAnchor": "AddAverage",
+				"UpperTorso": "AddAverage",
+				"UpperArmL": "AddAverage",
+				"LowerArmL": "AddAverage",
+				"UpperArmR": "AddAverage",
+				"LowerArmR": "AddAverage"
+			}
+		},
+		"file": "game:entities/humanoid/player.json"
+	},
+	{
+		"op": "addmerge",
+		"path": "/client/animations/-",
+		"value": {
+			"code": "grindingwheel-fp", 
+			"animation": "grindingwheel-fp",
+			"easeInSpeed": 1,
+			"blendMode": "Average",
+			"elementWeight": {
+				"ItemAnchor": 20,
+				"UpperTorso": 20,
+				"UpperArmL": 20,
+				"LowerArmL": 20,
+				"UpperArmR": 20,
+				"LowerArmR": 20
+			},
+			"elementBlendMode": {
+				"ItemAnchor": "AddAverage",
+				"UpperTorso": "AddAverage",
+				"UpperArmL": "AddAverage",
+				"LowerArmL": "AddAverage",
+				"UpperArmR": "AddAverage",
+				"LowerArmR": "AddAverage"
 			}
 		},
 		"file": "game:entities/humanoid/player.json"
