@@ -20,7 +20,7 @@ namespace SmithingOverhaul.Patches
 {
     [HarmonyPatch(typeof(BlockEntityAnvil))]
     [HarmonyPatchCategory(SmithingOverhaulModSystem.AnvilPatches)]
-    public class AnvilHammerHitPatches
+    public class AnvilPatches
     {
 
         [HarmonyTranspiler]
@@ -144,6 +144,19 @@ namespace SmithingOverhaul.Patches
                 if (item.IsOverstrained(__instance.WorkItemStack)) SmithingUtils.Fracture(__instance, voxelPos));
             }
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(BlockEntityAnvil.ditchWorkItemStack))]
+        public static void AddStressStrainHandlerToAttributesAfterDitching(BlockEntityAnvil __instance)
+        {
+            if(__instance.WorkItemStack.Collectible is SmithingWorkItem)
+            {
+                StressStrainHandler ssh = __instance.WorkItemStack.GetStressStrainHandler(__instance.Api);
+                if (ssh == null) return;
+
+                ssh.ToTreeAttributes(__instance.WorkItemStack.Attributes);
+            }
+        }
     }
 
     [HarmonyPatch(typeof(ItemWorkItem))]
@@ -187,7 +200,7 @@ namespace SmithingOverhaul.Patches
 
                 float temperature = stack.Collectible.GetTemperature(___api.World, stack);
 
-                float workTemp = ssh.WarmForgingTemp;
+                float workTemp = ssh.ForgingTemp;
 
                 __result = temperature >= workTemp;
             }

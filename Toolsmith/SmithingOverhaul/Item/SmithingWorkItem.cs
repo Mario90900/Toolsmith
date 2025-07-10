@@ -31,7 +31,21 @@ namespace SmithingOverhaul.Item
                 smithProps = var;
             }
 
+            foreach (SmithingBehavior behavior in SmithingBehaviors)
+            {
+                behavior.OnLoaded(api);
+            }
+
             base.OnLoaded(api);
+        }
+        public override void OnUnloaded(ICoreAPI api)
+        {
+            foreach (SmithingBehavior behavior in SmithingBehaviors)
+            {
+                behavior.OnUnloaded(api);
+            }
+
+            base.OnUnloaded(api);
         }
         public override float GetTemperature(IWorldAccessor world, ItemStack itemstack)
         {
@@ -162,9 +176,6 @@ namespace SmithingOverhaul.Item
             }
 
             if (preventDefault) return;
-
-            //Default Behaviour
-
         }
 
         //Handles effects resulting from heating a piece
@@ -187,7 +198,6 @@ namespace SmithingOverhaul.Item
 
             if (preventDefault) return;
 
-            //Default Behaviour
         }
         public virtual void AfterOnHit(int voxelsChanged, ItemStack stack)
         {

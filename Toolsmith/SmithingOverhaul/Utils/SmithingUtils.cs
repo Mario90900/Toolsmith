@@ -229,9 +229,7 @@ namespace Toolsmith.Utils
                 {
                     if (ssh == null)
                     {
-                        return new StressStrainHandler(
-                        (stack.Collectible as SmithingWorkItem).smithProps,
-                        stack);
+                        return new StressStrainHandler(stack);
                     }
                     else return ssh;
                 });

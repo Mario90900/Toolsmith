@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -30,9 +31,10 @@ namespace Toolsmith.SmithingOverhaul.Utils
         public int YieldStrength; // in MPa
         public float Elongation; // in %
         public int YoungsModulus; // in GPa
-        public bool IsOverstrained => GetHardness() > TensileStrength;
+        public bool IsOverstrained => Hardness > TensileStrength;
 
         private float plasticStrain;
+        
         public float PlasticStrainPrct => plasticStrain / Elongation;
 
         private float? hardeningCoeff = null;
@@ -40,6 +42,7 @@ namespace Toolsmith.SmithingOverhaul.Utils
         private float? crystalTemp = null;
         private float? forgingTemp = null;
 
+        public int Hardness => GetHardness();
         public float HardeningCoeff 
         {
             get
@@ -65,7 +68,7 @@ namespace Toolsmith.SmithingOverhaul.Utils
                 else return 0.5f * (MeltPoint + 273.15f) - 273.15f;
             }
         }
-        public float WarmForgingTemp 
+        public float ForgingTemp 
         {
             get
             {
@@ -86,8 +89,12 @@ namespace Toolsmith.SmithingOverhaul.Utils
             YoungsModulus = 0;
             plasticStrain = 0;
         }
-        public StressStrainHandler(SmithingPropertyVariant props, ItemStack stack)
+        public StressStrainHandler(ItemStack stack)
         {
+            if (stack.Collectible is not SmithingWorkItem) return;
+
+            SmithingPropertyVariant props = (stack.Collectible as SmithingWorkItem).smithProps;
+
             MeltPoint = props.MeltPoint;
             SpecificHeatCapacity = props.SpecificHeatCapacity;
             Density = props.Density;
@@ -163,6 +170,11 @@ namespace Toolsmith.SmithingOverhaul.Utils
             new_attr.SetInt("yieldStrength", YieldStrength);
             new_attr.SetFloat("elongation", Elongation);
             new_attr.SetInt("youngsModulus", YoungsModulus);
+            if(crystalTemp.HasValue) new_attr.SetFloat("recrystalizationTemp", crystalTemp.Value);
+            if(hardeningCoeff.HasValue) new_attr.SetFloat("hardeningCoeff", hardeningCoeff.Value);
+            if(strengthCoeff.HasValue) new_attr.SetFloat("strengthCoeff", strengthCoeff.Value);
+            if(forgingTemp.HasValue) new_attr.SetFloat("forgingTemperature", forgingTemp.Value);
+            new_attr.SetFloat("plasticStrain", plasticStrain);
         }
 
         public static StressStrainHandler FromTreeAttribute(ITreeAttribute attr)
@@ -195,12 +207,15 @@ namespace Toolsmith.SmithingOverhaul.Utils
             float totalStrain = (float)(StrengthCoeff / (YoungsModulus * 10) * Math.Pow(plasticStrain, HardeningCoeff) + plasticStrain);
             return (int)(StrengthCoeff * Math.Pow(totalStrain, HardeningCoeff));
         }
-
         public virtual int GetToughness()
         {
             System.Func<double, double> stressStrainCurve = stress => stress / (YoungsModulus * 10) + Math.Pow(stress / StrengthCoeff, 1 / HardeningCoeff);
             double upper = Integrate.DoubleExponential(stressStrainCurve, 0.0d, (double)TensileStrength);
-            return (int)Math.Round(TensileStrength * Elongation - upper);
+            return (int)Math.Round(TensileStrength * Elongation - Hardness * plasticStrain - upper);
+        }
+        public virtual double GetMaxSharpness()
+        {
+            return (Math.Cbrt(Hardness + 100) / 500);
         }
         public virtual float GetRecrystalization(float temp, double hourDiff)
         {

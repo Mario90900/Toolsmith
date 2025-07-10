@@ -19,14 +19,6 @@ namespace SmithingOverhaul.Behaviour
         public override void OnLoaded(ICoreAPI api)
         {
             base.OnLoaded(api);
-            var metalcode = collObj.Variant["metal"];
-            SmithingPropertyVariant var;
-
-            if (api.ModLoader.GetModSystem<SmithingOverhaulModSystem>().metalPropsByCode.TryGetValue(metalcode, out var))
-            {
-                metalProps = var;
-            }
-
         }
 
         public virtual void OnTemperatureEffect(StressStrainHandler ssh, ItemStack stack, IWorldAccessor world, float temperature, double hourDiff, ref EnumHandling handling)
