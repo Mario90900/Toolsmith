@@ -1,45 +1,184 @@
 {
-	"editor": {
-		"allAngles": false,
-		"entityTextureMode": false
-	},
-	"textureWidth": 16,
-	"textureHeight": 16,
-	"textureSizes": {
-		"grip": [32,32]
-	},
-	"textures": {
-		"grip": "game:block/leather/plain"
-	},
-	"elements": [
-		{
-			"name": "origin",
-			"from": [ 12.3, 0.5, 8.2107 ],
-			"to": [ 12.3, 0.5, 8.2107 ],
-			"rotationOrigin": [ 9.2972, 0.0, 8.5107 ],
-			"faces": {
-				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"up": { "texture": "#grip", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
-				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
-			},
-			"children": [
-				{
-					"name": "regular_fabric1",
-					"from": [ -9.3852, -0.4236, -0.9603 ],
-					"to": [ -4.2279, 0.9344, 0.4086 ],
-					"rotationOrigin": [ -6.8065, 0.2554, -0.2758 ],
-					"faces": {
-						"north": { "texture": "#grip", "uv": [ 20.0, 18.0, 29.0, 21.0023 ], "autoUv": false },
-						"east": { "texture": "#grip", "uv": [ 15.0, 11.1728, 18.0023, 13.7672 ], "rotation": 90, "autoUv": false },
-						"south": { "texture": "#grip", "uv": [ 16.0, 22.0, 25.0, 25.0023 ], "autoUv": false },
-						"west": { "texture": "#grip", "uv": [ 18.0, 11.2328, 21.0023, 13.8272 ], "rotation": 90, "autoUv": false },
-						"up": { "texture": "#grip", "uv": [ 6.0, 15.1727, 15.0, 17.7672 ], "autoUv": false },
-						"down": { "texture": "#grip", "uv": [ 20.0, 21.8272, 11.0, 19.2328 ], "autoUv": false }
-					}
-				}
-			]
-		}
-	]}
+  "textureWidth":16,
+  "textureHeight":16,
+  "textures":{
+    "grip":"game:block/leather/plain"
+  },
+  "textureSizes":{
+    "grip":[
+      32,
+      32
+    ]
+  },
+  "elements":[
+    {
+      "name":"origin",
+      "from":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "to":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "rotationOrigin":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "group":"regular_fabric",
+      "faces":{
+        "north":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "east":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "south":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "west":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "up":{
+          "texture":"#grip",
+          "uv":[
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "autoUv":false,
+          "rotation":180
+        },
+        "down":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        }
+      },
+      "children":[
+        {
+          "name":"regular_fabric1",
+          "from":[
+            -9.587973356246948,
+            -0.42356085777282715,
+            -0.44959425926208496
+          ],
+          "to":[
+            -4.430696487426758,
+            0.9343835115432739,
+            0.9193233251571655
+          ],
+          "rotationOrigin":[
+            -7.009335041046143,
+            0.2554113268852234,
+            0.23486453294754028
+          ],
+          "group":"regular_fabric",
+          "faces":{
+            "north":{
+              "texture":"#grip",
+              "uv":[
+                20.0,
+                18.0,
+                28.9999942779541,
+                21.002338409423828
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#grip",
+              "uv":[
+                15.0,
+                11.172750473022461,
+                18.002338409423828,
+                13.767162322998047
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "south":{
+              "texture":"#grip",
+              "uv":[
+                16.0,
+                22.000000953674316,
+                24.999998092651367,
+                25.002336502075195
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#grip",
+              "uv":[
+                18.000001907348633,
+                11.232837677001953,
+                21.002336502075195,
+                13.827247619628906
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "up":{
+              "texture":"#grip",
+              "uv":[
+                6.000000476837158,
+                15.172746658325195,
+                15.000000953674316,
+                17.76716136932373
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#grip",
+              "uv":[
+                20.000001907348633,
+                21.827248573303223,
+                11.0,
+                19.232836723327637
+              ],
+              "autoUv":false
+            }
+          },
+          "children":[]
+        }
+      ]
+    }
+  ],
+  "groups":[]
+}

@@ -1,280 +1,1633 @@
 {
-	"editor": {
-		"allAngles": false,
-		"entityTextureMode": false
-	},
-	"textureWidth": 16,
-	"textureHeight": 16,
-	"textureSizes": {
-		"bone": [32,32],
-		"material": [32,32]
-	},
-	"textures": {
-		"bone": "game:block/creature/bone-yellow"
-	},
-	"elements": [
-		{
-			"name": "origin",
-			"from": [ 9.47, 0.0, 8.9483 ],
-			"to": [ 9.47, 0.0, 8.9483 ],
-			"rotationOrigin": [ 9.4665, 0.0, 8.9483 ],
-			"faces": {
-				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"up": { "texture": "#bone", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
-				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
-			},
-			"children": [
-				{
-					"name": "handle_bone 01",
-					"from": [ 4.9106, 0.0, -1.6983 ],
-					"to": [ 8.1729, 1.5, -0.1983 ],
-					"rotationOrigin": [ 6.5417, 0.75, -0.9483 ],
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 2.3212, 16.0, 8.8459, 19.0 ], "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 21.0, 23.0, 24.0, 26.0 ], "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 1.1541, 24.0, 7.6788, 27.0 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 21.0, 23.0, 24.0, 26.0 ], "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 1.1541, 20.0, 7.6788, 23.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 8.8459, 30.0, 2.3212, 27.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 02",
-					"from": [ -7.6665, 0.0, -1.6983 ],
-					"to": [ -6.6665, 1.5, -0.1983 ],
-					"rotationOrigin": [ -7.1665, 0.75, -0.9483 ],
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 27.0, 14.0, 29.0, 17.0 ], "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 7.0, 17.0, 10.0, 20.0 ], "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 20.0, 4.0, 22.0, 7.0 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 0.0, 12.0, 2.0, 15.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 11.0, 21.0, 9.0, 18.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 03",
-					"from": [ 8.1729, 0.0, -1.6983 ],
-					"to": [ 8.3761, 1.0, -0.6983 ],
-					"rotationOrigin": [ 8.2745, 0.5, -1.1983 ],
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 7.5936, 19.0, 8.0, 21.0 ], "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 19.0, 5.0, 21.0, 7.0 ], "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 13.0, 8.0, 13.4064, 10.0 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 21.0, 23.0, 21.4064, 25.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 16.0, 17.0, 15.5936, 15.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 04",
-					"from": [ 8.1729, 1.0, -1.6983 ],
-					"to": [ 8.4207, 1.5, -0.6983 ],
-					"rotationOrigin": [ 8.2968, 1.25, -1.1983 ],
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 16.5045, 17.0, 17.0, 18.0 ], "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 12.0, 6.0, 14.0, 7.0 ], "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 9.0, 16.0, 9.4955, 17.0 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 10.0, 6.0, 10.4955, 8.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 12.0, 9.3212, 4.0, 8.0 ], "rotation": 270, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 05",
-					"from": [ 8.1729, 0.5, -0.6983 ],
-					"to": [ 8.3191, 1.5, -0.1983 ],
-					"rotationOrigin": [ 8.246, 1.0, -0.4483 ],
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 12.0, 30.8309, 20.0, 32.0 ], "rotation": 270, "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 11.0, 13.0, 12.0, 15.0 ], "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 7.0, 9.0, 7.2923, 11.0 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 6.0, 12.0, 6.2923, 13.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 10.0, 9.0, 9.7077, 8.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 06",
-					"from": [ -9.1665, 0.0, -1.4483 ],
-					"to": [ -7.6665, 1.5, -0.4483 ],
-					"rotationOrigin": [ -8.4165, 0.75, -0.9483 ],
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 12.0, 24.0, 20.0, 32.0 ], "rotation": 270, "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 12.0, 16.0, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 12.0, 8.0, 20.0, 16.0 ], "rotation": 270, "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 7.0, 18.0, 9.0, 21.0 ], "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 20.0, 8.0, 23.0, 10.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 11.0, 13.0, 8.0, 11.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 07",
-					"from": [ -9.1061, 1.5, -2.0921 ],
-					"to": [ -7.8561, 2.1, -1.2421 ],
-					"rotationOrigin": [ -8.4811, 1.8, -1.6671 ],
-					"rotationY": -6.0,
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 6.0, 14.0, 8.0, 15.0 ], "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 8.0, 17.0, 9.0, 18.0 ], "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 9.0, 12.0, 11.0, 13.0 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 7.0, 13.0, 8.0, 14.0 ], "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 19.0, 12.0, 21.0, 13.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 12.0, 16.0, 4.0, 8.0 ], "rotation": 270, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 08",
-					"from": [ -9.1138, 0.01, -2.0693 ],
-					"to": [ -7.6138, 1.49, -1.3193 ],
-					"rotationOrigin": [ -8.3638, 0.75, -1.6943 ],
-					"rotationY": -9.0,
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 9.0, 14.0, 12.0, 16.0 ], "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 8.0, 5.0, 9.0, 7.0 ], "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 12.0, 8.0, 20.0, 16.0 ], "rotation": 270, "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 20.0, 16.0, 21.0, 18.0 ], "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 0.0, 0.0, 3.0, 1.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 16.0, 21.0, 13.0, 20.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 09",
-					"from": [ -9.1183, 0.01, -0.5725 ],
-					"to": [ -7.6183, 1.49, 0.1775 ],
-					"rotationOrigin": [ -8.3683, 0.75, -0.1975 ],
-					"rotationY": 9.0,
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 12.0, 24.0, 20.0, 32.0 ], "rotation": 270, "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 21.0, 14.0, 22.0, 16.0 ], "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 8.0, 11.0, 11.0, 13.0 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 21.0, 15.0, 22.0, 17.0 ], "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 0.0, 0.0, 3.0, 1.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 19.0, 26.0, 16.0, 25.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 10",
-					"from": [ 2.3948, 0.714, -1.4883 ],
-					"to": [ 4.9851, 1.214, -0.5083 ],
-					"rotationOrigin": [ 3.6899, 0.964, -0.9983 ],
-					"rotationZ": 10.0,
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 0.8194, 0.0, 6.0, 1.0 ], "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 12.0, 16.0, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 4.0, 0.0, 9.1806, 1.0 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 21.0, 23.0, 26.1806, 24.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 12.0, 14.9074, 4.0, 8.0 ], "rotation": 270, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 11",
-					"from": [ 2.5659, 0.01, -0.8612 ],
-					"to": [ 5.3759, 1.0, -0.3612 ],
-					"rotationOrigin": [ 3.9709, 0.505, -0.6112 ],
-					"rotationY": -6.0,
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 12.0, 24.0, 20.0, 32.0 ], "rotation": 270, "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 12.0, 16.0, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 20.0, 22.0, 25.0, 24.0 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 4.0, 0.0, 9.0, 1.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 9.0, 1.0, 4.0, 0.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 12",
-					"from": [ 2.5549, 0.01, -1.5877 ],
-					"to": [ 5.3649, 1.0, -1.0877 ],
-					"rotationOrigin": [ 3.9599, 0.505, -1.3377 ],
-					"rotationY": 4.0,
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 20.0, 14.0, 25.0, 16.0 ], "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 12.0, 16.0, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 12.0, 8.0, 20.0, 16.0 ], "rotation": 270, "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 4.0, 0.0, 9.0, 1.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 9.0, 1.0, 4.0, 0.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 13",
-					"from": [ -6.7972, 0.7586, -1.4983 ],
-					"to": [ -5.2972, 1.2586, -0.4983 ],
-					"rotationOrigin": [ -6.0472, 1.0086, -0.9983 ],
-					"rotationZ": -20.0,
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 0.0, 0.0, 3.0, 1.0 ], "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 12.0, 16.0, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 0.0, 0.0, 3.0, 1.0 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 9.0, 6.0, 12.0, 8.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 12.0, 16.0, 4.0, 8.0 ], "rotation": 270, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 14",
-					"from": [ -6.732, 0.01, -1.591 ],
-					"to": [ -5.232, 1.0, -1.091 ],
-					"rotationOrigin": [ -5.982, 0.505, -1.341 ],
-					"rotationY": -8.0,
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 0.0, 16.0, 3.0, 18.0 ], "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 12.0, 16.0, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 12.0, 8.0, 20.0, 16.0 ], "rotation": 270, "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 0.0, 0.0, 3.0, 1.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 3.0, 1.0, 0.0, 0.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 15",
-					"from": [ -6.7326, 0.01, -0.846 ],
-					"to": [ -5.2326, 1.0, -0.346 ],
-					"rotationOrigin": [ -5.9826, 0.505, -0.596 ],
-					"rotationY": 11.0,
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 12.0, 24.0, 20.0, 32.0 ], "rotation": 270, "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 12.0, 16.0, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 10.0, 15.0, 13.0, 17.0 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 0.0, 0.0, 3.0, 1.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 3.0, 1.0, 0.0, 0.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 16",
-					"from": [ -6.6665, 0.0023, -1.4983 ],
-					"to": [ 5.3335, 1.0, -0.4983 ],
-					"rotationOrigin": [ -0.6665, 0.5012, -0.9983 ],
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 0.0, 13.0, 24.0, 14.9954 ], "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 12.0185, 16.0, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 0.0, 4.0, 24.0, 5.9954 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 12.0185, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 0.0, 0.0, 24.0, 2.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 24.0, 2.0, 0.0, 0.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_bone 17",
-					"from": [ -9.1173, 1.5, -0.6092 ],
-					"to": [ -7.8673, 2.1, 0.2408 ],
-					"rotationOrigin": [ -8.4923, 1.8, -0.1842 ],
-					"rotationY": 6.0,
-					"faces": {
-						"north": { "texture": "#bone", "uv": [ 8.0, 14.0, 10.0, 15.0 ], "autoUv": false },
-						"east": { "texture": "#bone", "uv": [ 22.0, 23.0, 23.0, 24.0 ], "autoUv": false },
-						"south": { "texture": "#bone", "uv": [ 6.0, 16.0, 8.0, 17.0 ], "autoUv": false },
-						"west": { "texture": "#bone", "uv": [ 9.0, 14.0, 10.0, 15.0 ], "autoUv": false },
-						"up": { "texture": "#bone", "uv": [ 11.0, 12.0, 13.0, 13.0 ], "autoUv": false },
-						"down": { "texture": "#bone", "uv": [ 12.0, 16.0, 4.0, 8.0 ], "rotation": 270, "autoUv": false }
-					}
-				}
-			]
-		}
-	]}
+  "textureWidth":16,
+  "textureHeight":16,
+  "textures":{
+    "bone":"game:block/creature/bone-yellow"
+  },
+  "textureSizes":{
+    "bone":[
+      32,
+      32
+    ]
+  },
+  "elements":[
+    {
+      "name":"origin",
+      "from":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "to":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "rotationOrigin":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "group":"Bone",
+      "faces":{
+        "north":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "east":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "south":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "west":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "up":{
+          "texture":"#bone",
+          "uv":[
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "autoUv":false,
+          "rotation":180
+        },
+        "down":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        }
+      },
+      "children":[
+        {
+          "name":"handle_bone 01",
+          "from":[
+            5.077035307884216,
+            -0.05371284484863281,
+            -0.8082990646362305
+          ],
+          "to":[
+            8.339396119117737,
+            1.4462871551513672,
+            0.6917009353637695
+          ],
+          "rotationOrigin":[
+            6.708215713500977,
+            0.6962871551513672,
+            -0.05829906463623047
+          ],
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                2.3212077617645264,
+                16.0,
+                8.845930099487305,
+                18.999999046325684
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                21.0,
+                23.0,
+                24.0,
+                26.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                1.1540710926055908,
+                23.999999046325684,
+                7.6787919998168945,
+                27.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                21.0,
+                23.0,
+                24.0,
+                26.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                1.1540710926055908,
+                19.999999046325684,
+                7.6787919998168945,
+                23.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                8.845930099487305,
+                30.0,
+                2.3212077617645264,
+                27.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 02",
+          "from":[
+            -7.5,
+            -0.05371284484863281,
+            -0.8082990646362305
+          ],
+          "to":[
+            -6.5,
+            1.4462871551513672,
+            0.6917009353637695
+          ],
+          "rotationOrigin":[
+            -7.0,
+            0.6962871551513672,
+            -0.05829906463623047
+          ],
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                27.0,
+                14.0,
+                29.0,
+                17.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                7.0,
+                17.0,
+                10.0,
+                20.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                20.0,
+                4.0,
+                22.0,
+                7.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                0.0,
+                12.0,
+                2.0,
+                15.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                11.0,
+                21.0,
+                9.0,
+                18.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 03",
+          "from":[
+            8.339395135641098,
+            -0.053712815046310425,
+            -0.8082990646362305
+          ],
+          "to":[
+            8.542585760354996,
+            0.9462871849536896,
+            0.19170093536376953
+          ],
+          "rotationOrigin":[
+            8.440990447998047,
+            0.4462871849536896,
+            -0.30829906463623047
+          ],
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                7.593618869781494,
+                19.0,
+                8.0,
+                21.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                19.0,
+                5.0,
+                21.0,
+                7.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                13.0,
+                8.0,
+                13.406381607055664,
+                10.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                21.0,
+                23.0,
+                21.40637969970703,
+                25.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                16.0,
+                17.0,
+                15.593618392944336,
+                15.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 04",
+          "from":[
+            8.339395999908447,
+            0.9462871551513672,
+            -0.8082990646362305
+          ],
+          "to":[
+            8.587125301361084,
+            1.4462871551513672,
+            0.19170093536376953
+          ],
+          "rotationOrigin":[
+            8.463260650634766,
+            1.1962871551513672,
+            -0.30829906463623047
+          ],
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                16.504541397094727,
+                17.0,
+                17.0,
+                18.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                6.0,
+                14.0,
+                7.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                9.0,
+                16.0,
+                9.495458602905273,
+                17.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                10.0,
+                6.0,
+                10.495458602905273,
+                8.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                9.321222305297852,
+                4.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 05",
+          "from":[
+            8.33939465880394,
+            0.4462871551513672,
+            0.19170093536376953
+          ],
+          "to":[
+            8.485537439584732,
+            1.4462871551513672,
+            0.6917009353637695
+          ],
+          "rotationOrigin":[
+            8.412466049194336,
+            0.9462871551513672,
+            0.44170093536376953
+          ],
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                30.830857753753662,
+                20.0,
+                32.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                11.0,
+                13.0,
+                12.0,
+                15.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                7.0,
+                9.0,
+                7.292285919189453,
+                11.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                6.0,
+                12.0,
+                6.292285442352295,
+                13.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                10.0,
+                9.0,
+                9.707714080810547,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 06",
+          "from":[
+            -9.0,
+            -0.05371284484863281,
+            -0.5582990646362305
+          ],
+          "to":[
+            -7.5,
+            1.4462871551513672,
+            0.44170093536376953
+          ],
+          "rotationOrigin":[
+            -8.25,
+            0.6962871551513672,
+            -0.05829906463623047
+          ],
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                24.0,
+                20.0,
+                32.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                16.0,
+                20.0,
+                24.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                8.0,
+                20.0,
+                16.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                7.0,
+                18.0,
+                9.0,
+                21.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                20.0,
+                8.0,
+                23.0,
+                10.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                11.0,
+                13.0,
+                8.0,
+                11.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 07",
+          "from":[
+            -8.939631462097168,
+            1.4462870955467224,
+            -1.202090084552765
+          ],
+          "to":[
+            -7.689631462097168,
+            2.0462871193885803,
+            -0.352090060710907
+          ],
+          "rotationOrigin":[
+            -8.314631462097168,
+            1.7462871074676514,
+            -0.7770900726318359
+          ],
+          "rotationY":-5.9999967518706265,
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                6.0,
+                14.0,
+                8.0,
+                15.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                8.0,
+                17.0,
+                9.0,
+                18.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                9.0,
+                12.0,
+                11.0,
+                13.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                7.0,
+                13.0,
+                8.0,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                19.0,
+                12.0,
+                21.0,
+                13.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                16.0,
+                4.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 08",
+          "from":[
+            -8.94737434387207,
+            -0.04371285438537598,
+            -1.179293155670166
+          ],
+          "to":[
+            -7.44737434387207,
+            1.4362871646881104,
+            -0.429293155670166
+          ],
+          "rotationOrigin":[
+            -8.19737434387207,
+            0.6962871551513672,
+            -0.804293155670166
+          ],
+          "rotationY":-9.000000250447817,
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                9.0,
+                14.0,
+                12.0,
+                16.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                8.0,
+                5.0,
+                9.0,
+                7.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                8.0,
+                20.0,
+                16.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                20.0,
+                16.0,
+                21.0,
+                18.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                0.0,
+                0.0,
+                3.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                16.0,
+                21.0,
+                13.0,
+                20.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 09",
+          "from":[
+            -8.95185661315918,
+            -0.04371285438537598,
+            0.3175392150878906
+          ],
+          "to":[
+            -7.45185661315918,
+            1.4362871646881104,
+            1.0675392150878906
+          ],
+          "rotationOrigin":[
+            -8.20185661315918,
+            0.6962871551513672,
+            0.6925392150878906
+          ],
+          "rotationY":9.000000250447817,
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                24.0,
+                20.0,
+                32.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                21.0,
+                14.0,
+                22.0,
+                16.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                8.0,
+                11.0,
+                11.0,
+                13.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                21.0,
+                15.0,
+                22.0,
+                17.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                0.0,
+                0.0,
+                3.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                19.0,
+                26.0,
+                16.0,
+                25.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 10",
+          "from":[
+            2.5612741708755493,
+            0.6603356599807739,
+            -0.5982992649078369
+          ],
+          "to":[
+            5.151559233665466,
+            1.1603355407714844,
+            0.3817007541656494
+          ],
+          "rotationOrigin":[
+            3.856416702270508,
+            0.9103356003761292,
+            -0.10829925537109375
+          ],
+          "rotationZ":10.000003977961152,
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                0.8194280862808228,
+                0.0,
+                6.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                16.0,
+                20.0,
+                24.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                4.0,
+                0.0,
+                9.180572509765625,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                21.0,
+                23.0,
+                26.180572509765625,
+                24.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                14.907428741455078,
+                4.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 11",
+          "from":[
+            2.7323310375213623,
+            -0.04371282458305359,
+            0.028835296630859375
+          ],
+          "to":[
+            5.542330980300903,
+            0.9462871849536896,
+            0.5288352966308594
+          ],
+          "rotationOrigin":[
+            4.137331008911133,
+            0.451287180185318,
+            0.2788352966308594
+          ],
+          "rotationY":-5.9999967518706265,
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                24.0,
+                20.0,
+                32.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                16.0,
+                20.0,
+                24.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                20.0,
+                22.0,
+                25.0,
+                24.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                4.0,
+                0.0,
+                9.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                9.0,
+                1.0,
+                4.0,
+                0.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 12",
+          "from":[
+            2.7213246822357178,
+            -0.04371282458305359,
+            -0.6976466178894043
+          ],
+          "to":[
+            5.531324625015259,
+            0.9462871849536896,
+            -0.1976466178894043
+          ],
+          "rotationOrigin":[
+            4.126324653625488,
+            0.451287180185318,
+            -0.4476466178894043
+          ],
+          "rotationY":3.9999974076935945,
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                20.0,
+                14.0,
+                25.0,
+                16.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                16.0,
+                20.0,
+                24.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                8.0,
+                20.0,
+                16.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                4.0,
+                0.0,
+                9.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                9.0,
+                1.0,
+                4.0,
+                0.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 13",
+          "from":[
+            -6.630735218524933,
+            0.704849049448967,
+            -0.6082992553710938
+          ],
+          "to":[
+            -5.1307355761528015,
+            1.2048489600419998,
+            0.39170074462890625
+          ],
+          "rotationOrigin":[
+            -5.880735397338867,
+            0.9548490047454834,
+            -0.10829925537109375
+          ],
+          "rotationZ":-20.000002833280426,
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                0.0,
+                0.0,
+                3.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                16.0,
+                20.0,
+                24.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                0.0,
+                0.0,
+                3.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                9.0,
+                6.0,
+                12.0,
+                8.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                16.0,
+                4.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 14",
+          "from":[
+            -6.565546929836273,
+            -0.04371282458305359,
+            -0.7009992450475693
+          ],
+          "to":[
+            -5.065547049045563,
+            0.9462871849536896,
+            -0.20099927484989166
+          ],
+          "rotationOrigin":[
+            -5.815546989440918,
+            0.451287180185318,
+            -0.45099925994873047
+          ],
+          "rotationY":-8.000004206897298,
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                0.0,
+                16.0,
+                3.0,
+                18.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                16.0,
+                20.0,
+                24.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                8.0,
+                20.0,
+                16.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                0.0,
+                0.0,
+                3.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                3.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 15",
+          "from":[
+            -6.56607711315155,
+            -0.04371282458305359,
+            0.04400065541267395
+          ],
+          "to":[
+            -5.066077351570129,
+            0.9462871849536896,
+            0.5440005958080292
+          ],
+          "rotationOrigin":[
+            -5.81607723236084,
+            0.451287180185318,
+            0.29400062561035156
+          ],
+          "rotationY":11.000003436606256,
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                24.0,
+                20.0,
+                32.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                16.0,
+                20.0,
+                24.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                10.0,
+                15.0,
+                13.0,
+                17.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                0.0,
+                0.0,
+                3.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                3.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 16",
+          "from":[
+            -6.5,
+            -0.05139538645744324,
+            -0.6082992553710938
+          ],
+          "to":[
+            5.5,
+            0.9462871849536896,
+            0.39170074462890625
+          ],
+          "rotationOrigin":[
+            -0.5,
+            0.44744589924812317,
+            -0.10829925537109375
+          ],
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                0.0,
+                13.0,
+                24.0,
+                14.995363235473633
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                12.018539428710938,
+                16.0,
+                20.0,
+                24.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                0.0,
+                4.0,
+                24.0,
+                5.995365142822266
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                12.018539428710938,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                0.0,
+                0.0,
+                24.0,
+                2.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                24.0,
+                2.0,
+                0.0,
+                0.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 17",
+          "from":[
+            -8.95078182220459,
+            1.4462870955467224,
+            0.2808353304862976
+          ],
+          "to":[
+            -7.70078182220459,
+            2.0462871193885803,
+            1.1308353543281555
+          ],
+          "rotationOrigin":[
+            -8.32578182220459,
+            1.7462871074676514,
+            0.7058353424072266
+          ],
+          "rotationY":5.9999967518706265,
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                8.0,
+                14.0,
+                10.0,
+                15.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                22.0,
+                23.0,
+                23.0,
+                24.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                6.0,
+                16.0,
+                8.0,
+                17.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                9.0,
+                14.0,
+                10.0,
+                15.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                11.0,
+                12.0,
+                13.0,
+                13.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                12.0,
+                16.0,
+                4.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_bone 18",
+          "from":[
+            4.546705007553101,
+            0.16595733165740967,
+            -0.8063241243362427
+          ],
+          "to":[
+            5.607364892959595,
+            1.2266172170639038,
+            0.6897259950637817
+          ],
+          "rotationOrigin":[
+            5.077034950256348,
+            0.6962872743606567,
+            -0.05829906463623047
+          ],
+          "rotationZ":45.00000125223908,
+          "group":"Bone",
+          "faces":{
+            "north":{
+              "texture":"#bone",
+              "uv":[
+                2.3212077617645264,
+                16.0,
+                4.442528247833252,
+                18.121320724487305
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bone",
+              "uv":[
+                21.003950119018555,
+                23.0,
+                23.996049880981445,
+                25.121320724487305
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bone",
+              "uv":[
+                5.557472229003906,
+                24.0,
+                7.6787919998168945,
+                26.121320247650146
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bone",
+              "uv":[
+                21.003950119018555,
+                23.0,
+                23.996049880981445,
+                25.121320724487305
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#bone",
+              "uv":[
+                5.557472229003906,
+                20.003950119018555,
+                7.6787919998168945,
+                22.996049880981445
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bone",
+              "uv":[
+                4.44252872467041,
+                29.996050119400024,
+                2.3212077617645264,
+                27.003950119018555
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        }
+      ]
+    }
+  ],
+  "groups":[]
+}

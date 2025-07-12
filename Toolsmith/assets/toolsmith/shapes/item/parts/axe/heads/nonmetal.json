@@ -1,112 +1,524 @@
 {
-	"editor": {
-		"allAngles": false,
-		"entityTextureMode": false
-	},
-	"textureWidth": 16,
-	"textureHeight": 16,
-	"textureSizes": {
-		"material": [32,32]
-	},
-	"textures": {
-		"material": "game:item/tool/material/flint"
-	},
-	"elements": [
-		{
-			"name": "origin",
-			"from": [ 9.85, 0.75, 6.7 ],
-			"to": [ 9.85, 0.75, 6.7 ],
-			"rotationOrigin": [ 6.8, 0.2, 7.0 ],
-			"faces": {
-				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"up": { "texture": "#material", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
-				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
-			},
-			"children": [
-				{
-					"name": "stone head",
-					"from": [ -3.4, -0.3839, 1.3 ],
-					"to": [ -1.4, 0.5839, 4.3 ],
-					"rotationOrigin": [ -3.4, -0.3, 1.3 ],
-					"rotationY": 90.0,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 14.0, 6.0, 18.0, 8.0 ], "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 2.0, 4.0, 8.0, 6.0 ], "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 12.0, 8.0, 16.0, 10.0 ], "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 12.0, 4.0, 18.0, 6.0 ], "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 15.0, 13.0, 19.0, 19.0 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 12.0, 12.0, 8.0, 6.0 ], "rotation": 180, "autoUv": false }
-					},
-					"children": [
-						{
-							"name": "stone head 01",
-							"from": [ -0.5, -0.0161, -2.8 ],
-							"to": [ 2.5, 0.9839, 0.2 ],
-							"rotationOrigin": [ 0.5, -0.0161, 0.2 ],
-							"rotationY": 6.0,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 2.0, 10.0, 8.0, 12.0 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 4.0, 10.0, 10.0, 12.0 ], "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 4.0, 14.0, 10.0, 16.0 ], "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 4.0, 12.0, 10.0, 14.0 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 11.0, 8.0, 17.0, 14.0 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 12.0, 12.0, 6.0, 6.0 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "stone head 02",
-							"from": [ -0.7302, 0.5697, -2.7874 ],
-							"to": [ 2.2528, 1.2768, -2.0803 ],
-							"rotationOrigin": [ 0.2603, 0.2768, -2.0803 ],
-							"rotationX": -45.1574,
-							"rotationY": 4.2388,
-							"rotationZ": 4.2504,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 2.0151, 10.0, 7.9811, 11.4142 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 4.0, 10.0, 5.4142, 11.4142 ], "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 4.0189, 14.0, 9.9849, 15.4142 ], "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 8.5858, 12.0, 10.0, 13.4142 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 11.0189, 12.5858, 16.9849, 14.0 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 11.9811, 12.0, 6.0151, 10.5858 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "stone head 03",
-							"from": [ -0.0167, -0.0123, -3.163 ],
-							"to": [ 1.8464, 0.9801, -0.163 ],
-							"rotationOrigin": [ -0.1536, -0.0161, -0.163 ],
-							"rotationY": -4.5469,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 2.0, 10.0, 5.7261, 12.0 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 4.0, 10.0, 10.0, 12.0 ], "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 6.2739, 14.0, 10.0, 16.0 ], "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 4.0, 12.0, 10.0, 14.0 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 13.2739, 8.0, 17.0, 14.0 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 9.7261, 12.0, 6.0, 6.0 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "stone head 04",
-							"from": [ 0.1681, 0.5697, -3.1558 ],
-							"to": [ 2.0206, 1.2768, -2.4487 ],
-							"rotationOrigin": [ 0.0282, 0.2768, -2.4487 ],
-							"rotationX": -45.0903,
-							"rotationY": -3.2135,
-							"rotationZ": -3.2185,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 2.0151, 10.0, 5.7202, 11.4142 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 4.0, 10.0, 5.4142, 11.4142 ], "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 6.2798, 14.0, 9.9849, 15.4142 ], "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 8.5858, 12.0, 10.0, 13.4142 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 13.2798, 12.5858, 16.9849, 14.0 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 9.7202, 12.0, 6.0151, 10.5858 ], "rotation": 180, "autoUv": false }
-							}
-						}
-					]
-				}
-			]
-		}
-	]}
+  "textureWidth":16,
+  "textureHeight":16,
+  "textures":{
+    "material":"game:item/tool/material/flint"
+  },
+  "textureSizes":{
+    "material":[
+      32,
+      32
+    ]
+  },
+  "elements":[
+    {
+      "name":"origin",
+      "from":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "to":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "rotationOrigin":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "group":"nonmetal_head",
+      "faces":{
+        "north":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "east":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "south":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "west":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "up":{
+          "texture":"#material",
+          "uv":[
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "autoUv":false,
+          "rotation":180
+        },
+        "down":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        }
+      },
+      "children":[
+        {
+          "name":"nonmetal_head 01",
+          "from":[
+            4.703166961669922,
+            -0.2298368513584137,
+            -0.3734742999076843
+          ],
+          "to":[
+            6.703166961669922,
+            0.738032877445221,
+            2.6265257000923157
+          ],
+          "rotationOrigin":[
+            4.703166961669922,
+            -0.14590197801589966,
+            -0.3734742999076843
+          ],
+          "rotationY":-1.2370024338111982,
+          "group":"nonmetal_head",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                14.0,
+                6.0,
+                18.0,
+                8.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                4.0,
+                8.0,
+                6.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                12.0,
+                8.0,
+                16.0,
+                10.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                12.0,
+                4.0,
+                18.0,
+                6.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                15.0,
+                13.0,
+                19.0,
+                19.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                12.0,
+                12.0,
+                8.0,
+                6.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"nonmetal_head 02",
+          "from":[
+            4.19873434305191,
+            -0.24590197205543518,
+            -3.162726402282715
+          ],
+          "to":[
+            7.198734164237976,
+            0.7540980279445648,
+            -0.16272658109664917
+          ],
+          "rotationOrigin":[
+            5.198734283447266,
+            -0.24590197205543518,
+            -0.16272658109664917
+          ],
+          "rotationY":4.763010646480413,
+          "group":"nonmetal_head",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                10.0,
+                8.0,
+                12.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                10.0,
+                10.0,
+                12.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                14.0,
+                10.0,
+                16.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                12.0,
+                10.0,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                11.0,
+                8.0,
+                17.0,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                12.0,
+                12.0,
+                6.0,
+                6.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"nonmetal_head 03",
+          "from":[
+            4.0177706480026245,
+            0.33988480014243194,
+            -3.154809134774979
+          ],
+          "to":[
+            7.000793218612671,
+            1.0469911694526672,
+            -2.44770210981369
+          ],
+          "rotationOrigin":[
+            5.008344650268555,
+            0.04699122905731201,
+            -2.44770210981369
+          ],
+          "rotationX":-45.099120957474305,
+          "rotationY":3.366008576762433,
+          "rotationZ":3.371842838974093,
+          "group":"nonmetal_head",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                10.0,
+                8.0,
+                12.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                10.0,
+                5.0,
+                11.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                14.0,
+                10.0,
+                15.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                9.0,
+                12.0,
+                10.0,
+                13.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                11.0,
+                12.000001907348633,
+                17.0,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                12.0,
+                12.0,
+                6.0,
+                11.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"nonmetal_head 04",
+          "from":[
+            4.690059415285205,
+            -0.24209123849868774,
+            -3.539738655090332
+          ],
+          "to":[
+            6.553132891654968,
+            0.750287264585495,
+            -0.5397388339042664
+          ],
+          "rotationOrigin":[
+            4.553133010864258,
+            -0.24590197205543518,
+            -0.5397388339042664
+          ],
+          "rotationY":-5.783924144364096,
+          "group":"nonmetal_head",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                10.0,
+                6.0,
+                12.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                10.0,
+                10.0,
+                12.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                6.0,
+                14.0,
+                10.0,
+                16.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                12.0,
+                10.0,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                13.0,
+                8.0,
+                17.0,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                10.0,
+                12.0,
+                6.0,
+                6.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"nonmetal_head 05",
+          "from":[
+            4.924121013884637,
+            0.33988481760025024,
+            -3.528066337108612
+          ],
+          "to":[
+            6.776651025268521,
+            1.046991229057312,
+            -2.8209592700004578
+          ],
+          "rotationOrigin":[
+            4.784202575683594,
+            0.04699122905731201,
+            -2.8209592700004578
+          ],
+          "rotationX":-45.14622877217989,
+          "rotationY":-4.0863779563530995,
+          "rotationZ":-4.096808935876179,
+          "group":"nonmetal_head",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                10.0,
+                6.0,
+                11.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                10.0,
+                5.0,
+                11.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                6.0,
+                14.0,
+                10.0,
+                14.999998092651367
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                8.0,
+                12.0,
+                10.0,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                13.0,
+                12.0,
+                17.0,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                10.0,
+                12.0,
+                6.0,
+                11.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        }
+      ]
+    }
+  ],
+  "groups":[]
+}

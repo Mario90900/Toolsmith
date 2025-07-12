@@ -1,163 +1,799 @@
 {
-	"editor": {
-		"allAngles": false,
-		"entityTextureMode": false
-	},
-	"textureWidth": 16,
-	"textureHeight": 16,
-	"textureSizes": {
-		"material": [32,32]
-	},
-	"textures": {
-		"material": "game:item/tool/material/string"
-	},
-	"elements": [
-		{
-			"name": "origin",
-			"from": [ 11.1, 0.5, 7.36 ],
-			"to": [ 11.1, 0.5, 7.36 ],
-			"rotationOrigin": [ 7.7972, 0.0, 8.5107 ],
-			"faces": {
-				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"up": { "texture": "#material", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
-				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
-			},
-			"children": [
-				{
-					"name": "M_crude_stonehead_low",
-					"from": [ -2.4853, -0.4954, -0.5651 ],
-					"to": [ -1.9853, 0.9954, 1.1369 ],
-					"rotationOrigin": [ -2.2353, 0.25, 0.2859 ],
-					"rotationY": -0.43,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 18.4962, 1.9056, 21.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 1.6104, 0.9056, 5.6238, 3.9056 ], "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 3.4962, 1.9056, 6.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 5.3686, 5.9056, 9.3819, 8.9056 ], "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 1.4962, 0.778, 2.4962, 4.7913 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 2.4962, 4.7913, 1.4962, 0.778 ], "rotation": 180, "autoUv": false }
-					},
-					"children": [
-						{
-							"name": "crude_stonehead_low 01",
-							"from": [ -0.6385, 0.031, -0.0308 ],
-							"to": [ -0.1014, 1.4598, 1.8506 ],
-							"rotationOrigin": [ -0.37, 0.7454, 0.9099 ],
-							"rotationY": 21.73,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 18.4962, 1.9056, 21.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 1.4962, 0.9056, 5.6258, 3.9056 ], "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 3.4962, 1.9056, 6.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 5.3665, 5.9056, 9.4962, 8.9056 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 1.4962, 0.7759, 2.4962, 4.9056 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 2.4962, 4.9056, 1.4962, 0.7759 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "crude_stonehead_low 02",
-							"from": [ 5.1772, 0.5007, 0.2412 ],
-							"to": [ 7.9408, 1.0007, 2.0055 ],
-							"rotationOrigin": [ 6.559, 0.7507, 1.1234 ],
-							"rotationX": 90.9208,
-							"rotationY": 0.3465,
-							"rotationZ": -76.1825,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 10.3228, 0.9056, 15.8429, 1.9056 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 3.2126, 1.9056, 6.7999, 2.9056 ], "rotation": 180, "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 6.3133, 4.9056, 11.8267, 5.9056 ], "rotation": 180, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 1.2093, 5.9056, 4.7966, 6.9056 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 0.1505, 4.6211, 5.678, 8.2084 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 10.8418, 9.2084, 5.3143, 5.6211 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "crude_stonehead_low 03",
-							"from": [ 5.7235, 0.4759, 0.1843 ],
-							"to": [ 8.3181, 0.9759, 1.9599 ],
-							"rotationOrigin": [ 7.0208, 0.7259, 1.0721 ],
-							"rotationX": 91.9892,
-							"rotationY": -0.1242,
-							"rotationZ": -68.9916,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 7.4963, 1.9055, 12.6857, 2.9055 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 1.4177, 1.9056, 4.6547, 2.9056 ], "rotation": 180, "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 14.4958, 1.9054, 19.6852, 2.9054 ], "rotation": 180, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 5.4177, 1.9056, 8.6547, 2.9056 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 0.3068, 0.8271, 5.4962, 4.0641 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 6.6855, 12.0641, 1.4962, 8.8271 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "crude_stonehead_low 04",
-							"from": [ 7.0174, -0.0199, -0.1925 ],
-							"to": [ 7.5174, 1.5703, 2.3085 ],
-							"rotationOrigin": [ 7.2674, 0.7752, 1.058 ],
-							"rotationY": 7.97,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 18.3793, 1.9056, 21.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 0.4942, 0.7887, 5.4962, 3.9056 ], "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 3.3793, 1.9056, 6.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 5.4962, 5.7887, 10.4981, 8.9056 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 1.4962, 0.9056, 2.4962, 5.9075 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 2.4962, 5.9075, 1.4962, 0.9056 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "crude_stonehead_low 05",
-							"from": [ 7.2678, -0.164, 1.838 ],
-							"to": [ 7.5909, 0.1352, 2.7743 ],
-							"rotationOrigin": [ 7.4293, -0.0144, 2.3061 ],
-							"rotationX": 59.3265,
-							"rotationY": 0.1099,
-							"rotationZ": -68.8334,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 11.821, 2.107, 12.4673, 2.7054 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 2.0905, 2.1062, 3.7975, 2.7046 ], "rotation": 180, "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 18.8239, 2.1071, 19.4702, 2.7055 ], "rotation": 180, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 6.099, 2.1064, 7.8059, 2.7048 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 0.5237, 1.5082, 1.17, 3.2151 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 6.4686, 11.2148, 5.8223, 9.5078 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "crude_stonehead_low 06",
-							"from": [ 7.0184, 0.4773, 1.0634 ],
-							"to": [ 9.7236, 0.9773, 2.8391 ],
-							"rotationOrigin": [ 8.371, 0.7273, 1.9513 ],
-							"rotationX": 90.5415,
-							"rotationY": 1.8895,
-							"rotationZ": 9.9454,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 7.2753, 1.9055, 12.6857, 2.9055 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 1.4181, 1.9056, 4.6551, 2.9056 ], "rotation": 180, "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 14.2747, 1.9054, 19.6852, 2.9054 ], "rotation": 180, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 5.4177, 1.9056, 8.6547, 2.9056 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 0.3068, 0.8271, 5.7172, 4.0641 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 6.6855, 12.0641, 1.2751, 8.8271 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "crude_stonehead_low 07",
-							"from": [ 7.0647, 0.4756, -0.7389 ],
-							"to": [ 9.6593, 0.9756, 1.0367 ],
-							"rotationOrigin": [ 8.362, 0.7256, 0.1489 ],
-							"rotationX": 91.1826,
-							"rotationY": 1.576,
-							"rotationZ": -11.0245,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 7.4963, 1.9055, 12.6857, 2.9055 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 1.4177, 1.9056, 4.6547, 2.9056 ], "rotation": 180, "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 14.4958, 1.9054, 19.6852, 2.9054 ], "rotation": 180, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 5.4177, 1.9056, 8.6547, 2.9056 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 0.3068, 0.8271, 5.4962, 4.0641 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 6.6855, 12.0641, 1.4962, 8.8271 ], "rotation": 180, "autoUv": false }
-							}
-						}
-					]
-				}
-			]
-		}
-	]}
+  "textureWidth":16,
+  "textureHeight":16,
+  "textures":{
+    "material":"game:item/tool/material/string"
+  },
+  "textureSizes":{
+    "material":[
+      32,
+      32
+    ]
+  },
+  "elements":[
+    {
+      "name":"origin",
+      "from":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "to":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "rotationOrigin":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "group":"crude_string_stonehead",
+      "faces":{
+        "north":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "east":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "south":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "west":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "up":{
+          "texture":"#material",
+          "uv":[
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "autoUv":false,
+          "rotation":180
+        },
+        "down":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        }
+      },
+      "children":[
+        {
+          "name":"crude_string_stonehead 01",
+          "from":[
+            -2.6880587190389633,
+            -0.4954249858856201,
+            -0.0544700026512146
+          ],
+          "to":[
+            -2.1880628019571304,
+            0.9954249858856201,
+            1.6475940346717834
+          ],
+          "rotationOrigin":[
+            -2.438060760498047,
+            0.25,
+            0.7965620160102844
+          ],
+          "rotationY":-0.4300000020051476,
+          "group":"crude_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                5.0,
+                2.0,
+                2.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                21.0,
+                1.0000038146972656,
+                16.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                20.0,
+                2.0,
+                17.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                18.0,
+                6.0,
+                13.0,
+                9.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                21.0,
+                1.0000038146972656,
+                20.0,
+                5.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                20.0,
+                5.0,
+                21.0,
+                1.0000038146972656
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"crude_string_stonehead 02",
+          "from":[
+            -3.3270186483860016,
+            -0.4644240140914917,
+            -0.08994549512863159
+          ],
+          "to":[
+            -2.7898846566677094,
+            0.9644240140914917,
+            1.7915251851081848
+          ],
+          "rotationOrigin":[
+            -3.0584516525268555,
+            0.25,
+            0.8507898449897766
+          ],
+          "rotationY":21.299999568198125,
+          "group":"crude_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                19.0,
+                2.0,
+                22.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                0.9999998807907104,
+                1.0,
+                5.001025676727295,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                2.0,
+                7.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                6.0,
+                6.0,
+                10.0,
+                9.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                0.9999998807907104,
+                1.0,
+                2.0,
+                5.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                5.0,
+                0.9999998807907104,
+                1.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"crude_string_stonehead 03",
+          "from":[
+            4.327633038163178,
+            -0.5152888894081116,
+            -0.1518329232637683
+          ],
+          "to":[
+            4.827632769942291,
+            1.0748947858810425,
+            2.3491515963976184
+          ],
+          "rotationOrigin":[
+            4.577632904052734,
+            0.27980291843414307,
+            1.098659336566925
+          ],
+          "rotationY":9.504393498953979,
+          "group":"crude_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                18.0,
+                2.0,
+                22.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                1.0,
+                1.0,
+                6.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                18.0,
+                2.0,
+                22.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                1.0,
+                1.0,
+                6.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                15.0,
+                2.0,
+                20.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                20.0,
+                3.0,
+                15.0,
+                2.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"crude_string_stonehead 04",
+          "from":[
+            4.631827846169472,
+            -0.6580338239910981,
+            1.8379045724868774
+          ],
+          "to":[
+            4.954967841506004,
+            -0.3588431417700848,
+            2.7742223739624023
+          ],
+          "rotationOrigin":[
+            4.793397903442383,
+            -0.5084384679794312,
+            2.30606347322464
+          ],
+          "rotationX":59.326510866543,
+          "rotationY":-0.10947645314182627,
+          "rotationZ":-68.46356910797088,
+          "group":"crude_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                12.0,
+                1.9999980926513672,
+                13.0,
+                3.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                2.0,
+                4.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                19.0,
+                2.0,
+                19.999998092651367,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                6.0,
+                2.000001907348633,
+                7.999999523162842,
+                3.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                1.0,
+                0.9999980926513672,
+                2.000000476837158,
+                3.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                6.999999523162842,
+                11.000001907348633,
+                6.0,
+                8.999998092651367
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"crude_string_stonehead 05",
+          "from":[
+            2.487623691558838,
+            0.004220336675643921,
+            0.23580199480056763
+          ],
+          "to":[
+            5.251222133636475,
+            0.504220262169838,
+            2.0001461505889893
+          ],
+          "rotationOrigin":[
+            3.8694229125976562,
+            0.25422030687332153,
+            1.1179741024971008
+          ],
+          "rotationX":90.91817800441382,
+          "rotationY":0.3534042062597883,
+          "rotationZ":-75.7525625751009,
+          "group":"crude_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                10.003497123718262,
+                1.0000038146972656,
+                15.999844551086426,
+                1.9999961853027344
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                2.999999761581421,
+                2.000001907348633,
+                6.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                5.999511241912842,
+                4.999998092651367,
+                11.993515014648438,
+                5.999996185302734
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                5.999998092651367,
+                5.000000476837158,
+                6.999998092651367
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                0.9999997615814209,
+                5.000005722045898,
+                7.0,
+                8.000001907348633
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                12.000004768371582,
+                9.0,
+                6.0,
+                5.999994277954102
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"crude_string_stonehead 06",
+          "from":[
+            3.034456968307495,
+            -0.019961059093475342,
+            0.13487415837136396
+          ],
+          "to":[
+            5.6290504932403564,
+            0.4800349622964859,
+            1.9105031557193684
+          ],
+          "rotationOrigin":[
+            4.331753730773926,
+            0.23003697395324707,
+            1.0226886868476868
+          ],
+          "rotationX":91.99010106256644,
+          "rotationY":-0.10930845316660645,
+          "rotationZ":-68.56150719047969,
+          "group":"crude_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                15.0,
+                4.0,
+                21.0,
+                5.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                1.999999761581421,
+                2.0000038146972656,
+                4.999999523162842,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                15.0,
+                2.0,
+                21.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                6.0,
+                2.0,
+                9.0,
+                3.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                0.9999999403953552,
+                1.0000019073486328,
+                7.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                7.0,
+                12.000001907348633,
+                1.0,
+                8.999998092651367
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"crude_string_stonehead 07",
+          "from":[
+            4.390213211489247,
+            -0.01813739538192749,
+            1.069884181022644
+          ],
+          "to":[
+            7.060630718755192,
+            0.48185861110687256,
+            2.845513164997101
+          ],
+          "rotationOrigin":[
+            5.725421905517578,
+            0.23186063766479492,
+            1.95769864320755
+          ],
+          "rotationX":90.52732042915983,
+          "rotationY":1.8935062362893664,
+          "rotationZ":10.375607179477555,
+          "group":"crude_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                7.0,
+                4.0,
+                13.0,
+                5.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                2.000140905380249,
+                2.0000057220458984,
+                5.000140190124512,
+                2.999998092651367
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                14.0,
+                2.0,
+                20.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                6.0,
+                2.0,
+                9.0,
+                3.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                1.0,
+                1.0000019073486328,
+                6.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                7.0,
+                12.0,
+                2.0,
+                9.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"crude_string_stonehead 08",
+          "from":[
+            4.381681203842163,
+            -0.019824370741844177,
+            -0.7324556112289429
+          ],
+          "to":[
+            6.976274728775024,
+            0.4801716208457947,
+            1.0431737303733826
+          ],
+          "rotationOrigin":[
+            5.678977966308594,
+            0.23017364740371704,
+            0.15535908937454224
+          ],
+          "rotationX":91.17071741878586,
+          "rotationY":1.584789583211018,
+          "rotationZ":-10.59446778482592,
+          "group":"crude_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                14.0,
+                4.0,
+                8.0,
+                5.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                19.000141143798828,
+                2.000001907348633,
+                16.000141143798828,
+                2.999998092651367
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                7.0,
+                2.0,
+                1.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                15.0,
+                2.0,
+                12.0,
+                3.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                20.0,
+                1.0000019073486328,
+                15.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                14.0,
+                12.0,
+                19.0,
+                9.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        }
+      ]
+    }
+  ],
+  "groups":[]
+}

@@ -1,61 +1,274 @@
 {
-	"editor": {
-		"allAngles": false,
-		"entityTextureMode": false
-	},
-	"textureWidth": 16,
-	"textureHeight": 16,
-	"textureSizes": {
-		"material": [32,32]
-	},
-	"textures": {
-		"material": "game:block/metal/ingot/copper"
-	},
-	"elements": [
-		{
-			"name": "origin",
-			"from": [ 12.3, 0.5, 8.2107 ],
-			"to": [ 12.3, 0.5, 8.2107 ],
-			"rotationOrigin": [ 9.2972, 0.0, 8.5107 ],
-			"faces": {
-				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"up": { "texture": "#material", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
-				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
-			},
-			"children": [
-				{
-					"name": "unv_metal_metalhead1",
-					"from": [ 4.314, 0.0395, -1.0185 ],
-					"to": [ 5.7891, 0.3635, 0.5933 ],
-					"rotationOrigin": [ 5.2154, 0.2015, -0.1806 ],
-					"rotationY": -5.1939,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 15.9619, 8.1129, 16.6099, 11.0625 ], "rotation": 90, "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 14.6659, 7.7117, 15.3139, 10.9347 ], "rotation": 90, "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 16.6099, 8.1129, 17.2578, 11.0625 ], "rotation": 90, "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 15.3139, 7.8395, 15.9619, 11.0625 ], "rotation": 90, "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 17.6155, 11.0625, 20.5651, 14.2855 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 17.6155, 14.4133, 14.6659, 11.1903 ], "autoUv": false }
-					}
-				},
-				{
-					"name": "unv_metal_metalhead2",
-					"from": [ 4.4331, -0.7801, -0.4634 ],
-					"to": [ 4.8371, 1.1777, -0.0594 ],
-					"rotationOrigin": [ 4.6351, 1.0069, -0.2654 ],
-					"rotationY": 45.0,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 15.0, 12.0857, 16.0, 16.9206 ], "rotation": 180, "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 15.0099, 13.0866, 16.0099, 17.9214 ], "rotation": 180, "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 16.0, 12.0857, 17.0, 16.9206 ], "rotation": 180, "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 15.9901, 13.0866, 16.9901, 17.9214 ], "rotation": 180, "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 17.0, 16.0135, 18.0, 17.0117 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 18.0, 17.9901, 17.0, 16.9919 ], "autoUv": false }
-					}
-				}
-			]
-		}
-	]}
+  "textureWidth":16,
+  "textureHeight":16,
+  "textures":{
+    "material":"game:block/metal/ingot/copper"
+  },
+  "textureSizes":{
+    "material":[
+      32,
+      32
+    ]
+  },
+  "elements":[
+    {
+      "name":"origin",
+      "from":[
+        10.79720687866211,
+        0.5,
+        8.21067351102829
+      ],
+      "to":[
+        10.79720687866211,
+        0.5,
+        8.21067351102829
+      ],
+      "rotationOrigin":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "group":"unv_metal_metalhead",
+      "faces":{
+        "north":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "east":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "south":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "west":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "up":{
+          "texture":"#material",
+          "uv":[
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "autoUv":false,
+          "rotation":180
+        },
+        "down":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        }
+      },
+      "children":[
+        {
+          "name":"unv_metal_metalhead1",
+          "from":[
+            4.313967222058839,
+            0.03945854306221008,
+            -1.018484423287692
+          ],
+          "to":[
+            5.7890582338756325,
+            0.36351463198661804,
+            0.59333462870406
+          ],
+          "rotationOrigin":[
+            5.215368270874023,
+            0.20148658752441406,
+            -0.18061751127243042
+          ],
+          "rotationY":-5.193905083101714,
+          "group":"unv_metal_metalhead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                16.0,
+                7.912317276000977,
+                17.0,
+                11.0625
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                15.0,
+                7.912317276000977,
+                16.0,
+                12.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                17.0,
+                7.912317276000977,
+                18.0,
+                11.0625
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                15.313899993896484,
+                7.912317276000977,
+                16.0,
+                11.0625
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                18.0,
+                11.0,
+                21.0,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                18.0,
+                14.0,
+                15.0,
+                11.0
+              ],
+              "autoUv":false
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"unv_metal_metalhead2",
+          "from":[
+            4.433124673484592,
+            -0.7801105976104736,
+            -0.4633923501987214
+          ],
+          "to":[
+            4.837085592628689,
+            1.1777420043945312,
+            -0.05943134164766217
+          ],
+          "rotationOrigin":[
+            4.635105133056641,
+            1.0068963766098022,
+            -0.2654239535331726
+          ],
+          "rotationY":45.00000125223908,
+          "group":"unv_metal_metalhead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                15.0,
+                12.085689544677734,
+                16.0,
+                16.92055034637451
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                15.00992202758789,
+                13.086606979370117,
+                16.009933471679688,
+                17.921449661254883
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                16.0,
+                12.085689544677734,
+                17.0,
+                16.92055034637451
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                15.990062713623047,
+                13.086606979370117,
+                16.990068435668945,
+                17.921449661254883
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                17.0,
+                16.013510704040527,
+                18.0,
+                17.011713981628418
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                18.0,
+                17.990087509155273,
+                17.0,
+                16.991887092590332
+              ],
+              "autoUv":false
+            }
+          },
+          "children":[]
+        }
+      ]
+    }
+  ],
+  "groups":[]
+}

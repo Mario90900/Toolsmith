@@ -1,161 +1,801 @@
 {
-	"editor": {
-		"allAngles": false,
-		"entityTextureMode": false
-	},
-	"textureWidth": 16,
-	"textureHeight": 16,
-	"textureSizes": {
-		"material": [32,32]
-	},
-	"textures": {
-		"material": "game:item/tool/material/string"
-	},
-	"elements": [
-		{
-			"name": "origin",
-			"from": [ 11.15, 0.5, 7.36 ],
-			"to": [ 11.15, 0.5, 7.36 ],
-			"rotationOrigin": [ 7.7972, 0.0, 8.5107 ],
-			"faces": {
-				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"up": { "texture": "#material", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
-				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
-			},
-			"children": [
-				{
-					"name": "M_binding_low_bonehandle_stonehead",
-					"from": [ -3.3214, -0.5572, -0.0695 ],
-					"to": [ -2.7842, 0.5823, 1.3128 ],
-					"rotationOrigin": [ -2.8449, 0.25, 0.3676 ],
-					"rotationY": 21.3,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 19.2985, 1.9056, 21.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 2.5919, 1.7079, 5.6258, 3.9056 ], "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 4.2985, 1.9056, 6.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 5.3665, 6.7079, 8.4004, 8.9056 ], "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 1.4962, 0.7759, 2.4962, 3.8098 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 2.4962, 3.8098, 1.4962, 0.7759 ], "rotation": 180, "autoUv": false }
-					},
-					"children": [
-						{
-							"name": "binding_low_bonehandle_stonehead 01",
-							"from": [ 0.8094, 0.0205, 0.3 ],
-							"to": [ 1.3094, 1.1178, 1.531 ],
-							"rotationOrigin": [ 1.0551, 0.8072, 0.6301 ],
-							"rotationY": -21.73,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 19.3711, 1.9056, 21.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 2.7211, 1.7805, 5.6238, 3.9056 ], "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 4.3711, 1.9056, 6.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 5.3686, 6.7805, 8.2713, 8.9056 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 1.4962, 0.778, 2.4962, 3.6807 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 2.4962, 3.6807, 1.4962, 0.778 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "binding_low_bonehandle_stonehead 02",
-							"from": [ 5.6278, -1.2143, 1.3119 ],
-							"to": [ 5.951, -0.9151, 1.9364 ],
-							"rotationOrigin": [ 6.6132, -1.3142, 2.6544 ],
-							"rotationX": 61.3948,
-							"rotationY": -11.5753,
-							"rotationZ": -48.4465,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 11.821, 2.107, 12.4673, 2.7054 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 2.0905, 2.1062, 3.229, 2.7046 ], "rotation": 180, "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 18.8251, 2.1078, 19.4714, 2.7061 ], "rotation": 180, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 6.099, 2.1064, 7.2374, 2.7048 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 0.5237, 1.5082, 1.17, 2.6466 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 6.4686, 10.6463, 5.8223, 9.5078 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "binding_low_bonehandle_stonehead 03",
-							"from": [ 4.8703, 0.0924, 1.3035 ],
-							"to": [ 5.3703, 1.4726, 1.9912 ],
-							"rotationOrigin": [ 5.116, 0.8072, 1.3078 ],
-							"rotationY": -13.0649,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 25.0677, 2.0237, 27.7465, 2.9056 ], "rotation": 90, "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 9.4842, 1.0283, 10.9652, 3.9056 ], "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 10.0411, 2.0189, 12.7465, 2.9798 ], "rotation": 90, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 12.3873, 6.0283, 13.9776, 8.9056 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 7.7465, 1.5463, 8.7465, 2.9804 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 8.7465, 2.9804, 7.7465, 1.5463 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "binding_low_bonehandle_stonehead 04",
-							"from": [ 5.4285, 0.0754, 1.4391 ],
-							"to": [ 5.9285, 1.5062, 2.1416 ],
-							"rotationOrigin": [ 5.6742, 0.8072, 1.4581 ],
-							"rotationY": -26.862,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 18.6189, 1.9056, 21.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 3.2338, 1.0283, 4.8903, 3.9056 ], "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 3.6189, 1.9056, 6.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 6.102, 6.0283, 7.7585, 8.9056 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 1.4962, 1.5114, 2.4962, 3.1679 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 2.4962, 3.1679, 1.4962, 1.5114 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "binding_low_bonehandle_stonehead 05",
-							"from": [ 6.2537, -0.0428, 1.6045 ],
-							"to": [ 10.3637, 0.4572, 3.1808 ],
-							"rotationOrigin": [ 8.0171, -0.0428, 3.2465 ],
-							"rotationX": 89.5733,
-							"rotationY": 0.8713,
-							"rotationZ": 26.3843,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 8.8072, 3.0111, 17.0254, 4.0111 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 3.4848, 4.0111, 6.5246, 5.0111 ], "rotation": 180, "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 4.8093, 7.0111, 13.0125, 8.0111 ], "rotation": 180, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 1.474, 8.0111, 4.5138, 9.0111 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 0.0686, 6.9951, 8.2888, 10.0349 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 12.0262, 11.0349, 3.806, 7.9951 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "binding_low_bonehandle_stonehead 06",
-							"from": [ 7.5113, 1.3886, 5.5788 ],
-							"to": [ 7.8345, 1.6878, 6.1241 ],
-							"rotationOrigin": [ 8.4966, 1.2886, 6.9212 ],
-							"rotationX": -30.5319,
-							"rotationY": -19.5302,
-							"rotationZ": -77.7346,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 11.821, 2.107, 12.4673, 2.7054 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 2.0905, 2.1062, 3.0847, 2.7046 ], "rotation": 180, "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 18.8255, 2.1079, 19.4718, 2.7063 ], "rotation": 180, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 6.099, 2.1064, 7.0932, 2.7048 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 0.5237, 1.5082, 1.17, 2.5024 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 6.4686, 10.502, 5.8223, 9.5078 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "binding_low_bonehandle_stonehead 07",
-							"from": [ 5.881, -0.0428, 2.1939 ],
-							"to": [ 9.991, 0.4572, 3.7702 ],
-							"rotationOrigin": [ 7.6445, -0.0428, 3.8359 ],
-							"rotationX": 89.3824,
-							"rotationY": 0.7415,
-							"rotationZ": 41.5133,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 8.8072, 3.0111, 17.0254, 4.0111 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 3.4848, 4.0111, 6.5246, 5.0111 ], "rotation": 180, "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 4.8093, 7.0111, 13.0125, 8.0111 ], "rotation": 180, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 1.474, 8.0111, 4.5138, 9.0111 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 0.0686, 6.9951, 8.2888, 10.0349 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 12.0262, 11.0349, 3.806, 7.9951 ], "rotation": 180, "autoUv": false }
-							}
-						}
-					]
-				}
-			]
-		}
-	]}
+  "textureWidth":16,
+  "textureHeight":16,
+  "textures":{
+    "material":"game:item/tool/material/string"
+  },
+  "textureSizes":{
+    "material":[
+      32,
+      32
+    ]
+  },
+  "elements":[
+    {
+      "name":"origin",
+      "from":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "to":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "rotationOrigin":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "group":"bone_string_stonehead",
+      "faces":{
+        "north":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "east":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "south":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "west":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "up":{
+          "texture":"#material",
+          "uv":[
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "autoUv":false,
+          "rotation":180
+        },
+        "down":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        }
+      },
+      "children":[
+        {
+          "name":"bone_string_stonehead 01",
+          "from":[
+            -2.6862915605306625,
+            -0.5367171764373779,
+            0.5177645683288574
+          ],
+          "to":[
+            -2.1862956434488297,
+            0.5976980924606323,
+            1.7487984895706177
+          ],
+          "rotationOrigin":[
+            -2.436293601989746,
+            0.030490458011627197,
+            1.1332815289497375
+          ],
+          "rotationY":-0.4300000020051476,
+          "group":"bone_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                4.0,
+                5.0,
+                5.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                15.0,
+                1.0,
+                18.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                4.0,
+                5.0,
+                5.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                15.0,
+                1.0,
+                18.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                20.0,
+                3.0,
+                21.0,
+                6.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                21.0,
+                6.0,
+                20.0,
+                3.0
+              ],
+              "autoUv":false
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"bone_string_stonehead 02",
+          "from":[
+            3.23931088516533,
+            -0.6972218453884125,
+            0.6128306984901428
+          ],
+          "to":[
+            3.562450801636577,
+            -0.39803117513656616,
+            1.2373104691505432
+          ],
+          "rotationOrigin":[
+            3.400880813598633,
+            -0.5476264953613281,
+            0.925070583820343
+          ],
+          "rotationX":59.33929698066927,
+          "rotationY":-0.9495177439329516,
+          "rotationZ":-67.04631851557157,
+          "group":"bone_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                11.820979118347168,
+                2.107036590576172,
+                12.467281341552734,
+                2.705423355102539
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                2.090524911880493,
+                2.106233596801758,
+                3.2289774417877197,
+                2.704622268676758
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                18.82514762878418,
+                2.107755661010742,
+                19.471446990966797,
+                2.706136703491211
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                6.098979949951172,
+                2.1063690185546875,
+                7.237432479858398,
+                2.704753875732422
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                0.5236752033233643,
+                1.5081729888916016,
+                1.169976830482483,
+                2.646627426147461
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                6.468624114990234,
+                10.646263122558594,
+                5.822323322296143,
+                9.507806777954102
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"bone_string_stonehead 03",
+          "from":[
+            1.3940727412700653,
+            -0.4647984504699707,
+            -0.004239201545715332
+          ],
+          "to":[
+            1.8940685093402863,
+            0.915420413017273,
+            0.6834780871868134
+          ],
+          "rotationOrigin":[
+            1.6440706253051758,
+            0.22531098127365112,
+            0.3396194577217102
+          ],
+          "rotationY":8.235112978507477,
+          "group":"bone_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                25.0,
+                2.0,
+                28.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                10.0,
+                1.0,
+                11.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                12.0,
+                2.0,
+                15.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                12.999999046325684,
+                5.999998092651367,
+                14.0,
+                9.000001907348633
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                8.0,
+                2.0,
+                9.0,
+                3.000001907348633
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                9.0,
+                3.000001907348633,
+                8.0,
+                2.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"bone_string_stonehead 04",
+          "from":[
+            1.887957751750946,
+            -0.4818086624145508,
+            -0.07873031497001648
+          ],
+          "to":[
+            2.3879535794258118,
+            0.9490578174591064,
+            0.6237900853157043
+          ],
+          "rotationOrigin":[
+            2.137955665588379,
+            0.23362457752227783,
+            0.2725299000740051
+          ],
+          "rotationY":-5.561965621340307,
+          "group":"bone_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                2.0,
+                5.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                11.99994945526123,
+                1.0000419616699219,
+                12.999948501586914,
+                4.000043869018555
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                2.0,
+                5.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                12.000051498413086,
+                0.9999580383300781,
+                13.000051498413086,
+                3.9999618530273438
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                14.0,
+                0.9999980926513672,
+                15.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                15.0,
+                3.0,
+                14.0,
+                0.9999980926513672
+              ],
+              "autoUv":false
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"bone_string_stonehead 05",
+          "from":[
+            3.1972122192382812,
+            0.008612215518951416,
+            0.24201667308807373
+          ],
+          "to":[
+            7.307174444198608,
+            0.5086123049259186,
+            1.818335235118866
+          ],
+          "rotationOrigin":[
+            5.252193450927734,
+            0.2586122751235962,
+            1.0301759839057922
+          ],
+          "rotationX":89.91901012130016,
+          "rotationY":0.9667782722958086,
+          "rotationZ":5.0817636222138605,
+          "group":"bone_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                9.0,
+                7.0,
+                16.0,
+                8.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                4.0,
+                7.0,
+                5.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                9.0,
+                7.0,
+                16.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                4.0,
+                7.0,
+                5.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                1.0,
+                7.0,
+                8.0,
+                10.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                8.0,
+                10.0,
+                1.0,
+                7.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"bone_string_stonehead 06",
+          "from":[
+            6.545495569705963,
+            0.820376992225647,
+            2.3832224011421204
+          ],
+          "to":[
+            6.868635535240173,
+            1.119567722082138,
+            2.9285678267478943
+          ],
+          "rotationOrigin":[
+            6.707065582275391,
+            0.9699723720550537,
+            2.6558950543403625
+          ],
+          "rotationX":-28.610660102922715,
+          "rotationY":-0.9502506018865529,
+          "rotationZ":-67.09894512312653,
+          "group":"bone_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                11.999999046325684,
+                2.0,
+                13.0,
+                3.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                10.0,
+                6.0,
+                11.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                19.0,
+                2.000001907348633,
+                19.999996185302734,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                5.0,
+                4.0,
+                6.0,
+                5.999998092651367
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                0.9999998807907104,
+                0.9999980926513672,
+                2.0,
+                3.000001907348633
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                6.999999046325684,
+                11.000001907348633,
+                6.000000476837158,
+                8.999998092651367
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"bone_string_stonehead 07",
+          "from":[
+            2.9838396343586453,
+            0.008480370044708252,
+            0.9607040286064148
+          ],
+          "to":[
+            7.093831416666745,
+            0.5084803104400635,
+            2.583000421524048
+          ],
+          "rotationOrigin":[
+            5.038835525512695,
+            0.25848037004470825,
+            1.7718523144721985
+          ],
+          "rotationX":89.69407150136412,
+          "rotationY":0.9140611647343577,
+          "rotationZ":20.24143123742016,
+          "group":"bone_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                1.0,
+                6.0,
+                8.0,
+                7.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                10.0,
+                9.0,
+                13.0,
+                10.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                1.0,
+                6.0,
+                8.0,
+                7.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                10.0,
+                9.0,
+                13.0,
+                10.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                9.0,
+                4.0,
+                16.0,
+                7.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                16.0,
+                7.0,
+                9.0,
+                4.0
+              ],
+              "autoUv":false
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"bone_string_stonehead 1",
+          "from":[
+            -3.417688727378845,
+            -0.5571866035461426,
+            0.499326229095459
+          ],
+          "to":[
+            -2.8805547654628754,
+            0.5822659134864807,
+            1.8815823793411255
+          ],
+          "rotationOrigin":[
+            -3.1491217613220215,
+            0.01253962516784668,
+            1.1904543042182922
+          ],
+          "rotationY":21.299999568198125,
+          "group":"bone_string_stonehead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                18.0,
+                2.0,
+                21.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                5.0,
+                4.0,
+                8.0,
+                6.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                18.0,
+                2.0,
+                21.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                5.0,
+                4.0,
+                8.0,
+                6.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                1.0,
+                3.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                3.0,
+                4.0,
+                2.0,
+                1.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        }
+      ]
+    }
+  ],
+  "groups":[]
+}

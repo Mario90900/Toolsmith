@@ -1,192 +1,1038 @@
 {
-	"editor": {
-		"allAngles": false,
-		"entityTextureMode": false
-	},
-	"textureWidth": 16,
-	"textureHeight": 16,
-	"textureSizes": {
-		"wood": [32,32]
-	},
-	"textures": {
-		"wood": "game:block/wood/debarked/oak"
-	},
-	"elements": [
-		{
-			"name": "origin",
-			"from": [ 12.0, 0.5, 8.2107 ],
-			"to": [ 12.0, 0.5, 8.2107 ],
-			"rotationOrigin": [ 8.9972, 0.0, 8.5107 ],
-			"faces": {
-				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"up": { "texture": "#wood", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
-				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
-			},
-			"children": [
-				{
-					"name": "handle_stick 01",
-					"from": [ -5.8116, -0.3988, -1.0107 ],
-					"to": [ 5.7231, 0.8988, -0.0107 ],
-					"rotationOrigin": [ -0.0443, 0.25, -0.5107 ],
-					"faces": {
-						"north": { "texture": "#wood", "uv": [ 1.0, 11.0, 23.2373, 14.0 ], "autoUv": false },
-						"east": { "texture": "#wood", "uv": [ 2.0, 1.0, 4.0, 4.0 ], "autoUv": false },
-						"south": { "texture": "#wood", "uv": [ 9.0, 21.0, 31.0, 24.0 ], "autoUv": false },
-						"west": { "texture": "#wood", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#wood", "uv": [ 8.7627, 9.0, 31.0, 11.0 ], "autoUv": false },
-						"down": { "texture": "#wood", "uv": [ 23.2373, 12.0, 1.0, 10.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_stick 02",
-					"from": [ -6.3116, -0.3988, -0.0107 ],
-					"to": [ 5.5742, 0.8988, 0.4893 ],
-					"rotationOrigin": [ -0.3687, 0.25, 0.2393 ],
-					"faces": {
-						"north": { "texture": "#wood", "uv": [ 12.0, 24.0, 20.0, 30.0 ], "rotation": 270, "autoUv": false },
-						"east": { "texture": "#wood", "uv": [ 2.0, 1.0, 3.0, 4.0 ], "autoUv": false },
-						"south": { "texture": "#wood", "uv": [ 9.0, 21.0, 31.0, 24.0 ], "autoUv": false },
-						"west": { "texture": "#wood", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#wood", "uv": [ 8.5914, 17.0, 31.0, 18.0 ], "autoUv": false },
-						"down": { "texture": "#wood", "uv": [ 23.9468, 11.0, 1.0, 10.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_stick 03",
-					"from": [ -11.8116, -0.3988, -1.0107 ],
-					"to": [ -5.8116, 0.8988, -0.0107 ],
-					"rotationOrigin": [ -8.8116, 0.25, -0.5107 ],
-					"faces": {
-						"north": { "texture": "#wood", "uv": [ 1.0, 11.0, 13.0471, 14.0 ], "autoUv": false },
-						"east": { "texture": "#wood", "uv": [ 12.0, 16.0, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#wood", "uv": [ 9.0, 21.0, 20.0, 24.0 ], "autoUv": false },
-						"west": { "texture": "#wood", "uv": [ 28.0, 20.0, 30.0, 23.0 ], "autoUv": false },
-						"up": { "texture": "#wood", "uv": [ 8.0532, 9.0, 20.0532, 11.0 ], "autoUv": false },
-						"down": { "texture": "#wood", "uv": [ 13.0471, 12.0, 1.0, 10.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_stick 04",
-					"from": [ -10.3116, -0.3988, -0.0107 ],
-					"to": [ -6.3116, 0.8988, 0.4893 ],
-					"rotationOrigin": [ -8.3116, 0.25, 0.2393 ],
-					"faces": {
-						"north": { "texture": "#wood", "uv": [ 12.0, 15.9468, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"east": { "texture": "#wood", "uv": [ 12.0, 16.0, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#wood", "uv": [ 9.0, 21.0, 16.0532, 24.0 ], "autoUv": false },
-						"west": { "texture": "#wood", "uv": [ 28.0, 20.0, 29.0, 23.0 ], "autoUv": false },
-						"up": { "texture": "#wood", "uv": [ 8.0532, 17.0, 16.0532, 18.0 ], "autoUv": false },
-						"down": { "texture": "#wood", "uv": [ 9.0471, 11.0, 1.0, 10.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_stick 05",
-					"from": [ -7.3419, -0.25, 0.4161 ],
-					"to": [ -6.3419, 0.25, 0.9161 ],
-					"rotationOrigin": [ -6.8419, 0.0, 0.6661 ],
-					"rotationY": 45.0,
-					"faces": {
-						"north": { "texture": "#wood", "uv": [ 3.4058, 11.0, 5.4058, 12.0 ], "autoUv": false },
-						"east": { "texture": "#wood", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#wood", "uv": [ 11.0, 22.0, 13.0, 23.0 ], "autoUv": false },
-						"west": { "texture": "#wood", "uv": [ 24.0, 20.0, 25.0, 21.0 ], "autoUv": false },
-						"up": { "texture": "#wood", "uv": [ 5.6944, 23.6944, 7.6944, 24.6944 ], "autoUv": false },
-						"down": { "texture": "#wood", "uv": [ 4.0, 17.0, 2.0, 16.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_stick 06",
-					"from": [ -1.2953, 0.25, -1.6142 ],
-					"to": [ 0.2047, 0.75, -1.1142 ],
-					"rotationOrigin": [ -0.5453, 0.5, -1.3642 ],
-					"rotationY": -45.0,
-					"faces": {
-						"north": { "texture": "#wood", "uv": [ 3.0, 11.0, 6.0, 12.0 ], "autoUv": false },
-						"east": { "texture": "#wood", "uv": [ 12.0, 16.0, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#wood", "uv": [ 0.0, 21.0, 3.0, 22.0 ], "autoUv": false },
-						"west": { "texture": "#wood", "uv": [ 28.0, 19.0, 29.0, 20.0 ], "autoUv": false },
-						"up": { "texture": "#wood", "uv": [ 0.0, 17.0, 3.0, 18.0 ], "autoUv": false },
-						"down": { "texture": "#wood", "uv": [ 3.0, 11.0, 1.0, 10.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_stick 07",
-					"from": [ -0.8685, -0.25, -1.4374 ],
-					"to": [ 0.1315, 0.25, -0.9374 ],
-					"rotationOrigin": [ -0.3685, 0.0, -1.1874 ],
-					"rotationY": -45.0,
-					"faces": {
-						"north": { "texture": "#wood", "uv": [ 3.0, 13.0, 5.0, 14.0 ], "autoUv": false },
-						"east": { "texture": "#wood", "uv": [ 12.0, 16.0, 20.0, 24.0 ], "rotation": 270, "autoUv": false },
-						"south": { "texture": "#wood", "uv": [ 9.0, 22.0, 11.0, 23.0 ], "autoUv": false },
-						"west": { "texture": "#wood", "uv": [ 28.0, 20.0, 29.0, 21.0 ], "autoUv": false },
-						"up": { "texture": "#wood", "uv": [ 20.0, 8.0, 28.0, 16.0 ], "rotation": 270, "autoUv": false },
-						"down": { "texture": "#wood", "uv": [ 6.0, 14.0, 4.0, 13.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_stick 08",
-					"from": [ 4.7616, 0.5141, -1.0082 ],
-					"to": [ 5.8679, 0.8973, -0.5029 ],
-					"rotationOrigin": [ 5.3147, 0.7057, -0.7555 ],
-					"faces": {
-						"north": { "texture": "#wood", "uv": [ 12.0, 12.0, 14.0, 13.0 ], "autoUv": false },
-						"east": { "texture": "#wood", "uv": [ 11.0, 8.0, 12.0, 9.0 ], "autoUv": false },
-						"south": { "texture": "#wood", "uv": [ 19.0, 15.0, 21.0, 16.0 ], "autoUv": false },
-						"west": { "texture": "#wood", "uv": [ 15.0, 10.0, 16.0, 11.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#wood", "uv": [ 19.0, 11.0, 21.0, 12.0 ], "autoUv": false },
-						"down": { "texture": "#wood", "uv": [ 13.0, 12.0, 11.0, 11.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_stick 09",
-					"from": [ 2.5652, -0.3955, -1.5177 ],
-					"to": [ 3.6759, 0.8955, 0.3938 ],
-					"rotationOrigin": [ 3.1206, 0.25, -0.562 ],
-					"rotationY": -81.9012,
-					"faces": {
-						"north": { "texture": "#wood", "uv": [ 31.0, 21.0, 29.0, 24.0 ], "autoUv": false },
-						"east": { "texture": "#wood", "uv": [ 1.0, 1.0, 5.0, 4.0 ], "autoUv": false },
-						"south": { "texture": "#wood", "uv": [ 29.0, 21.0, 31.0, 24.0 ], "autoUv": false },
-						"west": { "texture": "#wood", "uv": [ 2.0, 11.0, 6.0, 14.0 ], "autoUv": false },
-						"up": { "texture": "#wood", "uv": [ 1.0, 9.0, 3.0, 10.9256 ], "rotation": 180, "autoUv": false },
-						"down": { "texture": "#wood", "uv": [ 4.0, 13.0, 1.0, 11.1325 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_stick 10",
-					"from": [ 2.5652, -0.3955, -0.9188 ],
-					"to": [ 3.6759, 0.8955, 0.9927 ],
-					"rotationOrigin": [ 3.1206, 0.25, 0.037 ],
-					"rotationX": 0.0,
-					"rotationY": 81.9012,
-					"rotationZ": -180.0,
-					"faces": {
-						"north": { "texture": "#wood", "uv": [ 31.0, 21.0, 29.0, 24.0 ], "rotation": 180, "autoUv": false },
-						"east": { "texture": "#wood", "uv": [ 6.0, 21.0, 2.0, 24.0 ], "rotation": 180, "autoUv": false },
-						"south": { "texture": "#wood", "uv": [ 29.0, 21.0, 31.0, 24.0 ], "rotation": 180, "autoUv": false },
-						"west": { "texture": "#wood", "uv": [ 5.0, 1.0, 1.0, 4.0 ], "rotation": 180, "autoUv": false },
-						"up": { "texture": "#wood", "uv": [ 4.0, 11.1325, 1.0, 13.0 ], "rotation": 180, "autoUv": false },
-						"down": { "texture": "#wood", "uv": [ 1.0, 10.9256, 3.0, 9.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_stick 11",
-					"from": [ 4.6903, -0.3961, -0.0159 ],
-					"to": [ 5.7966, -0.0157, 0.4864 ],
-					"rotationOrigin": [ 5.2435, -0.2059, 0.2352 ],
-					"faces": {
-						"north": { "texture": "#wood", "uv": [ 12.0, 12.0, 14.0, 13.0 ], "autoUv": false },
-						"east": { "texture": "#wood", "uv": [ 11.0, 8.0, 12.0, 9.0 ], "autoUv": false },
-						"south": { "texture": "#wood", "uv": [ 19.0, 22.0, 21.0, 23.0 ], "autoUv": false },
-						"west": { "texture": "#wood", "uv": [ 15.0, 10.0, 16.0, 11.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#wood", "uv": [ 19.0, 21.0, 21.0, 22.0 ], "autoUv": false },
-						"down": { "texture": "#wood", "uv": [ 13.0, 12.0, 11.0, 11.0 ], "rotation": 180, "autoUv": false }
-					}
-				}
-			]
-		}
-	]}
+  "textureWidth":16,
+  "textureHeight":16,
+  "textures":{
+    "wood":"game:block/wood/debarked/oak"
+  },
+  "textureSizes":{
+    "wood":[
+      32,
+      32
+    ]
+  },
+  "elements":[
+    {
+      "name":"origin",
+      "from":[
+        10.79720687866211,
+        0.5,
+        8.21067351102829
+      ],
+      "to":[
+        10.79720687866211,
+        0.5,
+        8.21067351102829
+      ],
+      "rotationOrigin":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "group":"Stick",
+      "faces":{
+        "north":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "east":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "south":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "west":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "up":{
+          "texture":"#wood",
+          "uv":[
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "autoUv":false,
+          "rotation":180
+        },
+        "down":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        }
+      },
+      "children":[
+        {
+          "name":"handle_stick 01",
+          "from":[
+            -5.8115644454956055,
+            -0.39878368377685547,
+            -1.0106727480888367
+          ],
+          "to":[
+            5.723055839538574,
+            0.8987836837768555,
+            -0.01067274808883667
+          ],
+          "rotationOrigin":[
+            -0.044254302978515625,
+            0.25,
+            -0.5106727480888367
+          ],
+          "group":"Stick",
+          "faces":{
+            "north":{
+              "texture":"#wood",
+              "uv":[
+                1.0,
+                11.0,
+                23.237268447875977,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#wood",
+              "uv":[
+                2.0,
+                1.0,
+                4.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#wood",
+              "uv":[
+                9.0,
+                21.0,
+                31.0,
+                24.000000953674316
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#wood",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#wood",
+              "uv":[
+                8.762733459472656,
+                9.0,
+                31.0,
+                11.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#wood",
+              "uv":[
+                23.237268447875977,
+                12.0,
+                1.0,
+                10.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_stick 02",
+          "from":[
+            -6.311563968658447,
+            -0.39878368377685547,
+            -0.01067274808883667
+          ],
+          "to":[
+            5.574163913726807,
+            0.8987836837768555,
+            0.48932725191116333
+          ],
+          "rotationOrigin":[
+            -0.3687000274658203,
+            0.25,
+            0.23932725191116333
+          ],
+          "group":"Stick",
+          "faces":{
+            "north":{
+              "texture":"#wood",
+              "uv":[
+                12.0,
+                24.0,
+                20.0,
+                30.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "east":{
+              "texture":"#wood",
+              "uv":[
+                2.0,
+                1.0,
+                3.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#wood",
+              "uv":[
+                9.0,
+                21.0,
+                31.0,
+                24.000000953674316
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#wood",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#wood",
+              "uv":[
+                8.59144401550293,
+                17.0,
+                31.0,
+                18.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#wood",
+              "uv":[
+                23.946840286254883,
+                11.0,
+                1.0,
+                10.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_stick 03",
+          "from":[
+            -11.811564445495605,
+            -0.39878368377685547,
+            -1.0106727480888367
+          ],
+          "to":[
+            -5.8115644454956055,
+            0.8987836837768555,
+            -0.01067274808883667
+          ],
+          "rotationOrigin":[
+            -8.811564445495605,
+            0.25,
+            -0.5106727480888367
+          ],
+          "group":"Stick",
+          "faces":{
+            "north":{
+              "texture":"#wood",
+              "uv":[
+                1.0,
+                11.0,
+                13.04709529876709,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#wood",
+              "uv":[
+                12.0,
+                16.0,
+                20.0,
+                24.000000953674316
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#wood",
+              "uv":[
+                9.0,
+                21.0,
+                20.0,
+                24.000000953674316
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#wood",
+              "uv":[
+                28.0,
+                20.0,
+                30.0,
+                23.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#wood",
+              "uv":[
+                8.053159713745117,
+                9.0,
+                20.053159713745117,
+                11.000001907348633
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#wood",
+              "uv":[
+                13.04709529876709,
+                12.0,
+                1.0,
+                10.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_stick 04",
+          "from":[
+            -10.311564445495605,
+            -0.39878368377685547,
+            -0.01067274808883667
+          ],
+          "to":[
+            -6.3115644454956055,
+            0.8987836837768555,
+            0.48932725191116333
+          ],
+          "rotationOrigin":[
+            -8.311564445495605,
+            0.25,
+            0.23932725191116333
+          ],
+          "group":"Stick",
+          "faces":{
+            "north":{
+              "texture":"#wood",
+              "uv":[
+                12.000000953674316,
+                15.946840286254883,
+                20.0,
+                24.000000953674316
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "east":{
+              "texture":"#wood",
+              "uv":[
+                12.0,
+                16.0,
+                20.0,
+                24.000000953674316
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#wood",
+              "uv":[
+                9.0,
+                21.0,
+                16.053157806396484,
+                24.000000953674316
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#wood",
+              "uv":[
+                28.0,
+                20.0,
+                29.0,
+                23.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#wood",
+              "uv":[
+                8.053160667419434,
+                16.999999046325684,
+                16.05316162109375,
+                18.000000953674316
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#wood",
+              "uv":[
+                9.04709529876709,
+                11.0,
+                1.0,
+                9.999996185302734
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_stick 05",
+          "from":[
+            -7.341894119977951,
+            -0.25,
+            0.41610415279865265
+          ],
+          "to":[
+            -6.341894179582596,
+            0.25,
+            0.9161041229963303
+          ],
+          "rotationOrigin":[
+            -6.841894149780273,
+            0.0,
+            0.6661041378974915
+          ],
+          "rotationY":45.00000125223908,
+          "group":"Stick",
+          "faces":{
+            "north":{
+              "texture":"#wood",
+              "uv":[
+                3.4058103561401367,
+                11.0,
+                5.405810356140137,
+                11.999996185302734
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#wood",
+              "uv":[
+                12.000003814697266,
+                -3.814697265625e-06,
+                19.99999237060547,
+                8.000003814697266
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#wood",
+              "uv":[
+                11.0,
+                21.999998092651367,
+                13.000001907348633,
+                23.000000953674316
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#wood",
+              "uv":[
+                23.99999237060547,
+                20.0,
+                25.00000762939453,
+                21.000001907348633
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#wood",
+              "uv":[
+                5.694443702697754,
+                23.69444465637207,
+                7.6944451332092285,
+                24.69443702697754
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#wood",
+              "uv":[
+                3.9999983310699463,
+                16.999996185302734,
+                2.0000014305114746,
+                16.000003814697266
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_stick 06",
+          "from":[
+            -1.2952507287263941,
+            0.25,
+            -1.614225998520853
+          ],
+          "to":[
+            0.20474894344807382,
+            0.75,
+            -1.1142260879278165
+          ],
+          "rotationOrigin":[
+            -0.5452508926391602,
+            0.5,
+            -1.3642260432243347
+          ],
+          "rotationY":-45.00000125223908,
+          "group":"Stick",
+          "faces":{
+            "north":{
+              "texture":"#wood",
+              "uv":[
+                3.0,
+                11.0,
+                6.0,
+                12.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#wood",
+              "uv":[
+                12.0,
+                16.0,
+                20.0,
+                24.000000953674316
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#wood",
+              "uv":[
+                0.0,
+                21.0,
+                3.0,
+                22.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#wood",
+              "uv":[
+                28.0,
+                19.0,
+                29.0,
+                20.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#wood",
+              "uv":[
+                0.0,
+                17.0,
+                3.0,
+                18.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#wood",
+              "uv":[
+                3.0,
+                11.0,
+                1.0,
+                10.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_stick 07",
+          "from":[
+            -0.8684739172458684,
+            -0.25,
+            -1.437449589371683
+          ],
+          "to":[
+            0.13152590394020436,
+            0.25,
+            -0.9374496787786466
+          ],
+          "rotationOrigin":[
+            -0.36847400665283203,
+            0.0,
+            -1.1874496340751648
+          ],
+          "rotationY":-45.00000125223908,
+          "group":"Stick",
+          "faces":{
+            "north":{
+              "texture":"#wood",
+              "uv":[
+                3.0,
+                13.0,
+                5.0,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#wood",
+              "uv":[
+                12.0,
+                16.0,
+                20.0,
+                24.000000953674316
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#wood",
+              "uv":[
+                9.0,
+                22.0,
+                11.0,
+                23.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#wood",
+              "uv":[
+                28.0,
+                20.0,
+                29.0,
+                21.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#wood",
+              "uv":[
+                20.0,
+                8.0,
+                28.0,
+                16.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "down":{
+              "texture":"#wood",
+              "uv":[
+                6.0,
+                14.0,
+                4.0,
+                13.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_stick 08",
+          "from":[
+            4.76157021522522,
+            0.5141445696353912,
+            -1.008152723312378
+          ],
+          "to":[
+            5.867919683456421,
+            0.897270530462265,
+            -0.5028845071792603
+          ],
+          "rotationOrigin":[
+            5.31474494934082,
+            0.7057075500488281,
+            -0.7555186152458191
+          ],
+          "group":"Stick",
+          "faces":{
+            "north":{
+              "texture":"#wood",
+              "uv":[
+                12.0,
+                12.0,
+                14.0,
+                13.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#wood",
+              "uv":[
+                11.0,
+                8.0,
+                12.0,
+                9.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#wood",
+              "uv":[
+                19.0,
+                15.0,
+                21.0,
+                16.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#wood",
+              "uv":[
+                15.0,
+                10.0,
+                16.0,
+                11.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#wood",
+              "uv":[
+                19.0,
+                11.000001907348633,
+                21.0,
+                12.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#wood",
+              "uv":[
+                13.0,
+                12.000001907348633,
+                11.0,
+                11.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_stick 09",
+          "from":[
+            2.565185546875,
+            -0.39545154571533203,
+            -1.5176726579666138
+          ],
+          "to":[
+            3.6759281158447266,
+            0.895451545715332,
+            0.3937671184539795
+          ],
+          "rotationOrigin":[
+            3.1205568313598633,
+            0.25,
+            -0.5619527697563171
+          ],
+          "rotationY":-81.90122180935144,
+          "group":"Stick",
+          "faces":{
+            "north":{
+              "texture":"#wood",
+              "uv":[
+                31.0,
+                21.0,
+                29.000001907348633,
+                24.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#wood",
+              "uv":[
+                1.0,
+                1.0,
+                5.000000476837158,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#wood",
+              "uv":[
+                29.000001907348633,
+                21.0,
+                31.0,
+                24.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#wood",
+              "uv":[
+                2.0,
+                11.000001907348633,
+                6.0,
+                13.999998092651367
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#wood",
+              "uv":[
+                1.0,
+                9.0,
+                3.0,
+                10.925590515136719
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "down":{
+              "texture":"#wood",
+              "uv":[
+                4.0,
+                13.0,
+                1.0,
+                11.13248062133789
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_stick 10",
+          "from":[
+            2.565185546875,
+            -0.39545154571533203,
+            -0.9187594652175903
+          ],
+          "to":[
+            3.6759281158447266,
+            0.895451545715332,
+            0.9926803112030029
+          ],
+          "rotationOrigin":[
+            3.1205568313598633,
+            0.25,
+            0.0369604229927063
+          ],
+          "rotationX":5.511126701625015e-12,
+          "rotationY":81.90122180935144,
+          "rotationZ":-179.99997768819966,
+          "group":"Stick",
+          "faces":{
+            "north":{
+              "texture":"#wood",
+              "uv":[
+                31.0,
+                21.0,
+                29.000001907348633,
+                24.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "east":{
+              "texture":"#wood",
+              "uv":[
+                6.0,
+                21.000000953674316,
+                2.0,
+                23.999999046325684
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#wood",
+              "uv":[
+                29.000001907348633,
+                21.0,
+                31.0,
+                24.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#wood",
+              "uv":[
+                5.000000476837158,
+                1.0,
+                1.0,
+                4.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "up":{
+              "texture":"#wood",
+              "uv":[
+                4.0,
+                11.13248062133789,
+                1.0,
+                13.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "down":{
+              "texture":"#wood",
+              "uv":[
+                1.0,
+                10.925590515136719,
+                3.0,
+                9.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_stick 11",
+          "from":[
+            4.690290689468384,
+            -0.3960992395877838,
+            -0.01594206690788269
+          ],
+          "to":[
+            5.796640157699585,
+            -0.015657693147659302,
+            0.4863758981227875
+          ],
+          "rotationOrigin":[
+            5.243465423583984,
+            -0.20587846636772156,
+            0.2352169156074524
+          ],
+          "group":"Stick",
+          "faces":{
+            "north":{
+              "texture":"#wood",
+              "uv":[
+                12.0,
+                12.0,
+                14.0,
+                13.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#wood",
+              "uv":[
+                11.0,
+                8.0,
+                12.0,
+                9.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#wood",
+              "uv":[
+                19.0,
+                22.0,
+                21.0,
+                23.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#wood",
+              "uv":[
+                15.0,
+                10.0,
+                16.0,
+                11.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#wood",
+              "uv":[
+                19.0,
+                21.000001907348633,
+                21.0,
+                22.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#wood",
+              "uv":[
+                13.0,
+                12.000001907348633,
+                11.0,
+                11.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        }
+      ]
+    }
+  ],
+  "groups":[]
+}

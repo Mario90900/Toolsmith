@@ -1,144 +1,713 @@
 {
-	"editor": {
-		"allAngles": false,
-		"entityTextureMode": false
-	},
-	"textureWidth": 16,
-	"textureHeight": 16,
-	"textureSizes": {
-		"material": [32,32]
-	},
-	"textures": {
-		"material": "game:item/tool/material/string"
-	},
-	"elements": [
-		{
-			"name": "origin",
-			"from": [ 11.1, 0.5, 7.41 ],
-			"to": [ 11.1, 0.5, 7.41 ],
-			"rotationOrigin": [ 8.0972, 0.0, 7.7107 ],
-			"faces": {
-				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"up": { "texture": "#material", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
-				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
-			},
-			"children": [
-				{
-					"name": "regularhandle_binding_low_stonehead 01",
-					"from": [ -3.1242, -0.4644, -0.6006 ],
-					"to": [ -2.5871, 0.9644, 1.2809 ],
-					"rotationOrigin": [ -2.8557, 0.25, 0.3401 ],
-					"rotationY": 21.3,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 18.4962, 4.9056, 21.4962, 5.9056 ], "rotation": 90, "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 1.4962, 3.9056, 5.6258, 6.9056 ], "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 3.4962, 4.9056, 6.4962, 5.9056 ], "rotation": 90, "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 5.3665, 8.9056, 9.4962, 11.9056 ], "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 1.4962, 3.7759, 2.4962, 7.9056 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 2.4962, 7.9056, 1.4962, 3.7759 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "regularhandle_binding_low_stonehead 02",
-					"from": [ -2.4853, -0.4954, -0.5651 ],
-					"to": [ -1.9853, 0.9954, 1.1369 ],
-					"rotationOrigin": [ -2.2353, 0.25, 0.2859 ],
-					"rotationY": -0.43,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 18.4962, 1.9056, 21.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 1.6104, 0.9056, 5.6238, 3.9056 ], "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 3.4962, 1.9056, 6.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 5.3686, 5.9056, 9.3819, 8.9056 ], "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 1.4962, 0.778, 2.4962, 4.7913 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 2.4962, 4.7913, 1.4962, 0.778 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "regularhandle_binding_low_stonehead 03",
-					"from": [ 2.7766, 0.0159, -0.3078 ],
-					"to": [ 5.4006, 0.5159, 1.3831 ],
-					"rotationOrigin": [ 4.0886, 0.2659, 0.5376 ],
-					"rotationX": 90.937,
-					"rotationY": 0.3778,
-					"rotationZ": -75.7277,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 16.3228, 1.0011, 21.5638, 2.0011 ], "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 9.2126, 2.0011, 12.7999, 3.0011 ], "rotation": 180, "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 12.3133, 5.0011, 17.5483, 6.0011 ], "rotation": 180, "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 7.2107, 6.0011, 10.7981, 7.0011 ], "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 6.0039, 5.0008, 10.9905, 8.5881 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 17.0001, 9.5852, 12.0018, 5.9978 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "regularhandle_binding_low_stonehead 04",
-					"from": [ 3.8731, -0.5153, -0.705 ],
-					"to": [ 4.3731, 1.0749, 1.796 ],
-					"rotationOrigin": [ 4.1231, 0.2798, 0.5455 ],
-					"rotationY": 7.54,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 18.3793, 1.9056, 21.4962, 2.9056 ], "rotation": 90, "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 1.0064, 1.0026, 4.9892, 3.9971 ], "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 4.0135, 2.0015, 6.9954, 2.9937 ], "rotation": 90, "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 4.9962, 6.0026, 9.9981, 8.9939 ], "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 2.0049, 1.0032, 2.9962, 5.9937 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 2.9962, 5.9937, 2.0049, 1.0032 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "regularhandle_binding_low_stonehead 05",
-					"from": [ 3.9343, -0.6497, 1.172 ],
-					"to": [ 4.2574, -0.3505, 2.1083 ],
-					"rotationOrigin": [ 4.0958, -0.5001, 1.6401 ],
-					"rotationX": 59.3265,
-					"rotationY": -0.1095,
-					"rotationZ": -68.4636,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 11.821, 2.107, 12.4673, 2.7054 ], "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 2.0905, 2.1062, 3.7975, 2.7046 ], "rotation": 180, "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 18.8239, 2.1071, 19.4702, 2.7055 ], "rotation": 180, "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 6.099, 2.1064, 7.8059, 2.7048 ], "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 0.5237, 1.5082, 1.17, 3.2151 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 6.4686, 11.2148, 5.8223, 9.5078 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "regularhandle_binding_low_stonehead 06",
-					"from": [ 4.3226, -0.0291, -0.8524 ],
-					"to": [ 7.518, 0.4709, 0.9232 ],
-					"rotationOrigin": [ 5.9203, 0.2209, 0.0354 ],
-					"rotationX": 91.0361,
-					"rotationY": 1.6741,
-					"rotationZ": -5.8619,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 7.4963, 2.007, 13.8873, 2.9938 ], "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 1.4177, 2.0071, 4.6547, 2.9939 ], "rotation": 180, "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 14.4958, 2.007, 20.8868, 2.9938 ], "rotation": 180, "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 5.4155, 2.0072, 8.6525, 2.994 ], "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 1.0075, 1.003, 6.9964, 3.9938 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 7.9887, 11.9835, 1.0249, 9.0092 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "regularhandle_binding_low_stonehead 07",
-					"from": [ 4.1681, -0.0276, 0.0546 ],
-					"to": [ 7.4614, 0.4724, 1.8303 ],
-					"rotationOrigin": [ 5.8148, 0.2224, 0.9425 ],
-					"rotationX": 90.5941,
-					"rotationY": 1.8738,
-					"rotationZ": 8.3441,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 7.3005, 3.007, 13.8873, 3.9938 ], "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 1.4181, 3.0071, 4.6551, 3.9939 ], "rotation": 180, "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 14.3, 3.007, 20.8868, 3.9938 ], "rotation": 180, "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 5.4155, 3.0072, 8.6525, 3.994 ], "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 1.0075, 2.003, 7.1799, 4.9938 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 7.9887, 12.9835, 0.8115, 10.0092 ], "rotation": 180, "autoUv": false }
-					}
-				}
-			]
-		}
-	]}
+  "textureWidth":16,
+  "textureHeight":16,
+  "textures":{
+    "material":"game:item/tool/material/string"
+  },
+  "textureSizes":{
+    "material":[
+      32,
+      32
+    ]
+  },
+  "elements":[
+    {
+      "name":"origin",
+      "from":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "to":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "rotationOrigin":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "group":"regular_string",
+      "faces":{
+        "north":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "east":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "south":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "west":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "up":{
+          "texture":"#material",
+          "uv":[
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "autoUv":false,
+          "rotation":180
+        },
+        "down":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        }
+      },
+      "children":[
+        {
+          "name":"regular_string_stonehead 01",
+          "from":[
+            -2.6880587190389633,
+            -0.4954249858856201,
+            -0.0544700026512146
+          ],
+          "to":[
+            -2.1880628019571304,
+            0.9954249858856201,
+            1.6475940346717834
+          ],
+          "rotationOrigin":[
+            -2.438060760498047,
+            0.25,
+            0.7965620160102844
+          ],
+          "rotationY":-0.4300000020051476,
+          "group":"regular_string",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                5.0,
+                1.0,
+                6.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                22.0,
+                3.999998092651367,
+                17.0,
+                7.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                5.0,
+                1.0,
+                6.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                22.0,
+                3.999998092651367,
+                17.0,
+                7.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                22.0,
+                3.999998092651367,
+                21.0,
+                8.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                21.0,
+                8.0,
+                22.0,
+                3.999998092651367
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"regular_string_stonehead 02",
+          "from":[
+            2.573758602142334,
+            0.0159149169921875,
+            0.20284748077392578
+          ],
+          "to":[
+            5.197765827178955,
+            0.5159148871898651,
+            1.8937496542930603
+          ],
+          "rotationOrigin":[
+            3.8857622146606445,
+            0.2659149169921875,
+            1.0482986569404602
+          ],
+          "rotationX":90.93700200576636,
+          "rotationY":0.3777559117241465,
+          "rotationZ":-75.72787827144047,
+          "group":"regular_string",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                12.999929428100586,
+                4.99989128112793,
+                17.998207092285156,
+                5.999883651733398
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                9.999975204467773,
+                2.0,
+                12.999975204467773,
+                2.999998092651367
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                12.999907493591309,
+                5.00010871887207,
+                17.992164611816406,
+                6.000110626220703
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                10.00002384185791,
+                1.9999980926513672,
+                13.000024795532227,
+                3.000001907348633
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                6.0,
+                5.0,
+                11.0,
+                8.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                11.0,
+                8.0,
+                6.0,
+                5.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"regular_string_stonehead 03",
+          "from":[
+            3.6702967435121536,
+            -0.5152888894081116,
+            -0.1942850947380066
+          ],
+          "to":[
+            4.170296594500542,
+            1.0748947858810425,
+            2.306700050830841
+          ],
+          "rotationOrigin":[
+            3.9202966690063477,
+            0.27980291843414307,
+            1.0562074780464172
+          ],
+          "rotationY":7.540000357807047,
+          "group":"regular_string",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                18.0,
+                2.0,
+                21.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                1.0,
+                1.0,
+                5.0,
+                3.999998092651367
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                18.0,
+                2.0,
+                21.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                6.0,
+                5.0,
+                11.0,
+                8.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                1.0,
+                3.0,
+                6.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                3.0,
+                6.0,
+                2.0,
+                1.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"regular_string_stonehead 04",
+          "from":[
+            3.7314840651494237,
+            -0.6496533960345179,
+            1.6826321482658386
+          ],
+          "to":[
+            4.054624011422991,
+            -0.3504627138135046,
+            2.6189498007297516
+          ],
+          "rotationOrigin":[
+            3.8930540084838867,
+            -0.5000580549240112,
+            2.1507909893989563
+          ],
+          "rotationX":59.326517696732175,
+          "rotationY":-0.10948860607607214,
+          "rotationZ":-68.46357593816005,
+          "group":"regular_string",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                23.0,
+                4.0,
+                24.0,
+                5.000005722045898
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                24.0,
+                5.000005722045898,
+                25.0,
+                7.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                22.0,
+                4.0,
+                23.0,
+                5.000005722045898
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                25.0,
+                5.000005722045898,
+                26.0,
+                7.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                23.0,
+                5.000005722045898,
+                24.0,
+                7.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                23.0,
+                7.0,
+                22.0,
+                5.000005722045898
+              ],
+              "autoUv":false
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"regular_string_stonehead 05",
+          "from":[
+            4.119836330413818,
+            -0.029114574194076148,
+            -0.3417190380206847
+          ],
+          "to":[
+            7.315222263336182,
+            0.4708812385798762,
+            1.433910316955167
+          ],
+          "rotationOrigin":[
+            5.717529296875,
+            0.22088336944580078,
+            0.5460956692695618
+          ],
+          "rotationX":91.03606706948823,
+          "rotationY":1.6740722152158378,
+          "rotationZ":-5.861868128738165,
+          "group":"regular_string",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                5.971559524536133,
+                2.0,
+                0.9715595245361328,
+                3.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                19.971572875976562,
+                1.9999828338623047,
+                16.971572875976562,
+                2.999980926513672
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                5.971559524536133,
+                2.0,
+                0.9715595245361328,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                19.971569061279297,
+                2.0000152587890625,
+                16.971569061279297,
+                3.000020980834961
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                20.971559524536133,
+                1.0,
+                14.971559524536133,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                14.971559524536133,
+                12.0,
+                21.0,
+                9.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"regular_string_stonehead 06",
+          "from":[
+            -3.3270186483860016,
+            -0.4644240140914917,
+            -0.08994549512863159
+          ],
+          "to":[
+            -2.7898846566677094,
+            0.9644240140914917,
+            1.7915251851081848
+          ],
+          "rotationOrigin":[
+            -3.0584516525268555,
+            0.25,
+            0.8507898449897766
+          ],
+          "rotationY":21.299999568198125,
+          "group":"regular_string",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                19.0,
+                5.0,
+                22.0,
+                6.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                1.0,
+                3.999998092651367,
+                6.0,
+                7.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                19.0,
+                5.0,
+                22.0,
+                6.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                1.0,
+                3.999998092651367,
+                6.0,
+                7.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                1.0,
+                3.999998092651367,
+                2.0,
+                8.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                8.0,
+                1.0,
+                3.999998092651367
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"regular_string_stonehead 07",
+          "from":[
+            3.9653472900390625,
+            -0.02759745717048645,
+            0.5653167366981506
+          ],
+          "to":[
+            7.2586517333984375,
+            0.472398579120636,
+            2.3409462571144104
+          ],
+          "rotationOrigin":[
+            5.61199951171875,
+            0.22240060567855835,
+            1.4531314969062805
+          ],
+          "rotationX":90.59409918867505,
+          "rotationY":1.8738034884114068,
+          "rotationZ":8.344151825964852,
+          "group":"regular_string",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                16.0,
+                2.0,
+                21.0,
+                3.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                2.0000314712524414,
+                1.9999866485595703,
+                5.000030994415283,
+                2.999980926513672
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                16.0,
+                2.0,
+                21.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                1.9999908208847046,
+                2.0000152587890625,
+                4.999990463256836,
+                3.000020980834961
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                1.0,
+                1.0,
+                7.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                7.0,
+                12.0,
+                0.9715589284896851,
+                9.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        }
+      ]
+    }
+  ],
+  "groups":[]
+}

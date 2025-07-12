@@ -1,45 +1,182 @@
 {
-	"editor": {
-		"allAngles": false,
-		"entityTextureMode": false
-	},
-	"textureWidth": 16,
-	"textureHeight": 16,
-	"textureSizes": {
-		"grip": [32,32]
-	},
-	"textures": {
-		"grip": "game:block/leather/plain"
-	},
-	"elements": [
-		{
-			"name": "origin",
-			"from": [ 13.7, 0.5, 8.2107 ],
-			"to": [ 13.7, 0.5, 8.2107 ],
-			"rotationOrigin": [ 10.6972, 0.0, 8.5107 ],
-			"faces": {
-				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"up": { "texture": "#grip", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
-				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
-			},
-			"children": [
-				{
-					"name": "bone_fabric1",
-					"from": [ -7.753, -0.5569, -0.8132 ],
-					"to": [ -3.961, 0.5569, 0.3007 ],
-					"rotationOrigin": [ -5.857, 0.0, -0.2562 ],
-					"faces": {
-						"north": { "texture": "#grip", "uv": [ 7.0, 12.0, 14.0, 14.0 ], "autoUv": false },
-						"east": { "texture": "#grip", "uv": [ 16.0, 12.0, 18.0, 14.0 ], "autoUv": false },
-						"south": { "texture": "#grip", "uv": [ 10.0, 14.0, 18.0, 16.0 ], "autoUv": false },
-						"west": { "texture": "#grip", "uv": [ 16.0, 14.0, 18.0, 16.0 ], "autoUv": false },
-						"up": { "texture": "#grip", "uv": [ 10.0, 18.0, 18.0, 20.0 ], "autoUv": false },
-						"down": { "texture": "#grip", "uv": [ 18.0, 18.0, 10.0, 16.0 ], "autoUv": false }
-					}
-				}
-			]
-		}
-	]}
+  "textureWidth":16,
+  "textureHeight":16,
+  "textures":{
+    "grip":"game:block/leather/plain"
+  },
+  "textureSizes":{
+    "grip":[
+      32,
+      32
+    ]
+  },
+  "elements":[
+    {
+      "name":"origin",
+      "from":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "to":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "rotationOrigin":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "group":"bone_fabric",
+      "faces":{
+        "north":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "east":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "south":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "west":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "up":{
+          "texture":"#grip",
+          "uv":[
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "autoUv":false,
+          "rotation":180
+        },
+        "down":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        }
+      },
+      "children":[
+        {
+          "name":"bone_fabric1",
+          "from":[
+            -7.955824851989746,
+            -0.6106415092945099,
+            -0.36078715324401855
+          ],
+          "to":[
+            -4.163754463195801,
+            0.503215879201889,
+            0.7530702352523804
+          ],
+          "rotationOrigin":[
+            -6.059789657592773,
+            -0.053712815046310425,
+            0.1961415410041809
+          ],
+          "group":"bone_fabric",
+          "faces":{
+            "north":{
+              "texture":"#grip",
+              "uv":[
+                6.999999523162842,
+                11.999998092651367,
+                14.000000953674316,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#grip",
+              "uv":[
+                16.0,
+                12.0,
+                18.0,
+                14.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#grip",
+              "uv":[
+                10.0,
+                14.0,
+                18.0,
+                15.999998092651367
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#grip",
+              "uv":[
+                16.0,
+                14.000001907348633,
+                18.0,
+                16.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#grip",
+              "uv":[
+                10.0,
+                18.0,
+                17.999998092651367,
+                19.999999046325684
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#grip",
+              "uv":[
+                18.0,
+                17.999998092651367,
+                10.000000953674316,
+                16.0
+              ],
+              "autoUv":false
+            }
+          },
+          "children":[]
+        }
+      ]
+    }
+  ],
+  "groups":[]
+}

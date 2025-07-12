@@ -1,45 +1,184 @@
 {
-	"editor": {
-		"allAngles": false,
-		"entityTextureMode": false
-	},
-	"textureWidth": 16,
-	"textureHeight": 16,
-	"textureSizes": {
-		"grip": [32,32]
-	},
-	"textures": {
-		"grip": "game:block/leather/plain"
-	},
-	"elements": [
-		{
-			"name": "origin",
-			"from": [ 12.3, 0.5, 8.2107 ],
-			"to": [ 12.3, 0.5, 8.2107 ],
-			"rotationOrigin": [ 9.2972, 0.0, 8.5107 ],
-			"faces": {
-				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"up": { "texture": "#grip", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
-				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
-			},
-			"children": [
-				{
-					"name": "unv_fabric1",
-					"from": [ -9.3852, -0.4225, -1.0514 ],
-					"to": [ -4.2279, 0.9344, 0.5315 ],
-					"rotationOrigin": [ -5.6014, 0.2559, -0.26 ],
-					"faces": {
-						"north": { "texture": "#grip", "uv": [ 20.0, 18.0, 29.0, 21.0 ], "autoUv": false },
-						"east": { "texture": "#grip", "uv": [ 15.0, 11.0, 18.0, 14.0 ], "rotation": 90, "autoUv": false },
-						"south": { "texture": "#grip", "uv": [ 16.0, 22.0, 25.0, 25.0 ], "autoUv": false },
-						"west": { "texture": "#grip", "uv": [ 18.0, 11.0, 21.0, 14.0 ], "rotation": 90, "autoUv": false },
-						"up": { "texture": "#grip", "uv": [ 6.0, 15.0, 15.0, 18.0 ], "autoUv": false },
-						"down": { "texture": "#grip", "uv": [ 20.0, 22.0, 11.0, 19.0 ], "autoUv": false }
-					}
-				}
-			]
-		}
-	]}
+  "textureWidth":16,
+  "textureHeight":16,
+  "textures":{
+    "grip":"game:block/leather/plain"
+  },
+  "textureSizes":{
+    "grip":[
+      32,
+      32
+    ]
+  },
+  "elements":[
+    {
+      "name":"origin",
+      "from":[
+        10.79720687866211,
+        0.5,
+        8.21067351102829
+      ],
+      "to":[
+        10.79720687866211,
+        0.5,
+        8.21067351102829
+      ],
+      "rotationOrigin":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "group":"unv_fabric",
+      "faces":{
+        "north":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "east":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "south":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "west":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "up":{
+          "texture":"#grip",
+          "uv":[
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "autoUv":false,
+          "rotation":180
+        },
+        "down":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        }
+      },
+      "children":[
+        {
+          "name":"unv_fabric1",
+          "from":[
+            -9.385180234909058,
+            -0.422504186630249,
+            -1.0514189004898071
+          ],
+          "to":[
+            -4.227903485298157,
+            0.9343835115432739,
+            0.5315048694610596
+          ],
+          "rotationOrigin":[
+            -5.601436138153076,
+            0.25593966245651245,
+            -0.2599570155143738
+          ],
+          "group":"unv_fabric",
+          "faces":{
+            "north":{
+              "texture":"#grip",
+              "uv":[
+                20.0,
+                18.0,
+                28.999996185302734,
+                21.000001907348633
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#grip",
+              "uv":[
+                15.0,
+                11.0,
+                18.0,
+                14.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "south":{
+              "texture":"#grip",
+              "uv":[
+                16.0,
+                22.000000953674316,
+                25.0,
+                25.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#grip",
+              "uv":[
+                18.0,
+                11.0,
+                21.0,
+                14.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "up":{
+              "texture":"#grip",
+              "uv":[
+                6.0,
+                14.999998092651367,
+                15.0,
+                18.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#grip",
+              "uv":[
+                20.0,
+                22.000000953674316,
+                11.0,
+                18.999998092651367
+              ],
+              "autoUv":false
+            }
+          },
+          "children":[]
+        }
+      ]
+    }
+  ],
+  "groups":[]
+}

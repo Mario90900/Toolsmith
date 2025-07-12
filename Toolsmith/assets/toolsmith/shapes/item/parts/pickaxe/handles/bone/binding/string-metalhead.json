@@ -1,114 +1,540 @@
 {
-	"editor": {
-		"allAngles": false,
-		"entityTextureMode": false
-	},
-	"textureWidth": 16,
-	"textureHeight": 16,
-	"textureSizes": {
-		"material": [32,32]
-	},
-	"textures": {
-		"material": "game:item/tool/material/string"
-	},
-	"elements": [
-		{
-			"name": "origin",
-			"from": [ 12.3, 0.5, 8.2107 ],
-			"to": [ 12.3, 0.5, 8.2107 ],
-			"rotationOrigin": [ 9.2972, 0.0, 8.5107 ],
-			"faces": {
-				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"up": { "texture": "#material", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
-				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
-			},
-			"children": [
-				{
-					"name": "bone_string_metalhead 1",
-					"from": [ -3.2149, -0.5572, -0.9595 ],
-					"to": [ -2.6778, 0.5823, 0.4228 ],
-					"rotationOrigin": [ -2.9463, 0.0125, -0.2683 ],
-					"rotationY": 21.3,
-					"faces": {
-						"north": { "texture": "#material", "uv": [ 18.0, 2.0, 21.0, 3.0 ], "rotation": 90, "autoUv": false },
-						"east": { "texture": "#material", "uv": [ 5.0, 4.0, 8.0, 6.0 ], "autoUv": false },
-						"south": { "texture": "#material", "uv": [ 18.0, 2.0, 21.0, 3.0 ], "rotation": 90, "autoUv": false },
-						"west": { "texture": "#material", "uv": [ 5.0, 4.0, 8.0, 6.0 ], "autoUv": false },
-						"up": { "texture": "#material", "uv": [ 2.0, 1.0, 3.0, 4.0 ], "autoUv": false },
-						"down": { "texture": "#material", "uv": [ 3.0, 4.0, 2.0, 1.0 ], "rotation": 180, "autoUv": false }
-					},
-					"children": [
-						{
-							"name": "bone_string_metalhead 01",
-							"from": [ 5.5165, -0.3113, 3.2559 ],
-							"to": [ 5.8396, -0.0121, 3.9031 ],
-							"rotationOrigin": [ 5.678, -0.1617, 3.5795 ],
-							"rotationX": 61.3948,
-							"rotationY": -11.5753,
-							"rotationZ": -48.4465,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 10.0, 6.0, 11.0, 7.0 ], "rotation": 90, "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 12.0, 8.0, 13.0, 9.0 ], "rotation": 270, "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 9.0, 6.0, 10.0, 7.0 ], "rotation": 90, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 11.0, 8.0, 12.0, 9.0 ], "rotation": 90, "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 10.0, 8.0, 11.0, 9.0 ], "rotation": 180, "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 10.0, 9.0, 9.0, 8.0 ], "autoUv": false }
-							}
-						},
-						{
-							"name": "bone_string_metalhead 02",
-							"from": [ 4.8334, 0.545, 2.0077 ],
-							"to": [ 6.501, 1.045, 3.6867 ],
-							"rotationOrigin": [ 5.6672, 0.795, 2.8472 ],
-							"rotationX": 90.956,
-							"rotationY": 0.1689,
-							"rotationZ": -77.3869,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 2.0, 4.0, 5.0, 5.0 ], "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 6.0, 7.0001, 9.0, 7.9998 ], "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 2.0, 4.0, 5.0, 5.0 ], "rotation": 180, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 6.0, 6.9999, 9.0, 8.0002 ], "rotation": 180, "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 8.0, 2.0, 11.0, 5.0 ], "rotation": 180, "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 11.0, 5.0, 8.0, 2.0 ], "autoUv": false }
-							}
-						},
-						{
-							"name": "bone_string_metalhead 03",
-							"from": [ 5.2792, 0.5136, 2.2353 ],
-							"to": [ 7.0105, 1.0136, 3.8992 ],
-							"rotationOrigin": [ 6.1449, 0.7636, 3.0673 ],
-							"rotationX": 90.8134,
-							"rotationY": 0.4675,
-							"rotationZ": -65.509,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 8.0, 5.0, 11.0, 5.9998 ], "rotation": 180, "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 4.0, 1.9993, 7.0, 3.0002 ], "rotation": 180, "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 8.0, 5.0, 11.0, 6.0002 ], "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 4.0, 2.0007, 7.0, 2.9998 ], "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 2.0, 5.0, 5.0, 8.0 ], "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 5.0, 8.0, 2.0, 5.0 ], "rotation": 180, "autoUv": false }
-							}
-						},
-						{
-							"name": "bone_string_metalhead 06",
-							"from": [ 0.6712, 0.0205, 0.3641 ],
-							"to": [ 1.1712, 1.1549, 1.5951 ],
-							"rotationOrigin": [ 0.9212, 0.5877, 0.9796 ],
-							"rotationY": -21.73,
-							"faces": {
-								"north": { "texture": "#material", "uv": [ 2.0, 4.0, 5.0, 5.0 ], "rotation": 270, "autoUv": false },
-								"east": { "texture": "#material", "uv": [ 15.0, 1.0, 18.0, 3.0 ], "rotation": 180, "autoUv": false },
-								"south": { "texture": "#material", "uv": [ 2.0, 4.0, 5.0, 5.0 ], "rotation": 270, "autoUv": false },
-								"west": { "texture": "#material", "uv": [ 15.0, 1.0, 18.0, 3.0 ], "rotation": 180, "autoUv": false },
-								"up": { "texture": "#material", "uv": [ 20.0, 3.0, 21.0, 6.0 ], "rotation": 180, "autoUv": false },
-								"down": { "texture": "#material", "uv": [ 21.0, 6.0, 20.0, 3.0 ], "autoUv": false }
-							}
-						}
-					]
-				}
-			]
-		}
-	]}
+  "textureWidth":16,
+  "textureHeight":16,
+  "textures":{
+    "material":"game:item/tool/material/string"
+  },
+  "textureSizes":{
+    "material":[
+      32,
+      32
+    ]
+  },
+  "elements":[
+    {
+      "name":"origin",
+      "from":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "to":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "rotationOrigin":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "group":"bone_string_metalhead",
+      "faces":{
+        "north":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "east":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "south":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "west":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "up":{
+          "texture":"#material",
+          "uv":[
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "autoUv":false,
+          "rotation":180
+        },
+        "down":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        }
+      },
+      "children":[
+        {
+          "name":"bone_string_metalhead 01",
+          "from":[
+            2.778453439474106,
+            -0.9222220629453659,
+            0.5864985287189484
+          ],
+          "to":[
+            3.101593405008316,
+            -0.6230313777923584,
+            1.2337467968463898
+          ],
+          "rotationOrigin":[
+            2.940023422241211,
+            -0.7726266980171204,
+            0.9101226925849915
+          ],
+          "rotationX":59.33929698066927,
+          "rotationY":-0.9495344992407594,
+          "rotationZ":-67.04629802500406,
+          "group":"bone_string_metalhead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                10.0,
+                6.0,
+                10.999999046325684,
+                7.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                12.000000953674316,
+                7.999998092651367,
+                13.0,
+                9.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                9.0,
+                6.0,
+                10.0,
+                7.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                10.999998092651367,
+                7.999998092651367,
+                12.0,
+                9.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                10.0,
+                8.0,
+                10.999999046325684,
+                9.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                10.0,
+                9.0,
+                9.0,
+                8.0
+              ],
+              "autoUv":false
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"bone_string_metalhead 02",
+          "from":[
+            1.830177366733551,
+            -0.06585687398910522,
+            -0.6077327132225037
+          ],
+          "to":[
+            3.4977149963378906,
+            0.43414318561553955,
+            1.0712990760803223
+          ],
+          "rotationOrigin":[
+            2.6639461517333984,
+            0.18414318561553955,
+            0.2317832112312317
+          ],
+          "rotationX":90.95200793137289,
+          "rotationY":-0.18982220283440107,
+          "rotationZ":-98.68374792088147,
+          "group":"bone_string_metalhead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                3.999958038330078,
+                5.0,
+                5.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                5.999999523162842,
+                7.000093460083008,
+                9.0,
+                7.999822616577148
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                4.000041961669922,
+                5.0,
+                5.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                6.0,
+                6.999906539916992,
+                9.0,
+                8.000179290771484
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                8.0,
+                2.000001907348633,
+                11.0,
+                5.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                11.0,
+                5.0,
+                8.0,
+                2.0000038146972656
+              ],
+              "autoUv":false
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"bone_string_metalhead 03",
+          "from":[
+            2.3232436776161194,
+            -0.0973241776227951,
+            -0.5686428546905518
+          ],
+          "to":[
+            4.0545448660850525,
+            0.40267565846443176,
+            1.0952547192573547
+          ],
+          "rotationOrigin":[
+            3.188894271850586,
+            0.15267574787139893,
+            0.2633059620857239
+          ],
+          "rotationX":90.92763781641428,
+          "rotationY":0.14013441757198303,
+          "rotationZ":-86.8064109542553,
+          "group":"bone_string_metalhead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                8.0,
+                5.0,
+                11.0,
+                5.999763488769531
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                1.999349594116211,
+                7.0,
+                3.0001792907714844
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                8.0,
+                5.0,
+                11.0,
+                6.000232696533203
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                4.0,
+                2.0006542205810547,
+                6.999999523162842,
+                2.999818801879883
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                5.0,
+                5.0,
+                8.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                5.0,
+                8.0,
+                2.0,
+                5.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"bone_string_metalhead 06",
+          "from":[
+            -2.686290606856346,
+            -0.5904299914836884,
+            -0.399752140045166
+          ],
+          "to":[
+            -2.1862946897745132,
+            0.5439852774143219,
+            0.8312817811965942
+          ],
+          "rotationOrigin":[
+            -2.4362926483154297,
+            -0.023222357034683228,
+            0.2157648205757141
+          ],
+          "rotationY":-0.4300000020051476,
+          "group":"bone_string_metalhead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                4.0,
+                5.0,
+                5.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                15.0,
+                1.0,
+                18.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                4.0,
+                5.0,
+                5.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                15.0,
+                1.0,
+                18.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                20.0,
+                3.0,
+                21.0,
+                6.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                21.0,
+                6.0,
+                20.0,
+                3.0
+              ],
+              "autoUv":false
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"bone_string_metalhead 1",
+          "from":[
+            -3.417688727378845,
+            -0.610899418592453,
+            -0.5070810317993164
+          ],
+          "to":[
+            -2.8805547654628754,
+            0.5285530388355255,
+            0.8751751184463501
+          ],
+          "rotationOrigin":[
+            -3.1491217613220215,
+            -0.041173189878463745,
+            0.18404704332351685
+          ],
+          "rotationY":21.299999568198125,
+          "group":"bone_string_metalhead",
+          "faces":{
+            "north":{
+              "texture":"#material",
+              "uv":[
+                18.0,
+                2.0,
+                20.999998092651367,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "east":{
+              "texture":"#material",
+              "uv":[
+                5.0,
+                4.0,
+                8.0,
+                6.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#material",
+              "uv":[
+                17.999998092651367,
+                2.0,
+                21.0,
+                3.0
+              ],
+              "autoUv":false,
+              "rotation":90
+            },
+            "west":{
+              "texture":"#material",
+              "uv":[
+                5.0,
+                4.0,
+                8.0,
+                6.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#material",
+              "uv":[
+                2.0,
+                1.0000019073486328,
+                3.0,
+                3.999998092651367
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#material",
+              "uv":[
+                3.0,
+                4.0,
+                2.0,
+                1.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        }
+      ]
+    }
+  ],
+  "groups":[]
+}

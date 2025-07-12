@@ -70,7 +70,9 @@ namespace Toolsmith {
                             }
                         }
 
-                        toolRecipes.AddRange(GenerateToolGridRecipes(api, ingredient, tool));
+                        if (ToolsmithModSystem.Config.EnableGridRecipesForToolCrafting) {
+                            toolRecipes.AddRange(GenerateToolGridRecipes(api, ingredient, tool));
+                        }
 
                         var gridRecipeTag = ingredient.Code.ToString();
                         foreach (var otherIngredients in recipe.resolvedIngredients.Where(o => (o != null) && (o.ResolvedItemstack != null) && (o.ResolvedItemstack.Collectible.Code.Path == "bone"))) { //Is this one of the bone + head recipes?

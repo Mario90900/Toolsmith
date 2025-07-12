@@ -1,196 +1,977 @@
 {
-	"editor": {
-		"allAngles": false,
-		"entityTextureMode": false
-	},
-	"textureWidth": 16,
-	"textureHeight": 16,
-	"textureSizes": {
-		"bark": [32,32],
-		"north": [32,32],
-		"side": [32,32],
-		"south": [32,32]
-	},
-	"textures": {
+  "textureWidth":16,
+  "textureHeight":16,
+  "textures":{
 		"bark":"game:block/wood/firewood/bark",
 		"side":"game:block/wood/firewood/side",
 		"south":"game:block/wood/firewood/south",
 		"north":"game:block/wood/firewood/north"
-	},
-	"elements": [
-		{
-			"name": "origin",
-			"from": [ 11.9, 0.5, 8.2107 ],
-			"to": [ 11.9, 0.5, 8.2107 ],
-			"rotationOrigin": [ 8.8972, 0.0, 8.5107 ],
-			"faces": {
-				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
-				"up": { "texture": "#bark", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
-				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
-			},
-			"children": [
-				{
-					"name": "handle_crude 01",
-					"from": [ -11.9944, -0.3988, -1.0107 ],
-					"to": [ 5.5218, 0.8988, 0.4893 ],
-					"rotationOrigin": [ -3.2363, 0.25, -0.2607 ],
-					"faces": {
-						"north": { "texture": "#bark", "uv": [ 1.0, 0.0, 28.0, 4.0 ], "autoUv": false },
-						"east": { "texture": "#north", "uv": [ 4.0, 0.0, 8.0, 4.0 ], "autoUv": false },
-						"south": { "texture": "#side", "uv": [ 1.0, 0.0, 30.0, 4.0 ], "autoUv": false },
-						"west": { "texture": "#south", "uv": [ 1.0, 1.0, 5.0, 5.0 ], "autoUv": false },
-						"up": { "texture": "#bark", "uv": [ 4.0, 0.0, 31.0, 4.0 ], "autoUv": false },
-						"down": { "texture": "#side", "uv": [ 31.0, 4.0, 4.0, 0.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_crude 02",
-					"from": [ 3.2839, 0.2065, -1.0731 ],
-					"to": [ 5.7272, 0.9565, -0.3231 ],
-					"rotationOrigin": [ 4.5055, 0.5815, -0.6981 ],
-					"rotationX": 0.0,
-					"rotationY": 4.0,
-					"rotationZ": 3.0,
-					"faces": {
-						"north": { "texture": "#side", "uv": [ 2.0, 0.0, 6.0, 2.0 ], "autoUv": false },
-						"east": { "texture": "#north", "uv": [ 4.0, 1.0, 7.0, 4.0 ], "autoUv": false },
-						"south": { "texture": "#bark", "uv": [ 0.9969, 0.0, 4.0, 2.0 ], "autoUv": false },
-						"west": { "texture": "#side", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#side", "uv": [ 18.0, 0.0, 22.0, 2.0 ], "autoUv": false },
-						"down": { "texture": "#bark", "uv": [ 24.0, 2.0, 20.0, 0.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_crude 03",
-					"from": [ 3.322, -0.4386, -1.0419 ],
-					"to": [ 5.7014, 0.3114, -0.2919 ],
-					"rotationOrigin": [ 4.5117, -0.0636, -0.6669 ],
-					"rotationX": 0.0,
-					"rotationY": 2.0,
-					"rotationZ": -2.0,
-					"faces": {
-						"north": { "texture": "#side", "uv": [ 2.0, 2.0, 6.0, 4.0 ], "autoUv": false },
-						"east": { "texture": "#north", "uv": [ 4.0, 2.0, 7.0, 5.0 ], "autoUv": false },
-						"south": { "texture": "#bark", "uv": [ 0.9969, 2.0, 4.0, 4.0 ], "autoUv": false },
-						"west": { "texture": "#side", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bark", "uv": [ 18.0, 2.0, 22.0, 4.0 ], "autoUv": false },
-						"down": { "texture": "#bark", "uv": [ 24.0, 2.0, 20.0, 0.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_crude 04",
-					"from": [ 3.2965, -0.4549, -0.1985 ],
-					"to": [ 5.706, 0.2951, 0.5515 ],
-					"rotationOrigin": [ 4.5013, -0.0799, 0.1765 ],
-					"rotationX": 0.0,
-					"rotationY": -4.0,
-					"rotationZ": -3.0,
-					"faces": {
-						"north": { "texture": "#side", "uv": [ 2.0, 4.0, 6.0, 6.0 ], "autoUv": false },
-						"east": { "texture": "#north", "uv": [ 4.0, 2.0, 6.0, 4.0 ], "autoUv": false },
-						"south": { "texture": "#side", "uv": [ 1.0062, 2.0, 4.0, 4.0 ], "autoUv": false },
-						"west": { "texture": "#side", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#side", "uv": [ 18.0, 4.0, 22.0, 6.0 ], "autoUv": false },
-						"down": { "texture": "#side", "uv": [ 24.0, 4.0, 20.0, 2.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_crude 05",
-					"from": [ 3.3217, 0.1742, -0.2137 ],
-					"to": [ 5.7011, 0.9242, 0.5363 ],
-					"rotationOrigin": [ 4.5114, 0.5492, 0.1613 ],
-					"rotationX": 0.0,
-					"rotationY": -3.0,
-					"rotationZ": 1.0,
-					"faces": {
-						"north": { "texture": "#side", "uv": [ 2.0, 4.0, 6.0, 6.0 ], "autoUv": false },
-						"east": { "texture": "#north", "uv": [ 4.0, 1.0, 6.0, 3.0 ], "autoUv": false },
-						"south": { "texture": "#side", "uv": [ 2.0, 0.0, 6.0, 2.0 ], "autoUv": false },
-						"west": { "texture": "#side", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bark", "uv": [ 18.0, 2.0, 22.0, 4.0 ], "autoUv": false },
-						"down": { "texture": "#side", "uv": [ 24.0, 6.0, 20.0, 4.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_crude 06",
-					"from": [ -0.8015, 0.7984, -0.7107 ],
-					"to": [ 0.6985, 0.9484, 0.0393 ],
-					"rotationOrigin": [ -0.0515, 0.8734, -0.3357 ],
-					"rotationZ": 4.0,
-					"faces": {
-						"north": { "texture": "#bark", "uv": [ 29.0, 0.0, 32.0, 1.0 ], "autoUv": false },
-						"east": { "texture": "#bark", "uv": [ 31.0, 1.0, 32.0, 2.0 ], "autoUv": false },
-						"south": { "texture": "#bark", "uv": [ 29.0, 0.0, 32.0, 1.0 ], "autoUv": false },
-						"west": { "texture": "#bark", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bark", "uv": [ 2.0, 2.0, 5.0, 4.0 ], "autoUv": false },
-						"down": { "texture": "#bark", "uv": [ 32.0, 1.0, 29.0, 0.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_crude 07",
-					"from": [ -10.9165, 0.7816, -0.4107 ],
-					"to": [ -9.9165, 0.9316, 0.3393 ],
-					"rotationOrigin": [ -10.4165, 0.8566, -0.0357 ],
-					"rotationZ": 4.0,
-					"faces": {
-						"north": { "texture": "#bark", "uv": [ 29.0, 0.0, 31.0, 1.0 ], "autoUv": false },
-						"east": { "texture": "#bark", "uv": [ 31.0, 1.0, 32.0, 2.0 ], "autoUv": false },
-						"south": { "texture": "#bark", "uv": [ 29.0, 0.0, 31.0, 1.0 ], "autoUv": false },
-						"west": { "texture": "#bark", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bark", "uv": [ 7.0, 3.0, 9.0, 5.0 ], "autoUv": false },
-						"down": { "texture": "#bark", "uv": [ 31.0, 1.0, 29.0, 0.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_crude 08",
-					"from": [ -4.0509, 0.8158, -0.9107 ],
-					"to": [ -2.0509, 0.9658, -0.1607 ],
-					"rotationOrigin": [ -3.0509, 0.8908, -0.5357 ],
-					"rotationZ": 4.0,
-					"faces": {
-						"north": { "texture": "#bark", "uv": [ 28.0, 0.0, 32.0, 1.0 ], "autoUv": false },
-						"east": { "texture": "#bark", "uv": [ 31.0, 1.0, 32.0, 2.0 ], "autoUv": false },
-						"south": { "texture": "#bark", "uv": [ 28.0, 0.0, 32.0, 1.0 ], "autoUv": false },
-						"west": { "texture": "#bark", "uv": [ 12.0, 0.0, 20.0, 8.0 ], "rotation": 270, "autoUv": false },
-						"up": { "texture": "#bark", "uv": [ 11.0, 1.0, 15.0, 3.0 ], "autoUv": false },
-						"down": { "texture": "#bark", "uv": [ 32.0, 1.0, 28.0, 0.0 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_crude 09",
-					"from": [ 2.5652, -0.3955, -1.5177 ],
-					"to": [ 3.6759, 0.8955, 0.3938 ],
-					"rotationOrigin": [ 3.1206, 0.25, -0.562 ],
-					"rotationY": -81.9012,
-					"faces": {
-						"north": { "texture": "#bark", "uv": [ 31.4051, 21.1001, 29.1811, 23.6982 ], "autoUv": false },
-						"east": { "texture": "#bark", "uv": [ 0.5886, 1.2024, 4.4114, 3.7976 ], "autoUv": false },
-						"south": { "texture": "#bark", "uv": [ 29.1811, 21.1001, 31.4051, 23.6982 ], "autoUv": false },
-						"west": { "texture": "#bark", "uv": [ 2.0, 0.0, 6.0, 4.0 ], "autoUv": false },
-						"up": { "texture": "#bark", "uv": [ 1.0, 8.9256, 3.0, 10.9256 ], "rotation": 180, "autoUv": false },
-						"down": { "texture": "#south", "uv": [ 4.0, 13.0, 1.0, 11.1325 ], "rotation": 180, "autoUv": false }
-					}
-				},
-				{
-					"name": "handle_crude 10",
-					"from": [ 2.5652, -0.3955, -0.9188 ],
-					"to": [ 3.6759, 0.8955, 0.9927 ],
-					"rotationOrigin": [ 3.1206, 0.25, 0.037 ],
-					"rotationX": 0.0,
-					"rotationY": 81.9012,
-					"rotationZ": -180.0,
-					"faces": {
-						"north": { "texture": "#bark", "uv": [ 31.4051, 21.1001, 29.1811, 23.6982 ], "rotation": 180, "autoUv": false },
-						"east": { "texture": "#side", "uv": [ 6.0, 0.0, 2.0, 4.0 ], "rotation": 180, "autoUv": false },
-						"south": { "texture": "#bark", "uv": [ 29.1811, 21.1001, 31.4051, 23.6982 ], "rotation": 180, "autoUv": false },
-						"west": { "texture": "#bark", "uv": [ 4.4114, 1.2024, 0.5886, 3.7976 ], "rotation": 180, "autoUv": false },
-						"up": { "texture": "#side", "uv": [ 4.0, 11.1325, 1.0, 13.0 ], "rotation": 180, "autoUv": false },
-						"down": { "texture": "#bark", "uv": [ 1.0, 10.9256, 3.0, 8.9256 ], "rotation": 180, "autoUv": false }
-					}
-				}
-			]
-		}
-	]}
+  },
+  "textureSizes":{
+    "bark":[
+      32,
+      32
+    ],
+    "north":[
+      32,
+      32
+    ],
+    "side":[
+      32,
+      32
+    ],
+    "south":[
+      32,
+      32
+    ]
+  },
+  "elements":[
+    {
+      "name":"origin",
+      "from":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "to":[
+        11.0,
+        0.5,
+        7.699999988079071
+      ],
+      "rotationOrigin":[
+        8.0,
+        0.0,
+        8.0
+      ],
+      "group":"Crude",
+      "faces":{
+        "north":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "east":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "south":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "west":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        },
+        "up":{
+          "texture":"#bark",
+          "uv":[
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "autoUv":false,
+          "rotation":180
+        },
+        "down":{
+          "texture":"#0",
+          "uv":[
+            0,
+            0,
+            4,
+            4
+          ],
+          "autoUv":false
+        }
+      },
+      "children":[
+        {
+          "name":"handle_crude 01",
+          "from":[
+            -12.1972336769104,
+            -0.39878368377685547,
+            -0.5000001788139343
+          ],
+          "to":[
+            5.319030284881592,
+            0.8987836837768555,
+            0.9999998211860657
+          ],
+          "rotationOrigin":[
+            -3.4391016960144043,
+            0.25,
+            0.24999982118606567
+          ],
+          "group":"Crude",
+          "faces":{
+            "north":{
+              "texture":"#bark",
+              "uv":[
+                1.0,
+                1.9073486328125e-06,
+                28.0,
+                4.000001907348633
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#north",
+              "uv":[
+                4.0,
+                1.9073486328125e-06,
+                8.0,
+                4.000001907348633
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#side",
+              "uv":[
+                1.0,
+                1.9073486328125e-06,
+                30.000001907348633,
+                4.000001907348633
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#south",
+              "uv":[
+                1.0,
+                1.0,
+                5.0,
+                5.0
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#bark",
+              "uv":[
+                4.0,
+                1.9073486328125e-06,
+                31.0,
+                4.000001907348633
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#side",
+              "uv":[
+                31.0,
+                4.000001907348633,
+                4.0,
+                1.9073486328125e-06
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_crude 02",
+          "from":[
+            3.081087112426758,
+            0.20647060871124268,
+            -0.5624634623527527
+          ],
+          "to":[
+            5.524393081665039,
+            0.9564706087112427,
+            0.18753653764724731
+          ],
+          "rotationOrigin":[
+            4.302740097045898,
+            0.5814706087112427,
+            -0.18746346235275269
+          ],
+          "rotationX":-4.5308712575866427e-08,
+          "rotationY":4.000001249675003,
+          "rotationZ":3.0000030716903674,
+          "group":"Crude",
+          "faces":{
+            "north":{
+              "texture":"#side",
+              "uv":[
+                2.0,
+                0.0,
+                6.0,
+                2.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#north",
+              "uv":[
+                4.0,
+                1.0,
+                7.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bark",
+              "uv":[
+                0.9968939423561096,
+                0.0,
+                4.0,
+                2.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#side",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#side",
+              "uv":[
+                18.0,
+                0.0,
+                22.0,
+                2.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bark",
+              "uv":[
+                24.0,
+                2.0,
+                20.0,
+                0.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_crude 03",
+          "from":[
+            3.1191619634628296,
+            -0.4386162757873535,
+            -0.5311800837516785
+          ],
+          "to":[
+            5.498630166053772,
+            0.3113837242126465,
+            0.21881991624832153
+          ],
+          "rotationOrigin":[
+            4.308896064758301,
+            -0.06361627578735352,
+            -0.15618008375167847
+          ],
+          "rotationX":-1.2157781589308143e-08,
+          "rotationY":1.9999999845072665,
+          "rotationZ":-1.9999999845072665,
+          "group":"Crude",
+          "faces":{
+            "north":{
+              "texture":"#side",
+              "uv":[
+                2.0,
+                2.0,
+                6.0,
+                3.999998092651367
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#north",
+              "uv":[
+                4.0,
+                2.0,
+                7.0,
+                5.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bark",
+              "uv":[
+                0.9968940019607544,
+                1.9999980926513672,
+                4.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#side",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bark",
+              "uv":[
+                18.0,
+                1.9999980926513672,
+                22.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bark",
+              "uv":[
+                24.0,
+                1.9999980926513672,
+                20.0,
+                0.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_crude 04",
+          "from":[
+            3.093698501586914,
+            -0.4548647105693817,
+            0.31216317415237427
+          ],
+          "to":[
+            5.5032196044921875,
+            0.2951352894306183,
+            1.0621631741523743
+          ],
+          "rotationOrigin":[
+            4.298459053039551,
+            -0.07986471056938171,
+            0.6871631741523743
+          ],
+          "rotationX":-4.5308712575866427e-08,
+          "rotationY":-4.000001249675003,
+          "rotationZ":-3.0000030716903674,
+          "group":"Crude",
+          "faces":{
+            "north":{
+              "texture":"#side",
+              "uv":[
+                2.0,
+                3.999998092651367,
+                6.0,
+                5.999998092651367
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#north",
+              "uv":[
+                4.0,
+                2.0,
+                6.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#side",
+              "uv":[
+                1.0062121152877808,
+                1.9999980926513672,
+                4.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#side",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#side",
+              "uv":[
+                18.0,
+                3.999998092651367,
+                22.0,
+                5.999998092651367
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#side",
+              "uv":[
+                24.0,
+                3.999998092651367,
+                20.0,
+                1.9999980926513672
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_crude 05",
+          "from":[
+            3.118888258934021,
+            0.17422878742218018,
+            0.29695016145706177
+          ],
+          "to":[
+            5.498356461524963,
+            0.9242287874221802,
+            1.0469501614570618
+          ],
+          "rotationOrigin":[
+            4.308622360229492,
+            0.5492287874221802,
+            0.6719501614570618
+          ],
+          "rotationX":-1.1753993474584274e-08,
+          "rotationY":-3.000001791029898,
+          "rotationZ":0.9999997788102217,
+          "group":"Crude",
+          "faces":{
+            "north":{
+              "texture":"#side",
+              "uv":[
+                2.0,
+                4.0,
+                6.0,
+                6.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#north",
+              "uv":[
+                4.0,
+                1.0,
+                6.0,
+                3.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#side",
+              "uv":[
+                2.0,
+                -3.814697265625e-06,
+                6.0,
+                2.000001907348633
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#side",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bark",
+              "uv":[
+                18.0,
+                1.9999980926513672,
+                22.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#side",
+              "uv":[
+                24.0,
+                6.0,
+                20.0,
+                4.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_crude 06",
+          "from":[
+            -1.004293441772461,
+            0.7983592003583908,
+            -0.19999998807907104
+          ],
+          "to":[
+            0.49570655822753906,
+            0.9483592063188553,
+            0.550000011920929
+          ],
+          "rotationOrigin":[
+            -0.25429344177246094,
+            0.873359203338623,
+            0.17500001192092896
+          ],
+          "rotationZ":3.9999982614672405,
+          "group":"Crude",
+          "faces":{
+            "north":{
+              "texture":"#bark",
+              "uv":[
+                29.0,
+                0.0,
+                32.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bark",
+              "uv":[
+                31.0,
+                1.0,
+                32.0,
+                2.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bark",
+              "uv":[
+                29.0,
+                0.0,
+                32.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bark",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bark",
+              "uv":[
+                2.0,
+                2.0,
+                5.0,
+                4.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bark",
+              "uv":[
+                32.0,
+                1.0,
+                29.0,
+                0.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_crude 07",
+          "from":[
+            -11.119284629821777,
+            0.7815547436475754,
+            0.10000020265579224
+          ],
+          "to":[
+            -10.119284629821777,
+            0.9315547496080399,
+            0.8500002026557922
+          ],
+          "rotationOrigin":[
+            -10.619284629821777,
+            0.8565547466278076,
+            0.47500020265579224
+          ],
+          "rotationZ":3.9999982614672405,
+          "group":"Crude",
+          "faces":{
+            "north":{
+              "texture":"#bark",
+              "uv":[
+                29.0,
+                0.0,
+                31.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bark",
+              "uv":[
+                31.0,
+                1.0,
+                32.0,
+                2.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bark",
+              "uv":[
+                29.0,
+                0.0,
+                31.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bark",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bark",
+              "uv":[
+                7.0,
+                3.0,
+                9.0,
+                5.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bark",
+              "uv":[
+                31.0,
+                1.0,
+                29.0,
+                0.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_crude 08",
+          "from":[
+            -4.253697872161865,
+            0.8157983273267746,
+            -0.39999979734420776
+          ],
+          "to":[
+            -2.2536978721618652,
+            0.9657983332872391,
+            0.35000020265579224
+          ],
+          "rotationOrigin":[
+            -3.2536978721618652,
+            0.8907983303070068,
+            -0.024999797344207764
+          ],
+          "rotationZ":3.9999982614672405,
+          "group":"Crude",
+          "faces":{
+            "north":{
+              "texture":"#bark",
+              "uv":[
+                28.0,
+                0.0,
+                32.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bark",
+              "uv":[
+                31.0,
+                1.0,
+                32.0,
+                2.0
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bark",
+              "uv":[
+                28.0,
+                0.0,
+                32.0,
+                1.0
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bark",
+              "uv":[
+                12.0,
+                0.0,
+                20.0,
+                8.0
+              ],
+              "autoUv":false,
+              "rotation":270
+            },
+            "up":{
+              "texture":"#bark",
+              "uv":[
+                11.0,
+                1.0,
+                15.0,
+                3.0
+              ],
+              "autoUv":false
+            },
+            "down":{
+              "texture":"#bark",
+              "uv":[
+                32.0,
+                1.0,
+                28.0,
+                0.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_crude 09",
+          "from":[
+            2.3623924255371094,
+            -0.39545154571533203,
+            -1.006999135017395
+          ],
+          "to":[
+            3.473134994506836,
+            0.895451545715332,
+            0.9044406414031982
+          ],
+          "rotationOrigin":[
+            2.9177637100219727,
+            0.25,
+            -0.05127924680709839
+          ],
+          "rotationY":-81.90122180935144,
+          "group":"Crude",
+          "faces":{
+            "north":{
+              "texture":"#bark",
+              "uv":[
+                31.405126571655273,
+                21.100074768066406,
+                29.181076049804688,
+                23.698205947875977
+              ],
+              "autoUv":false
+            },
+            "east":{
+              "texture":"#bark",
+              "uv":[
+                0.5885602831840515,
+                1.2024345397949219,
+                4.411440372467041,
+                3.797567367553711
+              ],
+              "autoUv":false
+            },
+            "south":{
+              "texture":"#bark",
+              "uv":[
+                29.181076049804688,
+                21.100074768066406,
+                31.405126571655273,
+                23.698205947875977
+              ],
+              "autoUv":false
+            },
+            "west":{
+              "texture":"#bark",
+              "uv":[
+                1.9999990463256836,
+                1.9073486328125e-06,
+                6.000000953674316,
+                3.999998092651367
+              ],
+              "autoUv":false
+            },
+            "up":{
+              "texture":"#bark",
+              "uv":[
+                1.0,
+                8.925590515136719,
+                3.0,
+                10.925590515136719
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "down":{
+              "texture":"#south",
+              "uv":[
+                4.0,
+                13.0,
+                1.0,
+                11.13248062133789
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        },
+        {
+          "name":"handle_crude 10",
+          "from":[
+            2.3623924255371094,
+            -0.39545154571533203,
+            -0.4080859422683716
+          ],
+          "to":[
+            3.473134994506836,
+            0.895451545715332,
+            1.5033538341522217
+          ],
+          "rotationOrigin":[
+            2.9177637100219727,
+            0.25,
+            0.547633945941925
+          ],
+          "rotationX":1.3664218887434439e-11,
+          "rotationY":81.90122180935144,
+          "rotationZ":-179.9999640278213,
+          "group":"Crude",
+          "faces":{
+            "north":{
+              "texture":"#bark",
+              "uv":[
+                31.405126571655273,
+                21.100074768066406,
+                29.181076049804688,
+                23.698205947875977
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "east":{
+              "texture":"#side",
+              "uv":[
+                6.0,
+                0.0,
+                1.9999990463256836,
+                4.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "south":{
+              "texture":"#bark",
+              "uv":[
+                29.181076049804688,
+                21.100074768066406,
+                31.405126571655273,
+                23.698205947875977
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "west":{
+              "texture":"#bark",
+              "uv":[
+                4.411440372467041,
+                1.2024345397949219,
+                0.5885602831840515,
+                3.797567367553711
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "up":{
+              "texture":"#side",
+              "uv":[
+                4.0,
+                11.13248062133789,
+                1.0,
+                13.0
+              ],
+              "autoUv":false,
+              "rotation":180
+            },
+            "down":{
+              "texture":"#bark",
+              "uv":[
+                1.0,
+                10.925590515136719,
+                3.0,
+                8.925590515136719
+              ],
+              "autoUv":false,
+              "rotation":180
+            }
+          },
+          "children":[]
+        }
+      ]
+    }
+  ],
+  "groups":[]
+}

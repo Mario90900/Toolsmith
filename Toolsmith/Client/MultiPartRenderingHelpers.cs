@@ -387,11 +387,11 @@ namespace Toolsmith.Client {
             var headPartAndTransformTree = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHeadName);
             var handlePartAndTransformTree = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
 
-            headPartAndTransformTree.SetPartOffsetX(0.54f);
-            headPartAndTransformTree.SetPartOffsetY(0.01f);
-            headPartAndTransformTree.SetPartOffsetZ(-0.02f);
+            headPartAndTransformTree.SetPartOffsetX(0);
+            headPartAndTransformTree.SetPartOffsetY(0);
+            headPartAndTransformTree.SetPartOffsetZ(0);
             headPartAndTransformTree.SetPartRotationX(0);
-            headPartAndTransformTree.SetPartRotationY(-90);
+            headPartAndTransformTree.SetPartRotationY(0);
             headPartAndTransformTree.SetPartRotationZ(0);
 
             var headPartTree = headPartAndTransformTree.GetPartRenderTree();

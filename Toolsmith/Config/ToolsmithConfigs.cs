@@ -11,6 +11,7 @@ namespace Toolsmith.Config {
         public bool AccessibilityDisableNeedToHoldClick = false;
         public bool PrintAllParsedToolsAndParts = false;
         public bool DebugMessages = false;
+        public bool EnableGridRecipesForToolCrafting = false;
         public double HeadDurabilityMult = 5.0;
         public double SharpnessMult = 1.5;
         public double GrindstoneSharpenPerTick = 1;
