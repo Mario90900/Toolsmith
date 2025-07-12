@@ -381,9 +381,9 @@ namespace Toolsmith.ToolTinkering {
             var headPartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHeadName);
 
             //Set up the Head tree!
-            headPartAndTransformTree.SetPartOffsetX(-0.02f);
-            headPartAndTransformTree.SetPartOffsetY(0.01f);
-            headPartAndTransformTree.SetPartOffsetZ(-0.55f);
+            headPartAndTransformTree.SetPartOffsetX(0.48f);
+            headPartAndTransformTree.SetPartOffsetY(-0.01f);
+            headPartAndTransformTree.SetPartOffsetZ(0f);
             headPartAndTransformTree.SetPartRotationX(0);
             headPartAndTransformTree.SetPartRotationY(0);
             headPartAndTransformTree.SetPartRotationZ(0);
@@ -523,9 +523,9 @@ namespace Toolsmith.ToolTinkering {
 
                 var bundleMultiPartRenderTree = bundleSlot.Itemstack.GetMultiPartRenderTree();
                 var headPartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHeadName);
-                headPartAndTransformTree.SetPartOffsetX(0.54f);
-                headPartAndTransformTree.SetPartOffsetY(0.01f);
-                headPartAndTransformTree.SetPartOffsetZ(-0.02f);
+                headPartAndTransformTree.SetPartOffsetX(0.48f);
+                headPartAndTransformTree.SetPartOffsetY(-0.01f);
+                headPartAndTransformTree.SetPartOffsetZ(0f);
                 headPartAndTransformTree.SetPartRotationX(0);
                 headPartAndTransformTree.SetPartRotationY(-90);
                 headPartAndTransformTree.SetPartRotationZ(0);

@@ -1,0 +1,75 @@
+[
+	{
+		"op": "addmerge",
+		"path": "/shapeByType",
+		"value": {
+			"*-tinbronze": { "base": "toolsmith:item/parts/pickaxe/heads/normal" },
+			"*-bismuthbronze": { "base": "toolsmith:item/parts/pickaxe/heads/normal" },
+			"*-blackbronze": { "base": "toolsmith:item/parts/pickaxe/heads/normal" },
+			"*-gold": { "base": "toolsmith:item/parts/pickaxe/heads/advanced" },
+			"*-silver": { "base": "toolsmith:item/parts/pickaxe/heads/advanced" },
+			"*-iron": { "base": "toolsmith:item/parts/pickaxe/heads/advanced" },
+			"*-steel": { "base": "toolsmith:item/parts/pickaxe/heads/advanced" },
+			"*-meteoriciron": { "base": "toolsmith:item/parts/pickaxe/heads/advanced" },
+			"*": { "base": "toolsmith:item/parts/pickaxe/heads/simple" },
+		},
+		"file": "game:itemtypes/toolhead/pickaxehead.json"
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType",
+		"value": {
+			"*": { "material": { "base": "block/metal/ingot/{metal}" } }
+		},
+		"file": "game:itemtypes/toolhead/pickaxehead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/shape/base",
+		"value": "toolsmith:item/parts/pickaxe/heads/simple",
+		"file": "game:itemtypes/toolhead/pickaxehead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/groundTransform",
+		"value": {
+			"translation": { "x": 0, "y": 0, "z": 0 },
+			"rotation": { "x": 0, "y": 0, "z": 0 },
+			"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+			"scale": 4.17
+		},
+		"file": "game:itemtypes/toolhead/pickaxehead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/tpHandTransform",
+		"value": {
+			"translation": { "x": 0, "y": 0, "z": 0 },
+			"rotation": { "x": 180, "y": 0, "z": 0 },
+			"origin": { "x": 0, "y": 0.025, "z": -2.1 },
+			"scale": 0.8
+		},
+		"file": "game:itemtypes/toolhead/pickaxehead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/guiTransform",
+		"value": {
+			"translation": { "x": 0, "y": 0, "z": 0 },
+			"rotation": { "x": -66, "y": 45, "z": 22 },
+			"origin": { "x": 0.6, "y": 0.1, "z": 0.45 },
+			"scale": 2.15
+		},
+		"file": "game:itemtypes/toolhead/pickaxehead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/onTongTransform",
+		"value": {
+			"translation": { "x": -0.05, "y": -0.7, "z": 0.35 },
+			"rotation": { "x": 0, "y": -25, "z": 0 },
+			"origin": { "x": 0, "y": 0, "z": 0 }
+		},
+		"file": "game:itemtypes/toolhead/pickaxehead.json"
+	},
+]

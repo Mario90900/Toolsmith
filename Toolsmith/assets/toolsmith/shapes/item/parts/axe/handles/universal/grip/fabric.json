@@ -1,266 +1,60 @@
 {
-  "textureWidth":16,
-  "textureHeight":16,
-  "textures":{
-    "grip":"game:block/leather/plain"
-  },
-  "textureSizes":{
-    "grip":[
-      32,
-      32
-    ]
-  },
-  "elements":[
-    {
-      "name":"origin",
-      "from":[
-        10.79720687866211,
-        0.5,
-        8.21067351102829
-      ],
-      "to":[
-        10.79720687866211,
-        0.5,
-        8.21067351102829
-      ],
-      "rotationOrigin":[
-        7.797206878662109,
-        0.0,
-        8.510673522949219
-      ],
-      "group":"Scene Collection",
-      "faces":{
-        "north":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        },
-        "east":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        },
-        "south":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        },
-        "west":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        },
-        "up":{
-          "texture":"#grip",
-          "uv":[
-            0.0,
-            0.0,
-            1.0,
-            1.0
-          ],
-          "autoUv":false,
-          "rotation":180
-        },
-        "down":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        }
-      },
-      "children":[
-        {
-          "name":"axehandle_wrapper_unv 01",
-          "from":[
-            -4.629412412643433,
-            -0.4235203266143799,
-            -0.39832597970962524
-          ],
-          "to":[
-            -2.3321011066436768,
-            0.9353996515274048,
-            1.174515426158905
-          ],
-          "rotationOrigin":[
-            -3.4807567596435547,
-            0.25593966245651245,
-            0.3880947232246399
-          ],
-          "rotationY":6.4699999979057745,
-          "group":"Scene Collection",
-          "faces":{
-            "north":{
-              "texture":"#grip",
-              "uv":[
-                11.875075340270996,
-                12.197322845458984,
-                16.328414916992188,
-                14.84848403930664
-              ],
-              "autoUv":false
-            },
-            "east":{
-              "texture":"#grip",
-              "uv":[
-                1.378962755203247,
-                1.4241199493408203,
-                4.251504898071289,
-                4.240531921386719
-              ],
-              "autoUv":false
-            },
-            "south":{
-              "texture":"#grip",
-              "uv":[
-                12.492265701293945,
-                15.052240371704102,
-                16.92748260498047,
-                17.692614555358887
-              ],
-              "autoUv":false
-            },
-            "west":{
-              "texture":"#grip",
-              "uv":[
-                27.53781509399414,
-                19.792702674865723,
-                30.410358428955078,
-                22.60910987854004
-              ],
-              "autoUv":false
-            },
-            "up":{
-              "texture":"#grip",
-              "uv":[
-                8.811169624328613,
-                9.066343307495117,
-                13.280695915222168,
-                12.126382827758789
-              ],
-              "autoUv":false
-            },
-            "down":{
-              "texture":"#grip",
-              "uv":[
-                9.803359985351562,
-                13.051591873168945,
-                14.274897575378418,
-                9.990180969238281
-              ],
-              "autoUv":false
-            }
-          },
-          "children":[]
-        },
-        {
-          "name":"axehandle_wrapper_unv 02",
-          "from":[
-            -2.428033471107483,
-            -0.422504186630249,
-            -0.5227519273757935
-          ],
-          "to":[
-            0.014655709266662598,
-            0.9343835115432739,
-            1.0601718425750732
-          ],
-          "rotationOrigin":[
-            -1.2066888809204102,
-            0.25593966245651245,
-            0.2687099575996399
-          ],
-          "group":"Scene Collection",
-          "faces":{
-            "north":{
-              "texture":"#grip",
-              "uv":[
-                15.717256546020508,
-                12.197322845458984,
-                20.48278045654297,
-                14.84848403930664
-              ],
-              "autoUv":false
-            },
-            "east":{
-              "texture":"#grip",
-              "uv":[
-                14.697805404663086,
-                15.023876190185547,
-                17.76512908935547,
-                17.657135009765625
-              ],
-              "autoUv":false
-            },
-            "south":{
-              "texture":"#grip",
-              "uv":[
-                12.145687103271484,
-                15.052240371704102,
-                16.89181900024414,
-                17.69261360168457
-              ],
-              "autoUv":false
-            },
-            "west":{
-              "texture":"#grip",
-              "uv":[
-                27.564403533935547,
-                19.739852905273438,
-                30.45611000061035,
-                22.557000160217285
-              ],
-              "autoUv":false
-            },
-            "up":{
-              "texture":"#grip",
-              "uv":[
-                12.172677993774414,
-                9.01030158996582,
-                16.963645935058594,
-                12.066734313964844
-              ],
-              "autoUv":false
-            },
-            "down":{
-              "texture":"#grip",
-              "uv":[
-                19.82732582092285,
-                13.106437683105469,
-                15.036356925964355,
-                10.050004959106445
-              ],
-              "autoUv":false,
-              "rotation":180
-            }
-          },
-          "children":[]
-        }
-      ]
-    }
-  ],
-  "groups":[]
-}
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+		"grip": [32,32]
+	},
+	"textures": {
+		"grip": "game:block/leather/plain"
+	},
+	"elements": [
+		{
+			"name": "origin",
+			"from": [ 10.9, 0.5, 7.41 ],
+			"to": [ 10.9, 0.5, 7.41 ],
+			"rotationOrigin": [ 7.8972, 0.0, 7.7107 ],
+			"faces": {
+				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"up": { "texture": "#grip", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
+				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
+			},
+			"children": [
+				{
+					"name": "axehandle_wrapper_unv 01",
+					"from": [ -4.6294, -0.4235, -0.3983 ],
+					"to": [ -2.3321, 0.9354, 1.1745 ],
+					"rotationOrigin": [ -3.4808, 0.2559, 0.3881 ],
+					"rotationY": 6.47,
+					"faces": {
+						"north": { "texture": "#grip", "uv": [ 11.8751, 12.1973, 16.3284, 14.8485 ], "autoUv": false },
+						"east": { "texture": "#grip", "uv": [ 1.379, 1.4241, 4.2515, 4.2405 ], "autoUv": false },
+						"south": { "texture": "#grip", "uv": [ 12.4923, 15.0522, 16.9275, 17.6926 ], "autoUv": false },
+						"west": { "texture": "#grip", "uv": [ 27.5378, 19.7927, 30.4104, 22.6091 ], "autoUv": false },
+						"up": { "texture": "#grip", "uv": [ 8.8112, 9.0663, 13.2807, 12.1264 ], "autoUv": false },
+						"down": { "texture": "#grip", "uv": [ 9.8034, 13.0516, 14.2749, 9.9902 ], "autoUv": false }
+					}
+				},
+				{
+					"name": "axehandle_wrapper_unv 02",
+					"from": [ -2.428, -0.4225, -0.5228 ],
+					"to": [ 0.0147, 0.9344, 1.0602 ],
+					"rotationOrigin": [ -1.2067, 0.2559, 0.2687 ],
+					"faces": {
+						"north": { "texture": "#grip", "uv": [ 15.7173, 12.1973, 20.4828, 14.8485 ], "autoUv": false },
+						"east": { "texture": "#grip", "uv": [ 14.6978, 15.0239, 17.7651, 17.6571 ], "autoUv": false },
+						"south": { "texture": "#grip", "uv": [ 12.1457, 15.0522, 16.8918, 17.6926 ], "autoUv": false },
+						"west": { "texture": "#grip", "uv": [ 27.5644, 19.7399, 30.4561, 22.557 ], "autoUv": false },
+						"up": { "texture": "#grip", "uv": [ 12.1727, 9.0103, 16.9636, 12.0667 ], "autoUv": false },
+						"down": { "texture": "#grip", "uv": [ 19.8273, 13.1064, 15.0364, 10.05 ], "rotation": 180, "autoUv": false }
+					}
+				}
+			]
+		}
+	]}

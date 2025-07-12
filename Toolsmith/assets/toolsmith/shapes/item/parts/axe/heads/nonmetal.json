@@ -1,525 +1,112 @@
 {
-  "textureWidth":16,
-  "textureHeight":16,
-  "textures":{
-    "material":"game:item/tool/material/flint"
-  },
-  "textureSizes":{
-    "material":[
-      32,
-      32
-    ]
-  },
-  "elements":[
-    {
-      "name":"origin",
-      "from":[
-        11.0,
-        0.5,
-        7.699999988079071
-      ],
-      "to":[
-        11.0,
-        0.5,
-        7.699999988079071
-      ],
-      "rotationOrigin":[
-        8.0,
-        0.0,
-        8.0
-      ],
-      "group":"Stone",
-      "faces":{
-        "north":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        },
-        "east":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        },
-        "south":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        },
-        "west":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        },
-        "up":{
-          "texture":"#material",
-          "uv":[
-            0.0,
-            0.0,
-            1.0,
-            1.0
-          ],
-          "autoUv":false,
-          "rotation":180
-        },
-        "down":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        }
-      },
-      "children":[
-        {
-          "name":"stone head",
-          "from":[
-            -3.4000000953674316,
-            -0.3839348703622818,
-            1.300000011920929
-          ],
-          "to":[
-            -1.4000000953674316,
-            0.5839348584413528,
-            4.300000011920929
-          ],
-          "rotationOrigin":[
-            -3.4000000953674316,
-            -0.29999999701976776,
-            1.300000011920929
-          ],
-          "rotationY":89.99998884409983,
-          "group":"Stone",
-          "faces":{
-            "north":{
-              "texture":"#material",
-              "uv":[
-                14.0,
-                6.0,
-                18.0,
-                8.0
-              ],
-              "autoUv":false
-            },
-            "east":{
-              "texture":"#material",
-              "uv":[
-                2.0,
-                4.0,
-                8.0,
-                6.0
-              ],
-              "autoUv":false
-            },
-            "south":{
-              "texture":"#material",
-              "uv":[
-                12.0,
-                8.0,
-                16.0,
-                10.0
-              ],
-              "autoUv":false
-            },
-            "west":{
-              "texture":"#material",
-              "uv":[
-                12.0,
-                4.0,
-                18.0,
-                6.0
-              ],
-              "autoUv":false
-            },
-            "up":{
-              "texture":"#material",
-              "uv":[
-                15.0,
-                13.0,
-                19.0,
-                19.0
-              ],
-              "autoUv":false
-            },
-            "down":{
-              "texture":"#material",
-              "uv":[
-                12.0,
-                12.0,
-                8.0,
-                6.0
-              ],
-              "autoUv":false,
-              "rotation":180
-            }
-          },
-          "children":[
-            {
-              "name":"stone head 01",
-              "from":[
-                -0.5000003576278687,
-                -0.01606512814760208,
-                -2.80000002682209
-              ],
-              "to":[
-                2.4999996423721313,
-                0.9839348718523979,
-                0.19999997317790985
-              ],
-              "rotationOrigin":[
-                0.49999964237213135,
-                -0.01606512814760208,
-                0.19999997317790985
-              ],
-              "rotationY":6.0000146811171975,
-              "group":"Stone",
-              "faces":{
-                "north":{
-                  "texture":"#material",
-                  "uv":[
-                    2.0,
-                    10.0,
-                    8.0,
-                    12.0
-                  ],
-                  "autoUv":false
-                },
-                "east":{
-                  "texture":"#material",
-                  "uv":[
-                    4.0,
-                    10.0,
-                    10.0,
-                    12.0
-                  ],
-                  "autoUv":false
-                },
-                "south":{
-                  "texture":"#material",
-                  "uv":[
-                    4.0,
-                    14.0,
-                    10.0,
-                    16.0
-                  ],
-                  "autoUv":false
-                },
-                "west":{
-                  "texture":"#material",
-                  "uv":[
-                    4.0,
-                    12.0,
-                    10.0,
-                    14.0
-                  ],
-                  "autoUv":false
-                },
-                "up":{
-                  "texture":"#material",
-                  "uv":[
-                    11.0,
-                    8.0,
-                    17.0,
-                    14.0
-                  ],
-                  "autoUv":false
-                },
-                "down":{
-                  "texture":"#material",
-                  "uv":[
-                    12.0,
-                    12.0,
-                    6.0,
-                    6.0
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                }
-              },
-              "children":[]
-            },
-            {
-              "name":"stone head 02",
-              "from":[
-                -0.7302471995353699,
-                0.5697216540575027,
-                -2.7874395847320557
-              ],
-              "to":[
-                2.2527753710746765,
-                1.2768280655145645,
-                -2.0803325176239014
-              ],
-              "rotationOrigin":[
-                0.2603268027305603,
-                0.2768280655145645,
-                -2.0803325176239014
-              ],
-              "rotationX":-45.15737222581076,
-              "rotationY":4.238758196075614,
-              "rotationZ":4.25041519455471,
-              "group":"Stone",
-              "faces":{
-                "north":{
-                  "texture":"#material",
-                  "uv":[
-                    2.0151028633117676,
-                    10.0,
-                    7.981148719787598,
-                    11.414213180541992
-                  ],
-                  "autoUv":false
-                },
-                "east":{
-                  "texture":"#material",
-                  "uv":[
-                    4.0,
-                    10.0,
-                    5.414214134216309,
-                    11.41421127319336
-                  ],
-                  "autoUv":false
-                },
-                "south":{
-                  "texture":"#material",
-                  "uv":[
-                    4.018851280212402,
-                    14.0,
-                    9.98489761352539,
-                    15.414213180541992
-                  ],
-                  "autoUv":false
-                },
-                "west":{
-                  "texture":"#material",
-                  "uv":[
-                    8.585785865783691,
-                    12.0,
-                    10.0,
-                    13.41421127319336
-                  ],
-                  "autoUv":false
-                },
-                "up":{
-                  "texture":"#material",
-                  "uv":[
-                    11.018851280212402,
-                    12.585786819458008,
-                    16.98489761352539,
-                    14.0
-                  ],
-                  "autoUv":false
-                },
-                "down":{
-                  "texture":"#material",
-                  "uv":[
-                    11.981148719787598,
-                    12.0,
-                    6.015103340148926,
-                    10.585784912109375
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                }
-              },
-              "children":[]
-            },
-            {
-              "name":"stone head 03",
-              "from":[
-                -0.01666322350502014,
-                -0.012254394590854645,
-                -3.1629870235919952
-              ],
-              "to":[
-                1.8464103639125824,
-                0.9801241084933281,
-                -0.16298702359199524
-              ],
-              "rotationOrigin":[
-                -0.1535896360874176,
-                -0.01606512814760208,
-                -0.16298702359199524
-              ],
-              "rotationY":-4.546919682840488,
-              "group":"Stone",
-              "faces":{
-                "north":{
-                  "texture":"#material",
-                  "uv":[
-                    2.0,
-                    10.0,
-                    5.726147174835205,
-                    12.0
-                  ],
-                  "autoUv":false
-                },
-                "east":{
-                  "texture":"#material",
-                  "uv":[
-                    4.0,
-                    10.0,
-                    10.0,
-                    12.0
-                  ],
-                  "autoUv":false
-                },
-                "south":{
-                  "texture":"#material",
-                  "uv":[
-                    6.273852348327637,
-                    14.0,
-                    10.0,
-                    16.0
-                  ],
-                  "autoUv":false
-                },
-                "west":{
-                  "texture":"#material",
-                  "uv":[
-                    4.0,
-                    12.0,
-                    10.0,
-                    14.0
-                  ],
-                  "autoUv":false
-                },
-                "up":{
-                  "texture":"#material",
-                  "uv":[
-                    13.273853302001953,
-                    8.0,
-                    17.0,
-                    14.0
-                  ],
-                  "autoUv":false
-                },
-                "down":{
-                  "texture":"#material",
-                  "uv":[
-                    9.726146697998047,
-                    12.0,
-                    6.0,
-                    6.0
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                }
-              },
-              "children":[]
-            },
-            {
-              "name":"stone head 04",
-              "from":[
-                0.16809800453484058,
-                0.5697216540575027,
-                -3.155771017074585
-              ],
-              "to":[
-                2.0206281263381243,
-                1.2768280655145645,
-                -2.4486639499664307
-              ],
-              "rotationOrigin":[
-                0.028179557994008064,
-                0.2768280655145645,
-                -2.4486639499664307
-              ],
-              "rotationX":-45.09030318325582,
-              "rotationY":-3.2134750846704154,
-              "rotationZ":-3.218537535505864,
-              "group":"Stone",
-              "faces":{
-                "north":{
-                  "texture":"#material",
-                  "uv":[
-                    2.0151028633117676,
-                    10.0,
-                    5.720163345336914,
-                    11.414213180541992
-                  ],
-                  "autoUv":false
-                },
-                "east":{
-                  "texture":"#material",
-                  "uv":[
-                    4.0,
-                    10.0,
-                    5.414214134216309,
-                    11.41421127319336
-                  ],
-                  "autoUv":false
-                },
-                "south":{
-                  "texture":"#material",
-                  "uv":[
-                    6.279836654663086,
-                    14.0,
-                    9.98489761352539,
-                    15.414213180541992
-                  ],
-                  "autoUv":false
-                },
-                "west":{
-                  "texture":"#material",
-                  "uv":[
-                    8.585785865783691,
-                    12.0,
-                    10.0,
-                    13.41421127319336
-                  ],
-                  "autoUv":false
-                },
-                "up":{
-                  "texture":"#material",
-                  "uv":[
-                    13.279836654663086,
-                    12.585786819458008,
-                    16.98489761352539,
-                    14.0
-                  ],
-                  "autoUv":false
-                },
-                "down":{
-                  "texture":"#material",
-                  "uv":[
-                    9.720163345336914,
-                    12.0,
-                    6.015103340148926,
-                    10.585784912109375
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                }
-              },
-              "children":[]
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "groups":[]
-}
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+		"material": [32,32]
+	},
+	"textures": {
+		"material": "game:item/tool/material/flint"
+	},
+	"elements": [
+		{
+			"name": "origin",
+			"from": [ 9.85, 0.75, 6.7 ],
+			"to": [ 9.85, 0.75, 6.7 ],
+			"rotationOrigin": [ 6.8, 0.2, 7.0 ],
+			"faces": {
+				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"up": { "texture": "#material", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
+				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
+			},
+			"children": [
+				{
+					"name": "stone head",
+					"from": [ -3.4, -0.3839, 1.3 ],
+					"to": [ -1.4, 0.5839, 4.3 ],
+					"rotationOrigin": [ -3.4, -0.3, 1.3 ],
+					"rotationY": 90.0,
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 14.0, 6.0, 18.0, 8.0 ], "autoUv": false },
+						"east": { "texture": "#material", "uv": [ 2.0, 4.0, 8.0, 6.0 ], "autoUv": false },
+						"south": { "texture": "#material", "uv": [ 12.0, 8.0, 16.0, 10.0 ], "autoUv": false },
+						"west": { "texture": "#material", "uv": [ 12.0, 4.0, 18.0, 6.0 ], "autoUv": false },
+						"up": { "texture": "#material", "uv": [ 15.0, 13.0, 19.0, 19.0 ], "autoUv": false },
+						"down": { "texture": "#material", "uv": [ 12.0, 12.0, 8.0, 6.0 ], "rotation": 180, "autoUv": false }
+					},
+					"children": [
+						{
+							"name": "stone head 01",
+							"from": [ -0.5, -0.0161, -2.8 ],
+							"to": [ 2.5, 0.9839, 0.2 ],
+							"rotationOrigin": [ 0.5, -0.0161, 0.2 ],
+							"rotationY": 6.0,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 2.0, 10.0, 8.0, 12.0 ], "autoUv": false },
+								"east": { "texture": "#material", "uv": [ 4.0, 10.0, 10.0, 12.0 ], "autoUv": false },
+								"south": { "texture": "#material", "uv": [ 4.0, 14.0, 10.0, 16.0 ], "autoUv": false },
+								"west": { "texture": "#material", "uv": [ 4.0, 12.0, 10.0, 14.0 ], "autoUv": false },
+								"up": { "texture": "#material", "uv": [ 11.0, 8.0, 17.0, 14.0 ], "autoUv": false },
+								"down": { "texture": "#material", "uv": [ 12.0, 12.0, 6.0, 6.0 ], "rotation": 180, "autoUv": false }
+							}
+						},
+						{
+							"name": "stone head 02",
+							"from": [ -0.7302, 0.5697, -2.7874 ],
+							"to": [ 2.2528, 1.2768, -2.0803 ],
+							"rotationOrigin": [ 0.2603, 0.2768, -2.0803 ],
+							"rotationX": -45.1574,
+							"rotationY": 4.2388,
+							"rotationZ": 4.2504,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 2.0151, 10.0, 7.9811, 11.4142 ], "autoUv": false },
+								"east": { "texture": "#material", "uv": [ 4.0, 10.0, 5.4142, 11.4142 ], "autoUv": false },
+								"south": { "texture": "#material", "uv": [ 4.0189, 14.0, 9.9849, 15.4142 ], "autoUv": false },
+								"west": { "texture": "#material", "uv": [ 8.5858, 12.0, 10.0, 13.4142 ], "autoUv": false },
+								"up": { "texture": "#material", "uv": [ 11.0189, 12.5858, 16.9849, 14.0 ], "autoUv": false },
+								"down": { "texture": "#material", "uv": [ 11.9811, 12.0, 6.0151, 10.5858 ], "rotation": 180, "autoUv": false }
+							}
+						},
+						{
+							"name": "stone head 03",
+							"from": [ -0.0167, -0.0123, -3.163 ],
+							"to": [ 1.8464, 0.9801, -0.163 ],
+							"rotationOrigin": [ -0.1536, -0.0161, -0.163 ],
+							"rotationY": -4.5469,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 2.0, 10.0, 5.7261, 12.0 ], "autoUv": false },
+								"east": { "texture": "#material", "uv": [ 4.0, 10.0, 10.0, 12.0 ], "autoUv": false },
+								"south": { "texture": "#material", "uv": [ 6.2739, 14.0, 10.0, 16.0 ], "autoUv": false },
+								"west": { "texture": "#material", "uv": [ 4.0, 12.0, 10.0, 14.0 ], "autoUv": false },
+								"up": { "texture": "#material", "uv": [ 13.2739, 8.0, 17.0, 14.0 ], "autoUv": false },
+								"down": { "texture": "#material", "uv": [ 9.7261, 12.0, 6.0, 6.0 ], "rotation": 180, "autoUv": false }
+							}
+						},
+						{
+							"name": "stone head 04",
+							"from": [ 0.1681, 0.5697, -3.1558 ],
+							"to": [ 2.0206, 1.2768, -2.4487 ],
+							"rotationOrigin": [ 0.0282, 0.2768, -2.4487 ],
+							"rotationX": -45.0903,
+							"rotationY": -3.2135,
+							"rotationZ": -3.2185,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 2.0151, 10.0, 5.7202, 11.4142 ], "autoUv": false },
+								"east": { "texture": "#material", "uv": [ 4.0, 10.0, 5.4142, 11.4142 ], "autoUv": false },
+								"south": { "texture": "#material", "uv": [ 6.2798, 14.0, 9.9849, 15.4142 ], "autoUv": false },
+								"west": { "texture": "#material", "uv": [ 8.5858, 12.0, 10.0, 13.4142 ], "autoUv": false },
+								"up": { "texture": "#material", "uv": [ 13.2798, 12.5858, 16.9849, 14.0 ], "autoUv": false },
+								"down": { "texture": "#material", "uv": [ 9.7202, 12.0, 6.0151, 10.5858 ], "rotation": 180, "autoUv": false }
+							}
+						}
+					]
+				}
+			]
+		}
+	]}

@@ -1,0 +1,45 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+		"grip": [32,32]
+	},
+	"textures": {
+		"grip": "game:block/leather/plain"
+	},
+	"elements": [
+		{
+			"name": "origin",
+			"from": [ 12.3, 0.5, 8.2107 ],
+			"to": [ 12.3, 0.5, 8.2107 ],
+			"rotationOrigin": [ 9.2972, 0.0, 8.5107 ],
+			"faces": {
+				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"up": { "texture": "#grip", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
+				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
+			},
+			"children": [
+				{
+					"name": "regular_fabric1",
+					"from": [ -9.3852, -0.4236, -0.9603 ],
+					"to": [ -4.2279, 0.9344, 0.4086 ],
+					"rotationOrigin": [ -6.8065, 0.2554, -0.2758 ],
+					"faces": {
+						"north": { "texture": "#grip", "uv": [ 20.0, 18.0, 29.0, 21.0023 ], "autoUv": false },
+						"east": { "texture": "#grip", "uv": [ 15.0, 11.1728, 18.0023, 13.7672 ], "rotation": 90, "autoUv": false },
+						"south": { "texture": "#grip", "uv": [ 16.0, 22.0, 25.0, 25.0023 ], "autoUv": false },
+						"west": { "texture": "#grip", "uv": [ 18.0, 11.2328, 21.0023, 13.8272 ], "rotation": 90, "autoUv": false },
+						"up": { "texture": "#grip", "uv": [ 6.0, 15.1727, 15.0, 17.7672 ], "autoUv": false },
+						"down": { "texture": "#grip", "uv": [ 20.0, 21.8272, 11.0, 19.2328 ], "autoUv": false }
+					}
+				}
+			]
+		}
+	]}

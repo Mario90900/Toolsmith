@@ -1,0 +1,112 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+		"material": [32,32]
+	},
+	"textures": {
+		"material": "game:item/tool/material/string"
+	},
+	"elements": [
+		{
+			"name": "origin",
+			"from": [ 11.7, 0.5, 8.2107 ],
+			"to": [ 11.7, 0.5, 8.2107 ],
+			"rotationOrigin": [ 8.6972, 0.0, 8.5107 ],
+			"faces": {
+				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"up": { "texture": "#material", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
+				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
+			},
+			"children": [
+				{
+					"name": "unv_string_stonehead 01",
+					"from": [ -1.8826, -0.4644, -1.1916 ],
+					"to": [ -1.3455, 0.9644, 0.6899 ],
+					"rotationOrigin": [ -1.614, 0.25, -0.2508 ],
+					"rotationY": 15.1234,
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 19.0, 2.0, 22.0, 3.0 ], "rotation": 90, "autoUv": false },
+						"east": { "texture": "#material", "uv": [ 1.0, 1.0, 5.001, 4.0 ], "autoUv": false },
+						"south": { "texture": "#material", "uv": [ 4.0, 2.0, 7.0, 3.0 ], "rotation": 90, "autoUv": false },
+						"west": { "texture": "#material", "uv": [ 6.0, 6.0, 10.0, 9.0 ], "autoUv": false },
+						"up": { "texture": "#material", "uv": [ 1.0, 1.0, 2.0, 5.0 ], "autoUv": false },
+						"down": { "texture": "#material", "uv": [ 2.0, 5.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false }
+					}
+				},
+				{
+					"name": "unv_string_stonehead 02",
+					"from": [ -1.1938, -0.4954, -1.1082 ],
+					"to": [ -0.6938, 0.9954, 0.5938 ],
+					"rotationOrigin": [ -0.9438, 0.25, -0.2572 ],
+					"rotationY": -0.43,
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 4.0, 2.0, 1.0, 3.0 ], "rotation": 90, "autoUv": false },
+						"east": { "texture": "#material", "uv": [ 22.0, 1.0, 18.001, 4.0 ], "autoUv": false },
+						"south": { "texture": "#material", "uv": [ 19.0, 2.0, 16.0, 3.0 ], "rotation": 90, "autoUv": false },
+						"west": { "texture": "#material", "uv": [ 17.0, 6.0, 13.0, 9.0 ], "autoUv": false },
+						"up": { "texture": "#material", "uv": [ 22.0, 1.0, 21.0, 5.0 ], "autoUv": false },
+						"down": { "texture": "#material", "uv": [ 21.0, 5.0, 22.0, 1.0 ], "rotation": 180, "autoUv": false }
+					}
+				},
+				{
+					"name": "unv_string_stonehead 03",
+					"from": [ 2.2246, 0.0042, -0.6203 ],
+					"to": [ 3.9621, 0.5042, 1.1441 ],
+					"rotationOrigin": [ 2.5803, 0.2542, 0.2619 ],
+					"rotationX": 90.9578,
+					"rotationY": 0.2249,
+					"rotationZ": -83.5898,
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 10.0035, 1.0, 13.7708, 2.0 ], "autoUv": false },
+						"east": { "texture": "#material", "uv": [ 3.0, 2.0, 6.0, 3.0 ], "rotation": 180, "autoUv": false },
+						"south": { "texture": "#material", "uv": [ 5.9995, 5.0, 9.7683, 6.0 ], "rotation": 180, "autoUv": false },
+						"west": { "texture": "#material", "uv": [ 2.0, 6.0, 5.0, 7.0 ], "autoUv": false },
+						"up": { "texture": "#material", "uv": [ 3.2278, 5.0, 7.0, 8.0 ], "autoUv": false },
+						"down": { "texture": "#material", "uv": [ 9.7722, 9.0, 6.0, 6.0 ], "rotation": 180, "autoUv": false }
+					}
+				},
+				{
+					"name": "unv_string_stonehead 04",
+					"from": [ 2.19, -0.7062, 0.0619 ],
+					"to": [ 2.5131, -0.407, 0.9982 ],
+					"rotationOrigin": [ 2.3516, -0.5566, 0.53 ],
+					"rotationX": 59.3265,
+					"rotationY": -0.1095,
+					"rotationZ": -68.4636,
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 12.0, 2.0, 13.0, 3.0 ], "autoUv": false },
+						"east": { "texture": "#material", "uv": [ 2.0, 2.0, 4.0, 3.0 ], "rotation": 180, "autoUv": false },
+						"south": { "texture": "#material", "uv": [ 18.0, 2.0, 19.0, 3.0 ], "rotation": 180, "autoUv": false },
+						"west": { "texture": "#material", "uv": [ 6.0, 2.0, 8.0, 3.0 ], "autoUv": false },
+						"up": { "texture": "#material", "uv": [ 1.0, 1.0, 2.0, 3.0 ], "autoUv": false },
+						"down": { "texture": "#material", "uv": [ 7.0, 11.0, 6.0, 9.0 ], "rotation": 180, "autoUv": false }
+					}
+				},
+				{
+					"name": "unv_string_stonehead 05",
+					"from": [ 1.7633, 0.0042, -0.6242 ],
+					"to": [ 3.5008, 0.5042, 1.1402 ],
+					"rotationOrigin": [ 2.119, 0.2542, 0.258 ],
+					"rotationX": 90.9837,
+					"rotationY": 0.0163,
+					"rotationZ": -95.855,
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 10.0035, 1.0, 13.7708, 2.0 ], "autoUv": false },
+						"east": { "texture": "#material", "uv": [ 3.0, 2.0, 6.0, 3.0 ], "rotation": 180, "autoUv": false },
+						"south": { "texture": "#material", "uv": [ 5.9995, 5.0, 9.7683, 6.0 ], "rotation": 180, "autoUv": false },
+						"west": { "texture": "#material", "uv": [ 2.0, 6.0, 5.0, 7.0 ], "autoUv": false },
+						"up": { "texture": "#material", "uv": [ 3.2278, 5.0, 7.0, 8.0 ], "autoUv": false },
+						"down": { "texture": "#material", "uv": [ 9.7722, 9.0, 6.0, 6.0 ], "rotation": 180, "autoUv": false }
+					}
+				}
+			]
+		}
+	]}

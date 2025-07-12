@@ -1,0 +1,61 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+		"material": [32,32]
+	},
+	"textures": {
+		"material": "game:block/metal/ingot/copper"
+	},
+	"elements": [
+		{
+			"name": "origin",
+			"from": [ 12.3, 0.5, 8.2107 ],
+			"to": [ 12.3, 0.5, 8.2107 ],
+			"rotationOrigin": [ 9.2972, 0.0, 8.5107 ],
+			"faces": {
+				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"up": { "texture": "#material", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
+				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
+			},
+			"children": [
+				{
+					"name": "unv_metal_metalhead1",
+					"from": [ 4.314, 0.0395, -1.0185 ],
+					"to": [ 5.7891, 0.3635, 0.5933 ],
+					"rotationOrigin": [ 5.2154, 0.2015, -0.1806 ],
+					"rotationY": -5.1939,
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 15.9619, 8.1129, 16.6099, 11.0625 ], "rotation": 90, "autoUv": false },
+						"east": { "texture": "#material", "uv": [ 14.6659, 7.7117, 15.3139, 10.9347 ], "rotation": 90, "autoUv": false },
+						"south": { "texture": "#material", "uv": [ 16.6099, 8.1129, 17.2578, 11.0625 ], "rotation": 90, "autoUv": false },
+						"west": { "texture": "#material", "uv": [ 15.3139, 7.8395, 15.9619, 11.0625 ], "rotation": 90, "autoUv": false },
+						"up": { "texture": "#material", "uv": [ 17.6155, 11.0625, 20.5651, 14.2855 ], "autoUv": false },
+						"down": { "texture": "#material", "uv": [ 17.6155, 14.4133, 14.6659, 11.1903 ], "autoUv": false }
+					}
+				},
+				{
+					"name": "unv_metal_metalhead2",
+					"from": [ 4.4331, -0.7801, -0.4634 ],
+					"to": [ 4.8371, 1.1777, -0.0594 ],
+					"rotationOrigin": [ 4.6351, 1.0069, -0.2654 ],
+					"rotationY": 45.0,
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 15.0, 12.0857, 16.0, 16.9206 ], "rotation": 180, "autoUv": false },
+						"east": { "texture": "#material", "uv": [ 15.0099, 13.0866, 16.0099, 17.9214 ], "rotation": 180, "autoUv": false },
+						"south": { "texture": "#material", "uv": [ 16.0, 12.0857, 17.0, 16.9206 ], "rotation": 180, "autoUv": false },
+						"west": { "texture": "#material", "uv": [ 15.9901, 13.0866, 16.9901, 17.9214 ], "rotation": 180, "autoUv": false },
+						"up": { "texture": "#material", "uv": [ 17.0, 16.0135, 18.0, 17.0117 ], "autoUv": false },
+						"down": { "texture": "#material", "uv": [ 18.0, 17.9901, 17.0, 16.9919 ], "autoUv": false }
+					}
+				}
+			]
+		}
+	]}

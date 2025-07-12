@@ -79,15 +79,31 @@ namespace Toolsmith.Client.Behaviors {
                 if (partTransTree.Count == 0) {
                     return GenMesh(null, targetAtlas);
                 }
+
+                bool failedPart = false;
                 foreach (var part in partTransTree) { //This is the PartAndTransform Tree.
                     ITreeAttribute partTree = partTransTree.GetTreeAttribute(part.Key);
                     Vec3f rotation = new Vec3f(partTree.GetPartRotationX(), partTree.GetPartRotationY(), partTree.GetPartRotationZ());
                     MeshData partMesh = GenMesh(partTree.GetPartRenderTree(), targetAtlas, rotation);
-                    mesh.AddMeshData(partMesh, partTree.GetPartOffsetX(), partTree.GetPartOffsetY(), partTree.GetPartOffsetZ());
+                    if (partMesh == null) {
+                        failedPart = true;
+                        break;
+                    } else {
+                        mesh.AddMeshData(partMesh, partTree.GetPartOffsetX(), partTree.GetPartOffsetY(), partTree.GetPartOffsetZ());
+                    }
+                }
+
+                if (failedPart) { //If any part fails to be found or render, it'll just default to using the item fallback. This ideally should make things cleaner in the end, and prevent invisible items.
+                    return GenMesh(null, targetAtlas);
                 }
             } else if (itemstack.HasPartRenderTree()) {
                 ITreeAttribute renderTree = itemstack.GetPartRenderTree();
-                return GenMesh(renderTree, targetAtlas);
+                MeshData partMesh = GenMesh(renderTree, targetAtlas);
+
+                if (partMesh == null) {
+                    return GenMesh(null, targetAtlas);
+                }
+                return partMesh;
             } else {
                 return GenMesh(null, targetAtlas);
             }
@@ -110,14 +126,15 @@ namespace Toolsmith.Client.Behaviors {
                     shape = api.Assets.TryGet(new AssetLocation(renderTree.GetPartShapePath() + ".json"))?.ToObject<Shape>();
                 }
 
-                if (shape == null) { //If something above fails, IE it probably has busted data, lets try grabbing the item's base shape instead.
-                    shape = capi.TesselatorManager.GetCachedShape(item.Shape.Base);
+                if (shape == null) { //If something above fails, IE it probably has busted data, return null and handle above to send it back through with a null render tree to grab the fallback.
+                    return null;
                 }
             } else {
                 shape = capi.TesselatorManager.GetCachedShape(item.Shape.Base);
             }
 
             if (shape == null) { //If shape cannot be found no matter what, just return nothing.
+                ToolsmithModSystem.Logger.Error("Could not find a fallback cached shape for " + item.Code + ". This item will appear invisible to prevent any direct code errors.");
                 return new MeshData();
             }
 

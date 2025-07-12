@@ -1,797 +1,161 @@
 {
-  "textureWidth":16,
-  "textureHeight":16,
-  "textures":{
-    "material":"game:item/tool/material/string"
-  },
-  "textureSizes":{
-    "material":[
-      32,
-      32
-    ]
-  },
-  "elements":[
-    {
-      "name":"origin",
-      "from":[
-        10.79720687866211,
-        0.5,
-        8.21067351102829
-      ],
-      "to":[
-        10.79720687866211,
-        0.5,
-        8.21067351102829
-      ],
-      "rotationOrigin":[
-        7.797206878662109,
-        0.0,
-        8.510673522949219
-      ],
-      "group":"low_bone_metalhead",
-      "faces":{
-        "north":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        },
-        "east":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        },
-        "south":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        },
-        "west":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        },
-        "up":{
-          "texture":"#material",
-          "uv":[
-            0.0,
-            0.0,
-            1.0,
-            1.0
-          ],
-          "autoUv":false,
-          "rotation":180
-        },
-        "down":{
-          "texture":"#0",
-          "uv":[
-            0,
-            0,
-            4,
-            4
-          ],
-          "autoUv":false
-        }
-      },
-      "children":[
-        {
-          "name":"M_binding_low_bonehandle_metalhead",
-          "from":[
-            -2.48135644197464,
-            -0.5367171764373779,
-            0.007061898708343506
-          ],
-          "to":[
-            -1.981360524892807,
-            0.5606077909469604,
-            1.2380958199501038
-          ],
-          "rotationOrigin":[
-            -2.2356529235839844,
-            0.25,
-            0.33717042207717896
-          ],
-          "rotationY":-0.4300000020051476,
-          "group":"low_bone_metalhead",
-          "faces":{
-            "north":{
-              "texture":"#material",
-              "uv":[
-                19.371129989624023,
-                1.905569076538086,
-                21.496156692504883,
-                2.905569076538086
-              ],
-              "autoUv":false,
-              "rotation":90
-            },
-            "east":{
-              "texture":"#material",
-              "uv":[
-                2.721057415008545,
-                1.7805404663085938,
-                5.623760223388672,
-                3.905569076538086
-              ],
-              "autoUv":false
-            },
-            "south":{
-              "texture":"#material",
-              "uv":[
-                4.371128082275391,
-                1.905569076538086,
-                6.496156215667725,
-                2.905569076538086
-              ],
-              "autoUv":false,
-              "rotation":90
-            },
-            "west":{
-              "texture":"#material",
-              "uv":[
-                5.368552207946777,
-                6.780538558959961,
-                8.271255493164062,
-                8.905567169189453
-              ],
-              "autoUv":false
-            },
-            "up":{
-              "texture":"#material",
-              "uv":[
-                1.4961562156677246,
-                0.7779674530029297,
-                2.4961562156677246,
-                3.6806697845458984
-              ],
-              "autoUv":false
-            },
-            "down":{
-              "texture":"#material",
-              "uv":[
-                2.4961562156677246,
-                3.6806697845458984,
-                1.4961562156677246,
-                0.7779674530029297
-              ],
-              "autoUv":false,
-              "rotation":180
-            }
-          },
-          "children":[
-            {
-              "name":"binding_low_bonehandle_metalhead 01",
-              "from":[
-                -0.839754194021225,
-                -0.0204695463180542,
-                -0.07199767231941223
-              ],
-              "to":[
-                -0.30262021720409393,
-                1.1189830005168915,
-                1.3102584779262543
-              ],
-              "rotationOrigin":[
-                -0.3633266091346741,
-                0.7867171168327332,
-                0.3651382625102997
-              ],
-              "rotationY":21.730006080227323,
-              "group":"low_bone_metalhead",
-              "faces":{
-                "north":{
-                  "texture":"#material",
-                  "uv":[
-                    19.298532485961914,
-                    1.905569076538086,
-                    21.496156692504883,
-                    2.905569076538086
-                  ],
-                  "autoUv":false,
-                  "rotation":90
-                },
-                "east":{
-                  "texture":"#material",
-                  "uv":[
-                    2.591886520385742,
-                    1.70794677734375,
-                    5.625811576843262,
-                    3.905569076538086
-                  ],
-                  "autoUv":false
-                },
-                "south":{
-                  "texture":"#material",
-                  "uv":[
-                    4.298532962799072,
-                    1.905569076538086,
-                    6.496156215667725,
-                    2.905569076538086
-                  ],
-                  "autoUv":false,
-                  "rotation":90
-                },
-                "west":{
-                  "texture":"#material",
-                  "uv":[
-                    5.366501331329346,
-                    6.70794677734375,
-                    8.400426864624023,
-                    8.905567169189453
-                  ],
-                  "autoUv":false
-                },
-                "up":{
-                  "texture":"#material",
-                  "uv":[
-                    1.4961562156677246,
-                    0.7759151458740234,
-                    2.4961562156677246,
-                    3.8098392486572266
-                  ],
-                  "autoUv":false
-                },
-                "down":{
-                  "texture":"#material",
-                  "uv":[
-                    2.4961562156677246,
-                    3.8098411560058594,
-                    1.4961564540863037,
-                    0.7759113311767578
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                }
-              },
-              "children":[]
-            },
-            {
-              "name":"binding_low_bonehandle_metalhead 02",
-              "from":[
-                4.82404750585556,
-                -0.06328295907585257,
-                -1.0045797526836395
-              ],
-              "to":[
-                7.3717902302742,
-                0.43671685457229614,
-                0.49045518785715103
-              ],
-              "rotationOrigin":[
-                6.036117374897003,
-                -0.06328290700912476,
-                0.5968156158924103
-              ],
-              "rotationX":90.94235004388649,
-              "rotationY":0.2866696295307672,
-              "rotationZ":-80.40101173929315,
-              "group":"low_bone_metalhead",
-              "faces":{
-                "north":{
-                  "texture":"#material",
-                  "uv":[
-                    10.83029842376709,
-                    0.9055805206298828,
-                    15.924555778503418,
-                    1.9055728912353516
-                  ],
-                  "autoUv":false
-                },
-                "east":{
-                  "texture":"#material",
-                  "uv":[
-                    3.4784295558929443,
-                    1.9055747985839844,
-                    6.518211841583252,
-                    2.9055709838867188
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                },
-                "south":{
-                  "texture":"#material",
-                  "uv":[
-                    6.83008337020874,
-                    4.90556526184082,
-                    11.912179946899414,
-                    5.905569076538086
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                },
-                "west":{
-                  "texture":"#material",
-                  "uv":[
-                    1.477344274520874,
-                    5.905569076538086,
-                    4.517127990722656,
-                    6.905567169189453
-                  ],
-                  "autoUv":false
-                },
-                "up":{
-                  "texture":"#material",
-                  "uv":[
-                    0.06714113056659698,
-                    4.88957405090332,
-                    5.162891864776611,
-                    7.929342269897461
-                  ],
-                  "autoUv":false
-                },
-                "down":{
-                  "texture":"#material",
-                  "uv":[
-                    10.9251708984375,
-                    8.929340362548828,
-                    5.82942008972168,
-                    5.889558792114258
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                }
-              },
-              "children":[]
-            },
-            {
-              "name":"binding_low_bonehandle_metalhead 03",
-              "from":[
-                6.184341251850128,
-                -0.8177696689963341,
-                0.25977766513824463
-              ],
-              "to":[
-                6.507481217384338,
-                -0.5185789465904236,
-                1.1960952281951904
-              ],
-              "rotationOrigin":[
-                7.169660866260529,
-                -0.9177403450012207,
-                1.6022108793258667
-              ],
-              "rotationX":59.333873810468276,
-              "rotationY":-0.7302319059479007,
-              "rotationZ":-67.41622107045195,
-              "group":"low_bone_metalhead",
-              "faces":{
-                "north":{
-                  "texture":"#material",
-                  "uv":[
-                    11.820979118347168,
-                    2.107036590576172,
-                    12.467281341552734,
-                    2.705423355102539
-                  ],
-                  "autoUv":false
-                },
-                "east":{
-                  "texture":"#material",
-                  "uv":[
-                    2.090524911880493,
-                    2.106233596801758,
-                    3.797471046447754,
-                    2.704622268676758
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                },
-                "south":{
-                  "texture":"#material",
-                  "uv":[
-                    18.823875427246094,
-                    2.1071319580078125,
-                    19.47017478942871,
-                    2.705514907836914
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                },
-                "west":{
-                  "texture":"#material",
-                  "uv":[
-                    6.098979949951172,
-                    2.1063690185546875,
-                    7.8059258460998535,
-                    2.704753875732422
-                  ],
-                  "autoUv":false
-                },
-                "up":{
-                  "texture":"#material",
-                  "uv":[
-                    0.5236752033233643,
-                    1.5081729888916016,
-                    1.1699769496917725,
-                    3.215118408203125
-                  ],
-                  "autoUv":false
-                },
-                "down":{
-                  "texture":"#material",
-                  "uv":[
-                    6.468623638153076,
-                    11.214757919311523,
-                    5.822323322296143,
-                    9.507806777954102
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                }
-              },
-              "children":[]
-            },
-            {
-              "name":"binding_low_bonehandle_metalhead 04",
-              "from":[
-                4.023179113864899,
-                0.07191866636276245,
-                -0.5480845286510885
-              ],
-              "to":[
-                4.52317488193512,
-                1.452137529850006,
-                0.13963276147842407
-              ],
-              "rotationOrigin":[
-                4.268882572650909,
-                0.7867171168327332,
-                -0.5438300371170044
-              ],
-              "rotationY":8.665106683931983,
-              "group":"low_bone_metalhead",
-              "faces":{
-                "north":{
-                  "texture":"#material",
-                  "uv":[
-                    25.067691802978516,
-                    2.0236873626708984,
-                    27.74654769897461,
-                    2.905569076538086
-                  ],
-                  "autoUv":false,
-                  "rotation":90
-                },
-                "east":{
-                  "texture":"#material",
-                  "uv":[
-                    9.484210968017578,
-                    1.0282840728759766,
-                    10.965182304382324,
-                    3.905569076538086
-                  ],
-                  "autoUv":false
-                },
-                "south":{
-                  "texture":"#material",
-                  "uv":[
-                    10.041139602661133,
-                    2.018850326538086,
-                    12.74654769897461,
-                    2.979787826538086
-                  ],
-                  "autoUv":false,
-                  "rotation":90
-                },
-                "west":{
-                  "texture":"#material",
-                  "uv":[
-                    12.387286186218262,
-                    6.028282165527344,
-                    13.977633476257324,
-                    8.905567169189453
-                  ],
-                  "autoUv":false
-                },
-                "up":{
-                  "texture":"#material",
-                  "uv":[
-                    7.746547222137451,
-                    1.5463104248046875,
-                    8.74654769897461,
-                    2.98040771484375
-                  ],
-                  "autoUv":false
-                },
-                "down":{
-                  "texture":"#material",
-                  "uv":[
-                    8.74654769897461,
-                    2.98040771484375,
-                    7.746547222137451,
-                    1.5463104248046875
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                }
-              },
-              "children":[]
-            },
-            {
-              "name":"binding_low_bonehandle_metalhead 05",
-              "from":[
-                4.597394973039627,
-                0.0549083948135376,
-                -0.6298560779541731
-              ],
-              "to":[
-                5.097390830516815,
-                1.4857749342918396,
-                0.07266438007354736
-              ],
-              "rotationOrigin":[
-                4.84309846162796,
-                0.7867171168327332,
-                -0.6107985377311707
-              ],
-              "rotationY":-5.131960816858399,
-              "group":"low_bone_metalhead",
-              "faces":{
-                "north":{
-                  "texture":"#material",
-                  "uv":[
-                    18.61887550354004,
-                    1.905569076538086,
-                    21.496156692504883,
-                    2.905569076538086
-                  ],
-                  "autoUv":false,
-                  "rotation":90
-                },
-                "east":{
-                  "texture":"#material",
-                  "uv":[
-                    3.2338201999664307,
-                    1.0282840728759766,
-                    4.890320777893066,
-                    3.905569076538086
-                  ],
-                  "autoUv":false
-                },
-                "south":{
-                  "texture":"#material",
-                  "uv":[
-                    3.6188735961914062,
-                    1.905569076538086,
-                    6.496156215667725,
-                    2.905569076538086
-                  ],
-                  "autoUv":false,
-                  "rotation":90
-                },
-                "west":{
-                  "texture":"#material",
-                  "uv":[
-                    6.101990699768066,
-                    6.028282165527344,
-                    7.758492469787598,
-                    8.905567169189453
-                  ],
-                  "autoUv":false
-                },
-                "up":{
-                  "texture":"#material",
-                  "uv":[
-                    1.4961562156677246,
-                    1.5114059448242188,
-                    2.4961562156677246,
-                    3.16790771484375
-                  ],
-                  "autoUv":false
-                },
-                "down":{
-                  "texture":"#material",
-                  "uv":[
-                    2.4961562156677246,
-                    3.16790771484375,
-                    1.4961562156677246,
-                    1.5114059448242188
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                }
-              },
-              "children":[]
-            },
-            {
-              "name":"binding_low_bonehandle_metalhead 06",
-              "from":[
-                5.42933577299118,
-                -0.06328788028167764,
-                -0.8957975804805756
-              ],
-              "to":[
-                7.9499459862709045,
-                0.4367121458053589,
-                0.6805208399891853
-              ],
-              "rotationOrigin":[
-                6.615110695362091,
-                -0.06328290700912476,
-                0.7461816370487213
-              ],
-              "rotationX":90.94607932717331,
-              "rotationY":-0.2284955743484463,
-              "rotationZ":-99.11818210304013,
-              "group":"low_bone_metalhead",
-              "faces":{
-                "north":{
-                  "texture":"#material",
-                  "uv":[
-                    10.83029842376709,
-                    3.0111160278320312,
-                    15.870196342468262,
-                    4.0111083984375
-                  ],
-                  "autoUv":false
-                },
-                "east":{
-                  "texture":"#material",
-                  "uv":[
-                    3.4784295558929443,
-                    4.011110305786133,
-                    6.518211841583252,
-                    5.011106491088867
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                },
-                "south":{
-                  "texture":"#material",
-                  "uv":[
-                    6.83008337020874,
-                    7.011102676391602,
-                    11.857845306396484,
-                    8.011104583740234
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                },
-                "west":{
-                  "texture":"#material",
-                  "uv":[
-                    1.477624535560608,
-                    8.011104583740234,
-                    4.5174078941345215,
-                    9.011104583740234
-                  ],
-                  "autoUv":false
-                },
-                "up":{
-                  "texture":"#material",
-                  "uv":[
-                    0.12150643765926361,
-                    6.995105743408203,
-                    5.162891864776611,
-                    10.03487777709961
-                  ],
-                  "autoUv":false
-                },
-                "down":{
-                  "texture":"#material",
-                  "uv":[
-                    10.870806694030762,
-                    11.034873962402344,
-                    5.82942008972168,
-                    7.995094299316406
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                }
-              },
-              "children":[]
-            },
-            {
-              "name":"binding_low_bonehandle_metalhead 07",
-              "from":[
-                5.954873859882355,
-                -0.06328295858102351,
-                -0.9082756638526917
-              ],
-              "to":[
-                8.475435674190521,
-                0.43671688437461853,
-                0.586759053170681
-              ],
-              "rotationOrigin":[
-                7.139762699604034,
-                -0.06328290700912476,
-                0.693119466304779
-              ],
-              "rotationX":90.96879653635277,
-              "rotationY":0.18908474250723803,
-              "rotationZ":-87.17970128296402,
-              "group":"low_bone_metalhead",
-              "faces":{
-                "north":{
-                  "texture":"#material",
-                  "uv":[
-                    10.83029842376709,
-                    0.9055805206298828,
-                    15.870196342468262,
-                    1.9055728912353516
-                  ],
-                  "autoUv":false
-                },
-                "east":{
-                  "texture":"#material",
-                  "uv":[
-                    3.4784295558929443,
-                    1.9055747985839844,
-                    6.518211841583252,
-                    2.9055709838867188
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                },
-                "south":{
-                  "texture":"#material",
-                  "uv":[
-                    6.83008337020874,
-                    4.905567169189453,
-                    11.857845306396484,
-                    5.905569076538086
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                },
-                "west":{
-                  "texture":"#material",
-                  "uv":[
-                    1.477624535560608,
-                    5.905569076538086,
-                    4.5174078941345215,
-                    6.905569076538086
-                  ],
-                  "autoUv":false
-                },
-                "up":{
-                  "texture":"#material",
-                  "uv":[
-                    0.12150643765926361,
-                    4.889570236206055,
-                    5.162891864776611,
-                    7.929342269897461
-                  ],
-                  "autoUv":false
-                },
-                "down":{
-                  "texture":"#material",
-                  "uv":[
-                    10.870806694030762,
-                    8.929338455200195,
-                    5.82942008972168,
-                    5.889558792114258
-                  ],
-                  "autoUv":false,
-                  "rotation":180
-                }
-              },
-              "children":[]
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "groups":[]
-}
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+		"material": [32,32]
+	},
+	"textures": {
+		"material": "game:item/tool/material/string"
+	},
+	"elements": [
+		{
+			"name": "origin",
+			"from": [ 11.1, 0.5, 7.36 ],
+			"to": [ 11.1, 0.5, 7.36 ],
+			"rotationOrigin": [ 8.0972, 0.0, 7.6107 ],
+			"faces": {
+				"north": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"east": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"south": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"west": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false },
+				"up": { "texture": "#material", "uv": [ 0.0, 0.0, 1.0, 1.0 ], "rotation": 180, "autoUv": false },
+				"down": { "texture": "#0", "uv": [ 0.0, 0.0, 4.0, 4.0 ], "autoUv": false }
+			},
+			"children": [
+				{
+					"name": "M_binding_low_bonehandle_metalhead",
+					"from": [ -2.4814, -0.5367, 0.0071 ],
+					"to": [ -1.9814, 0.5606, 1.2381 ],
+					"rotationOrigin": [ -2.2357, 0.25, 0.3372 ],
+					"rotationY": -0.43,
+					"faces": {
+						"north": { "texture": "#material", "uv": [ 19.3711, 1.9056, 21.4962, 2.9056 ], "rotation": 90, "autoUv": false },
+						"east": { "texture": "#material", "uv": [ 2.7211, 1.7805, 5.6238, 3.9056 ], "autoUv": false },
+						"south": { "texture": "#material", "uv": [ 4.3711, 1.9056, 6.4962, 2.9056 ], "rotation": 90, "autoUv": false },
+						"west": { "texture": "#material", "uv": [ 5.3686, 6.7805, 8.2713, 8.9056 ], "autoUv": false },
+						"up": { "texture": "#material", "uv": [ 1.4962, 0.778, 2.4962, 3.6807 ], "autoUv": false },
+						"down": { "texture": "#material", "uv": [ 2.4962, 3.6807, 1.4962, 0.778 ], "rotation": 180, "autoUv": false }
+					},
+					"children": [
+						{
+							"name": "binding_low_bonehandle_metalhead 01",
+							"from": [ -0.8398, -0.0205, -0.072 ],
+							"to": [ -0.3026, 1.119, 1.3103 ],
+							"rotationOrigin": [ -0.3633, 0.7867, 0.3651 ],
+							"rotationY": 21.73,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 19.2985, 1.9056, 21.4962, 2.9056 ], "rotation": 90, "autoUv": false },
+								"east": { "texture": "#material", "uv": [ 2.5919, 1.7079, 5.6258, 3.9056 ], "autoUv": false },
+								"south": { "texture": "#material", "uv": [ 4.2985, 1.9056, 6.4962, 2.9056 ], "rotation": 90, "autoUv": false },
+								"west": { "texture": "#material", "uv": [ 5.3665, 6.7079, 8.4004, 8.9056 ], "autoUv": false },
+								"up": { "texture": "#material", "uv": [ 1.4962, 0.7759, 2.4962, 3.8098 ], "autoUv": false },
+								"down": { "texture": "#material", "uv": [ 2.4962, 3.8098, 1.4962, 0.7759 ], "rotation": 180, "autoUv": false }
+							}
+						},
+						{
+							"name": "binding_low_bonehandle_metalhead 02",
+							"from": [ 4.824, -0.0633, -1.0046 ],
+							"to": [ 7.3718, 0.4367, 0.4905 ],
+							"rotationOrigin": [ 6.0361, -0.0633, 0.5968 ],
+							"rotationX": 90.9424,
+							"rotationY": 0.2867,
+							"rotationZ": -80.401,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 10.8303, 0.9056, 15.9246, 1.9056 ], "autoUv": false },
+								"east": { "texture": "#material", "uv": [ 3.4784, 1.9056, 6.5182, 2.9056 ], "rotation": 180, "autoUv": false },
+								"south": { "texture": "#material", "uv": [ 6.8301, 4.9056, 11.9122, 5.9056 ], "rotation": 180, "autoUv": false },
+								"west": { "texture": "#material", "uv": [ 1.4773, 5.9056, 4.5171, 6.9056 ], "autoUv": false },
+								"up": { "texture": "#material", "uv": [ 0.0671, 4.8896, 5.1629, 7.9293 ], "autoUv": false },
+								"down": { "texture": "#material", "uv": [ 10.9252, 8.9293, 5.8294, 5.8896 ], "rotation": 180, "autoUv": false }
+							}
+						},
+						{
+							"name": "binding_low_bonehandle_metalhead 03",
+							"from": [ 6.1843, -0.8178, 0.2598 ],
+							"to": [ 6.5075, -0.5186, 1.1961 ],
+							"rotationOrigin": [ 7.1697, -0.9177, 1.6022 ],
+							"rotationX": 59.3339,
+							"rotationY": -0.7302,
+							"rotationZ": -67.4162,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 11.821, 2.107, 12.4673, 2.7054 ], "autoUv": false },
+								"east": { "texture": "#material", "uv": [ 2.0905, 2.1062, 3.7975, 2.7046 ], "rotation": 180, "autoUv": false },
+								"south": { "texture": "#material", "uv": [ 18.8239, 2.1071, 19.4702, 2.7055 ], "rotation": 180, "autoUv": false },
+								"west": { "texture": "#material", "uv": [ 6.099, 2.1064, 7.8059, 2.7048 ], "autoUv": false },
+								"up": { "texture": "#material", "uv": [ 0.5237, 1.5082, 1.17, 3.2151 ], "autoUv": false },
+								"down": { "texture": "#material", "uv": [ 6.4686, 11.2148, 5.8223, 9.5078 ], "rotation": 180, "autoUv": false }
+							}
+						},
+						{
+							"name": "binding_low_bonehandle_metalhead 04",
+							"from": [ 4.0232, 0.0719, -0.5481 ],
+							"to": [ 4.5232, 1.4521, 0.1396 ],
+							"rotationOrigin": [ 4.2689, 0.7867, -0.5438 ],
+							"rotationY": 8.6651,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 25.0677, 2.0237, 27.7465, 2.9056 ], "rotation": 90, "autoUv": false },
+								"east": { "texture": "#material", "uv": [ 9.4842, 1.0283, 10.9652, 3.9056 ], "autoUv": false },
+								"south": { "texture": "#material", "uv": [ 10.0411, 2.0189, 12.7465, 2.9798 ], "rotation": 90, "autoUv": false },
+								"west": { "texture": "#material", "uv": [ 12.3873, 6.0283, 13.9776, 8.9056 ], "autoUv": false },
+								"up": { "texture": "#material", "uv": [ 7.7465, 1.5463, 8.7465, 2.9804 ], "autoUv": false },
+								"down": { "texture": "#material", "uv": [ 8.7465, 2.9804, 7.7465, 1.5463 ], "rotation": 180, "autoUv": false }
+							}
+						},
+						{
+							"name": "binding_low_bonehandle_metalhead 05",
+							"from": [ 4.5974, 0.0549, -0.6299 ],
+							"to": [ 5.0974, 1.4858, 0.0727 ],
+							"rotationOrigin": [ 4.8431, 0.7867, -0.6108 ],
+							"rotationY": -5.132,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 18.6189, 1.9056, 21.4962, 2.9056 ], "rotation": 90, "autoUv": false },
+								"east": { "texture": "#material", "uv": [ 3.2338, 1.0283, 4.8903, 3.9056 ], "autoUv": false },
+								"south": { "texture": "#material", "uv": [ 3.6189, 1.9056, 6.4962, 2.9056 ], "rotation": 90, "autoUv": false },
+								"west": { "texture": "#material", "uv": [ 6.102, 6.0283, 7.7585, 8.9056 ], "autoUv": false },
+								"up": { "texture": "#material", "uv": [ 1.4962, 1.5114, 2.4962, 3.1679 ], "autoUv": false },
+								"down": { "texture": "#material", "uv": [ 2.4962, 3.1679, 1.4962, 1.5114 ], "rotation": 180, "autoUv": false }
+							}
+						},
+						{
+							"name": "binding_low_bonehandle_metalhead 06",
+							"from": [ 5.4293, -0.0633, -0.8958 ],
+							"to": [ 7.9499, 0.4367, 0.6805 ],
+							"rotationOrigin": [ 6.6151, -0.0633, 0.7462 ],
+							"rotationX": 90.9461,
+							"rotationY": -0.2285,
+							"rotationZ": -99.1182,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 10.8303, 3.0111, 15.8702, 4.0111 ], "autoUv": false },
+								"east": { "texture": "#material", "uv": [ 3.4784, 4.0111, 6.5182, 5.0111 ], "rotation": 180, "autoUv": false },
+								"south": { "texture": "#material", "uv": [ 6.8301, 7.0111, 11.8578, 8.0111 ], "rotation": 180, "autoUv": false },
+								"west": { "texture": "#material", "uv": [ 1.4776, 8.0111, 4.5174, 9.0111 ], "autoUv": false },
+								"up": { "texture": "#material", "uv": [ 0.1215, 6.9951, 5.1629, 10.0349 ], "autoUv": false },
+								"down": { "texture": "#material", "uv": [ 10.8708, 11.0349, 5.8294, 7.9951 ], "rotation": 180, "autoUv": false }
+							}
+						},
+						{
+							"name": "binding_low_bonehandle_metalhead 07",
+							"from": [ 5.9549, -0.0633, -0.9083 ],
+							"to": [ 8.4754, 0.4367, 0.5868 ],
+							"rotationOrigin": [ 7.1398, -0.0633, 0.6931 ],
+							"rotationX": 90.9688,
+							"rotationY": 0.1891,
+							"rotationZ": -87.1797,
+							"faces": {
+								"north": { "texture": "#material", "uv": [ 10.8303, 0.9056, 15.8702, 1.9056 ], "autoUv": false },
+								"east": { "texture": "#material", "uv": [ 3.4784, 1.9056, 6.5182, 2.9056 ], "rotation": 180, "autoUv": false },
+								"south": { "texture": "#material", "uv": [ 6.8301, 4.9056, 11.8578, 5.9056 ], "rotation": 180, "autoUv": false },
+								"west": { "texture": "#material", "uv": [ 1.4776, 5.9056, 4.5174, 6.9056 ], "autoUv": false },
+								"up": { "texture": "#material", "uv": [ 0.1215, 4.8896, 5.1629, 7.9293 ], "autoUv": false },
+								"down": { "texture": "#material", "uv": [ 10.8708, 8.9293, 5.8294, 5.8896 ], "rotation": 180, "autoUv": false }
+							}
+						}
+					]
+				}
+			]
+		}
+	]}
