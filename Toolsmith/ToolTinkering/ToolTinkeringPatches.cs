@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Client.Behaviors;
 using Toolsmith.Config;
+using Toolsmith.SmithingOverhaul;
 using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.ToolTinkering.Drawbacks;
 using Toolsmith.Utils;
@@ -213,6 +214,8 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPatch(nameof(CollectibleObject.GetMaxDurability))]
         private static void TinkeredToolGetMaxDurabilityPostfix(ref int __result, ItemStack itemstack) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
+                
+                if(!SmithingOverhaulModSystem.Config.EnableSmithingOverhaul)
                 __result = (int)((double)__result * ToolsmithModSystem.Config.HeadDurabilityMult);
             }
         }

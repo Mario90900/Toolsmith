@@ -1,16 +1,18 @@
-﻿using SmithingOverhaul.Property;
+﻿using Toolsmith.SmithingOverhaul.Item;
+using Toolsmith.SmithingOverhaul.Property;
 using Toolsmith.SmithingOverhaul.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 
-namespace SmithingOverhaul.Behaviour
+namespace Toolsmith.SmithingOverhaul.Behaviour
 {
-    public class SmithingBehavior : CollectibleBehavior
+    public abstract class SmithingBehavior : CollectibleBehavior
     {
         public SmithingPropertyVariant metalProps;
 
-        public SmithingBehavior(CollectibleObject collObj) : base(collObj)
+        public SmithingBehavior(SmithingWorkItem smithObj) : base(smithObj)
         {
+            this.metalProps = smithObj.smithProps;
         }
         public override void Initialize(JsonObject properties)
         {
@@ -71,5 +73,6 @@ namespace SmithingOverhaul.Behaviour
             handling = EnumHandling.PassThrough;
             return;
         }
+
     }
 }

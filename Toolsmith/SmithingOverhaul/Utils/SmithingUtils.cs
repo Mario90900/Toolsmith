@@ -1,27 +1,17 @@
-﻿using HarmonyLib;
-using MathNet.Numerics;
-using MathNet.Numerics.Random;
-using SmithingOverhaul.Behaviour;
-using SmithingOverhaul.Item;
-using SmithingOverhaul.Property;
-using SmithingPlus;
+﻿using Toolsmith.SmithingOverhaul.Behaviour;
+using Toolsmith.SmithingOverhaul.Item;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using Toolsmith.SmithingOverhaul.Utils;
 using Toolsmith.ToolTinkering.Drawbacks;
-using Vintagestory.API.Client;
 using Vintagestory.API.Common;
-using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
-using Vintagestory.Common;
 using Vintagestory.GameContent;
-using static System.Net.Mime.MediaTypeNames;
+using Vintagestory.API.Datastructures;
+using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttributes;
 
-namespace Toolsmith.Utils
+namespace Toolsmith.SmithingOverhaul.Utils
 {
     public static class SmithingUtils
     {
@@ -211,51 +201,6 @@ namespace Toolsmith.Utils
 
             return;
         }
-        private static StressStrainHandler AssignStressStrainHandler(this ItemStack stack, ICoreAPI api)
-        {
-            StressStrainHandler ssh = null;
-            if (stack.Collectible is SmithingWorkItem)
-            {
-                ssh = StressStrainHandler.FromTreeAttribute(stack.Attributes);
-
-                int id = stack.Attributes.GetInt("stressStrainRefId", -1);
-                if (id == -1)
-                {
-                    id = SmithingWorkItem.nextHandlerRefId;
-                    ++SmithingWorkItem.nextHandlerRefId;
-                }
-                
-                ssh = ObjectCacheUtil.GetOrCreate(api, "stressStrainHandler" + id.ToString(), () =>
-                {
-                    if (ssh == null)
-                    {
-                        return new StressStrainHandler(stack);
-                    }
-                    else return ssh;
-                });
-
-                stack.Attributes.SetInt("stressStrainRefId", id);
-                ssh.ToTreeAttributes(stack.Attributes);
-            }
-            return ssh;
-
-        }
-        public static StressStrainHandler GetStressStrainHandler(this ItemStack stack, ICoreAPI api)
-        {
-            if(stack.Collectible is SmithingWorkItem)
-            {
-                StressStrainHandler ssh = null;
-                int id = stack.Attributes.GetInt("stressStrainRefId", -1);
-                ssh = ObjectCacheUtil.TryGet<StressStrainHandler>(api, "stressStrainHandler" + id.ToString());
-                if (ssh == default(StressStrainHandler))
-                {
-                    ssh = stack.AssignStressStrainHandler(api);
-                }
-                
-                return ssh;
-            }
-            else return null;
-        }
 
         public static void AddStrain(this ItemStack stack, ICoreAPI api, float changeInStrain)
         {
@@ -284,7 +229,7 @@ namespace Toolsmith.Utils
             ssh.AddStrain(changeInStrain);
             return;
         }
-        public static void RecoverStrain(ItemStack stack, ICoreAPI api, float temperature, double hourDiff)
+        public static void RecoverStrain(this ItemStack stack, ICoreAPI api, float temperature, double hourDiff)
         {
             if (stack.Collectible is not SmithingWorkItem) return;
 
@@ -310,6 +255,77 @@ namespace Toolsmith.Utils
 
             ssh.RecoverStrain(stack, temperature, hourDiff);
             return;
+        }
+        private static StressStrainHandler AssignStressStrainHandler(this ItemStack stack, ICoreAPI api)
+        {
+            StressStrainHandler ssh = null;
+            if (stack.Collectible is SmithingWorkItem)
+            {
+                ssh = StressStrainHandler.FromTreeAttribute(stack.Attributes);
+
+                int id = stack.Attributes.GetInt(StressStrainRefIdAttr, -1);
+                if (id == -1)
+                {
+                    id = SmithingWorkItem.nextHandlerRefId;
+                    ++SmithingWorkItem.nextHandlerRefId;
+                }
+
+                ssh = ObjectCacheUtil.GetOrCreate(api, StressStrainRefIdAttr + id.ToString(), () =>
+                {
+                    if (ssh == null)
+                    {
+                        return new StressStrainHandler(stack);
+                    }
+                    else return ssh;
+                });
+
+                stack.Attributes.SetInt(StressStrainRefIdAttr, id);
+                ssh.ToTreeAttributes(stack.Attributes);
+            }
+            return ssh;
+
+        }
+        public static StressStrainHandler GetStressStrainHandler(this ItemStack stack, ICoreAPI api)
+        {
+            if (stack.Collectible is SmithingWorkItem)
+            {
+                StressStrainHandler ssh = null;
+                int id = stack.Attributes.GetInt(StressStrainRefIdAttr, -1);
+                ssh = ObjectCacheUtil.TryGet<StressStrainHandler>(api, StressStrainRefIdAttr + id.ToString());
+                if (ssh == default(StressStrainHandler))
+                {
+                    ssh = stack.AssignStressStrainHandler(api);
+                }
+
+                return ssh;
+            }
+            else return null;
+        }
+
+        public static void DiscardStressStrainHandler(this ItemStack stack, ICoreAPI api)
+        {
+            if (stack.Collectible is SmithingWorkItem)
+            {
+                int id = stack.Attributes.GetInt(StressStrainRefIdAttr, -1);
+                if (id == -1) return;
+                ObjectCacheUtil.Delete(api, StressStrainRefIdAttr + id.ToString());
+            }
+            return;
+        }
+        public static void AddSmithingOutputAttr(this ItemStack outStack, ItemStack inStack, ICoreAPI api)
+        {
+            if (inStack.Collectible is not SmithingWorkItem) return;
+            StressStrainHandler ssh = inStack.GetStressStrainHandler(api);
+            if (ssh == null) return;
+
+            ITreeAttribute attr = outStack.Attributes.GetOrAddTreeAttribute(SmithingOverhaulStatsAttr);
+            attr.SetInt(ToughnessAttr, ssh.GetToughness());
+            attr.SetInt(HardnessAttr, ssh.GetHardness());
+            attr.SetDouble(MaxSharpnessAttr, ssh.GetMaxSharpness());
+            attr.SetInt(MaxDurabilityAttr, ssh.GetMaxDurability());
+
+            ssh.ToTreeAttributes(outStack.Attributes);
+            inStack.DiscardStressStrainHandler(api);
         }
     }
 }

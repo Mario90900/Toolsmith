@@ -1,36 +1,22 @@
 ﻿using MathNet.Numerics;
-using Newtonsoft.Json;
-using SmithingOverhaul.Behaviour;
-using SmithingOverhaul.Item;
-using SmithingOverhaul.Property;
+using Toolsmith.SmithingOverhaul.Item;
+using Toolsmith.SmithingOverhaul.Property;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
-using static Vintagestory.Server.Timer;
+using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttributes;
 
 namespace Toolsmith.SmithingOverhaul.Utils
 {
     public class StressStrainHandler
     {
-        public const string AttrName = "stressStrainObj";
-
         public float MeltPoint;
         public float SpecificHeatCapacity;
-        public float Density;
         public bool Elemental;
         public int TensileStrength; // in MPa
         public int YieldStrength; // in MPa
         public float Elongation; // in %
-        public int YoungsModulus; // in GPa
+        public int ElasticityModulus; // in GPa
         public bool IsOverstrained => Hardness > TensileStrength;
 
         private float plasticStrain;
@@ -81,12 +67,11 @@ namespace Toolsmith.SmithingOverhaul.Utils
         {
             MeltPoint = 0;
             SpecificHeatCapacity = 0;
-            Density = 0;
             Elemental = true;
             TensileStrength = 0;
             YieldStrength = 0;
             Elongation = 0;
-            YoungsModulus = 0;
+            ElasticityModulus = 0;
             plasticStrain = 0;
         }
         public StressStrainHandler(ItemStack stack)
@@ -97,125 +82,122 @@ namespace Toolsmith.SmithingOverhaul.Utils
 
             MeltPoint = props.MeltPoint;
             SpecificHeatCapacity = props.SpecificHeatCapacity;
-            Density = props.Density;
             Elemental = props.Elemental;
             TensileStrength = props.TensileStrength;
             YieldStrength = props.YieldStrength;
             Elongation = props.Elongation;
-            YoungsModulus = props.YoungsModulus;
+            ElasticityModulus = props.YoungsModulus;
 
-            if ((bool)stack.ItemAttributes?["workableTemperature"].Exists)
+            if ((bool)stack.ItemAttributes?[ForgingTempAttr].Exists)
             {
-                forgingTemp = stack.ItemAttributes["workableTemperature"].AsFloat();
+                forgingTemp = stack.ItemAttributes[ForgingTempAttr].AsFloat();
             }
-            if ((bool)stack.ItemAttributes?["smithingProperties"].Exists)
+            if ((bool)stack.ItemAttributes?[SmithingPropsAttr].Exists)
             {
-                JsonObject _props = stack.ItemAttributes["smithingProperties"];
-                if (_props.KeyExists("meltPoint"))
+                JsonObject _props = stack.ItemAttributes[SmithingPropsAttr];
+                if (_props.KeyExists(MeltPointAttr))
                 {
-                    MeltPoint = _props["meltPoint"].AsFloat();
+                    MeltPoint = _props[MeltPointAttr].AsFloat();
                 }
-                if (_props.KeyExists("specificHC"))
+                if (_props.KeyExists(SpecificHeatCapacityAttr))
                 {
-                    SpecificHeatCapacity = _props["specificHC"].AsFloat();
+                    SpecificHeatCapacity = _props[SpecificHeatCapacityAttr].AsFloat();
                 }
-                if (_props.KeyExists("density"))
+                if (_props.KeyExists(ElementalAttr))
                 {
-                    Density = _props["density"].AsFloat();
+                    Elemental = _props[ElementalAttr].AsBool();
                 }
-                if (_props.KeyExists("elemental"))
+                if (_props.KeyExists(TensileStrengthAttr))
                 {
-                    Elemental = _props["elemental"].AsBool();
+                    TensileStrength = _props[TensileStrengthAttr].AsInt();
                 }
-                if (_props.KeyExists("tensileStrength"))
+                if (_props.KeyExists(YieldStrengthAttr))
                 {
-                    TensileStrength = _props["tensileStrength"].AsInt();
+                    YieldStrength = _props[YieldStrengthAttr].AsInt();
                 }
-                if (_props.KeyExists("yieldStrength"))
+                if (_props.KeyExists(ElongationAttr))
                 {
-                    YieldStrength = _props["yieldStrength"].AsInt();
+                    Elongation = _props[ElongationAttr].AsFloat();
                 }
-                if (_props.KeyExists("elongation"))
+                if (_props.KeyExists(ElasticityModulusAttr))
                 {
-                    Elongation = _props["elongation"].AsFloat();
+                    ElasticityModulus = _props[ElasticityModulusAttr].AsInt();
                 }
-                if (_props.KeyExists("youngsModulus"))
+                if (_props.KeyExists(RecrystalizationTempAttr))
                 {
-                    YoungsModulus = _props["youngsModulus"].AsInt();
+                    crystalTemp = _props[RecrystalizationTempAttr].AsFloat();
                 }
-                if (_props.KeyExists("recrystalizationTemp"))
+                if (_props.KeyExists(HardeningCoeffAttr))
                 {
-                    crystalTemp = _props["recrystalizationTemp"].AsFloat();
+                    hardeningCoeff = _props[HardeningCoeffAttr].AsFloat();
                 }
-                if (_props.KeyExists("hardeningCoeff"))
+                if (_props.KeyExists(StrengthCoeffAttr))
                 {
-                    hardeningCoeff = _props["hardeningCoeff"].AsFloat();
-                }
-                if (_props.KeyExists("strengthCoeff"))
-                {
-                    strengthCoeff = _props["strengthCoeff"].AsFloat();
+                    strengthCoeff = _props[StrengthCoeffAttr].AsFloat();
                 }
             }
         }
 
-        public virtual void ToTreeAttributes(ITreeAttribute attr)
+        public void ToTreeAttributes(ITreeAttribute attr)
         {
-            attr.RemoveAttribute(AttrName);
-            ITreeAttribute new_attr = attr.GetOrAddTreeAttribute(AttrName);
-            new_attr.SetFloat("meltPoint", MeltPoint);
-            new_attr.SetFloat("specificHC", SpecificHeatCapacity);
-            new_attr.SetFloat("density", Density);
-            new_attr.SetBool("elemental", Elemental);
-            new_attr.SetInt("tensileStrength", TensileStrength);
-            new_attr.SetInt("yieldStrength", YieldStrength);
-            new_attr.SetFloat("elongation", Elongation);
-            new_attr.SetInt("youngsModulus", YoungsModulus);
-            if(crystalTemp.HasValue) new_attr.SetFloat("recrystalizationTemp", crystalTemp.Value);
-            if(hardeningCoeff.HasValue) new_attr.SetFloat("hardeningCoeff", hardeningCoeff.Value);
-            if(strengthCoeff.HasValue) new_attr.SetFloat("strengthCoeff", strengthCoeff.Value);
-            if(forgingTemp.HasValue) new_attr.SetFloat("forgingTemperature", forgingTemp.Value);
-            new_attr.SetFloat("plasticStrain", plasticStrain);
+            attr.RemoveAttribute(StressStrainAttr);
+            ITreeAttribute new_attr = attr.GetOrAddTreeAttribute(StressStrainAttr);
+            new_attr.SetFloat(MeltPointAttr, MeltPoint);
+            new_attr.SetFloat(SpecificHeatCapacityAttr, SpecificHeatCapacity);
+            new_attr.SetBool(ElementalAttr, Elemental);
+            new_attr.SetInt(TensileStrengthAttr, TensileStrength);
+            new_attr.SetInt(YieldStrengthAttr, YieldStrength);
+            new_attr.SetFloat(ElongationAttr, Elongation);
+            new_attr.SetInt(ElasticityModulusAttr, ElasticityModulus);
+            if(crystalTemp.HasValue) new_attr.SetFloat(RecrystalizationTempAttr, crystalTemp.Value);
+            if(hardeningCoeff.HasValue) new_attr.SetFloat(HardeningCoeffAttr, hardeningCoeff.Value);
+            if(strengthCoeff.HasValue) new_attr.SetFloat(StrengthCoeffAttr, strengthCoeff.Value);
+            if(forgingTemp.HasValue) new_attr.SetFloat(ForgingTempAttr, forgingTemp.Value);
+            new_attr.SetFloat(PlasticStrainAttr, plasticStrain);
         }
 
         public static StressStrainHandler FromTreeAttribute(ITreeAttribute attr)
         {
             StressStrainHandler ssh = new StressStrainHandler();
-            if (!attr.HasAttribute(AttrName))
+            if (!attr.HasAttribute(StressStrainAttr))
             {
                 return null;
             }
 
-            ITreeAttribute new_attr = attr.GetOrAddTreeAttribute(AttrName);
-            ssh.MeltPoint = new_attr.GetFloat("meltPoint");
-            ssh.SpecificHeatCapacity = new_attr.GetFloat("specificHC");
-            ssh.Density = new_attr.GetFloat("density");
-            ssh.Elemental = new_attr.GetBool("elemental");
-            ssh.TensileStrength = new_attr.GetInt("tensileStrength");
-            ssh.YieldStrength = new_attr.GetInt("yieldStrength");
-            ssh.Elongation = new_attr.GetFloat("elongation");
-            ssh.YoungsModulus = new_attr.GetInt("youngsModulus");
-            ssh.crystalTemp = new_attr.TryGetFloat("recrystalizationTemp");
-            ssh.hardeningCoeff = new_attr.TryGetFloat("hardeningCoeff");
-            ssh.strengthCoeff = new_attr.TryGetFloat("strengthCoeff");
-            ssh.forgingTemp = new_attr.TryGetFloat("forgingTemperature");
-            ssh.plasticStrain = new_attr.GetFloat("plasticStrain");
+            ITreeAttribute new_attr = attr.GetOrAddTreeAttribute(StressStrainAttr);
+            ssh.MeltPoint = new_attr.GetFloat(MeltPointAttr);
+            ssh.SpecificHeatCapacity = new_attr.GetFloat(SpecificHeatCapacityAttr);
+            ssh.Elemental = new_attr.GetBool(ElementalAttr);
+            ssh.TensileStrength = new_attr.GetInt(TensileStrengthAttr);
+            ssh.YieldStrength = new_attr.GetInt(YieldStrengthAttr);
+            ssh.Elongation = new_attr.GetFloat(ElongationAttr);
+            ssh.ElasticityModulus = new_attr.GetInt(ElasticityModulusAttr);
+            ssh.crystalTemp = new_attr.TryGetFloat(RecrystalizationTempAttr);
+            ssh.hardeningCoeff = new_attr.TryGetFloat(HardeningCoeffAttr);
+            ssh.strengthCoeff = new_attr.TryGetFloat(StrengthCoeffAttr);
+            ssh.forgingTemp = new_attr.TryGetFloat(ForgingTempAttr);
+            ssh.plasticStrain = new_attr.GetFloat(PlasticStrainAttr);
             return ssh;
         }
 
-        public virtual int GetHardness()
+        public int GetHardness()
         {
-            float totalStrain = (float)(StrengthCoeff / (YoungsModulus * 10) * Math.Pow(plasticStrain, HardeningCoeff) + plasticStrain);
+            float totalStrain = (float)(StrengthCoeff / (ElasticityModulus * 10) * Math.Pow(plasticStrain, HardeningCoeff) + plasticStrain);
             return (int)(StrengthCoeff * Math.Pow(totalStrain, HardeningCoeff));
         }
-        public virtual int GetToughness()
+        public int GetToughness()
         {
-            System.Func<double, double> stressStrainCurve = stress => stress / (YoungsModulus * 10) + Math.Pow(stress / StrengthCoeff, 1 / HardeningCoeff);
+            System.Func<double, double> stressStrainCurve = stress => stress / (ElasticityModulus * 10) + Math.Pow(stress / StrengthCoeff, 1 / HardeningCoeff);
             double upper = Integrate.DoubleExponential(stressStrainCurve, 0.0d, (double)TensileStrength);
             return (int)Math.Round(TensileStrength * Elongation - Hardness * plasticStrain - upper);
         }
         public virtual double GetMaxSharpness()
         {
-            return (Math.Cbrt(Hardness + 100) / 500);
+            return Math.Cbrt(Hardness + 100) / 500;
+        }
+        public virtual int GetMaxDurability()
+        {
+            return (int)(GetToughness() * 0.1);
         }
         public virtual float GetRecrystalization(float temp, double hourDiff)
         {

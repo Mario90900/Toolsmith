@@ -1,22 +1,16 @@
-﻿using MathNet.Numerics.Statistics.Mcmc;
-using SmithingOverhaul.Behaviour;
-using SmithingOverhaul.Property;
+﻿using Toolsmith.SmithingOverhaul.Behaviour;
+using Toolsmith.SmithingOverhaul.Property;
 using System;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
 using System.Text;
 using Toolsmith.SmithingOverhaul.Utils;
 using Toolsmith.Utils;
-using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
-using Vintagestory.API.MathTools;
-using Vintagestory.API.Util;
 using Vintagestory.GameContent;
-using static HarmonyLib.Code;
+using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttributes;
 
-namespace SmithingOverhaul.Item
+namespace Toolsmith.SmithingOverhaul.Item
 {
     public class SmithingWorkItem : ItemWorkItem
     {
@@ -51,19 +45,19 @@ namespace SmithingOverhaul.Item
         {
             //Default Behaviour 
 
-            if (itemstack?.Attributes?["temperature"] is not ITreeAttribute)
+            if (itemstack?.Attributes?[TemperatureAttrTree] is not ITreeAttribute)
             {
                 return 20;
             }
 
-            ITreeAttribute attr = itemstack.Attributes.GetOrAddTreeAttribute("temperature");
+            ITreeAttribute attr = itemstack.Attributes.GetOrAddTreeAttribute(TemperatureAttrTree);
 
             double nowHours = world.Calendar.TotalHours;
-            double lastUpdateHours = attr.GetDecimal("temperatureLastUpdate", nowHours);
+            double lastUpdateHours = attr.GetDecimal(TempLastUpdateAttr, nowHours);
 
             double hourDiff = nowHours - lastUpdateHours;
-            float temp = (float)attr.GetFloat("temperature", 20);
-            if (itemstack.Attributes.GetBool("timeFrozen", false)) return temp;
+            float temp = (float)attr.GetFloat(TemperatureAttr, 20);
+            if (itemstack.Attributes.GetBool(TimeFrozenAttr, false)) return temp;
 
             // 1.5 deg per irl second
             // 1 game hour = irl 60 seconds
@@ -71,7 +65,7 @@ namespace SmithingOverhaul.Item
             {
                 TemperatureEffect(itemstack, temp, hourDiff);
 
-                float cooledTemp = (float)(nowHours - lastUpdateHours) * attr.GetFloat("cooldownSpeed", 90);
+                float cooledTemp = (float)(nowHours - lastUpdateHours) * attr.GetFloat(CooldownSpeedAttr, 90);
                 temp = Math.Max(0, temp - Math.Max(0, cooledTemp));
             }
             SetTemperature(world, itemstack, temp, false);
@@ -82,26 +76,26 @@ namespace SmithingOverhaul.Item
         {
             //Default Behaviour
 
-            if (itemstack?.Attributes?["temperature"] is not ITreeAttribute)
+            if (itemstack?.Attributes?[TemperatureAttrTree] is not ITreeAttribute)
             {
                 return 20;
             }
 
-            var attr = itemstack.Attributes.GetOrAddTreeAttribute("temperature");
+            var attr = itemstack.Attributes.GetOrAddTreeAttribute(TemperatureAttrTree);
 
             var nowHours = world.Calendar.TotalHours;
-            var lastUpdateHours = attr.GetDouble("temperatureLastUpdate");
+            var lastUpdateHours = attr.GetDouble(TempLastUpdateAttr);
 
             var hourDiff = nowHours - (lastUpdateHours + didReceiveHeat);
 
-            var temp = attr.GetFloat("temperature", 20);
+            var temp = attr.GetFloat(TemperatureAttr, 20);
             // 1.5 deg per irl second
             // 1 game hour = irl 60 seconds
             if (hourDiff > 1 / 85f && temp > 0f)
             {
                 TemperatureEffect(itemstack, temp, hourDiff);
 
-                float cooledTemp = (float)(nowHours - lastUpdateHours) * attr.GetFloat("cooldownSpeed", 90);
+                float cooledTemp = (float)(nowHours - lastUpdateHours) * attr.GetFloat(CooldownSpeedAttr, 90);
                 temp = Math.Max(0, temp - Math.Max(0, cooledTemp));
 
                 
@@ -115,11 +109,11 @@ namespace SmithingOverhaul.Item
 
             if (itemstack == null) return;
 
-            ITreeAttribute attr = itemstack.Attributes.GetOrAddTreeAttribute("temperature");
+            ITreeAttribute attr = itemstack.Attributes.GetOrAddTreeAttribute(TemperatureAttrTree);
 
             double nowHours = world.Calendar.TotalHours;
-            double initialHours = attr.GetDouble("temperatureLastUpdate", nowHours);
-            float initialTemp = attr.GetFloat("temperature", temperature);
+            double initialHours = attr.GetDouble(TempLastUpdateAttr, nowHours);
+            float initialTemp = attr.GetFloat(TemperatureAttr, temperature);
             // If the colletible gets heated, retain the heat for 1 ingame hour
             if (initialTemp < temperature)
             {
@@ -128,8 +122,8 @@ namespace SmithingOverhaul.Item
             }
             else if (initialTemp > temperature) CoolingEffects(itemstack, initialTemp - temperature, nowHours - initialHours);
 
-            attr.SetDouble("temperatureLastUpdate", nowHours);
-            attr.SetFloat("temperature", temperature);
+            attr.SetDouble(TempLastUpdateAttr, nowHours);
+            attr.SetFloat(TemperatureAttr, temperature);
         }
 
         //Handles effects related to being a certain temperature
@@ -278,6 +272,11 @@ namespace SmithingOverhaul.Item
             StressStrainHandler ssh = stack.GetStressStrainHandler(api);
             if (ssh == null) return false;
             return ssh.IsOverstrained;
+        }
+
+        public override void OnConsumedByCrafting(ItemSlot[] allInputSlots, ItemSlot stackInSlot, GridRecipe gridRecipe, CraftingRecipeIngredient fromIngredient, IPlayer byPlayer, int quantity)
+        {
+
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmithingOverhaul.Behaviour
+namespace Toolsmith.SmithingOverhaul.Config
 {
-    public class FerrousBehaviour : SmithingBehavior
+    public class SmithingOverhaulConfig
     {
+        public bool EnableSmithingOverhaul = false;
     }
 }

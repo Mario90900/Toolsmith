@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolsmith", "Toolsmith\Tool
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeBuild", "ZZCakeBuild\CakeBuild.csproj", "{B31C94F4-C239-43DA-A353-BBABDBC43F1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmithingOverhaul", "Toolsmith\SmithingOverhaul\SmithingOverhaul\SmithingOverhaul.csproj", "{353033CB-E82C-F808-07F2-D44EF1CFAF49}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VintagestoryAPI", "..\BaseMods\vsapi\VintagestoryAPI.csproj", "{5478ABDE-FF62-E130-51B8-19838960CF97}"
@@ -16,6 +14,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSEssentialsMod", "..\BaseMods\vsessentialsmod\VSEssentialsMod.csproj", "{7373877C-5C91-F277-3553-8712E5D2F3B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSSurvivalMod", "..\BaseMods\vssurvivalmod\VSSurvivalMod.csproj", "{BBB4A7EB-922B-BC5A-4FCA-4736750887E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Useful Mods", "Useful Mods", "{8718273A-B458-4C53-A0C6-4F69AE6DE524}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmithingPlus", "..\SmithingPlus\SmithingPlus\SmithingPlus.csproj", "{B8E52A9A-482F-D812-AB57-6DD3FF2BCEE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemRarity", "..\ItemRarity\ItemRarity\ItemRarity\ItemRarity.csproj", "{AAB4CB41-2C94-FDB9-F81F-5DEB7874A133}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +35,6 @@ Global
 		{B31C94F4-C239-43DA-A353-BBABDBC43F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B31C94F4-C239-43DA-A353-BBABDBC43F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B31C94F4-C239-43DA-A353-BBABDBC43F1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{353033CB-E82C-F808-07F2-D44EF1CFAF49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{353033CB-E82C-F808-07F2-D44EF1CFAF49}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{353033CB-E82C-F808-07F2-D44EF1CFAF49}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{353033CB-E82C-F808-07F2-D44EF1CFAF49}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5478ABDE-FF62-E130-51B8-19838960CF97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5478ABDE-FF62-E130-51B8-19838960CF97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5478ABDE-FF62-E130-51B8-19838960CF97}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,6 +47,14 @@ Global
 		{BBB4A7EB-922B-BC5A-4FCA-4736750887E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBB4A7EB-922B-BC5A-4FCA-4736750887E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBB4A7EB-922B-BC5A-4FCA-4736750887E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8E52A9A-482F-D812-AB57-6DD3FF2BCEE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8E52A9A-482F-D812-AB57-6DD3FF2BCEE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8E52A9A-482F-D812-AB57-6DD3FF2BCEE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8E52A9A-482F-D812-AB57-6DD3FF2BCEE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAB4CB41-2C94-FDB9-F81F-5DEB7874A133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAB4CB41-2C94-FDB9-F81F-5DEB7874A133}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAB4CB41-2C94-FDB9-F81F-5DEB7874A133}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAB4CB41-2C94-FDB9-F81F-5DEB7874A133}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +63,8 @@ Global
 		{5478ABDE-FF62-E130-51B8-19838960CF97} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{7373877C-5C91-F277-3553-8712E5D2F3B3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{BBB4A7EB-922B-BC5A-4FCA-4736750887E3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B8E52A9A-482F-D812-AB57-6DD3FF2BCEE3} = {8718273A-B458-4C53-A0C6-4F69AE6DE524}
+		{AAB4CB41-2C94-FDB9-F81F-5DEB7874A133} = {8718273A-B458-4C53-A0C6-4F69AE6DE524}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9DCFDE55-8C5C-4BB4-8537-E2DCDDE743E9}
