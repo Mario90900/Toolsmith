@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vintagestory.API.Common;
 
-namespace SmithingOverhaul.Property
+namespace Toolsmith.SmithingOverhaul.Property
 {
     public class SmithingProperty : WorldProperty<SmithingPropertyVariant>
     {

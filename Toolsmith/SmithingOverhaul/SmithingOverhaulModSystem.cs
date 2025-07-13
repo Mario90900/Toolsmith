@@ -1,14 +1,13 @@
 ﻿using HarmonyLib;
-using Microsoft.VisualBasic;
-using SmithingOverhaul.Property;
 using System.Collections.Generic;
-using Vintagestory;
+using Toolsmith.SmithingOverhaul.Config;
+using Toolsmith.SmithingOverhaul.Item;
+using Toolsmith.SmithingOverhaul.Property;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
-using Vintagestory.Client.NoObf;
 
-namespace SmithingOverhaul
+namespace Toolsmith.SmithingOverhaul
 {
     public class SmithingOverhaulModSystem : ModSystem
     {
@@ -17,11 +16,13 @@ namespace SmithingOverhaul
         public static ILogger Logger;
         public static string ModId;
         public static string ModVersion;
+        public static SmithingOverhaulConfig Config;
 
         public Dictionary<string, SmithingPropertyVariant> metalPropsByCode;
 
-        public const string AnvilHammerHitPatches = "anvilHammerHitPatches";
+        public const string AnvilPatches = "anvilPatches";
         public const string ItemWorkItemPatches = "workItemPatches";
+        public const string WorkItemStatsPatches = "workItemStatsPatches";
         public override void StartPre(ICoreAPI api)
         {
             Logger = Mod.Logger;
@@ -31,6 +32,7 @@ namespace SmithingOverhaul
         }
         public override void Start(ICoreAPI api)
         {
+            api.RegisterItemClass($"{ModId}:SmithingWorkItem", typeof(SmithingWorkItem));
             HarmonyPatch();
         }
         private static void HarmonyPatch()
@@ -41,13 +43,10 @@ namespace SmithingOverhaul
             }
             HarmonyObject = new Harmony(ModId);
             Logger.VerboseDebug("Harmony is starting Patches!");
-            HarmonyObject.PatchCategory(AnvilHammerHitPatches);
+            HarmonyObject.PatchCategory(AnvilPatches);
             HarmonyObject.PatchCategory(ItemWorkItemPatches);
+            HarmonyObject.PatchCategory(WorkItemStatsPatches);
             Logger.VerboseDebug("Patched functions for Smithing purposes.");
-        }
-        public override void AssetsFinalize(ICoreAPI api)
-        {
-            base.AssetsFinalize(api);
         }
 
         public override void AssetsLoaded(ICoreAPI api)
@@ -64,43 +63,6 @@ namespace SmithingOverhaul
                     metalPropsByCode[metal.Code.Path] = metal;
                 }
             }
-        }
-
-        public override void Dispose()
-        {
-            base.Dispose();
-        }
-
-        public override double ExecuteOrder()
-        {
-            return base.ExecuteOrder();
-        }
-
-        public override bool ShouldLoad(ICoreAPI api)
-        {
-            return base.ShouldLoad(api);
-        }
-
-        public override bool ShouldLoad(EnumAppSide forSide)
-        {
-            return base.ShouldLoad(forSide);
-        }
-
-        
-
-        public override void StartClientSide(ICoreClientAPI api)
-        {
-            base.StartClientSide(api);
-        }
-
-        public override void StartPre(ICoreAPI api)
-        {
-            base.StartPre(api);
-        }
-
-        public override void StartServerSide(ICoreServerAPI api)
-        {
-            base.StartServerSide(api);
         }
     }
 }

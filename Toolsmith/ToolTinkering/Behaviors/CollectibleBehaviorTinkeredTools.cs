@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Config;
+using Toolsmith.SmithingOverhaul;
 using Toolsmith.ToolTinkering.Items;
 using Toolsmith.Utils;
 using Vintagestory.API.Client;
@@ -12,6 +13,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Util;
 using Vintagestory.GameContent;
+using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttributes;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorTinkeredTools : CollectibleBehavior {
@@ -206,7 +208,12 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
             var baseDur = outputSlot.Itemstack.Collectible.GetBaseMaxDurability(outputSlot.Itemstack);
             int headMaxDur = outputSlot.Itemstack.GetToolheadMaxDurability();//Start with the tool head.
-            int maxSharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);//Calculate the sharpness next similarly to the durability.
+            int maxSharpness;
+
+            if (SmithingOverhaulModSystem.Config.EnableSmithingOverhaul && outputSlot.Itemstack.Attributes.HasAttribute(SmithingOverhaulStatsAttr))
+                maxSharpness = (int)(outputSlot.Itemstack.Attributes.GetTreeAttribute(SmithingOverhaulStatsAttr).GetInt(MaxSharpnessAttr));
+            else
+                maxSharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult); //Calculate the sharpness next similarly to the durability.
 
             var handleDur = baseDur * handleStats.baseHPfactor; //Starting with the handle: Account for baseHPfactor first in the handle...
             handleDur = handleDur + handleDur * handleStats.selfHPBonus; //plus the selfDurabilityBonus

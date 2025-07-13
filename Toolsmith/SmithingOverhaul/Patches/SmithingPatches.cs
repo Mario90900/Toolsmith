@@ -1,37 +1,38 @@
 ﻿using HarmonyLib;
-using SmithingOverhaul.Behaviour;
-using SmithingOverhaul.Item;
-using SmithingOverhaul.Property;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using Toolsmith.Utils;
+using Toolsmith.SmithingOverhaul.Behaviour;
+using Toolsmith.SmithingOverhaul.Item;
+using Toolsmith.SmithingOverhaul.Property;
+using Toolsmith.SmithingOverhaul.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
+using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttributes;
+using static HarmonyLib.Code;
 
-namespace SmithingOverhaul.Patches
+namespace Toolsmith.SmithingOverhaul.Patches
 {
     [HarmonyPatch(typeof(BlockEntityAnvil))]
-    [HarmonyPatchCategory(SmithingOverhaulModSystem.AnvilHammerHitPatches)]
-    public class AnvilHammerHitPatches
+    [HarmonyPatchCategory(SmithingOverhaulModSystem.AnvilPatches)]
+    public class AnvilPatches
     {
-
+        static readonly MethodInfo getCollectible = AccessTools.PropertyGetter(typeof(ItemStack), nameof(ItemStack.Collectible));
+        static readonly FieldInfo workstack = AccessTools.Field(typeof(ItemStack), "workItemStack");
+        static readonly MethodInfo getWorkItem = AccessTools.PropertyGetter(typeof(BlockEntityAnvil), nameof(BlockEntityAnvil.WorkItemStack));
+        static readonly FieldInfo getApi = AccessTools.Field(typeof(BlockEntityAnvil), nameof(BlockEntityAnvil.Api));
+        static readonly MethodInfo moveVoxelDown = AccessTools.Method(typeof(BlockEntityAnvil), "moveVoxelDownwards");
+        static readonly MethodInfo afterOnHit = AccessTools.Method(typeof(SmithingWorkItem), nameof(SmithingWorkItem.AfterOnHit));
+        static readonly MethodInfo isFracturing = AccessTools.Method(typeof(SmithingWorkItem), nameof(SmithingWorkItem.IsOverstrained));
+        static readonly MethodInfo fracture = AccessTools.Method(typeof(SmithingUtils), nameof(SmithingUtils.Fracture));
+        static readonly MethodInfo addSmithAttr = AccessTools.Method(typeof(SmithingUtils), nameof(SmithingUtils.AddSmithingOutputAttr));
+        
         [HarmonyTranspiler]
         [HarmonyPatch(nameof(BlockEntityAnvil.OnHit))]
-        public static IEnumerable<CodeInstruction> OnHitTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> OnHitTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            MethodInfo moveVoxelDown = AccessTools.Method(typeof(BlockEntityAnvil), "moveVoxelDownwards");
-            MethodInfo getCollectible = AccessTools.PropertyGetter(typeof(ItemStack), nameof(ItemStack.Collectible));
-            MethodInfo getWorkItem = AccessTools.PropertyGetter(typeof(BlockEntityAnvil), nameof(BlockEntityAnvil.WorkItemStack));
-            MethodInfo afterOnHit = AccessTools.Method(typeof(SmithingWorkItem), nameof(SmithingWorkItem.AfterOnHit));
-            MethodInfo isFracturing = AccessTools.Method(typeof(SmithingWorkItem), nameof(SmithingWorkItem.IsOverstrained));
-            MethodInfo fracture = AccessTools.Method(typeof(SmithingUtils), nameof(SmithingUtils.Fracture));
 
             return new CodeMatcher(instructions, generator)
             //Create new local variables
@@ -120,27 +121,78 @@ namespace SmithingOverhaul.Patches
             .InstructionEnumeration();
         }
 
+        [HarmonyTranspiler]
+        [HarmonyPatch(nameof(BlockEntityAnvil.CheckIfFinished))]
+        private static IEnumerable<CodeInstruction> CheckIfFinishedOutputHook(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            CodeMatcher codeMatcher = new CodeMatcher(instructions, generator);
+
+            List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
+            for (var i = 0; i < codes.Count; i++)
+            {
+                if (codes[i].opcode == OpCodes.Ldarg_0 && i+1 < codes.Count)
+                {
+                    if (codes[i+1].opcode == OpCodes.Ldnull && i+2 < codes.Count)
+                    {
+                        if (codes[i+2].opcode == OpCodes.Stfld &&
+                            codes[i+2].operand is FieldInfo &&
+                           (codes[i+2].operand as FieldInfo) == workstack)
+                        {
+                            return codeMatcher.CreateLabelAt(i, out Label ifend).Start().Advance(i)
+                                        .InsertAndAdvance(CodeInstruction.LoadArgument(0))
+                                        .InsertAndAdvance(new CodeInstruction(OpCodes.Callvirt, getWorkItem))
+                                        .InsertAndAdvance(new CodeInstruction(OpCodes.Callvirt, getCollectible))
+                                        .InsertAndAdvance(new CodeInstruction(OpCodes.Isinst, typeof(SmithingWorkItem)))
+                                        .InsertAndAdvance(new CodeInstruction(OpCodes.Brfalse_S, ifend))
+                                        .InsertAndAdvance(CodeInstruction.LoadLocal(0))
+                                        .InsertAndAdvance(CodeInstruction.LoadArgument(0))
+                                        .InsertAndAdvance(new CodeInstruction(OpCodes.Callvirt, getWorkItem))
+                                        .InsertAndAdvance(CodeInstruction.LoadArgument(0))
+                                        .InsertAndAdvance(new CodeInstruction(OpCodes.Ldfld, getApi))
+                                        .InsertAndAdvance(new CodeInstruction(OpCodes.Callvirt, addSmithAttr))
+                                        .InstructionEnumeration();
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(nameof(BlockEntityAnvil.OnUpset))]
-        public static void OnUpsetPostfix(Vec3i voxelPos, BlockEntityAnvil __instance)
+        private static void OnUpsetPostfix(Vec3i voxelPos, BlockEntityAnvil __instance)
         {
             if (__instance.WorkItemStack.Collectible != null && __instance.WorkItemStack.Collectible is SmithingWorkItem)
             {
                 SmithingWorkItem item = (__instance.WorkItemStack.Collectible as SmithingWorkItem);
                 item.AfterOnUpset(__instance.WorkItemStack);
-                if (item.IsOverstrained(__instance.WorkItemStack)) SmithingUtils.Fracture(voxelPos, __instance);
+                if (item.IsOverstrained(__instance.WorkItemStack)) SmithingUtils.Fracture(__instance, voxelPos);
             }
         }
 
         [HarmonyPostfix]
         [HarmonyPatch(nameof(BlockEntityAnvil.OnSplit))]
-        public static void OnSplitPostfix(Vec3i voxelPos, BlockEntityAnvil __instance)
+        private static void OnSplitPostfix(Vec3i voxelPos, BlockEntityAnvil __instance)
         {
             if (__instance.WorkItemStack.Collectible != null && __instance.WorkItemStack.Collectible is SmithingWorkItem)
             {
                 SmithingWorkItem item = (__instance.WorkItemStack.Collectible as SmithingWorkItem);
                 item.AfterOnUpset(__instance.WorkItemStack);
-                if (item.IsOverstrained(__instance.WorkItemStack)) SmithingUtils.Fracture(voxelPos, __instance);
+                if (item.IsOverstrained(__instance.WorkItemStack)) SmithingUtils.Fracture(__instance, voxelPos);
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(BlockEntityAnvil.ditchWorkItemStack))]
+        private static void AddStressStrainHandlerToAttributesAfterDitching(BlockEntityAnvil __instance)
+        {
+            if(__instance.WorkItemStack.Collectible is SmithingWorkItem)
+            {
+                StressStrainHandler ssh = __instance.WorkItemStack.GetStressStrainHandler(__instance.Api);
+                if (ssh == null) return;
+
+                ssh.ToTreeAttributes(__instance.WorkItemStack.Attributes);
             }
         }
     }
@@ -151,7 +203,7 @@ namespace SmithingOverhaul.Patches
     {
         [HarmonyPostfix]
         [HarmonyPatch(nameof(ItemWorkItem.CanWork))]
-        public static void CanWork_Postfix(
+        private static void CanWork_Postfix(
             ItemStack stack,
             ItemWorkItem __instance,
             ref bool __result,
@@ -164,11 +216,13 @@ namespace SmithingOverhaul.Patches
                 bool preventDefault = false;
                 bool canWork = false;
                 SmithingWorkItem item = (SmithingWorkItem)__instance;
+                StressStrainHandler ssh = stack.GetStressStrainHandler(___api);
+                if (ssh == null) return;
 
                 foreach (SmithingBehavior behavior in item.SmithingBehaviors)
                 {
                     EnumHandling handled = EnumHandling.PassThrough;
-                    bool canWorkBh = behavior.CanWork(___api.World, stack, ref handled);
+                    bool canWorkBh = behavior.OnCanWork(ssh, stack, ___api.World, ref handled);
                     if (handled != EnumHandling.PassThrough)
                     {
                         canWork = canWorkBh;
@@ -183,19 +237,27 @@ namespace SmithingOverhaul.Patches
                 //Default Behaviour
 
                 float temperature = stack.Collectible.GetTemperature(___api.World, stack);
-                float workTemp = 0;
 
-                if (___SmithProps != null)
-                {
-                    workTemp = ___SmithProps.WarmForgingTemp;
-                }
-
-                if (stack.Collectible.Attributes?["workableTemperature"].Exists == true)
-                {
-                    __result = stack.Collectible.Attributes["workableTemperature"].AsFloat(workTemp) <= temperature;
-                }
+                float workTemp = ssh.ForgingTemp;
 
                 __result = temperature >= workTemp;
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(CollectibleObject))]
+    [HarmonyPatchCategory(SmithingOverhaulModSystem.WorkItemStatsPatches)]
+    public class WorkItemStatsPatches
+    {
+        [HarmonyPostfix]
+        [HarmonyPriority(Priority.First)]
+        [HarmonyPatch(nameof(CollectibleObject.GetMaxDurability))]
+        private static void OverrideDefaultDurability(ref int __result, ItemStack itemstack, ICoreAPI ___api)
+        {
+            if(SmithingOverhaulModSystem.Config.EnableSmithingOverhaul && itemstack.Attributes.HasAttribute(SmithingOverhaulStatsAttr))
+            {
+                var attr = itemstack.Attributes.GetTreeAttribute(SmithingOverhaulStatsAttr);
+                __result = (int)(attr.GetInt(MaxDurabilityAttr, __result));
             }
         }
     }

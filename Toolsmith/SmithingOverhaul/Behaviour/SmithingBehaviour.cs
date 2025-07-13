@@ -1,16 +1,18 @@
-﻿using SmithingOverhaul.BlockEntity;
-using SmithingOverhaul.Property;
+﻿using Toolsmith.SmithingOverhaul.Item;
+using Toolsmith.SmithingOverhaul.Property;
+using Toolsmith.SmithingOverhaul.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 
-namespace SmithingOverhaul.Behaviour
+namespace Toolsmith.SmithingOverhaul.Behaviour
 {
-    public class SmithingBehavior : CollectibleBehavior
+    public abstract class SmithingBehavior : CollectibleBehavior
     {
         public SmithingPropertyVariant metalProps;
 
-        public SmithingBehavior(CollectibleObject collObj) : base(collObj)
+        public SmithingBehavior(SmithingWorkItem smithObj) : base(smithObj)
         {
+            this.metalProps = smithObj.smithProps;
         }
         public override void Initialize(JsonObject properties)
         {
@@ -19,75 +21,58 @@ namespace SmithingOverhaul.Behaviour
         public override void OnLoaded(ICoreAPI api)
         {
             base.OnLoaded(api);
-            var metalcode = collObj.Variant["metal"];
-            SmithingPropertyVariant var;
-
-            if (api.ModLoader.GetModSystem<SmithingOverhaulModSystem>().metalPropsByCode.TryGetValue(metalcode, out var))
-            {
-                metalProps = var;
-            }
-
         }
 
-        public virtual float GetTemperature(IWorldAccessor world, ItemStack stack, ref EnumHandling handling)
-        {
-            handling = EnumHandling.PassThrough;
-            return 20f;
-        }
-
-        public virtual float GetTemperature(IWorldAccessor world, ItemStack stack, double didReceiveHeat, ref EnumHandling handling)
-        {
-            handling = EnumHandling.PassThrough;
-            return 20f;
-        }
-
-        public virtual void SetTemperature(IWorldAccessor world, ItemStack stack, float temperature, bool delayCooldown, ref EnumHandling handling)
+        public virtual void OnTemperatureEffect(StressStrainHandler ssh, ItemStack stack, IWorldAccessor world, float temperature, double hourDiff, ref EnumHandling handling)
         {
             handling = EnumHandling.PassThrough;
             return;
         }
-        public virtual bool CanWork(IWorldAccessor world, ItemStack stack, ref EnumHandling handling) 
+        public virtual void OnCoolingEffect(StressStrainHandler ssh, ItemStack stack, IWorldAccessor world, float tempDiff, double hourDiff, ref EnumHandling handling)
+        {
+            handling = EnumHandling.PassThrough;
+            return;
+        }
+        public virtual void OnHeatingEffect(StressStrainHandler ssh, ItemStack stack, IWorldAccessor world, float tempDiff, double hourDiff, ref EnumHandling handling)
+        {
+            handling = EnumHandling.PassThrough;
+            return;
+        }
+        public virtual bool OnCanWork(StressStrainHandler ssh, ItemStack stack, IWorldAccessor world, ref EnumHandling handling) 
         {
             handling = EnumHandling.PassThrough;
             return true;
         }
 
-        public virtual void AfterOnHit(int voxelsChanged, ItemStack stack, ref EnumHandling handling)
+        public virtual void AfterOnHit(StressStrainHandler ssh, ItemStack stack, IWorldAccessor world, int voxelsChanged, ref EnumHandling handling)
         {
             handling = EnumHandling.PassThrough;
             return;
         }
 
-        public virtual void AfterOnUpset(ItemStack stack, ref EnumHandling handling)
+        public virtual void AfterOnUpset(StressStrainHandler ssh, ItemStack stack, IWorldAccessor world, ref EnumHandling handling)
         {
             handling = EnumHandling.PassThrough;
             return;
         }
 
-        public virtual void AfterOnSplit(ItemStack stack, ref EnumHandling handling)
+        public virtual void AfterOnSplit(StressStrainHandler ssh, ItemStack stack, IWorldAccessor world, ref EnumHandling handling)
         {
             handling = EnumHandling.PassThrough;
             return;
         }
 
-        public virtual float AddStrain(float changeInStrain, ItemStack stack, ref EnumHandling handling)
-        {
-            handling = EnumHandling.PassThrough;
-            return 20f;
-        }
-
-        public virtual void RecoverStrain(float temperature, ItemStack stack, ref EnumHandling handling)
+        public virtual void OnAddStrain(StressStrainHandler ssh, ItemStack stack, IWorldAccessor world, float changeInStrain, ref EnumHandling handling)
         {
             handling = EnumHandling.PassThrough;
             return;
         }
 
-        public virtual bool IsOverstrained(ItemStack stack, ref EnumHandling handling)
+        public virtual void OnRecoverStrain(StressStrainHandler ssh, ItemStack stack, IWorldAccessor world, float temperature, double hourDiff, ref EnumHandling handling)
         {
             handling = EnumHandling.PassThrough;
-            return false;
+            return;
         }
-
 
     }
 }
