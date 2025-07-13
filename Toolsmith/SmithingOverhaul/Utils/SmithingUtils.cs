@@ -321,7 +321,7 @@ namespace Toolsmith.SmithingOverhaul.Utils
             ITreeAttribute attr = outStack.Attributes.GetOrAddTreeAttribute(SmithingOverhaulStatsAttr);
             attr.SetInt(ToughnessAttr, ssh.GetToughness());
             attr.SetInt(HardnessAttr, ssh.GetHardness());
-            attr.SetDouble(MaxSharpnessAttr, ssh.GetMaxSharpness());
+            attr.SetInt(MaxSharpnessAttr, ssh.GetMaxSharpness());
             attr.SetInt(MaxDurabilityAttr, ssh.GetMaxDurability());
 
             ssh.ToTreeAttributes(outStack.Attributes);

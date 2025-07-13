@@ -10,6 +10,7 @@ using Toolsmith.SmithingOverhaul.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
+using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttributes;
 using static HarmonyLib.Code;
 
 namespace Toolsmith.SmithingOverhaul.Patches
@@ -178,7 +179,7 @@ namespace Toolsmith.SmithingOverhaul.Patches
             {
                 SmithingWorkItem item = (__instance.WorkItemStack.Collectible as SmithingWorkItem);
                 item.AfterOnUpset(__instance.WorkItemStack);
-                if (item.IsOverstrained(__instance.WorkItemStack)) SmithingUtils.Fracture(__instance, voxelPos));
+                if (item.IsOverstrained(__instance.WorkItemStack)) SmithingUtils.Fracture(__instance, voxelPos);
             }
         }
 
@@ -253,9 +254,10 @@ namespace Toolsmith.SmithingOverhaul.Patches
         [HarmonyPatch(nameof(CollectibleObject.GetMaxDurability))]
         private static void OverrideDefaultDurability(ref int __result, ItemStack itemstack, ICoreAPI ___api)
         {
-            if(itemstack.Collectible is SmithingWorkItem && SmithingOverhaulModSystem.Config.EnableSmithingOverhaul)
+            if(SmithingOverhaulModSystem.Config.EnableSmithingOverhaul && itemstack.Attributes.HasAttribute(SmithingOverhaulStatsAttr))
             {
-                __result = (int)(itemstack.GetStressStrainHandler(___api).GetToughness() * 0.1);
+                var attr = itemstack.Attributes.GetTreeAttribute(SmithingOverhaulStatsAttr);
+                __result = (int)(attr.GetInt(MaxDurabilityAttr, __result));
             }
         }
     }

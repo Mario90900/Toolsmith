@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Toolsmith.SmithingOverhaul;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.GameContent;
+using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttributes;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorSmithedTools : CollectibleBehavior {
@@ -67,7 +69,13 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
             var baseDur = outputSlot.Itemstack.Collectible.GetBaseMaxDurability(outputSlot.Itemstack);
             var toolDur = outputSlot.Itemstack.GetSmithedMaxDurability();
-            int sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
+            int sharpness;
+
+            if (SmithingOverhaulModSystem.Config.EnableSmithingOverhaul && outputSlot.Itemstack.Attributes.HasAttribute(SmithingOverhaulStatsAttr))
+                sharpness = (int)(outputSlot.Itemstack.Attributes.GetTreeAttribute(SmithingOverhaulStatsAttr).GetInt(MaxSharpnessAttr));
+            else
+                sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
+
             int startingSharpness;
             if (isToolMetal) {
                 startingSharpness = (int)(sharpness * ToolsmithConstants.StartingSharpnessMult);

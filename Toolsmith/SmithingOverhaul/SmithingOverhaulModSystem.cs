@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using System.Collections.Generic;
 using Toolsmith.SmithingOverhaul.Config;
+using Toolsmith.SmithingOverhaul.Item;
 using Toolsmith.SmithingOverhaul.Property;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -31,6 +32,7 @@ namespace Toolsmith.SmithingOverhaul
         }
         public override void Start(ICoreAPI api)
         {
+            api.RegisterItemClass($"{ModId}:SmithingWorkItem", typeof(SmithingWorkItem));
             HarmonyPatch();
         }
         private static void HarmonyPatch()
@@ -43,11 +45,8 @@ namespace Toolsmith.SmithingOverhaul
             Logger.VerboseDebug("Harmony is starting Patches!");
             HarmonyObject.PatchCategory(AnvilPatches);
             HarmonyObject.PatchCategory(ItemWorkItemPatches);
+            HarmonyObject.PatchCategory(WorkItemStatsPatches);
             Logger.VerboseDebug("Patched functions for Smithing purposes.");
-        }
-        public override void AssetsFinalize(ICoreAPI api)
-        {
-            base.AssetsFinalize(api);
         }
 
         public override void AssetsLoaded(ICoreAPI api)
@@ -64,38 +63,6 @@ namespace Toolsmith.SmithingOverhaul
                     metalPropsByCode[metal.Code.Path] = metal;
                 }
             }
-        }
-
-        public override void Dispose()
-        {
-            base.Dispose();
-        }
-
-        public override double ExecuteOrder()
-        {
-            return base.ExecuteOrder();
-        }
-
-        public override bool ShouldLoad(ICoreAPI api)
-        {
-            return base.ShouldLoad(api);
-        }
-
-        public override bool ShouldLoad(EnumAppSide forSide)
-        {
-            return base.ShouldLoad(forSide);
-        }
-
-        
-
-        public override void StartClientSide(ICoreClientAPI api)
-        {
-            base.StartClientSide(api);
-        }
-
-        public override void StartServerSide(ICoreServerAPI api)
-        {
-            base.StartServerSide(api);
         }
     }
 }

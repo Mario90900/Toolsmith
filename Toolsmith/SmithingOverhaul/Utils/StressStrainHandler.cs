@@ -191,9 +191,9 @@ namespace Toolsmith.SmithingOverhaul.Utils
             double upper = Integrate.DoubleExponential(stressStrainCurve, 0.0d, (double)TensileStrength);
             return (int)Math.Round(TensileStrength * Elongation - Hardness * plasticStrain - upper);
         }
-        public virtual double GetMaxSharpness()
+        public virtual int GetMaxSharpness()
         {
-            return Math.Cbrt(Hardness + 100) / 500;
+            return (int)(Math.Cbrt(Hardness + 100) / 500 * 100);
         }
         public virtual int GetMaxDurability()
         {
