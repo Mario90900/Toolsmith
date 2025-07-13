@@ -6,6 +6,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.ToolTinkering.Drawbacks;
 using Toolsmith.Utils;
 using Vintagestory.API.Client;
@@ -649,7 +650,13 @@ namespace Toolsmith.ToolTinkering.Blocks {
             wiggledOffset.z += wiggleFactor.zoff;
 
             mesh.Scale(new Vec3f(), 0.5f, 0.5f, 0.5f);
-            mesh.Translate(wiggledOffset.x - 0.15f, wiggledOffset.y, wiggledOffset.z - 0.15f);
+            if (stack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
+                mesh.Translate(wiggledOffset.x - 0.65f, wiggledOffset.y, wiggledOffset.z + 0.35f);
+                mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), 0, (90 + wiggleFactor.rot) * (MathF.PI / 180), 0);
+            } else {
+                mesh.Translate(wiggledOffset.x - 0.15f, wiggledOffset.y, wiggledOffset.z - 0.15f);
+            }
+            
             if (markerMeshData != null) {
                 markerMeshData.Translate(offset.x, offset.y + 0.01f, offset.z);
             }

@@ -377,100 +377,7 @@ namespace Toolsmith.ToolTinkering {
             ItemStack head = slot.Itemstack;
             ItemStack handle = handleSlot.Itemstack;
 
-            var bundleMultiPartRenderTree = bundle.GetMultiPartRenderTree(); //Time to assign the data for rendering the Bundle!
-            var headPartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHeadName);
-
-            //Set up the Head tree!
-            headPartAndTransformTree.SetPartOffsetX(0);
-            headPartAndTransformTree.SetPartOffsetY(0);
-            headPartAndTransformTree.SetPartOffsetZ(0);
-            headPartAndTransformTree.SetPartRotationX(0);
-            headPartAndTransformTree.SetPartRotationY(0);
-            headPartAndTransformTree.SetPartRotationZ(0);
-            var headPartTree = headPartAndTransformTree.GetPartRenderTree();
-            headPartTree.SetPartShapePath(head.Item.Shape.Base.Domain + ":shapes/" + head.Item.Shape.Base.Path);
-            var headTextureTree = headPartTree.GetPartTextureTree();
-            if (byEntity.Api.Side.IsServer()) {
-                ToolHeadTextureData textures;
-                var success = RecipeRegisterModSystem.ToolHeadTexturesCache.TryGetValue(head.Item.Code, out textures);
-                if (success) {
-                    for (int i = 0; i < textures.Tags.Count; i++) {
-                        headTextureTree.SetPartTexturePathFromKey(textures.Tags[i], textures.Paths[i]);
-                    }
-                } else {
-                    ToolsmithModSystem.Logger.Error("Could not find the tool head's ToolHeadTextureData entry when crafting a Part Bundle. Might not render right.");
-                }
-            } else {
-                foreach (var tex in head.Item.Textures) {
-                    headTextureTree.SetPartTexturePathFromKey(tex.Key, tex.Value.Base);
-                }
-            }
-
-            HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handle.Collectible.Code.Path);
-            var toolType = MultiPartRenderingHelpers.GetToolTypeFromHeadShapePath(head.Item.Shape.Base.Path);
-            string toolSpecificHandleShape = null;
-            if (toolType != null) {
-                toolSpecificHandleShape = MultiPartRenderingHelpers.ConvertFromHandlePathToShapePath(handleStats.handleShapePath, toolType);
-            }
-
-            //Handle time for the Render Data! But at least that's already part of the handle by now. Most likely.
-            if (handle.HasMultiPartRenderTree()) {
-                var handleMultiPartTree = handle.GetMultiPartRenderTree();
-                foreach (var tree in handleMultiPartTree) {
-                    var subPartAndTransformTree = handleMultiPartTree.GetPartAndTransformRenderTree(tree.Key);
-                    subPartAndTransformTree.SetPartOffsetX(0);
-                    subPartAndTransformTree.SetPartOffsetY(0);
-                    subPartAndTransformTree.SetPartOffsetZ(0);
-                    subPartAndTransformTree.SetPartRotationX(0);
-                    subPartAndTransformTree.SetPartRotationY(0);
-                    subPartAndTransformTree.SetPartRotationZ(0);
-
-                    if (tree.Key == ToolsmithAttributes.ModularPartHandleName && toolSpecificHandleShape != null) {
-                        var handlePartTree = subPartAndTransformTree.GetPartRenderTree();
-                        handlePartTree.SetPartShapePath(toolSpecificHandleShape);
-                    } else if (tree.Key == ToolsmithAttributes.ModularPartGripName && toolType != null) {
-                        var gripPartTree = subPartAndTransformTree.GetPartRenderTree();
-                        var gripPath = MultiPartRenderingHelpers.ConvertFromHandlePathToGripShapePath(handleStats.handleShapePath, gripPartTree.GetPartShapePath(), toolType);
-                        if (gripPath != null) {
-                            gripPartTree.SetPartShapePath(gripPath);
-                            var gripTextureTree = gripPartTree.GetPartTextureTree();
-
-                        }
-                    }
-
-                    bundleMultiPartRenderTree.SetPartAndTransformRenderTree(tree.Key, handleMultiPartTree.GetPartAndTransformRenderTree(tree.Key));
-                }
-            } else if (handle.HasPartRenderTree()) {
-                var handlePartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
-                handlePartAndTransformTree.SetPartOffsetX(0);
-                handlePartAndTransformTree.SetPartOffsetY(0);
-                handlePartAndTransformTree.SetPartOffsetZ(0);
-                handlePartAndTransformTree.SetPartRotationX(0);
-                handlePartAndTransformTree.SetPartRotationY(0);
-                handlePartAndTransformTree.SetPartRotationZ(0);
-
-                if (toolSpecificHandleShape != null) {
-                    var handlePartTree = handlePartAndTransformTree.GetPartRenderTree();
-                    handlePartTree.SetPartShapePath(toolSpecificHandleShape);
-                } else {
-                    handlePartAndTransformTree.SetPartRenderTree(handle.GetPartRenderTree());
-                }
-            } else {
-                var handlePartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
-                handlePartAndTransformTree.SetPartOffsetX(0);
-                handlePartAndTransformTree.SetPartOffsetY(0);
-                handlePartAndTransformTree.SetPartOffsetZ(0);
-                handlePartAndTransformTree.SetPartRotationX(0);
-                handlePartAndTransformTree.SetPartRotationY(0);
-                handlePartAndTransformTree.SetPartRotationZ(0);
-
-                var handlePartTree = handlePartAndTransformTree.GetPartRenderTree();
-                if (toolSpecificHandleShape != null) {
-                    handlePartTree.SetPartShapePath(toolSpecificHandleShape);
-                } else {
-                    handlePartTree.SetPartShapePath(handle.Item.Shape.Base.Domain + ":shapes/" + handle.Item.Shape.Base.Path);
-                }
-            }
+            MultiPartRenderingHelpers.BuildToolRenderFromHeadAndHandle(bundle, head, handle);
 
             bundle.SetToolhead(slot.TakeOut(1));
             bundle.SetToolhandle(handleSlot.TakeOut(1)); //Take out one, and set it as the Bundle's tool handle!
@@ -521,66 +428,10 @@ namespace Toolsmith.ToolTinkering {
                                                                                                                      //Might be a good idea to reconsider when the whole Tinker Tool Crafting logic is called, but... Would require patching this call, and it's ONLY for Item Rarity so far, not exactly a priority by a long shot. Leaving this note incase something else uses this, but also probably not a big deal to make the change either?
                 craftedItemStack.Collectible.OnCreatedByCrafting(inputSlots, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
 
-                var bundleMultiPartRenderTree = bundleSlot.Itemstack.GetMultiPartRenderTree();
-                var headPartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHeadName);
-                headPartAndTransformTree.SetPartOffsetX(0);
-                headPartAndTransformTree.SetPartOffsetY(0);
-                headPartAndTransformTree.SetPartOffsetZ(0);
-                headPartAndTransformTree.SetPartRotationX(0);
-                headPartAndTransformTree.SetPartRotationY(0);
-                headPartAndTransformTree.SetPartRotationZ(0);
-
-                var handlePartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
-                handlePartAndTransformTree.SetPartOffsetX(0);
-                handlePartAndTransformTree.SetPartOffsetY(0);
-                handlePartAndTransformTree.SetPartOffsetZ(0);
-                handlePartAndTransformTree.SetPartRotationX(0);
-                handlePartAndTransformTree.SetPartRotationY(0);
-                handlePartAndTransformTree.SetPartRotationZ(0);
-
-                if (bundleMultiPartRenderTree.HasPartAndTransformRenderTree(ToolsmithAttributes.ModularPartGripName)) {
-                    var gripPartAndTransformTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartGripName);
-                    gripPartAndTransformTree.SetPartOffsetX(0);
-                    gripPartAndTransformTree.SetPartOffsetY(0);
-                    gripPartAndTransformTree.SetPartOffsetZ(0);
-                    gripPartAndTransformTree.SetPartRotationX(0);
-                    gripPartAndTransformTree.SetPartRotationY(0);
-                    gripPartAndTransformTree.SetPartRotationZ(0);
-                }
-
                 if (!bindingSlot.Empty) {
-                    var toolType = MultiPartRenderingHelpers.GetToolTypeFromHeadShapePath(head.Item.Shape.Base.Path);
-                    string handlePath = null;
-                    foreach (var tree in bundleMultiPartRenderTree) {
-                        if (tree.Key == ToolsmithAttributes.ModularPartHandleName) {
-                            var handleShapeTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(tree.Key).GetPartRenderTree();
-                            handlePath = handleShapeTree.GetPartShapePath();
-                            break;
-                        }
-                    }
-
-                    var bindingTransformAndPartTree = bundleMultiPartRenderTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartBindingName);
-                    bindingTransformAndPartTree.SetPartOffsetX(0);
-                    bindingTransformAndPartTree.SetPartOffsetY(0);
-                    bindingTransformAndPartTree.SetPartOffsetZ(0);
-                    bindingTransformAndPartTree.SetPartRotationX(0);
-                    bindingTransformAndPartTree.SetPartRotationY(0);
-                    bindingTransformAndPartTree.SetPartRotationZ(0);
-
-                    BindingStatPair bindingWithStats = ToolsmithModSystem.Config.BindingRegistry.TryGetValue(bindingSlot.Itemstack.Collectible.Code.Path);
-                    BindingStats bindingStats = ToolsmithModSystem.Stats.bindings.TryGetValue(bindingWithStats.bindingStatTag);
-                    var bindingPartTree = bindingTransformAndPartTree.GetPartRenderTree();
-                    ITreeAttribute bindingTextureTree = bindingPartTree.GetPartTextureTree();
-
-                    var bindingPath = MultiPartRenderingHelpers.ConvertFromTypedHandlePathToBindingShapePath(handlePath, bindingWithStats.bindingShapePath, craftedItemStack.Collectible.IsCraftableMetal());
-                    bindingPartTree.SetPartShapePath(bindingPath);
-                    if (bindingWithStats.bindingTextureOverride != "") {
-                        bindingTextureTree.SetPartTexturePathFromKey("material", bindingWithStats.bindingTextureOverride);
-                    } else {
-                        bindingTextureTree.SetPartTexturePathFromKey("material", bindingStats.texturePath);
-                    }
+                    MultiPartRenderingHelpers.AddBindingToExistingToolRender(bundleSlot.Itemstack, bindingSlot.Itemstack);
                 }
-                craftedItemStack.SetMultiPartRenderTree(bundleMultiPartRenderTree);
+                craftedItemStack.SetMultiPartRenderTree(bundleSlot.Itemstack.GetMultiPartRenderTree());
 
                 if (!bindingSlot.Empty) {
                     bindingSlot.TakeOut(1);

@@ -35,7 +35,7 @@
 		"value": {
 			"translation": { "x": 0, "y": 0, "z": 0 },
 			"rotation": { "x": 0, "y": 0, "z": 0 },
-			"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+			"origin": { "x": 1, "y": 0, "z": 0.5 },
 			"scale": 4.17
 		},
 		"file": "game:itemtypes/toolhead/pickaxehead.json"
@@ -45,8 +45,8 @@
 		"path": "/tpHandTransform",
 		"value": {
 			"translation": { "x": 0, "y": 0, "z": 0 },
-			"rotation": { "x": 180, "y": 0, "z": 0 },
-			"origin": { "x": 0, "y": 0.025, "z": -2.1 },
+			"rotation": { "x": 180, "y": 85, "z": 0 },
+			"origin": { "x": -1.5, "y": 0.05, "z": 2 },
 			"scale": 0.8
 		},
 		"file": "game:itemtypes/toolhead/pickaxehead.json"
@@ -56,9 +56,9 @@
 		"path": "/guiTransform",
 		"value": {
 			"translation": { "x": 0, "y": 0, "z": 0 },
-			"rotation": { "x": -66, "y": 45, "z": 22 },
-			"origin": { "x": 0.6, "y": 0.1, "z": 0.45 },
-			"scale": 2.15
+			"rotation": { "x": -90, "y": 45, "z": -35 },
+			"origin": { "x": 0.85, "y": 0, "z": 0.45 },
+			"scale": 2.0
 		},
 		"file": "game:itemtypes/toolhead/pickaxehead.json"
 	},
@@ -66,8 +66,8 @@
 		"op": "replace",
 		"path": "/attributes/onTongTransform",
 		"value": {
-			"translation": { "x": -0.05, "y": -0.7, "z": 0.35 },
-			"rotation": { "x": 0, "y": -25, "z": 0 },
+			"translation": { "x": -0.15, "y": -0.7, "z": 0.75 },
+			"rotation": { "x": 0, "y": -54, "z": 0 },
 			"origin": { "x": 0, "y": 0, "z": 0 }
 		},
 		"file": "game:itemtypes/toolhead/pickaxehead.json"
