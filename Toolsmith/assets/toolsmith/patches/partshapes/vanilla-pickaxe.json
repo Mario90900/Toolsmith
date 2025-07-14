@@ -25,8 +25,8 @@
 	},
 	{
 		"op": "replace",
-		"path": "/shape/base",
-		"value": "toolsmith:item/parts/pickaxe/heads/simple",
+		"path": "/shape",
+		"value": { "base": "toolsmith:item/parts/pickaxe/heads/simple" },
 		"file": "game:itemtypes/toolhead/pickaxehead.json"
 	},
 	{
@@ -71,5 +71,5 @@
 			"origin": { "x": 0, "y": 0, "z": 0 }
 		},
 		"file": "game:itemtypes/toolhead/pickaxehead.json"
-	},
+	}
 ]
