@@ -14,7 +14,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.Util;
 using Vintagestory.GameContent;
-using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttributes;
+using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttr;
 
 namespace Toolsmith.Utils {
     public static class ItemStackExtensions {
@@ -816,10 +816,7 @@ namespace Toolsmith.Utils {
         //Since we know what the Head Durability Mult is, lets hook into GetMaxDurability for compat with other mods, let them do their things, THEN divide by the known HeadDurabilityMult to get the changed base value back.
         public static int GetBaseMaxDurability(this CollectibleObject collectibleObject, ItemStack itemStack) {
 
-            if (SmithingOverhaulModSystem.Config.EnableSmithingOverhaul)
-                return (int)itemStack.Collectible.GetMaxDurability(itemStack);
-            else
-                return (int)((double)itemStack.Collectible.GetMaxDurability(itemStack) / ToolsmithModSystem.Config.HeadDurabilityMult);
+            return (int)((double)itemStack.Collectible.GetMaxDurability(itemStack) / ToolsmithModSystem.Config.HeadDurabilityMult);
         }
     }
 }

@@ -7,11 +7,13 @@ using Toolsmith.SmithingOverhaul.Behaviour;
 using Toolsmith.SmithingOverhaul.Item;
 using Toolsmith.SmithingOverhaul.Property;
 using Toolsmith.SmithingOverhaul.Utils;
+using Toolsmith.ToolTinkering.Behaviors;
+using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
-using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttributes;
 using static HarmonyLib.Code;
+using Toolsmith.SmithingOverhaul.Utils;
 
 namespace Toolsmith.SmithingOverhaul.Patches
 {
@@ -244,7 +246,7 @@ namespace Toolsmith.SmithingOverhaul.Patches
             }
         }
     }
-
+    
     [HarmonyPatch(typeof(CollectibleObject))]
     [HarmonyPatchCategory(SmithingOverhaulModSystem.WorkItemStatsPatches)]
     public class WorkItemStatsPatches
@@ -254,11 +256,27 @@ namespace Toolsmith.SmithingOverhaul.Patches
         [HarmonyPatch(nameof(CollectibleObject.GetMaxDurability))]
         private static void OverrideDefaultDurability(ref int __result, ItemStack itemstack, ICoreAPI ___api)
         {
-            if(SmithingOverhaulModSystem.Config.EnableSmithingOverhaul && itemstack.Attributes.HasAttribute(SmithingOverhaulStatsAttr))
+            if (SmithingOverhaulModSystem.Config.EnableSmithingOverhaul)
             {
-                var attr = itemstack.Attributes.GetTreeAttribute(SmithingOverhaulStatsAttr);
-                __result = (int)(attr.GetInt(MaxDurabilityAttr, __result));
+                if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>())
+                {
+                    ItemStack headstack = itemstack.GetToolheadForData();
+                    if (headstack != null && headstack.Attributes.HasAttribute(SmithingOverhaulAttr.StatsAttr))
+                    {
+                        var attr = headstack.Attributes.GetTreeAttribute(SmithingOverhaulAttr.StatsAttr);
+                        __result = (int)(attr.GetInt(SmithingOverhaulAttr.MaxDurabilityAttr, __result));
+                    }
+                }
+                else if (itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>())
+                {
+                    if(itemstack.Attributes.HasAttribute(SmithingOverhaulAttr.StatsAttr))
+                    {
+                        var attr = itemstack.Attributes.GetTreeAttribute(SmithingOverhaulAttr.StatsAttr);
+                        __result = (int)(attr.GetInt(SmithingOverhaulAttr.MaxDurabilityAttr, __result));
+                    }
+                }
             }
+            return;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Toolsmith.SmithingOverhaul.Utils
 {
-    public static class SmithingOverhaulAttributes
+    public static class SmithingOverhaulAttr
     {
         //Stress Strain handler attribute indexes
         public const string SmithingPropsAttr = "smithingProperties";
@@ -26,10 +26,10 @@ namespace Toolsmith.SmithingOverhaul.Utils
         public const string StressStrainRefIdAttr = "stressStrainRefId";
 
         //Output Itemstack attribute indexes
-        public const string SmithingOverhaulStatsAttr = "smithingOverhaulStats";
+        public const string StatsAttr = "smithingOverhaulStats";
         public const string ToughnessAttr = "toughness";
         public const string HardnessAttr = "hardness";
-        public const string MaxSharpnessAttr = "maxSharpness";
+        public const string SharpnessMultAttr = "sharpnessMult";
         public const string MaxDurabilityAttr = "maxDurability";
 
         //Temperature attribute indexes

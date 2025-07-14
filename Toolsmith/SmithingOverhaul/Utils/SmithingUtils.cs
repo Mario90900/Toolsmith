@@ -9,7 +9,7 @@ using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 using Vintagestory.API.Datastructures;
-using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttributes;
+using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttr;
 
 namespace Toolsmith.SmithingOverhaul.Utils
 {
@@ -318,10 +318,10 @@ namespace Toolsmith.SmithingOverhaul.Utils
             StressStrainHandler ssh = inStack.GetStressStrainHandler(api);
             if (ssh == null) return;
 
-            ITreeAttribute attr = outStack.Attributes.GetOrAddTreeAttribute(SmithingOverhaulStatsAttr);
+            ITreeAttribute attr = outStack.Attributes.GetOrAddTreeAttribute(StatsAttr);
             attr.SetInt(ToughnessAttr, ssh.GetToughness());
             attr.SetInt(HardnessAttr, ssh.GetHardness());
-            attr.SetInt(MaxSharpnessAttr, ssh.GetMaxSharpness());
+            attr.SetDouble(SharpnessMultAttr, ssh.GetSharpnessMult());
             attr.SetInt(MaxDurabilityAttr, ssh.GetMaxDurability());
 
             ssh.ToTreeAttributes(outStack.Attributes);
