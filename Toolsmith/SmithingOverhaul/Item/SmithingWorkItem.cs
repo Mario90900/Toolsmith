@@ -8,7 +8,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.GameContent;
-using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttributes;
+using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttr;
 
 namespace Toolsmith.SmithingOverhaul.Item
 {

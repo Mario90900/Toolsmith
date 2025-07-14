@@ -4,7 +4,7 @@ using Toolsmith.SmithingOverhaul.Property;
 using System;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
-using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttributes;
+using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttr;
 
 namespace Toolsmith.SmithingOverhaul.Utils
 {
@@ -191,9 +191,9 @@ namespace Toolsmith.SmithingOverhaul.Utils
             double upper = Integrate.DoubleExponential(stressStrainCurve, 0.0d, (double)TensileStrength);
             return (int)Math.Round(TensileStrength * Elongation - Hardness * plasticStrain - upper);
         }
-        public virtual int GetMaxSharpness()
+        public virtual double GetSharpnessMult()
         {
-            return (int)(Math.Cbrt(Hardness + 100) / 500 * 100);
+            return (Math.Sqrt(Hardness + 100) / 500);
         }
         public virtual int GetMaxDurability()
         {

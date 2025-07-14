@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using SmithingPlus.Metal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
