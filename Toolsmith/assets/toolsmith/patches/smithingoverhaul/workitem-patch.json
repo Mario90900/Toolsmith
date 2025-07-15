@@ -1,0 +1,8 @@
+[
+  {
+    "op": "replace",
+    "path": "/variants/0/comment",
+    "value": "Wikipedia",
+    "file": "game:worldproperties/block/metal.json"
+  }
+]

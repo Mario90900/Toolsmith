@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Client.Behaviors;
 using Toolsmith.Config;
+using SmithingOverhaul;
 using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.ToolTinkering.Drawbacks;
 using Toolsmith.Utils;

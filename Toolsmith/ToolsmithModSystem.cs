@@ -1,5 +1,8 @@
 ﻿using HarmonyLib;
 using Newtonsoft.Json;
+using SmithingOverhaul;
+using SmithingOverhaul.Item;
+using SmithingPlus.ToolRecovery;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -101,6 +104,9 @@ namespace Toolsmith {
             api.RegisterItemClass($"{ModId}:ItemTinkerToolParts", typeof(ItemTinkerToolParts));
             api.RegisterItemClass($"{ModId}:WorkableBits", typeof(ItemWorkableNugget));
 
+            //SmithingOverhaul register
+            api.RegisterItemClass($"{ModId}:SmithingWorkItem", typeof(SmithingWorkItem));
+           
             HarmonyPatch();
         }
 

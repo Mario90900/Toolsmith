@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Vintagestory.ServerMods;
 
-namespace Toolsmith.SmithingOverhaul.Property
+namespace SmithingOverhaul.Property
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class SmithingPropertyVariant : WorldWoodPropertyVariant

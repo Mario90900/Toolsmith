@@ -1,12 +1,12 @@
 ﻿using MathNet.Numerics;
-using Toolsmith.SmithingOverhaul.Item;
-using Toolsmith.SmithingOverhaul.Property;
+using SmithingOverhaul.Item;
+using SmithingOverhaul.Property;
 using System;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
-using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttr;
+using static SmithingOverhaul.Utils.SmithingOverhaulAttr;
 
-namespace Toolsmith.SmithingOverhaul.Utils
+namespace SmithingOverhaul.Utils
 {
     public class StressStrainHandler
     {

@@ -1,17 +1,17 @@
-﻿using Toolsmith.SmithingOverhaul.Behaviour;
-using Toolsmith.SmithingOverhaul.Item;
+﻿using SmithingOverhaul.Behaviour;
+using SmithingOverhaul.Item;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Toolsmith.ToolTinkering.Drawbacks;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 using Vintagestory.API.Datastructures;
-using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttr;
+using SmithingOverhaul.Utils;
+using Toolsmith.ToolTinkering.Drawbacks;
 
-namespace Toolsmith.SmithingOverhaul.Utils
+namespace SmithingOverhaul.Utils
 {
     public static class SmithingUtils
     {
@@ -263,14 +263,14 @@ namespace Toolsmith.SmithingOverhaul.Utils
             {
                 ssh = StressStrainHandler.FromTreeAttribute(stack.Attributes);
 
-                int id = stack.Attributes.GetInt(StressStrainRefIdAttr, -1);
+                int id = stack.Attributes.GetInt(SmithingOverhaulAttr.StressStrainRefIdAttr, -1);
                 if (id == -1)
                 {
                     id = SmithingWorkItem.nextHandlerRefId;
                     ++SmithingWorkItem.nextHandlerRefId;
                 }
 
-                ssh = ObjectCacheUtil.GetOrCreate(api, StressStrainRefIdAttr + id.ToString(), () =>
+                ssh = ObjectCacheUtil.GetOrCreate(api, SmithingOverhaulAttr.StressStrainRefIdAttr + id.ToString(), () =>
                 {
                     if (ssh == null)
                     {
@@ -279,7 +279,7 @@ namespace Toolsmith.SmithingOverhaul.Utils
                     else return ssh;
                 });
 
-                stack.Attributes.SetInt(StressStrainRefIdAttr, id);
+                stack.Attributes.SetInt(SmithingOverhaulAttr.StressStrainRefIdAttr, id);
                 ssh.ToTreeAttributes(stack.Attributes);
             }
             return ssh;
@@ -290,8 +290,8 @@ namespace Toolsmith.SmithingOverhaul.Utils
             if (stack.Collectible is SmithingWorkItem)
             {
                 StressStrainHandler ssh = null;
-                int id = stack.Attributes.GetInt(StressStrainRefIdAttr, -1);
-                ssh = ObjectCacheUtil.TryGet<StressStrainHandler>(api, StressStrainRefIdAttr + id.ToString());
+                int id = stack.Attributes.GetInt(SmithingOverhaulAttr.StressStrainRefIdAttr, -1);
+                ssh = ObjectCacheUtil.TryGet<StressStrainHandler>(api, SmithingOverhaulAttr.StressStrainRefIdAttr + id.ToString());
                 if (ssh == default(StressStrainHandler))
                 {
                     ssh = stack.AssignStressStrainHandler(api);
@@ -306,9 +306,9 @@ namespace Toolsmith.SmithingOverhaul.Utils
         {
             if (stack.Collectible is SmithingWorkItem)
             {
-                int id = stack.Attributes.GetInt(StressStrainRefIdAttr, -1);
+                int id = stack.Attributes.GetInt(SmithingOverhaulAttr.StressStrainRefIdAttr, -1);
                 if (id == -1) return;
-                ObjectCacheUtil.Delete(api, StressStrainRefIdAttr + id.ToString());
+                ObjectCacheUtil.Delete(api, SmithingOverhaulAttr.StressStrainRefIdAttr + id.ToString());
             }
             return;
         }
@@ -318,11 +318,11 @@ namespace Toolsmith.SmithingOverhaul.Utils
             StressStrainHandler ssh = inStack.GetStressStrainHandler(api);
             if (ssh == null) return;
 
-            ITreeAttribute attr = outStack.Attributes.GetOrAddTreeAttribute(StatsAttr);
-            attr.SetInt(ToughnessAttr, ssh.GetToughness());
-            attr.SetInt(HardnessAttr, ssh.GetHardness());
-            attr.SetDouble(SharpnessMultAttr, ssh.GetSharpnessMult());
-            attr.SetInt(MaxDurabilityAttr, ssh.GetMaxDurability());
+            ITreeAttribute attr = outStack.Attributes.GetOrAddTreeAttribute(SmithingOverhaulAttr.StatsAttr);
+            attr.SetInt(SmithingOverhaulAttr.ToughnessAttr, ssh.GetToughness());
+            attr.SetInt(SmithingOverhaulAttr.HardnessAttr, ssh.GetHardness());
+            attr.SetDouble(SmithingOverhaulAttr.SharpnessMultAttr, ssh.GetSharpnessMult());
+            attr.SetInt(SmithingOverhaulAttr.MaxDurabilityAttr, ssh.GetMaxDurability());
 
             ssh.ToTreeAttributes(outStack.Attributes);
             inStack.DiscardStressStrainHandler(api);

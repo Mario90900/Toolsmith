@@ -60,9 +60,7 @@
   <Content Include="assets\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
-  <Compile Remove="SmithingOverhaul\BlockEntity\**" />
-  <EmbeddedResource Remove="SmithingOverhaul\BlockEntity\**" />
-  <None Remove="SmithingOverhaul\BlockEntity\**" />
+  <Content Remove="assets\metal-property-patches.json" />
   <Content Include="modinfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>

@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using Toolsmith.SmithingOverhaul.Behaviour;
-using Toolsmith.SmithingOverhaul.Item;
-using Toolsmith.SmithingOverhaul.Property;
-using Toolsmith.SmithingOverhaul.Utils;
-using Toolsmith.ToolTinkering.Behaviors;
-using Toolsmith.Utils;
+using SmithingOverhaul.Behaviour;
+using SmithingOverhaul.Item;
+using SmithingOverhaul.Property;
+using SmithingOverhaul.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 using static HarmonyLib.Code;
-using Toolsmith.SmithingOverhaul.Utils;
+using Toolsmith.ToolTinkering.Behaviors;
+using Toolsmith.Utils;
 
-namespace Toolsmith.SmithingOverhaul.Patches
+namespace SmithingOverhaul.Patches
 {
     [HarmonyPatch(typeof(BlockEntityAnvil))]
     [HarmonyPatchCategory(SmithingOverhaulModSystem.AnvilPatches)]

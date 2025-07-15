@@ -7,7 +7,8 @@ using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.GameContent;
-using Toolsmith.SmithingOverhaul.Utils;
+using SmithingOverhaul.Utils;
+using SmithingOverhaul;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorSmithedTools : CollectibleBehavior {

@@ -1,10 +1,10 @@
-﻿using Toolsmith.SmithingOverhaul.Item;
-using Toolsmith.SmithingOverhaul.Property;
-using Toolsmith.SmithingOverhaul.Utils;
+﻿using SmithingOverhaul.Item;
+using SmithingOverhaul.Property;
+using SmithingOverhaul.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 
-namespace Toolsmith.SmithingOverhaul.Behaviour
+namespace SmithingOverhaul.Behaviour
 {
     public abstract class SmithingBehavior : CollectibleBehavior
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Toolsmith.SmithingOverhaul.Utils
+namespace SmithingOverhaul.Utils
 {
     public static class SmithingOverhaulAttr
     {

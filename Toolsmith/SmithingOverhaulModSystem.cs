@@ -1,52 +1,38 @@
 ﻿using HarmonyLib;
+using SmithingOverhaul.Config;
+using SmithingOverhaul.Item;
+using SmithingOverhaul.Property;
 using System.Collections.Generic;
-using Toolsmith.SmithingOverhaul.Config;
-using Toolsmith.SmithingOverhaul.Item;
-using Toolsmith.SmithingOverhaul.Property;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
+using Vintagestory.Client.NoObf;
+using Toolsmith;
 
-namespace Toolsmith
+namespace SmithingOverhaul
 {
     public class SmithingOverhaulModSystem : ModSystem
     {
-        public static ICoreAPI Api;
-        public static Harmony HarmonyObject;
-        public static ILogger Logger;
-        public static string ModId;
-        public static string ModVersion;
         public static SmithingOverhaulConfig Config;
+        public static float VoxelsPerBit;
 
         public Dictionary<string, SmithingPropertyVariant> metalPropsByCode;
 
         public const string AnvilPatches = "anvilPatches";
         public const string ItemWorkItemPatches = "workItemPatches";
         public const string WorkItemStatsPatches = "workItemStatsPatches";
-        public override void StartPre(ICoreAPI api)
-        {
-            Logger = Mod.Logger;
-            ModId = Mod.Info.ModID;
-            ModVersion = Mod.Info.Version;
-            Api = api;
-        }
+
         public override void Start(ICoreAPI api)
         {
-            api.RegisterItemClass($"{ModId}:SmithingWorkItem", typeof(SmithingWorkItem));
+            api.RegisterItemClass($"{ToolsmithModSystem.ModId}:SmithingWorkItem", typeof(SmithingWorkItem));
             HarmonyPatch();
         }
         private static void HarmonyPatch()
         {
-            if (HarmonyObject != null)
-            {
-                return;
-            }
-            HarmonyObject = new Harmony(ModId);
-            Logger.VerboseDebug("Harmony is starting Patches!");
-            HarmonyObject.PatchCategory(AnvilPatches);
-            HarmonyObject.PatchCategory(ItemWorkItemPatches);
-            HarmonyObject.PatchCategory(WorkItemStatsPatches);
-            Logger.VerboseDebug("Patched functions for Smithing purposes.");
+            ToolsmithModSystem.HarmonyInstance.PatchCategory(AnvilPatches);
+            ToolsmithModSystem.HarmonyInstance.PatchCategory(ItemWorkItemPatches);
+            ToolsmithModSystem.HarmonyInstance.PatchCategory(WorkItemStatsPatches);
+            ToolsmithModSystem.Logger.VerboseDebug("Patched functions for Smithing purposes.");
         }
 
         public override void AssetsLoaded(ICoreAPI api)

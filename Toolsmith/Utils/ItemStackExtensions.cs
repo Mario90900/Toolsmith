@@ -8,13 +8,11 @@ using System.Threading.Tasks;
 using Toolsmith.Client;
 using Toolsmith.Client.Behaviors;
 using Toolsmith.Config;
-using Toolsmith.SmithingOverhaul;
 using Toolsmith.ToolTinkering.Behaviors;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.Util;
 using Vintagestory.GameContent;
-using static Toolsmith.SmithingOverhaul.Utils.SmithingOverhaulAttr;
 
 namespace Toolsmith.Utils {
     public static class ItemStackExtensions {
