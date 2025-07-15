@@ -214,7 +214,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPatch(nameof(CollectibleObject.GetMaxDurability))]
         private static void TinkeredToolGetMaxDurabilityPostfix(ref int __result, ItemStack itemstack) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
-                if(!SmithingOverhaulModSystem.Config.EnableSmithingOverhaul)
+                if(!ToolsmithModSystem.Config.EnableSmithingOverhaul)
                     __result = (int)((double)__result * ToolsmithModSystem.Config.HeadDurabilityMult);
             }
         }

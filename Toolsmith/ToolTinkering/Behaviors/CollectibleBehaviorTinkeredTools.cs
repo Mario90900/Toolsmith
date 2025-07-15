@@ -209,7 +209,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             var baseDur = outputSlot.Itemstack.Collectible.GetBaseMaxDurability(outputSlot.Itemstack);
             int headMaxDur = outputSlot.Itemstack.GetToolheadMaxDurability();//Start with the tool head.
             double sharpnessMult = ToolsmithModSystem.Config.SharpnessMult;
-            if (SmithingOverhaulModSystem.Config.EnableSmithingOverhaul && headStack.Attributes.HasAttribute(SmithingOverhaulAttr.StatsAttr))
+            if (ToolsmithModSystem.Config.EnableSmithingOverhaul && headStack.Attributes.HasAttribute(SmithingOverhaulAttr.StatsAttr))
                 sharpnessMult = headStack.Attributes.GetTreeAttribute(SmithingOverhaulAttr.StatsAttr).GetDouble(SmithingOverhaulAttr.SharpnessMultAttr);
             int maxSharpness = (int)(baseDur * sharpnessMult); //Calculate the sharpness next similarly to the durability.
 

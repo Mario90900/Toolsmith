@@ -1,13 +1,10 @@
 ﻿using HarmonyLib;
 using Newtonsoft.Json;
-using SmithingOverhaul;
 using SmithingOverhaul.Item;
-using SmithingPlus.ToolRecovery;
+using SmithingOverhaul.Property;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
-using Toolsmith.Client;
 using Toolsmith.Client.Behaviors;
 using Toolsmith.Config;
 using Toolsmith.Server;
@@ -18,15 +15,10 @@ using Toolsmith.ToolTinkering.Items;
 using Toolsmith.Utils;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
-using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
-using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
-using Vintagestory.Client.NoObf;
 using Vintagestory.GameContent;
-using Vintagestory.Server;
-using Vintagestory.ServerMods;
 
 namespace Toolsmith {
     public class ToolsmithModSystem : ModSystem {
@@ -52,9 +44,13 @@ namespace Toolsmith {
 
         public const string OffhandDominantInteractionUsePatchCategory = "offhandDominantInteractionUse";
 
+        public const string SOAnvilPatches = "anvilPatches";
+        public const string SOWorkItemPatches = "workItemPatches";
+        public const string SOWorkItemStatsPatches = "workItemStatsPatches";
+
         public static List<string> IgnoreCodes;
         public static Dictionary<string, int> BindingTiers; //This is only initialized on the Client side! Used for just generating and storing the various bindings tier levels to display on their tooltips.
-
+        public static Dictionary<string, SmithingPropertyVariant> metalPropsByCode;
         public override void StartPre(ICoreAPI api) {
             Logger = Mod.Logger;
             ModId = Mod.Info.ModID;
@@ -162,7 +158,21 @@ namespace Toolsmith {
                 Config = new ToolsmithConfigs();
             }
         }
+        public override void AssetsLoaded(ICoreAPI api)
+        {
+            base.AssetsLoaded(api);
 
+            var metalAssets = api.Assets.GetMany<SmithingProperty>(api.Logger, "worldproperties/block/metal.json");
+            foreach (var metals in metalAssets.Values)
+            {
+                for (int i = 0; i < metals.Variants.Length; i++)
+                {
+                    // Metals currently don't have a domain
+                    var metal = metals.Variants[i];
+                    metalPropsByCode[metal.Code.Path] = metal;
+                }
+            }
+        }
         public override void AssetsFinalize(ICoreAPI api) {
             base.AssetsFinalize(api);
 
@@ -426,6 +436,10 @@ namespace Toolsmith {
             Logger.VerboseDebug("Patched functions for Tool Tinkering purposes.");
             HarmonyInstance.PatchCategory(OffhandDominantInteractionUsePatchCategory);
             Logger.VerboseDebug("Patched functions for Offhand Dominant Interaction purposes.");
+            HarmonyInstance.PatchCategory(SOAnvilPatches);
+            HarmonyInstance.PatchCategory(SOWorkItemPatches);
+            HarmonyInstance.PatchCategory(SOWorkItemStatsPatches);
+            Logger.VerboseDebug("Patched functions for SmithingOverhaul purposes.");
         }
 
         private static void HarmonyUnpatch() {

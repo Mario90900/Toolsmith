@@ -27,6 +27,8 @@ namespace Toolsmith.Config {
         public string SinglePartTools = "@.*:(chisel|cleaver|shears|wrench|wedge|truechisel|rollingpin|handplaner|handwedge|laddermaker|paintbrush|paintscraper|pantograph|pathmaker|spyglass|creaser|flail|cangemchisel).*";
         public string BluntHeadedTools = "@.*:(hammer|wrench|mallet|rubblehammer|rollingpin|handwedge|laddermaker|paintbrush|pantograph|pathmaker|spyglass|creaser|flail).*";
 
+        public bool EnableSmithingOverhaul = false;
+
         public string PartBlacklist = "@.*(helve|-wet-|chiseledblock|stickslayer|scrap|ruined|wfradmin|chiseled|chiselmold|wrenchmold|knifemold|armory|awl-bone|awl-horn|awl-flint|awl-obsidian|sawmill|sawbuck|sawhorse|sawdust|wooden).*";
 
         //Might want to move this into the Part Stats file honestly. It's getting important that probably no one should touch anything in here without knowing what they are doing.

@@ -13,11 +13,12 @@ using Vintagestory.GameContent;
 using static HarmonyLib.Code;
 using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.Utils;
+using Toolsmith;
 
 namespace SmithingOverhaul.Patches
 {
     [HarmonyPatch(typeof(BlockEntityAnvil))]
-    [HarmonyPatchCategory(SmithingOverhaulModSystem.AnvilPatches)]
+    [HarmonyPatchCategory(ToolsmithModSystem.SOAnvilPatches)]
     public class AnvilPatches
     {
         static readonly MethodInfo getCollectible = AccessTools.PropertyGetter(typeof(ItemStack), nameof(ItemStack.Collectible));
@@ -199,7 +200,7 @@ namespace SmithingOverhaul.Patches
     }
 
     [HarmonyPatch(typeof(ItemWorkItem))]
-    [HarmonyPatchCategory(SmithingOverhaulModSystem.ItemWorkItemPatches)]
+    [HarmonyPatchCategory(ToolsmithModSystem.SOWorkItemPatches)]
     public class ItemWorkItemPatches
     {
         [HarmonyPostfix]
@@ -247,7 +248,7 @@ namespace SmithingOverhaul.Patches
     }
     
     [HarmonyPatch(typeof(CollectibleObject))]
-    [HarmonyPatchCategory(SmithingOverhaulModSystem.WorkItemStatsPatches)]
+    [HarmonyPatchCategory(ToolsmithModSystem.SOWorkItemStatsPatches)]
     public class WorkItemStatsPatches
     {
         [HarmonyPostfix]
@@ -255,7 +256,7 @@ namespace SmithingOverhaul.Patches
         [HarmonyPatch(nameof(CollectibleObject.GetMaxDurability))]
         private static void OverrideDefaultDurability(ref int __result, ItemStack itemstack, ICoreAPI ___api)
         {
-            if (SmithingOverhaulModSystem.Config.EnableSmithingOverhaul)
+            if (ToolsmithModSystem.Config.EnableSmithingOverhaul)
             {
                 if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>())
                 {

@@ -70,7 +70,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             var baseDur = outputSlot.Itemstack.Collectible.GetBaseMaxDurability(outputSlot.Itemstack);
             var toolDur = outputSlot.Itemstack.GetSmithedMaxDurability();
             double sharpnessMult = ToolsmithModSystem.Config.SharpnessMult;
-            if (SmithingOverhaulModSystem.Config.EnableSmithingOverhaul &&
+            if (ToolsmithModSystem.Config.EnableSmithingOverhaul &&
                 outputSlot.Itemstack.Attributes.HasAttribute(SmithingOverhaulAttr.StatsAttr))
                 sharpnessMult = outputSlot.Itemstack.Attributes.GetTreeAttribute(SmithingOverhaulAttr.StatsAttr)
                     .GetDouble(SmithingOverhaulAttr.SharpnessMultAttr);

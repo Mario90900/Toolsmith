@@ -1,8 +1,9 @@
 ﻿using SmithingOverhaul.Behaviour;
 using SmithingOverhaul.Property;
+using SmithingOverhaul.Utils;
 using System;
 using System.Text;
-using SmithingOverhaul.Utils;
+using Toolsmith;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
@@ -18,7 +19,7 @@ namespace SmithingOverhaul.Item
         public override void OnLoaded(ICoreAPI api)
         {
             SmithingPropertyVariant var;
-            if (api.ModLoader.GetModSystem<SmithingOverhaulModSystem>().metalPropsByCode.TryGetValue(Variant["metal"], out var))
+            if (ToolsmithModSystem.metalPropsByCode.TryGetValue(Variant["metal"], out var))
             {
                 smithProps = var;
             }
