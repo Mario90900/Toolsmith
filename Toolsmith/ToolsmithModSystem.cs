@@ -158,15 +158,16 @@ namespace Toolsmith {
                 Config = new ToolsmithConfigs();
             }
         }
-        public override void AssetsLoaded(ICoreAPI api)
-        {
+        public override void AssetsLoaded(ICoreAPI api) {
             base.AssetsLoaded(api);
 
             var metalAssets = api.Assets.GetMany<SmithingProperty>(api.Logger, "worldproperties/block/metal.json");
-            foreach (var metals in metalAssets.Values)
-            {
-                for (int i = 0; i < metals.Variants.Length; i++)
-                {
+            if (metalPropsByCode == null) {
+                metalPropsByCode = new Dictionary<string, SmithingPropertyVariant>();
+            }
+
+            foreach (var metals in metalAssets.Values) {
+                for (int i = 0; i < metals.Variants.Length; i++) {
                     // Metals currently don't have a domain
                     var metal = metals.Variants[i];
                     metalPropsByCode[metal.Code.Path] = metal;
