@@ -8,17 +8,13 @@
 
 <ItemGroup>
 	<Reference Include="canjewelry">
-		<HintPath>..\..\Other Mod's DLLs for Integration Purposes\CANJewelry\canjewelry.dll</HintPath>
-		<Private>False</Private>
+	  <HintPath>..\..\..\..\..\..\..\Documents\Programming\Vintage Story Modding\Mod DLLs\canjewelry.dll</HintPath>
 	</Reference>
 	<Reference Include="ItemRarity">
-		<HintPath>..\..\Other Mod's DLLs for Integration Purposes\ItemRarity\ItemRarity.dll</HintPath>
-		<Private>False</Private>
-		<EmbedInteropTypes></EmbedInteropTypes>
+	  <HintPath>..\..\..\..\..\..\..\Documents\Programming\Vintage Story Modding\Mod DLLs\ItemRarity.dll</HintPath>
 	</Reference>
 	<Reference Include="SmithingPlus">
-		<HintPath>..\..\Other Mod's DLLs for Integration Purposes\SmithingPlus\SmithingPlus.dll</HintPath>
-		<Private>False</Private>
+	  <HintPath>..\..\..\..\..\..\..\Documents\Programming\Vintage Story Modding\Mod DLLs\SmithingPlus.dll</HintPath>
 	</Reference>
 	<Reference Include="VintagestoryAPI">
 		<HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>
@@ -66,7 +62,6 @@
   <Content Include="assets\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
-  <Content Remove="assets\metal-property-patches.json" />
   <Content Include="modinfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>

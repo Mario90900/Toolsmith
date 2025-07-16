@@ -1,555 +1,405 @@
 [
   {
-    "op": "add",
-    "path": "/variants/0/comment",
-    "value": "Wikipedia",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/0/elongation",
-    "value": 3,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/0/tensileStrength",
-    "value": 4,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/0/yieldStrength",
-    "value": 2,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/0/youngsModulus",
-    "value": 32,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/1/comment",
-    "value": " UNS C49300 Bismuth Brass",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/1/elongation",
-    "value": 50,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/1/tensileStrength",
-    "value": 880,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/1/yieldStrength",
-    "value": 280,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/1/youngsModulus",
-    "value": 110,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/2/comment",
-    "value": "Made up, couldnt find a good one",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/2/elongation",
-    "value": 50,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/2/tensileStrength",
-    "value": 920,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/2/yieldStrength",
-    "value": 300,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/2/youngsModulus",
-    "value": 100,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/3/comment",
-    "value": "UNS C26200 Yellow Brass",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/3/elongation",
-    "value": 56,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/3/tensileStrength",
-    "value": 530,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/3/yieldStrength",
-    "value": 150,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/3/youngsModulus",
-    "value": 110,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/4/comment",
-    "value": "Matweb",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/4/elongation",
-    "value": 0.3,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/4/tensileStrength",
-    "value": 282,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/4/yieldStrength",
-    "value": 131,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/4/youngsModulus",
-    "value": 248,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/5/comment",
-    "value": "MatWeb",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/5/elongation",
-    "value": 60,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/5/tensileStrength",
-    "value": 340,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/5/yieldStrength",
-    "value": 33,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/5/youngsModulus",
-    "value": 120,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/6/comment",
-    "value": "UNS C71500 (CW354H) Copper-Nickel",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/6/elongation",
-    "value": 35,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/6/tensileStrength",
-    "value": 570,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/6/yieldStrength",
-    "value": 130,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/6/youngsModulus",
-    "value": 140,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/7/comment",
-    "value": "Annealed ASTM B522 Class II Gold-Silver-Platinum Alloy",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/7/elongation",
-    "value": 33,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/7/tensileStrength",
-    "value": 400,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/7/yieldStrength",
-    "value": 90,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/7/youngsModulus",
-    "value": 96,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/8/comment",
-    "value": "Matweb",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/8/elongation",
-    "value": 30,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/8/tensileStrength",
-    "value": 120,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/8/yieldStrength",
-    "value": 100,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/8/youngsModulus",
-    "value": 77,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/9/comment",
-    "value": " EN 1.0038 (S235JR) Non-Alloy Steel",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/9/elongation",
-    "value": 25,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/9/tensileStrength",
-    "value": 540,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/9/yieldStrength",
-    "value": 220,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/9/youngsModulus",
-    "value": 190,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/10/comment",
-    "value": " Made up, and a study on meteoric iron",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/10/elongation",
-    "value": 30,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/10/tensileStrength",
-    "value": 780,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/10/yieldStrength",
-    "value": 300,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/10/youngsModulus",
-    "value": 150,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/11/comment",
-    "value": "Matweb",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/11/elongation",
-    "value": 50,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/11/tensileStrength",
-    "value": 18,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/11/yieldStrength",
-    "value": 5,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/11/youngsModulus",
-    "value": 14,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/12/comment",
-    "value": "Made up, used various references",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/12/elongation",
-    "value": 60,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/12/tensileStrength",
-    "value": 20,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/12/yieldStrength",
-    "value": 3,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/12/youngsModulus",
-    "value": 24,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/13/comment",
-    "value": "Matweb",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/13/elongation",
-    "value": 35,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/13/tensileStrength",
-    "value": 241,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/13/yieldStrength",
-    "value": 70,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/13/youngsModulus",
-    "value": 171,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/14/comment",
-    "value": "Nickel Alloy 201 (2.4068, N02201, NA12)",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/14/density",
-    "value": 8900,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/14/elongation",
-    "value": 43,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/14/specificHeatCapacity",
-    "value": 0.15,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/14/tensileStrength",
-    "value": 660,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/14/yieldStrength",
-    "value": 93,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/14/youngsModulus",
-    "value": 180,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/15/comment",
-    "value": "Annealed Commercially Pure Silver",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/15/elongation",
-    "value": 29,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/15/tensileStrength",
-    "value": 300,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/15/yieldStrength",
-    "value": 45,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/15/youngsModulus",
-    "value": 71,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/16/comment",
-    "value": "AISI 301 (S30100) Stainless Steel",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/16/elongation",
-    "value": 46,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/16/tensileStrength",
-    "value": 1280,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/16/yieldStrength",
-    "value": 230,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/16/youngsModulus",
-    "value": 200,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/17/comment",
-    "value": "AISI 1080 Carbon Steel",
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/17/elongation",
-    "value": 24,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/17/tensileStrength",
-    "value": 1120,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/17/yieldStrength",
-    "value": 370,
-    "file": "game:worldproperties/block/metal.json"
-  },
-  {
-    "op": "add",
-    "path": "/variants/17/youngsModulus",
-    "value": 200,
-    "file": "game:worldproperties/block/metal.json"
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/0",
+    "value": [
+      {
+        "comment": "Wikipedia"
+      },
+      {
+        "elongation": 3
+      },
+      {
+        "tensileStrength": 4
+      },
+      {
+        "yieldStrength": 2
+      },
+      {
+        "youngsModulus": 32
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/1",
+    "value": [
+      {
+        "comment": "UNS C49300 Bismuth Brass"
+      },
+      {
+        "elongation": 50
+      },
+      {
+        "tensileStrength": 880
+      },
+      {
+        "yieldStrength": 280
+      },
+      {
+        "youngsModulus": 110
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/2",
+    "value": [
+      {
+        "comment": "Made up, couldnt find a good one"
+      },
+      {
+        "elongation": 50
+      },
+      {
+        "tensileStrength": 920
+      },
+      {
+        "yieldStrength": 300
+      },
+      {
+        "youngsModulus": 100
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/3",
+    "value": [
+      {
+        "comment": "UNS C26200 Yellow Brass"
+      },
+      {
+        "elongation": 56
+      },
+      {
+        "tensileStrength": 530
+      },
+      {
+        "yieldStrength": 150
+      },
+      {
+        "youngsModulus": 110
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/4",
+    "value": [
+      {
+        "comment": "Matweb"
+      },
+      {
+        "elongation": 0.3
+      },
+      {
+        "tensileStrength": 282
+      },
+      {
+        "yieldStrength": 131
+      },
+      {
+        "youngsModulus": 248
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/5",
+    "value": [
+      {
+        "comment": "MatWeb"
+      },
+      {
+        "elongation": 60
+      },
+      {
+        "tensileStrength": 340
+      },
+      {
+        "yieldStrength": 33
+      },
+      {
+        "youngsModulus": 120
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/6",
+    "value": [
+      {
+        "comment": "UNS C71500 (CW354H) Copper-Nickel"
+      },
+      {
+        "elongation": 35
+      },
+      {
+        "tensileStrength": 570
+      },
+      {
+        "yieldStrength": 130
+      },
+      {
+        "youngsModulus": 140
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/7",
+    "value": [
+      {
+        "comment": "Annealed ASTM B522 Class II Gold-Silver-Platinum Alloy"
+      },
+      {
+        "elongation": 33
+      },
+      {
+        "tensileStrength": 400
+      },
+      {
+        "yieldStrength": 90
+      },
+      {
+        "youngsModulus": 96
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/8",
+    "value": [
+      {
+        "comment": "Matweb"
+      },
+      {
+        "elongation": 30
+      },
+      {
+        "tensileStrength": 120
+      },
+      {
+        "yieldStrength": 100
+      },
+      {
+        "youngsModulus": 77
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/9",
+    "value": [
+      {
+        "comment": "EN 1.0038 (S235JR) Non-Alloy Steel"
+      },
+      {
+        "elongation": 25
+      },
+      {
+        "tensileStrength": 540
+      },
+      {
+        "yieldStrength": 220
+      },
+      {
+        "youngsModulus": 190
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/10",
+    "value": [
+      {
+        "comment": "Made up, and a study on meteoric iron"
+      },
+      {
+        "elongation": 30
+      },
+      {
+        "tensileStrength": 780
+      },
+      {
+        "yieldStrength": 300
+      },
+      {
+        "youngsModulus": 150
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/11",
+    "value": [
+      {
+        "comment": "Matweb"
+      },
+      {
+        "elongation": 50
+      },
+      {
+        "tensileStrength": 18
+      },
+      {
+        "yieldStrength": 5
+      },
+      {
+        "youngsModulus": 14
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/12",
+    "value": [
+      {
+        "comment": "Made up, used various references"
+      },
+      {
+        "elongation": 60
+      },
+      {
+        "tensileStrength": 20
+      },
+      {
+        "yieldStrength": 3
+      },
+      {
+        "youngsModulus": 24
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/13",
+    "value": [
+      {
+        "comment": "Matweb"
+      },
+      {
+        "elongation": 35
+      },
+      {
+        "tensileStrength": 241
+      },
+      {
+        "yieldStrength": 70
+      },
+      {
+        "youngsModulus": 171
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/14",
+    "value": [
+      {
+        "comment": "Nickel Alloy 201 (2.4068, N02201, NA12)"
+      },
+      {
+        "density": 8900
+      },
+      {
+        "elongation": 43
+      },
+      {
+        "specificHeatCapacity": 0.15
+      },
+      {
+        "tensileStrength": 660
+      },
+      {
+        "yieldStrength": 93
+      },
+      {
+        "youngsModulus": 180
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/15",
+    "value": [
+      {
+        "comment": "Annealed Commercially Pure Silver"
+      },
+      {
+        "elongation": 29
+      },
+      {
+        "tensileStrength": 300
+      },
+      {
+        "yieldStrength": 45
+      },
+      {
+        "youngsModulus": 71
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/16",
+    "value": [
+      {
+        "comment": "AISI 301 (S30100) Stainless Steel"
+      },
+      {
+        "elongation": 46
+      },
+      {
+        "tensileStrength": 1280
+      },
+      {
+        "yieldStrength": 230
+      },
+      {
+        "youngsModulus": 200
+      }
+    ]
+  },
+  {
+    "file": "game:worldproperties/block/metal.json",
+    "op": "addeach",
+    "path": "/variants/16",
+    "value": [
+      {
+        "comment": "AISI 1080 Carbon Steel"
+      },
+      {
+        "elongation": 24
+      },
+      {
+        "tensileStrength": 1120
+      },
+      {
+        "yieldStrength": 370
+      },
+      {
+        "youngsModulus": 200
+      }
+    ]
   },
   {
     "op": "add",
