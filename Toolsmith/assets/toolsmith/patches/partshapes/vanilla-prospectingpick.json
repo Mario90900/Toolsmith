@@ -1,0 +1,32 @@
+[
+	{
+		"op": "addmerge",
+		"path": "/shapeByType",
+		"value": {
+			"*-tinbronze": { "base": "toolsmith:item/parts/prospectingpick/heads/simple" },
+			"*-bismuthbronze": { "base": "toolsmith:item/parts/prospectingpick/heads/simple" },
+			"*-blackbronze": { "base": "toolsmith:item/parts/prospectingpick/heads/simple" },
+			"*-gold": { "base": "toolsmith:item/parts/prospectingpick/heads/advanced" },
+			"*-silver": { "base": "toolsmith:item/parts/prospectingpick/heads/advanced" },
+			"*-iron": { "base": "toolsmith:item/parts/prospectingpick/heads/advanced" },
+			"*-steel": { "base": "toolsmith:item/parts/prospectingpick/heads/advanced" },
+			"*-meteoriciron": { "base": "toolsmith:item/parts/prospectingpick/heads/advanced" },
+			"*": { "base": "toolsmith:item/parts/prospectingpick/heads/simple" },
+		},
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json"
+	},
+	{
+		"op": "addmerge",
+		"path": "/textures",
+		"value": {
+			"material": { "base": "block/metal/ingot/{metal}" }
+		},
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/shape",
+		"value": { "base": "toolsmith:item/parts/prospectingpick/heads/simple" },
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json"
+	},
+]

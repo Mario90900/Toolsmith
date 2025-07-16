@@ -49,6 +49,8 @@ namespace Toolsmith {
         public const string ToolTinkeringGuiElementPatchCategory = "toolTinkeringGuiElement";
         public const string ToolTinkeringItemAxePatchCategory = "itemAxeOnBrokenWith";
 
+        public const string ToolRenderingPatchCategory = "toolPartRendering";
+
         public const string OffhandDominantInteractionUsePatchCategory = "offhandDominantInteractionUse";
 
         public static List<string> IgnoreCodes;
@@ -429,6 +431,8 @@ namespace Toolsmith {
             Logger.VerboseDebug("Patched functions for Tool Tinkering purposes.");
             HarmonyInstance.PatchCategory(OffhandDominantInteractionUsePatchCategory);
             Logger.VerboseDebug("Patched functions for Offhand Dominant Interaction purposes.");
+            HarmonyInstance.PatchCategory(ToolRenderingPatchCategory);
+            Logger.VerboseDebug("Patched functions for Tool Multi-Part Rendering purposes.");
         }
 
         private static void HarmonyUnpatch() {

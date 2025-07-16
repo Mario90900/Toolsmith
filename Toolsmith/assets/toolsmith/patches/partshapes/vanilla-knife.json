@@ -1,0 +1,49 @@
+[
+	{
+		"op": "replace",
+		"path": "/shapeByType",
+		"value": {
+			"*-copper": { "base": "toolsmith:item/parts/knife/heads/simple" },
+			"*-tinbronze": { "base": "toolsmith:item/parts/knife/heads/simple" },
+			"*-bismuthbronze": { "base": "toolsmith:item/parts/knife/heads/simple" },
+			"*-blackbronze": { "base": "toolsmith:item/parts/knife/heads/simple" },
+			"*-gold": { "base": "toolsmith:item/parts/knife/heads/advanced" },
+			"*-silver": { "base": "toolsmith:item/parts/knife/heads/advanced" },
+			"*-iron": { "base": "toolsmith:item/parts/knife/heads/advanced" },
+			"*-steel": { "base": "toolsmith:item/parts/knife/heads/advanced" },
+			"*-meteoriciron": { "base": "toolsmith:item/parts/knife/heads/advanced" },
+			"*": { "base": "toolsmith:item/parts/knife/heads/nonmetal" },
+		},
+		"file": "game:itemtypes/toolhead/knifeblade.json"
+	},
+	{
+		"op": "replace",
+		"path": "/guiTransformByType",
+		"value": {
+			"@knifeblade-(chert|flint|granite|andesite|basalt|obsidian|peridotite)": {
+				"rotate": false,
+				"translation": { "x": 0, "y": 0, "z": 0 },
+				"rotation": { "x": -8, "y": -152, "z": 142 },
+				"origin": { "x": 0.49, "y": 0.06, "z": 0.43 },
+				"scale": 3.4
+			},
+			"*": {
+				"translation": { "x": 3, "y": 0, "z": 0 },
+				"rotation": { "x": -8, "y": -152, "z": 142 },
+				"origin": { "x": 0.53, "y": 0.05, "z": 0.36 },
+				"scale": 3.53
+			}
+		},
+		"file": "game:itemtypes/toolhead/knifeblade.json"
+	},
+	{
+		"op": "addmerge",
+		"path": "/attributes/inForgeTransform",
+		"value": {
+			"translation": { "x": 0, "y": -0.1, "z": 0.1 },
+			"rotation": { "x": 0, "y": 90, "z": 0 },
+			"scale": 0.7
+		},
+		"file": "game:itemtypes/toolhead/knifeblade.json"
+	},
+]

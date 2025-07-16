@@ -8,6 +8,6 @@
 		},
 		"width": 2,
 		"height": 2,
-		"output": { "type": "item", "code": "toolsmith:sandpaper", "quantity": 1 }
+		"output": { "type": "item", "code": "toolsmith:sandpaper", "quantity": 4 }
 	}
 ]

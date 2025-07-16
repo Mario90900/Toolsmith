@@ -217,7 +217,7 @@ namespace Toolsmith.ToolTinkering {
             }
         }
 
-        [HarmonyPrefix]
+        /*[HarmonyPrefix] //Commented this out because it wasn't really _needed_ exactly? Also ended up causing a loop with Smithing Plus in the end, woo. Thanks Jayu for figuring this out.
         [HarmonyPatch(nameof(CollectibleObject.SetDurability))]
         private static bool TinkeredToolSetDurabilityPrefix(ItemStack itemstack, int amount) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //Since Smithing Plus has a similar check, just running a check here to make sure no part durability is over the maximum somehow.
@@ -236,7 +236,7 @@ namespace Toolsmith.ToolTinkering {
                 itemstack.EnsureSharpnessIsNotOverMax();
             }
             return true;
-        }
+        }*/
 
         //The Postfix Patch that handles the Mining Speed (ms) Boost from any Tinkered Tools, simply just takes the output of the original call and if it's a Tinkered Tool? Add ms + ms*bonus
         [HarmonyPostfix]
