@@ -1,0 +1,19 @@
+[
+	{
+		"op": "replace",
+		"path": "/shape",
+		"value": { "base": "toolsmith:item/tools/shears" },
+		"file": "game:itemtypes/tool/shears.json"
+	},
+	{
+		"op": "replace",
+		"path": "/guiTransform",
+		"value": {
+			"translation": { "x": 0.5, "y": 0, "z": 0 },
+			"rotation": { "x": -89, "y": 45, "z": 33 },
+			"origin": { "x": 0.9, "y": 0.4, "z": 0.48 },
+			"scale": 2.5
+		},
+		"file": "game:itemtypes/tool/shears.json"
+	}
+]

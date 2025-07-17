@@ -1,0 +1,73 @@
+[
+	{
+		"op": "addmerge",
+		"path": "/shapeByType",
+		"value": {
+			"*-tinbronze": { "base": "toolsmith:item/parts/scythe/heads/simple" },
+			"*-bismuthbronze": { "base": "toolsmith:item/parts/scythe/heads/simple" },
+			"*-blackbronze": { "base": "toolsmith:item/parts/scythe/heads/simple" },
+			"*-gold": { "base": "toolsmith:item/parts/scythe/heads/advanced" },
+			"*-silver": { "base": "toolsmith:item/parts/scythe/heads/advanced" },
+			"*-iron": { "base": "toolsmith:item/parts/scythe/heads/advanced" },
+			"*-steel": { "base": "toolsmith:item/parts/scythe/heads/advanced" },
+			"*-meteoriciron": { "base": "toolsmith:item/parts/scythe/heads/advanced" },
+			"*": { "base": "toolsmith:item/parts/scythe/heads/simple" },
+		},
+		"file": "game:itemtypes/toolhead/scythehead.json"
+	},
+	{
+		"op": "addmerge",
+		"path": "/textures",
+		"value": {
+			"material": { "base": "block/metal/ingot/{metal}" }
+		},
+		"file": "game:itemtypes/toolhead/scythehead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/shape",
+		"value": { "base": "toolsmith:item/parts/scythe/heads/simple" },
+		"file": "game:itemtypes/toolhead/scythehead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/guiTransform",
+		"value": {
+			"translation": { "x": 0, "y": 0, "z": 0 },
+			"rotation": { "x": -74, "y": 35, "z": 12 },
+			"origin": { "x": 1.5, "y": 0, "z": 0.1 },
+			"scale": 1.6
+		},
+		"file": "game:itemtypes/toolhead/scythehead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/tpHandTransform",
+		"value": {
+			"translation": { "x": -2, "y": -0.21, "z": -0.73 },
+			"rotation": { "x": 102, "y": -80, "z": 1 },
+			"origin": { "x": 1.4, "y": 0, "z": 0.5 },
+			"scale": 0.7799
+		},
+		"file": "game:itemtypes/toolhead/scythehead.json"
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/onTongTransform",
+		"value": {
+			"translation": { "x": -0.88, "y": -1.1, "z": -2 },
+			"rotation": { "x": -31, "y": 83, "z": -7 }
+		},
+		"file": "game:itemtypes/toolhead/scythehead.json"
+	},
+	{
+		"op": "addmerge",
+		"path": "/attributes/inForgeTransform",
+		"value": {
+			"translation": { "x": 0.6, "y": -0.15, "z": 0.45 },
+			"rotation": { "x": 0, "y": 125, "z": 0 },
+			"scale": 0.7
+		},
+		"file": "game:itemtypes/toolhead/scythehead.json"
+	}
+]

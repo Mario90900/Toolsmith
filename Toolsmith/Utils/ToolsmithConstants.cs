@@ -19,7 +19,8 @@ namespace Toolsmith.Utils {
         public const string FirewoodCode = "game:firewood";
         public const string WorkItemCode = "game:workitem";
         public const string IngotCode = "game:ingot";
-        public const string DebarkedWoodPathMinusType = "game:block/wood/debarked/";
+        public const string HandleWoodTexturePathMinusType = "toolsmith:block/tools/tool";
+        public const string DebarkedWoodBackupPathMinusType = "game:block/wood/debarked/";
         public const string DefaultGripFallbackTexture = "game:block/cloth/reedrope";
         public const string LightTreatementOverlayPath = "toolsmith:block/overlays/lighter";
         public const string DarkTreatementOverlayPath = "toolsmith:block/overlays/darker";

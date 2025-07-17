@@ -20,19 +20,19 @@
 						"code": "wood",
 						"Default": "game:block/wood/debarked/oak",
 						"values": [
-							"game:block/wood/debarked/aged",
-							"game:block/wood/debarked/birch",
-							"game:block/wood/debarked/oak",
-							"game:block/wood/debarked/maple",
-							"game:block/wood/debarked/pine",
-							"game:block/wood/debarked/acacia",
-							"game:block/wood/debarked/kapok",
-							"game:block/wood/debarked/baldcypress",
-							"game:block/wood/debarked/larch",
-							"game:block/wood/debarked/redwood",
+							"toolsmith:block/tools/toolaged",
+							"toolsmith:block/tools/toolbirch",
+							"toolsmith:block/tools/tooloak",
+							"toolsmith:block/tools/toolmaple",
+							"toolsmith:block/tools/toolpine",
+							"toolsmith:block/tools/toolacacia",
+							"toolsmith:block/tools/toolkapok",
+							"toolsmith:block/tools/toolbaldcypress",
+							"toolsmith:block/tools/toollarch",
+							"toolsmith:block/tools/toolredwood",
 							"game:block/wood/debarked/ebony",
-							"game:block/wood/debarked/walnut",
-							"game:block/wood/debarked/purpleheart"
+							"toolsmith:block/tools/toolwalnut",
+							"toolsmith:block/tools/toolpurpleheart"
 						]
 					}
 				],

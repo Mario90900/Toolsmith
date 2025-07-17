@@ -3,7 +3,7 @@
   "textureHeight":16,
   "textures":{
     "material":"game:item/tool/material/string",
-    "wood":"game:item/block/wood/debarked/veryaged"
+    "wood":"game:block/wood/debarked/veryaged"
   },
   "textureSizes":{
     "material":[

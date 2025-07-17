@@ -115,7 +115,10 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     ITreeAttribute handlePartAndTransformTree = multiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
                     ITreeAttribute handleRenderTree = handlePartAndTransformTree.GetPartRenderTree();
                     ITreeAttribute handleTextureTree = handleRenderTree.GetPartTextureTree();
-                    var woodtypeTextPath = ToolsmithConstants.DebarkedWoodPathMinusType + woodtype;
+                    var woodtypeTextPath = ToolsmithConstants.HandleWoodTexturePathMinusType + woodtype;
+                    if (!ToolsmithModSystem.Api.Assets.Exists(new AssetLocation(woodtypeTextPath + ".png"))) {
+                        woodtypeTextPath = ToolsmithConstants.DebarkedWoodBackupPathMinusType + woodtype;
+                    }
                     handleTextureTree.SetPartTexturePathFromKey("wood", woodtypeTextPath);
                     HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(outputSlot.Itemstack.Collectible.Code.Path);
                     handleRenderTree.SetPartShapePath(handleStats.handleShapePath);

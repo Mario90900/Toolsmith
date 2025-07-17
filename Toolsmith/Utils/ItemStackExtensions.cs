@@ -248,7 +248,7 @@ namespace Toolsmith.Utils {
                     HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(oldHandlePath[0]);
                     newHandle.SetHandleStatTag(handleStats.handleStatTag);
                     renderTree.SetPartShapePath(handleStats.handleShapePath);
-                    textureTree.SetPartTexturePathFromKey("wood", ToolsmithConstants.DebarkedWoodPathMinusType + "oak");
+                    textureTree.SetPartTexturePathFromKey("wood", ToolsmithConstants.HandleWoodTexturePathMinusType + "oak");
                 }
 
                 if (grip != null) {
