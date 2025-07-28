@@ -14,6 +14,8 @@ namespace Toolsmith.ToolTinkering.Items {
 
     public class ItemWorkableNugget : ItemNugget, IAnvilWorkable {
 
+        public int VoxelCountForHandbook(ItemStack stack) => 2;
+
         public bool CanWork(ItemStack stack) {
             float temp = stack.Collectible.GetTemperature(api.World, stack);
             float meltingPoint = stack.Collectible.GetMeltingPoint(api.World, null, new DummySlot(stack));

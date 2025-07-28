@@ -154,6 +154,8 @@ namespace Toolsmith.Utils {
             // !!! Test for old handles here, and change them to new ones if they are pulled from a tool !!!
             var handle = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHandle);
             handle.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+
+            //With the Old Handles removed, this might be pointless to remain in the future!
             if (handle.Collectible.Code.Path.StartsWith(ToolsmithAttributes.OldHandlePrefix)) { //If we find an old handle it's time to convert it to the new ones. Remove this bit later on after some time.
                 handle = CheckForOldHandleAndConvert(handle);
             }

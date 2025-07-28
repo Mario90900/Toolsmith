@@ -30,7 +30,7 @@
 							"toolsmith:block/tools/toolbaldcypress",
 							"toolsmith:block/tools/toollarch",
 							"toolsmith:block/tools/toolredwood",
-							"game:block/wood/debarked/ebony",
+							"toolsmith:block/tools/toolebony",
 							"toolsmith:block/tools/toolwalnut",
 							"toolsmith:block/tools/toolpurpleheart"
 						]

@@ -2,7 +2,7 @@
   "textureWidth":16,
   "textureHeight":16,
   "textures":{
-    "metal":"block/metal/ingot/iron"
+    "metal":"game:block/metal/ingot/iron"
   },
   "textureSizes":{
     "metal":[
