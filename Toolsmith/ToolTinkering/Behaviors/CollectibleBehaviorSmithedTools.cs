@@ -38,8 +38,8 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 } else if (!inSlot.Itemstack.HasTotalHoneValue()) {
                     workingDsc.AppendLine(Lang.Get("smithedtoolfreehone"));
                 }
+                workingDsc.Insert(startIndex, Lang.Get("toolsharpness", curSharp, maxSharp) + '\n');
             }
-            workingDsc.Insert(startIndex, Lang.Get("toolsharpness", curSharp, maxSharp) + '\n');
 
             dsc.Clear();
             dsc.Append(workingDsc);
