@@ -39,6 +39,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 if (byEntity.World.Side == EnumAppSide.Server) {
                     byEntity.World.PlaySoundAt(new AssetLocation("sounds/player/messycraft.ogg"), byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z, null, true, 32f, 1f);
                 }
+                byEntity.StartAnimation("crafting");
                 crafting = true;
                 return;
             }
@@ -49,7 +50,6 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
             if (crafting) {
                 handling = EnumHandling.PreventSubsequent;
-                byEntity.StartAnimation("crafting");
                 return crafting && secondsUsed < ToolsmithConstants.TimeToCraftTinkerTool; //Time for crafting is now a constant variable!
             }
 

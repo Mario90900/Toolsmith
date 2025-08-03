@@ -40,6 +40,7 @@ namespace Toolsmith.Utils {
 
         // -- Render Data AttributeTree stuffs! --
         public const string ModularMultiPartDataTree = "modularMultiPartRenderData"; //This is a TreeAttribute that will contain more Trees of the respective parts (Or sub-shapes, for instance grips on a handle!). When added to a tool, the string tag for each part is that part's name. IE: Head, Handle or Binding, this will be set by the tool's behavior during OnCrafting.
+        public const string BundleHasGenericParts = "bundleHasGenericParts"; //A flag attribute for Bundles only! Signals that the tool crafted from this shouldn't contain any multi-part rendering data.
         public const string ModularPartDataTree = "modularPartRenderData"; //This TreeAttribute is solely on individual parts to make retreieving them easier and consistant! This simply contains the Data entries organized below, and is also set and updated during OnCrafting!
 
         public const string ModularPartRotationX = "partRotationX";
@@ -75,6 +76,6 @@ namespace Toolsmith.Utils {
 
         // -- This just helps to organize it in this file, and pile them into one easy constant to call. Generally for Smithing Plus's Compat and the forgettable attributes there when a Workpiece is made.
         public const string ToolsmithForgettableAttributes = "," + ToolHead + "," + ToolSharpnessCurrent + "," + ToolSharpnessMax + "," + ToolHandle + "," + ToolHandleCurrentDur + "," + ToolHandleMaxDur + "," + ToolBinding + "," + ToolBindingCurrentDur + "," + ToolBindingMaxDur + "," + GripChanceToDamage + "," + SpeedBonus + "," + Drawback + "," + TotalHonedPercentSinceLastUse + "," + BrokeWhileSharpening + "," + ModularMultiPartDataTree + "," + ModularPartDataTree;
-        public static readonly string[] ToolsmithIgnoreAttributesArray = new string[14] { ToolHead, ToolSharpnessCurrent, ToolSharpnessMax, ToolHandle, ToolHandleCurrentDur, ToolHandleMaxDur, ToolBinding, ToolBindingCurrentDur, ToolBindingMaxDur, GripChanceToDamage, SpeedBonus, Drawback, TotalHonedPercentSinceLastUse, BrokeWhileSharpening };
+        public static readonly string[] ToolsmithIgnoreAttributesArray = [ToolHead, ToolSharpnessCurrent, ToolSharpnessMax, ToolHandle, ToolHandleCurrentDur, ToolHandleMaxDur, ToolBinding, ToolBindingCurrentDur, ToolBindingMaxDur, GripChanceToDamage, SpeedBonus, Drawback, TotalHonedPercentSinceLastUse, BrokeWhileSharpening, ModularMultiPartDataTree, ModularPartDataTree];
     }
 }

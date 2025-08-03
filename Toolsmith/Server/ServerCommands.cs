@@ -8,6 +8,7 @@ using Toolsmith.Client.Behaviors;
 using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.Server;
 
 namespace Toolsmith.Server {
@@ -40,6 +41,12 @@ namespace Toolsmith.Server {
                 .RequiresPrivilege("controlserver")
                 .WithArgs(sapi.ChatCommands.Parsers.Word("partTarget"), sapi.ChatCommands.Parsers.Word("currentOrMax"), sapi.ChatCommands.Parsers.Int("value"))
                 .HandleWith(args => OnChangeToolsmithAttribute(sapi, args));
+            sapi.ChatCommands
+                .Create("printAttributesToLog")
+                .WithAlias("pa")
+                .WithDescription("Print the attributes of the currently held item to the log. [Toolsmith]")
+                .RequiresPrivilege("controlserver")
+                .HandleWith(args => OnPrintAttributes(sapi, args));
         }
 
         private static TextCommandResult OnSetMultiPartRenderingRotation(ICoreServerAPI sapi, TextCommandCallingArgs args) {
@@ -223,6 +230,38 @@ namespace Toolsmith.Server {
                         return TextCommandResult.Error("That type of part is not valid for the held item, will avoid setting any attributes in case of a mistake. The valid option for this part is simply \"part\".");
                 }
             }
+        }
+
+        private static TextCommandResult OnPrintAttributes(ICoreServerAPI sapi, TextCommandCallingArgs args) {
+            var heldItem = args.Caller.Player.InventoryManager.ActiveHotbarSlot?.Itemstack;
+            if (heldItem == null) {
+                return TextCommandResult.Error("Could not find an active hotbar, or a held item for the player running the command!");
+            }
+
+            var treeString = RecursivelyPrintAttributes(heldItem.Attributes, 0, "");
+            ToolsmithModSystem.Logger.Debug("-- Printing attributes for " + heldItem.Collectible.Code + " --\n" + treeString);
+
+            return TextCommandResult.Success("Attributes printed to Log.");
+        }
+
+        private static string RecursivelyPrintAttributes(ITreeAttribute tree, int depth, string treeString) {
+            foreach (var entry in tree) {
+                for (int i = 0; i < depth; i++) {
+                    treeString += "  ";
+                }
+                treeString += entry.Key + ": ";
+
+                var value = tree.GetTreeAttribute(entry.Key);
+                if (value != null) {
+                    treeString += "\n";
+                    treeString += RecursivelyPrintAttributes(value, depth + 1, "");
+                } else {
+                    var val = entry.Value.GetValue();
+                    treeString += val.ToString() + "\n";
+                }
+            }
+
+            return treeString;
         }
     }
 }

@@ -19,6 +19,8 @@ namespace Toolsmith.Client {
         //
         //  ("modularMultiPartRenderData") <- The Tool EnumTool (and include specific overrides for specific tool types, which get grabbed OVER this) can modify the shapes to be a prefix for the .json file name. Resulting in the structure of {tool}-{partName}(-{override's tag})
         //      |
+        //      |-- (BundleHasGenericParts bool) - Only set on Part Bundles if they contain generic handles, a sign that there should be no Multi-Part rendering handled on this tool. If it exists, the flag is 'true', otherwise false. Contents don't matter. Used to prevent adding any MultiPartRenderingData to the actual tool when it's made from this!
+        //      |
         //      |-- (PartAndTransform Tree)
         //      |
         //      |-- (PartAndTransform Tree) - Each one is named after their tag for their part, IE: handle, head, binding...
@@ -57,6 +59,18 @@ namespace Toolsmith.Client {
 
         public static void RemoveMultiPartRenderTree(this ItemStack item) {
             item.Attributes.RemoveAttribute(ToolsmithAttributes.ModularMultiPartDataTree);
+        }
+
+        public static void SetBundleHasGenericParts(this ItemStack item) {
+            item.Attributes.SetBool(ToolsmithAttributes.BundleHasGenericParts, true);
+        }
+
+        public static bool HasBundleHasGenericParts(this ItemStack item) {
+            return item.Attributes.HasAttribute(ToolsmithAttributes.BundleHasGenericParts);
+        }
+
+        public static void RemoveBundleHasGenericParts(this ItemStack item) {
+            item.Attributes.RemoveAttribute(ToolsmithAttributes.BundleHasGenericParts);
         }
 
         public static ITreeAttribute GetPartAndTransformRenderTree(this ITreeAttribute tree, string key) {
@@ -384,6 +398,9 @@ namespace Toolsmith.Client {
 
         public static void BuildToolRenderFromAllSeparateParts(ItemStack tool, ItemStack head, ItemStack handle, ItemStack binding = null) {
             var toolType = GetToolTypeFromHeadShapePath(head.Item.Shape.Base.Path);
+            if (toolType == null) {
+                return;
+            }
 
             HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handle.Collectible.Code.Path);
             string toolSpecificHandleShape = null;
@@ -440,6 +457,9 @@ namespace Toolsmith.Client {
             if (toolSpecificHandleShape == null) {
                 if (toolType != null) {
                     toolSpecificHandleShape = ConvertFromHandlePathToShapePath(handleStats.handleShapePath, toolType);
+                } else {
+                    tool.SetBundleHasGenericParts();
+                    toolSpecificHandleShape = handleStats.handleShapePath;
                 }
             }
 

@@ -61,16 +61,22 @@ namespace Toolsmith.Client.Behaviors {
             int meshrefID = itemstack.TempAttributes.GetInt(ToolsmithAttributes.ToolsmithMeshID);
             if (api != null && (meshrefID == 0 || !meshrefs.TryGetValue(meshrefID, out renderinfo.ModelRef))) { //This checks if it has already been rendered and cached, and if so, send that again - otherwise generate one.
                 int id = meshrefs.Count + 1;
-                MultiTextureMeshRef modelref = capi.Render.UploadMultiTextureMesh(GenMesh(itemstack, capi.ItemTextureAtlas, null));
 
-                renderinfo.ModelRef = meshrefs[id] = modelref;
+                var mesh = GenMesh(itemstack, capi.ItemTextureAtlas, null);
+                if (mesh != null) {
+                    MultiTextureMeshRef modelref = capi.Render.UploadMultiTextureMesh(mesh);
+                    renderinfo.ModelRef = meshrefs[id] = modelref;
+                } else {
+                    meshrefs[id] = renderinfo.ModelRef;
+                }
+
                 itemstack.TempAttributes.SetInt(ToolsmithAttributes.ToolsmithMeshID, id);
             }
         }
 
         public MeshData GenMesh(ItemStack itemstack, ITextureAtlasAPI targetAtlas, BlockPos atBlockPos) {
             if (itemstack == null) {
-                return new MeshData();
+                return null;//new MeshData();
             }
 
             var mesh = new MeshData(6, 4);
@@ -94,18 +100,18 @@ namespace Toolsmith.Client.Behaviors {
                 }
 
                 if (failedPart) { //If any part fails to be found or render, it'll just default to using the item fallback. This ideally should make things cleaner in the end, and prevent invisible items.
-                    return GenMesh(null, targetAtlas);
+                    return null;//GenMesh(null, targetAtlas);
                 }
             } else if (itemstack.HasPartRenderTree()) {
                 ITreeAttribute renderTree = itemstack.GetPartRenderTree();
                 MeshData partMesh = GenMesh(renderTree, targetAtlas);
 
                 if (partMesh == null) {
-                    return GenMesh(null, targetAtlas);
+                    return null;//GenMesh(null, targetAtlas);
                 }
                 return partMesh;
             } else {
-                return GenMesh(null, targetAtlas);
+                return null;//GenMesh(null, targetAtlas);
             }
 
             return mesh;
@@ -130,11 +136,18 @@ namespace Toolsmith.Client.Behaviors {
                     return null;
                 }
             } else {
-                shape = capi.TesselatorManager.GetCachedShape(item.Shape.Base);
+                if (item?.Shape != null) {
+                    shape = capi.TesselatorManager.GetCachedShape(item.Shape.Base);
+                }
             }
 
             if (shape == null) { //If shape cannot be found no matter what, just return nothing.
-                ToolsmithModSystem.Logger.Error("Could not find a fallback cached shape for " + item.Code + ". This item will appear invisible to prevent any direct code errors.");
+                if (item?.Shape == null) {
+                    ToolsmithModSystem.Logger.Error("Item.Shape for " + item.Code + " was null. This item might appear invisible to prevent any direct code errors.");
+                } else {
+                    ToolsmithModSystem.Logger.Error("Could not find a fallback cached shape for " + item.Code + ". This item might appear invisible to prevent any direct code errors.");
+                }
+                
                 return new MeshData();
             }
 

@@ -428,10 +428,12 @@ namespace Toolsmith.ToolTinkering {
                                                                                                                      //Might be a good idea to reconsider when the whole Tinker Tool Crafting logic is called, but... Would require patching this call, and it's ONLY for Item Rarity so far, not exactly a priority by a long shot. Leaving this note incase something else uses this, but also probably not a big deal to make the change either?
                 craftedItemStack.Collectible.OnCreatedByCrafting(inputSlots, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
 
-                if (!bindingSlot.Empty) {
-                    MultiPartRenderingHelpers.AddBindingToExistingToolRender(bundleSlot.Itemstack, bindingSlot.Itemstack);
+                if (!bundleSlot.Itemstack.HasBundleHasGenericParts()) {
+                    if (!bindingSlot.Empty) {
+                        MultiPartRenderingHelpers.AddBindingToExistingToolRender(bundleSlot.Itemstack, bindingSlot.Itemstack);
+                    }
+                    craftedItemStack.SetMultiPartRenderTree(bundleSlot.Itemstack.GetMultiPartRenderTree());
                 }
-                craftedItemStack.SetMultiPartRenderTree(bundleSlot.Itemstack.GetMultiPartRenderTree());
 
                 if (!bindingSlot.Empty) {
                     bindingSlot.TakeOut(1);

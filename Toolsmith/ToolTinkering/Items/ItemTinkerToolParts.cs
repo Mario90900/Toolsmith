@@ -60,6 +60,22 @@ namespace Toolsmith.ToolTinkering.Items {
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
         }
 
+        public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason) {
+            if (crafting && secondsUsed >= (ToolsmithConstants.TimeToCraftTinkerTool - 0.1)) { //If they were crafting, verify that the countdown is up, and if so, craft it (if there still is a valid offhand handle!)
+                if (byEntity.World.Side.IsServer() && TinkeringUtility.ValidBindingInOffhand(byEntity)) {
+                    TinkeringUtility.AssembleFullTool(slot, byEntity, blockSel);
+                }
+                byEntity.StopAnimation("craftingwinding");
+                crafting = false;
+                return true;
+            }
+
+            byEntity.StopAnimation("craftingwinding");
+            crafting = false;
+            base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
+            return true;
+        }
+
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {
             var head = inSlot.Itemstack.GetToolheadForData();
             var handle = inSlot.Itemstack.GetToolhandleForData();

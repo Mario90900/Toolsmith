@@ -115,6 +115,7 @@ namespace Toolsmith {
         public override void StartServerSide(ICoreServerAPI api) {
             ConfigUtility.MergeAndSetConfigStrings();
             ServerCommands.RegisterServerCommands(api);
+
             string configJson = JsonConvert.SerializeObject(Config);
             byte[] configBytes = System.Text.Encoding.UTF8.GetBytes(configJson);
             string configBase64String = Convert.ToBase64String(configBytes);

@@ -161,10 +161,10 @@ namespace Toolsmith.ToolTinkering.Items {
                     doneHoning = false;
                 }
                 totalSharpnessHoned = 0;
-                byEntity.StopAnimation("sharpeningstone");
                 sharpening = false;
             }
 
+            byEntity.StopAnimation("sharpeningstone");
             if (!(slot is ItemSlotOffhand)) {
                 base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
             }
@@ -184,10 +184,10 @@ namespace Toolsmith.ToolTinkering.Items {
                     byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity, randomizePitch: false);
                 }*/ //Commenting this out to see how it feels/sounds without it playing the 'finish' sound when you let go of the mouse. Seems like a great idea honestly with the current changes.
                 totalSharpnessHoned = 0;
-                byEntity.StopAnimation("sharpeningstone");
                 sharpening = false;
             }
 
+            byEntity.StopAnimation("sharpeningstone");
             if (!(slot is ItemSlotOffhand)) {
                 return base.OnHeldInteractCancel(secondsUsed, slot, byEntity, blockSel, entitySel, cancelReason);
             } else {
