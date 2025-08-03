@@ -260,7 +260,7 @@ namespace Toolsmith.ToolTinkering {
                 }
             }
             if (toolBinding != null) { //Binding doesn't always drop, only if the durability is above the threshold, and then if it's below, it breaks and if made of metal, drops some bits
-                BindingStats bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithModSystem.Config.BindingRegistry.Get(toolBinding.Collectible.Code.Path).bindingStatTag);
+                BindingStats bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithModSystem.Stats.BindingRegistry.Get(toolBinding.Collectible.Code.Path).bindingStatTag);
                 float bindingPercentRemains = (float)(remainingBindingDur) / (float)(brokenToolStack.GetToolbindingMaxDurability());
                 if (bindingPercentRemains < bindingStats.recoveryPercent) { //If the remaining HP percent is less then the recovery percent, the binding is used up.
                     toolBinding = null; //Set it back to null to prevent dropping anything later! And then to see if Bits should drop!

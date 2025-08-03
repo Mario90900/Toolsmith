@@ -76,7 +76,7 @@ namespace Toolsmith.Client.Behaviors {
 
         public MeshData GenMesh(ItemStack itemstack, ITextureAtlasAPI targetAtlas, BlockPos atBlockPos) {
             if (itemstack == null) {
-                return null;//new MeshData();
+                return new MeshData();
             }
 
             var mesh = new MeshData(6, 4);
@@ -100,18 +100,18 @@ namespace Toolsmith.Client.Behaviors {
                 }
 
                 if (failedPart) { //If any part fails to be found or render, it'll just default to using the item fallback. This ideally should make things cleaner in the end, and prevent invisible items.
-                    return null;//GenMesh(null, targetAtlas);
+                    return GenMesh(null, targetAtlas);
                 }
             } else if (itemstack.HasPartRenderTree()) {
                 ITreeAttribute renderTree = itemstack.GetPartRenderTree();
                 MeshData partMesh = GenMesh(renderTree, targetAtlas);
 
                 if (partMesh == null) {
-                    return null;//GenMesh(null, targetAtlas);
+                    return GenMesh(null, targetAtlas);
                 }
                 return partMesh;
             } else {
-                return null;//GenMesh(null, targetAtlas);
+                return GenMesh(null, targetAtlas);
             }
 
             return mesh;
@@ -181,6 +181,10 @@ namespace Toolsmith.Client.Behaviors {
                     texSource.textures[entry.Key] = tex;
                 }
             } else { //Fallback to the default textures in the properties. Ideally shouldn't hit here but uhhh.
+                foreach (var entry in item.Textures) {
+                    texSource.textures[entry.Key] = entry.Value;
+                }
+                
                 if (properties != null && properties.textures?.Length > 0) {
                     foreach (TextureData texConfig in properties.textures) { //Then go through each texture entry in the properties, see if the itemstack in question has that attribute set and retrieve it if so
                         texSource.textures[texConfig.code] = new CompositeTexture(new AssetLocation(texConfig.Default + ".png"));

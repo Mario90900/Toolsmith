@@ -169,7 +169,7 @@ namespace Toolsmith {
                 //if (handle.Code.Path == "stick" || handle.Code.Path == "bone") {
                 //    continue;
                 //}
-                HandleStatPair handlesStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handle.Code.Path); //Grab the stat pair that should be registered in the configs here.
+                HandleStatPair handlesStats = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(handle.Code.Path); //Grab the stat pair that should be registered in the configs here.
                 if (handlesStats != null) { //Just in case, ensure it was found!
                     //Check the stats of the handle found, see what recipes are required to make for this one. Grip? Treatment? Both or neither?
                     //If Grip is allowed on this handle, generate a recipe with each of the Grip ingredients and add to list. Leave the actual assigning of attributes to the Handle Behavior's OnCreatedByCrafting call
@@ -198,7 +198,7 @@ namespace Toolsmith {
                         var bucket = api.World.GetBlock(new AssetLocation("game:woodbucket"));
                         var bowl = api.World.GetBlock(new AssetLocation("game:bowl-fired"));
                         foreach (var treatmentMat in TreatmentList) {
-                            var treatmentStats = ToolsmithModSystem.Config.TreatmentRegistry.Get(treatmentMat.Code.Path);
+                            var treatmentStats = ToolsmithModSystem.Stats.TreatmentRegistry.Get(treatmentMat.Code.Path);
                             if (treatmentStats != null && !treatmentStats.isLiquid) {
                                 var recipe = new GridRecipe {
                                     IngredientPattern = "ht",

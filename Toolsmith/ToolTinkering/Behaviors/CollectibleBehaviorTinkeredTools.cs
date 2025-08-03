@@ -86,7 +86,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         //Output Slot contains the completed tool, the input slots will - at minimum - have a Toolhead and Handle (which could simply be a stick), and may or may not have a binding.
         //Should be true for even the Vanilla crafting recipes? Barring any changes to them but... probably can be accounted for with looping through the array.
         //Order of the array cannot be assumed either cause of this.
-        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, ref EnumHandling bhHandling) {
+        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, GridRecipe byRecipe, ref EnumHandling bhHandling) {
             //First, figure out what actually went into the tool. Investigate the Inputs and look for the individual behaviors. This will find the parts!
             ItemStack headStack = null;
             ItemStack handleStack = null;
@@ -160,13 +160,13 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             HandleStatPair handle;
             bool handleSuccess;
             if (handleStack != null) { //It probably shouldn't ever be the case it gets here and Handle is still null but hey.
-                handleSuccess = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handleStack.Collectible.Code.Path, out handle);
+                handleSuccess = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(handleStack.Collectible.Code.Path, out handle);
             } else {
-                handleSuccess = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(ToolsmithConstants.DefaultHandlePartKey, out handle); //Probably shouldn't ever run into this, but just incase something does go wrong, this might prevent a crash - and default to a stick used. Maybe if configs are not configured right this could happen!
+                handleSuccess = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(ToolsmithConstants.DefaultHandlePartKey, out handle); //Probably shouldn't ever run into this, but just incase something does go wrong, this might prevent a crash - and default to a stick used. Maybe if configs are not configured right this could happen!
                 handleStack = new ItemStack(ToolsmithModSystem.Api.World.GetItem(new AssetLocation(ToolsmithConstants.DefaultHandleCode)), 1);
             }
             if (!handleSuccess) {
-                handle = ToolsmithModSystem.Config.BaseHandleRegistry.First().Value;
+                handle = ToolsmithModSystem.Stats.BaseHandleRegistry.First().Value;
             }
 
             BindingStatPair binding;
@@ -176,9 +176,9 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                         bindingStack.Attributes.RemoveAttribute("temperature");
                     }
                 }
-                binding = ToolsmithModSystem.Config.BindingRegistry.Get(bindingStack.Collectible.Code.Path);
+                binding = ToolsmithModSystem.Stats.BindingRegistry.Get(bindingStack.Collectible.Code.Path);
             } else {
-                binding = ToolsmithModSystem.Config.BindingRegistry.Get(ToolsmithConstants.DefaultBindingPartKey);
+                binding = ToolsmithModSystem.Stats.BindingRegistry.Get(ToolsmithConstants.DefaultBindingPartKey);
             }
             var handleStats = ToolsmithModSystem.Stats.baseHandles.Get(handle.handleStatTag);
 

@@ -181,10 +181,10 @@ namespace Toolsmith {
             if (Config.PrintAllParsedToolsAndParts) {
                 Logger.Debug("Single Part Tools:");
             }
-            var handleKeys = Config.BaseHandleRegistry.Keys;
-            var bindingKeys = Config.BindingRegistry.Keys;
-            var gripKeys = Config.GripRegistry.Keys;
-            var treatmentKeys = Config.TreatmentRegistry.Keys;
+            var handleKeys = Stats.BaseHandleRegistry.Keys;
+            var bindingKeys = Stats.BindingRegistry.Keys;
+            var gripKeys = Stats.GripRegistry.Keys;
+            var treatmentKeys = Stats.TreatmentRegistry.Keys;
             RecipeRegisterModSystem.HandleList = new List<CollectibleObject>();
             RecipeRegisterModSystem.BindingList = new List<CollectibleObject>();
             RecipeRegisterModSystem.GripList = new List<CollectibleObject>();
@@ -336,7 +336,7 @@ namespace Toolsmith {
         }
 
         private void CalculateBindingTiers() {
-            foreach (var binding in Config.BindingRegistry) {
+            foreach (var binding in Stats.BindingRegistry) {
                 var bindingStats = Stats.bindings.Get(binding.Value.bindingStatTag);
                 if (bindingStats != null) {
                     var bindingTotalFactor = bindingStats.baseHPfactor * (1 + bindingStats.selfHPBonus);

@@ -18,7 +18,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
         public ItemSlot craftingSlot4 => slots[4];
         public ItemSlot craftingSlot5 => slots[5];
 
-        public WorkbenchInventory(ICoreAPI api, BlockPos? pos = null) : base(6, "ToolsmithWorkbench", pos?.ToString() ?? "-fake", api, OnNewSlot) {
+        public WorkbenchInventory(ICoreAPI api, BlockPos pos = null) : base(6, "ToolsmithWorkbench", pos?.ToString() ?? "-fake", api, OnNewSlot) {
             Pos = pos;
         }
 

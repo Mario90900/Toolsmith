@@ -402,7 +402,7 @@ namespace Toolsmith.Client {
                 return;
             }
 
-            HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handle.Collectible.Code.Path);
+            HandleStatPair handleStats = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(handle.Collectible.Code.Path);
             string toolSpecificHandleShape = null;
             if (toolType != null) {
                 toolSpecificHandleShape = ConvertFromHandlePathToShapePath(handleStats.handleShapePath, toolType);
@@ -453,7 +453,7 @@ namespace Toolsmith.Client {
             headPartAndTransformTree.SetPartRenderTree(headPartTree);
             toolMultiPartTree.SetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHeadName, headPartAndTransformTree);
 
-            HandleStatPair handleStats = ToolsmithModSystem.Config.BaseHandleRegistry.TryGetValue(handle.Collectible.Code.Path);
+            HandleStatPair handleStats = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(handle.Collectible.Code.Path);
             if (toolSpecificHandleShape == null) {
                 if (toolType != null) {
                     toolSpecificHandleShape = ConvertFromHandlePathToShapePath(handleStats.handleShapePath, toolType);
@@ -527,7 +527,7 @@ namespace Toolsmith.Client {
             bindingTransformAndPartTree.SetPartRotationY(0);
             bindingTransformAndPartTree.SetPartRotationZ(0);
 
-            BindingStatPair bindingWithStats = ToolsmithModSystem.Config.BindingRegistry.TryGetValue(binding.Collectible.Code.Path);
+            BindingStatPair bindingWithStats = ToolsmithModSystem.Stats.BindingRegistry.TryGetValue(binding.Collectible.Code.Path);
             BindingStats bindingStats = ToolsmithModSystem.Stats.bindings.TryGetValue(bindingWithStats.bindingStatTag);
             var bindingPartTree = bindingTransformAndPartTree.GetPartRenderTree();
             if (toolMultiPartTree.HasPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName)) {

@@ -94,7 +94,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
         }
 
-        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, ref EnumHandling bhHandling) { //TODO - This isn't called when a tool head is smithed. Buh! Have to move it elsewhere, or otherwise get this called.
+        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, GridRecipe byRecipe, ref EnumHandling bhHandling) { //TODO - This isn't called when a tool head is smithed. Buh! Have to move it elsewhere, or otherwise get this called.
             //This is still possibly important if somehow someone crafts a Tool Head.
 
             bool isToolMetal = outputSlot.Itemstack.Collectible.IsCraftableMetal();
