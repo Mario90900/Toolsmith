@@ -1,0 +1,38 @@
+[
+	{
+		"id": "twine-wool-plain",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	},
+	{
+		"id": "twine-wool-black",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	},
+	{
+		"id": "twine-wool-brown",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	},
+	{
+		"id": "twine-wool-gray",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	},
+	{
+		"id": "twine-wool-white",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	},
+	{
+		"id": "twine-wool-yellow",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	}
+]

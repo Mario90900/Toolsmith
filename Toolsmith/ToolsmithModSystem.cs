@@ -150,7 +150,7 @@ namespace Toolsmith {
             }
 
             string statsBase64String = api.World.Config.GetString(ToolsmithConstants.ToolsmithStatsKey, "");
-            if (configBase64String != "") {
+            if (statsBase64String != "") {
                 try {
                     byte[] statsBytes = Convert.FromBase64String(statsBase64String);
                     string statsJson = System.Text.Encoding.UTF8.GetString(statsBytes);
@@ -162,7 +162,7 @@ namespace Toolsmith {
                 }
             } else {
                 Logger.Error("Failed to retrieve part stats from server, running with default settings.");
-                Config = new ToolsmithConfigs();
+                Stats = new ToolsmithPartStats();
             }
         }
 
@@ -178,13 +178,15 @@ namespace Toolsmith {
                 return;
             }
 
+            ProcessJsonPartsAndStats(api);
+
             if (Config.PrintAllParsedToolsAndParts) {
                 Logger.Debug("Single Part Tools:");
             }
-            var handleKeys = Stats.BaseHandleRegistry.Keys;
-            var bindingKeys = Stats.BindingRegistry.Keys;
-            var gripKeys = Stats.GripRegistry.Keys;
-            var treatmentKeys = Stats.TreatmentRegistry.Keys;
+            var handleKeys = Stats.BaseHandleParts.Keys;
+            var bindingKeys = Stats.BindingParts.Keys;
+            var gripKeys = Stats.GripParts.Keys;
+            var treatmentKeys = Stats.TreatmentParts.Keys;
             RecipeRegisterModSystem.HandleList = new List<CollectibleObject>();
             RecipeRegisterModSystem.BindingList = new List<CollectibleObject>();
             RecipeRegisterModSystem.GripList = new List<CollectibleObject>();
@@ -271,6 +273,51 @@ namespace Toolsmith {
             }
         }
 
+        private void ProcessJsonPartsAndStats(ICoreAPI api) {
+            Dictionary<AssetLocation, List<HandlePartDefines>> handleParts = api.Assets.GetMany<List<HandlePartDefines>>(api.Logger, "config/toolsmith/parts/handles");
+            foreach (var handlePart in handleParts) {
+                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(handlePart.Value, ref Stats.BaseHandleParts);
+            }
+
+            Dictionary<AssetLocation, List<GripPartDefines>> gripParts = api.Assets.GetMany<List<GripPartDefines>>(api.Logger, "config/toolsmith/parts/grips");
+            foreach (var gripPart in gripParts) {
+                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(gripPart.Value, ref Stats.GripParts);
+            }
+
+            Dictionary<AssetLocation, List<TreatmentPartDefines>> treatmentParts = api.Assets.GetMany<List<TreatmentPartDefines>>(api.Logger, "config/toolsmith/parts/treatments");
+            foreach (var treatmentPart in treatmentParts) {
+                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(treatmentPart.Value, ref Stats.TreatmentParts);
+            }
+
+            Dictionary<AssetLocation, List<BindingPartDefines>> bindingParts = api.Assets.GetMany<List<BindingPartDefines>>(api.Logger, "config/toolsmith/parts/bindings");
+            foreach (var bindingPart in bindingParts) {
+                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(bindingPart.Value, ref Stats.BindingParts);
+            }
+
+            Dictionary<AssetLocation, List<HandleStatDefines>> handleStats = api.Assets.GetMany<List<HandleStatDefines>>(api.Logger, "config/toolsmith/stats/handles");
+            foreach (var handleStat in handleStats) {
+                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(handleStat.Value, ref Stats.BaseHandleStats);
+            }
+
+            Dictionary<AssetLocation, List<GripStatDefines>> gripStats = api.Assets.GetMany<List<GripStatDefines>>(api.Logger, "config/toolsmith/stats/grips");
+            foreach (var gripStat in gripStats) {
+                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(gripStat.Value, ref Stats.GripStats);
+            }
+
+            Dictionary<AssetLocation, List<TreatmentStatDefines>> treatmentStats = api.Assets.GetMany<List<TreatmentStatDefines>>(api.Logger, "config/toolsmith/stats/treatments");
+            foreach (var treatmentStat in treatmentStats) {
+                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(treatmentStat.Value, ref Stats.TreatmentStats);
+            }
+
+            Dictionary<AssetLocation, List<BindingStatDefines>> bindingStats = api.Assets.GetMany<List<BindingStatDefines>>(api.Logger, "config/toolsmith/stats/bindings");
+            foreach (var bindingStat in bindingStats) {
+                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(bindingStat.Value, ref Stats.BindingStats);
+            }
+
+            SaveStatsToWorldData(api);
+            SaveStatsAfterJsonAdditions(api);
+        }
+
         private void TryToLoadConfig(ICoreAPI api) { //Created following the tutorial on the Wiki!
             try {
                 Config = api.LoadModConfig<ToolsmithConfigs>(ConfigUtility.ConfigFilename);
@@ -310,14 +357,34 @@ namespace Toolsmith {
         private void TryToLoadStats(ICoreAPI api) {
             try {
                 Stats = api.LoadModConfig<ToolsmithPartStats>(ConfigUtility.StatsFilename);
-                if (Stats == null || DoesConfigNeedRegen) {
+                if (Stats == null) {
                     Stats = new ToolsmithPartStats();
+                } else {
+                    if (!Stats.EnableEdits) {
+                        Stats = new ToolsmithPartStats();
+                    }
                 }
-                api.StoreModConfig(Stats, ConfigUtility.StatsFilename);
+                //api.StoreModConfig(Stats, ConfigUtility.StatsFilename);
             } catch (Exception e) {
                 Mod.Logger.Error("Could not load stats, using default settings instead!");
                 Mod.Logger.Error(e);
                 Stats = new ToolsmithPartStats();
+            }
+        }
+
+        private void SaveStatsToWorldData(ICoreAPI api) {
+            string statsJson = JsonConvert.SerializeObject(Stats);
+            byte[] statsBytes = System.Text.Encoding.UTF8.GetBytes(statsJson);
+            string statsBase64String = Convert.ToBase64String(statsBytes);
+            api.World.Config.SetString(ToolsmithConstants.ToolsmithStatsKey, statsBase64String);
+        }
+
+        private void SaveStatsAfterJsonAdditions(ICoreAPI api) {
+            try {
+                api.StoreModConfig(Stats, ConfigUtility.StatsFilename);
+            } catch (Exception e) {
+                Mod.Logger.Error("Could not save stats after processing the Json additions.");
+                Mod.Logger.Error(e);
             }
         }
 
@@ -336,8 +403,8 @@ namespace Toolsmith {
         }
 
         private void CalculateBindingTiers() {
-            foreach (var binding in Stats.BindingRegistry) {
-                var bindingStats = Stats.bindings.Get(binding.Value.bindingStatTag);
+            foreach (var binding in Stats.BindingParts) {
+                var bindingStats = Stats.BindingStats.Get(binding.Value.bindingStatTag);
                 if (bindingStats != null) {
                     var bindingTotalFactor = bindingStats.baseHPfactor * (1 + bindingStats.selfHPBonus);
                     switch(bindingTotalFactor) {

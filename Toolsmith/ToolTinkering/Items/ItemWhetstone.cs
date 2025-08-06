@@ -95,6 +95,20 @@ namespace Toolsmith.ToolTinkering.Items {
             }
         }
 
+        public override void DamageItem(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount = 1) {
+            if (itemslot.Itemstack.Collectible.GetRemainingDurability(itemslot.Itemstack) <= amount) {
+                if (honingScrape != null && honingScrape.IsPlaying) {
+                    honingScrape?.FadeOut(0.2f, (s) => { s.Dispose(); honingScrape = null; });
+                }
+
+                if (byEntity as EntityPlayer != null) {
+                    byEntity.StopAnimation("sharpeningstone");
+                }
+            }
+
+            base.DamageItem(world, byEntity, itemslot, amount);
+        }
+
         public override void OnModifiedInInventorySlot(IWorldAccessor world, ItemSlot slot, ItemStack extractedStack = null) {
             if (extractedStack != null && honingScrape != null && honingScrape.IsPlaying) {
                 honingScrape?.FadeOut(0.2f, (s) => { s.Dispose(); honingScrape = null; });

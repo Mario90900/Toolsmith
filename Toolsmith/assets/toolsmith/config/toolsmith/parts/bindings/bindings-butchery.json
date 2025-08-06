@@ -1,0 +1,20 @@
+[
+	{
+		"id": "sinew-dry",
+		"bindingStatTag": "rope",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "butchering:item/resource/sinew"
+	},
+	{
+		"id": "glueportion-sinew-cold",
+		"bindingStatTag": "glue",
+		"bindingShapePath": "",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "glueportion-hide-hot",
+		"bindingStatTag": "glue",
+		"bindingShapePath": "",
+		"bindingTextureOverride": ""
+	}
+]

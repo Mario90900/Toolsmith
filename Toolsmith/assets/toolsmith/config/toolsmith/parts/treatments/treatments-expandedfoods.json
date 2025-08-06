@@ -1,0 +1,16 @@
+[
+	{
+		"id": "foodoilportion-flax",
+		"treatmentStatTag": "oil",
+		"dryingHours": 24,
+		"isLiquid": true,
+		"litersUsed": 0.1
+	},
+	{
+		"id": "foodoilportion-seed",
+		"treatmentStatTag": "oil",
+		"dryingHours": 24,
+		"isLiquid": true,
+		"litersUsed": 0.1
+	}
+]

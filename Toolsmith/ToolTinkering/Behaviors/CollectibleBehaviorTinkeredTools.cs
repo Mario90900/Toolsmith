@@ -157,50 +157,50 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
 
             //Once all (up to) three possible parts are found, access the stats for the handle and binding! The Head doesn't need much done to it, it's the simplest to handle.
-            HandleStatPair handle;
+            HandlePartDefines handle;
             bool handleSuccess;
             if (handleStack != null) { //It probably shouldn't ever be the case it gets here and Handle is still null but hey.
-                handleSuccess = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(handleStack.Collectible.Code.Path, out handle);
+                handleSuccess = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(handleStack.Collectible.Code.Path, out handle);
             } else {
-                handleSuccess = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(ToolsmithConstants.DefaultHandlePartKey, out handle); //Probably shouldn't ever run into this, but just incase something does go wrong, this might prevent a crash - and default to a stick used. Maybe if configs are not configured right this could happen!
+                handleSuccess = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(ToolsmithConstants.DefaultHandlePartKey, out handle); //Probably shouldn't ever run into this, but just incase something does go wrong, this might prevent a crash - and default to a stick used. Maybe if configs are not configured right this could happen!
                 handleStack = new ItemStack(ToolsmithModSystem.Api.World.GetItem(new AssetLocation(ToolsmithConstants.DefaultHandleCode)), 1);
             }
             if (!handleSuccess) {
-                handle = ToolsmithModSystem.Stats.BaseHandleRegistry.First().Value;
+                handle = ToolsmithModSystem.Stats.BaseHandleParts.First().Value;
             }
 
-            BindingStatPair binding;
+            BindingPartDefines binding;
             if (bindingStack != null) { //If there is a binding used, then get that one.
                 if (bindingStack.Attributes != null) {
                     if (bindingStack.Attributes.HasAttribute("temperature")) {
                         bindingStack.Attributes.RemoveAttribute("temperature");
                     }
                 }
-                binding = ToolsmithModSystem.Stats.BindingRegistry.Get(bindingStack.Collectible.Code.Path);
+                binding = ToolsmithModSystem.Stats.BindingParts.Get(bindingStack.Collectible.Code.Path);
             } else {
-                binding = ToolsmithModSystem.Stats.BindingRegistry.Get(ToolsmithConstants.DefaultBindingPartKey);
+                binding = ToolsmithModSystem.Stats.BindingParts.Get(ToolsmithConstants.DefaultBindingPartKey);
             }
-            var handleStats = ToolsmithModSystem.Stats.baseHandles.Get(handle.handleStatTag);
+            var handleStats = ToolsmithModSystem.Stats.BaseHandleStats.Get(handle.handleStatTag);
 
-            GripStats gripStats;
+            GripStatDefines gripStats;
             if (handleStack.HasHandleGripTag()) {
-                gripStats = ToolsmithModSystem.Stats.grips.Get(handleStack.GetHandleGripTag());
+                gripStats = ToolsmithModSystem.Stats.GripStats.Get(handleStack.GetHandleGripTag());
             } else {
-                gripStats = ToolsmithModSystem.Stats.grips.Get(ToolsmithConstants.DefaultGripTag);
+                gripStats = ToolsmithModSystem.Stats.GripStats.Get(ToolsmithConstants.DefaultGripTag);
             }
 
-            TreatmentStats treatmentStats;
+            TreatmentStatDefines treatmentStats;
             if (handleStack.HasHandleTreatmentTag()) {
-                treatmentStats = ToolsmithModSystem.Stats.treatments.Get(handleStack.GetHandleTreatmentTag());
+                treatmentStats = ToolsmithModSystem.Stats.TreatmentStats.Get(handleStack.GetHandleTreatmentTag());
             } else {
-                treatmentStats = ToolsmithModSystem.Stats.treatments.Get(ToolsmithConstants.DefaultTreatmentTag);
+                treatmentStats = ToolsmithModSystem.Stats.TreatmentStats.Get(ToolsmithConstants.DefaultTreatmentTag);
             }
 
-            BindingStats bindingStats;
+            BindingStatDefines bindingStats;
             if (binding == null) {
-                bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithConstants.DefaultBindingStatKey);//If binding is still null, none was used! Get those fallback stats.
+                bindingStats = ToolsmithModSystem.Stats.BindingStats.Get(ToolsmithConstants.DefaultBindingStatKey);//If binding is still null, none was used! Get those fallback stats.
             } else {
-                bindingStats = ToolsmithModSystem.Stats.bindings.Get(binding.bindingStatTag);
+                bindingStats = ToolsmithModSystem.Stats.BindingStats.Get(binding.bindingStatTag);
             }
 
             //Various math and calculating the end effect of each part here.

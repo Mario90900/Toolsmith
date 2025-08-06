@@ -1,0 +1,104 @@
+[
+	{
+		"id": "flaxtwine",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	},
+	{
+		"id": "linen-diamond-down",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	},
+	{
+		"id": "linen-normal-down",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	},
+	{
+		"id": "linen-offset-down",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	},
+	{
+		"id": "linen-square-down",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	},
+	{
+		"id": "leather-normal-plain",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	},
+	{
+		"id": "leather-normal-orange",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/leather/orange"
+	},
+	{
+		"id": "leather-normal-black",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/leather/black"
+	},
+	{
+		"id": "leather-normal-red",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/leather/red"
+	},
+	{
+		"id": "leather-normal-blue",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/leather/blue"
+	},
+	{
+		"id": "leather-normal-purple",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/leather/purple"
+	},
+	{
+		"id": "leather-normal-pink",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/leather/pink"
+	},
+	{
+		"id": "leather-normal-white",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/leather/white"
+	},
+	{
+		"id": "leather-normal-yellow",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/leather/yellow"
+	},
+	{
+		"id": "leather-normal-gray",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/leather/gray"
+	},
+	{
+		"id": "leather-normal-green",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/leather/green"
+	},
+	{
+		"id": "leather-sturdy-plain",
+		"gripStatTag": "sturdy",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": ""
+	}
+]

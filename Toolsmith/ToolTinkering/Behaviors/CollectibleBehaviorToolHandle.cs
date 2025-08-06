@@ -47,7 +47,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
             if (world.Api.Side.IsClient()) {
-                var handleStats = ToolsmithModSystem.Stats.baseHandles.Get(ToolsmithModSystem.Stats.BaseHandleRegistry.Get(inSlot.Itemstack.Collectible.Code.Path).handleStatTag);
+                var handleStats = ToolsmithModSystem.Stats.BaseHandleStats.Get(ToolsmithModSystem.Stats.BaseHandleParts.Get(inSlot.Itemstack.Collectible.Code.Path).handleStatTag);
                 if (handleStats != null) {
                     var totalHandleMult = handleStats.baseHPfactor * (1 + handleStats.selfHPBonus);
                     dsc.AppendLine("");
@@ -55,13 +55,13 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     dsc.AppendLine(Lang.Get("toolhandlebindingbonus", Math.Round(handleStats.bindingHPBonus * 100)));
                     dsc.AppendLine(Lang.Get("toolhandleusespeedbonus", Math.Round(handleStats.speedBonus * 100)));
                     if (inSlot.Itemstack.HasHandleTreatmentTag()) {
-                        var treatmentStats = ToolsmithModSystem.Stats.treatments.Get(inSlot.Itemstack.GetHandleTreatmentTag());
+                        var treatmentStats = ToolsmithModSystem.Stats.TreatmentStats.Get(inSlot.Itemstack.GetHandleTreatmentTag());
                         if (treatmentStats != null) {
                             dsc.AppendLine(Lang.Get("toolhandletreatmentbonus", Math.Round(treatmentStats.handleHPbonus * 100)));
                         }
                     }
                     if (inSlot.Itemstack.HasHandleGripTag()) {
-                        var gripStats = ToolsmithModSystem.Stats.grips.Get(inSlot.Itemstack.GetHandleGripTag());
+                        var gripStats = ToolsmithModSystem.Stats.GripStats.Get(inSlot.Itemstack.GetHandleGripTag());
                         if (gripStats != null) {
                             dsc.AppendLine(Lang.Get("toolhandlegripspeedbonus", Math.Round(gripStats.speedBonus * 100)));
                             dsc.AppendLine(Lang.Get("toolhandlegripchancenodamage", Math.Round((1 - gripStats.chanceToDamage) * 100)));
@@ -120,7 +120,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                         woodtypeTextPath = ToolsmithConstants.DebarkedWoodBackupPathMinusType + woodtype;
                     }
                     handleTextureTree.SetPartTexturePathFromKey("wood", woodtypeTextPath);
-                    HandleStatPair handleStats = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(outputSlot.Itemstack.Collectible.Code.Path);
+                    HandlePartDefines handleStats = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(outputSlot.Itemstack.Collectible.Code.Path);
                     handleRenderTree.SetPartShapePath(handleStats.handleShapePath);
                     outputSlot.Itemstack.SetHandleStatTag(handleStats.handleStatTag);
                     outputSlot.Itemstack.SetPartCurrentDurability(1000);
@@ -139,7 +139,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 }
                 ITreeAttribute multiPartTree = outputSlot.Itemstack.GetMultiPartRenderTree();
 
-                if (ToolsmithModSystem.Stats.GripRegistry.ContainsKey(gripOrTreatmentSlot.Itemstack.Collectible.Code.Path)) {
+                if (ToolsmithModSystem.Stats.GripParts.ContainsKey(gripOrTreatmentSlot.Itemstack.Collectible.Code.Path)) {
                     if (handleSlot.Itemstack.HasHandleGripTag() || handleSlot.Itemstack.HasWetTreatment()) {
                         outputSlot.Itemstack = null;
                         outputSlot.Itemstack = new ItemStack(ToolsmithModSystem.Api.World.GetBlock(new AssetLocation("game:air")));
@@ -147,8 +147,8 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                         bhHandling = EnumHandling.PreventDefault;
                     } else {
                         var grip = gripOrTreatmentSlot.Itemstack;
-                        var gripWithStats = ToolsmithModSystem.Stats.GripRegistry[grip.Collectible.Code.Path];
-                        var gripStats = ToolsmithModSystem.Stats.grips[gripWithStats.gripStatTag];
+                        var gripWithStats = ToolsmithModSystem.Stats.GripParts[grip.Collectible.Code.Path];
+                        var gripStats = ToolsmithModSystem.Stats.GripStats[gripWithStats.gripStatTag];
                         ITreeAttribute gripPartTree = multiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartGripName);
                         ITreeAttribute gripRenderTree = gripPartTree.GetPartRenderTree();
                         ITreeAttribute gripTextureTree = gripRenderTree.GetPartTextureTree();
@@ -156,7 +156,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                             gripRenderTree.SetShapeOverrideTag("-crude");
                         }*/
 
-                        HandleStatPair handleStats = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(outputSlot.Itemstack.Collectible.Code.Path);
+                        HandlePartDefines handleStats = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(outputSlot.Itemstack.Collectible.Code.Path);
                         //var splitHandlePath = handleStats.handleShapePath.Split('/');
                         var gripPath = MultiPartRenderingHelpers.ConvertFromGenericHandlePathToGripShapePath(handleStats.handleShapePath, gripWithStats.gripShapePath);
                             /*splitHandlePath[0];
@@ -190,9 +190,9 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                             treatment = (treatment.Block as ILiquidInterface).GetContent(treatment);
                         }
 
-                        var treatmentStatPair = ToolsmithModSystem.Stats.TreatmentRegistry.TryGetValue(treatment.Collectible.Code.Path);
-                        var treatmentStats = ToolsmithModSystem.Stats.treatments.TryGetValue(treatmentStatPair.treatmentStatTag);
-                        var handleStatPair = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(handleSlot.Itemstack.Collectible.Code.Path);
+                        var treatmentStatPair = ToolsmithModSystem.Stats.TreatmentParts.TryGetValue(treatment.Collectible.Code.Path);
+                        var treatmentStats = ToolsmithModSystem.Stats.TreatmentStats.TryGetValue(treatmentStatPair.treatmentStatTag);
+                        var handleStatPair = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(handleSlot.Itemstack.Collectible.Code.Path);
                         outputSlot.Itemstack.SetHandleTreatmentTag(treatmentStats.id);
                         outputSlot.Itemstack.SetWetTreatment((int)(treatmentStatPair.dryingHours * handleStatPair.dryingTimeMult));
                         outputSlot.Itemstack.Collectible.SetTransitionState(outputSlot.Itemstack, EnumTransitionType.Dry, 0);
@@ -225,7 +225,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         public ITreeAttribute InitializeRenderTree(ITreeAttribute tree, Item item) { //This is sent the MultiPartRenderTree, but only ever used for Creative spawned items.
             var top = tree.GetOrAddTreeAttribute(ToolsmithAttributes.ModularPartDataTree);
             top.GetPartTextureTree();
-            var handleStatsPair = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(item.Code.Path);
+            var handleStatsPair = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(item.Code.Path);
             top.SetPartShapePath(handleStatsPair.handleShapePath);
             return tree;
         }

@@ -1,0 +1,37 @@
+[
+	{
+		"id": "stick",
+		"baseHPfactor": 1.0,
+		"selfHPBonus": 0.0,
+		"bindingHPBonus": 0.0,
+		"speedBonus": 0.0
+	},
+	{
+		"id": "bone",
+		"baseHPfactor": 1.0,
+		"selfHPBonus": 0.05,
+		"bindingHPBonus": 0.05,
+		"speedBonus": 0.0
+	},
+	{
+		"id": "crude",
+		"baseHPfactor": 1.0,
+		"selfHPBonus": 0.0,
+		"bindingHPBonus": 0.05,
+		"speedBonus": 0.0
+	},
+	{
+		"id": "handle",
+		"baseHPfactor": 1.2,
+		"selfHPBonus": 0.05,
+		"bindingHPBonus": 0.2,
+		"speedBonus": 0.05
+	},
+	{
+		"id": "professional",
+		"baseHPfactor": 1.5,
+		"selfHPBonus": 0.1,
+		"bindingHPBonus": 0.4,
+		"speedBonus": 0.1
+	}
+]

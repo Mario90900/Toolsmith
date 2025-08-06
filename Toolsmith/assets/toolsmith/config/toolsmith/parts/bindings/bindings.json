@@ -1,0 +1,224 @@
+[
+	{
+		"id": "drygrass",
+		"bindingStatTag": "reeds",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "cattailtops",
+		"bindingStatTag": "reeds",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "papyrustops",
+		"bindingStatTag": "reeds",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "flaxtwine",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "rope",
+		"bindingStatTag": "rope",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "leather-normal-plain",
+		"bindingStatTag": "leather",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "leather-normal-orange",
+		"bindingStatTag": "leather",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/leather/orange"
+	},
+	{
+		"id": "leather-normal-black",
+		"bindingStatTag": "leather",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/leather/black"
+	},
+	{
+		"id": "leather-normal-red",
+		"bindingStatTag": "leather",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/leather/red"
+	},
+	{
+		"id": "leather-normal-blue",
+		"bindingStatTag": "leather",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/leather/blue"
+	},
+	{
+		"id": "leather-normal-purple",
+		"bindingStatTag": "leather",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/leather/purple"
+	},
+	{
+		"id": "leather-normal-pink",
+		"bindingStatTag": "leather",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/leather/pink"
+	},
+	{
+		"id": "leather-normal-white",
+		"bindingStatTag": "leather",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/leather/white"
+	},
+	{
+		"id": "leather-normal-yellow",
+		"bindingStatTag": "leather",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/leather/yellow"
+	},
+	{
+		"id": "leather-normal-gray",
+		"bindingStatTag": "leather",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/leather/gray"
+	},
+	{
+		"id": "leather-normal-green",
+		"bindingStatTag": "leather",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/leather/green"
+	},
+	{
+		"id": "glueportion-pitch-hot",
+		"bindingStatTag": "glue",
+		"bindingShapePath": "",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "metalnailsandstrips-copper",
+		"bindingStatTag": "coppernails",
+		"bindingShapePath": "metal",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "metalnailsandstrips-tinbronze",
+		"bindingStatTag": "tinbronzenails",
+		"bindingShapePath": "metal",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "metalnailsandstrips-bismuthbronze",
+		"bindingStatTag": "bismuthbronzenails",
+		"bindingShapePath": "metal",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "metalnailsandstrips-blackbronze",
+		"bindingStatTag": "blackbronzenails",
+		"bindingShapePath": "metal",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "metalnailsandstrips-iron",
+		"bindingStatTag": "ironnails",
+		"bindingShapePath": "metal",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "metalnailsandstrips-cupronickel",
+		"bindingStatTag": "cupronickelnails",
+		"bindingShapePath": "metal",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "metalnailsandstrips-meteoriciron",
+		"bindingStatTag": "meteoricironnails",
+		"bindingShapePath": "metal",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "metalnailsandstrips-steel",
+		"bindingStatTag": "steelnails",
+		"bindingShapePath": "metal",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "metal-parts",
+		"bindingStatTag": "cupronickelnails",
+		"bindingShapePath": "metal",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "cordage",
+		"bindingStatTag": "rope",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "sinew-dry",
+		"bindingStatTag": "rope",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "butchering:item/resource/sinew"
+	},
+	{
+		"id": "glueportion-sinew-cold",
+		"bindingStatTag": "glue",
+		"bindingShapePath": "",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "glueportion-hide-hot",
+		"bindingStatTag": "glue",
+		"bindingShapePath": "",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "leatherstrips-plain",
+		"bindingStatTag": "leather",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "twine-wool-plain",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "twine-wool-black",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/wool/black1"
+	},
+	{
+		"id": "twine-wool-brown",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/wool/brown1"
+	},
+	{
+		"id": "twine-wool-gray",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/basic/gray"
+	},
+	{
+		"id": "twine-wool-white",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/wool/white1"
+	},
+	{
+		"id": "twine-wool-yellow",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/basic/yellow"
+	}
+]

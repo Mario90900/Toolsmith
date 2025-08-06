@@ -1,0 +1,38 @@
+[
+	{
+		"id": "twine-wool-plain",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "twine-wool-black",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/wool/black1"
+	},
+	{
+		"id": "twine-wool-brown",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/wool/brown1"
+	},
+	{
+		"id": "twine-wool-gray",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/basic/gray"
+	},
+	{
+		"id": "twine-wool-white",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/wool/white1"
+	},
+	{
+		"id": "twine-wool-yellow",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/basic/yellow"
+	}
+]

@@ -1,0 +1,156 @@
+[
+	{
+		"id": "none",
+		"texturePath": "plain",
+		"langTag": "binding-none",
+		"baseHPfactor": 0.5,
+		"selfHPBonus": 0.0,
+		"handleHPBonus": 0.0,
+		"recoveryPercent": 1.0,
+		"isMetal": false,
+		"metalType": null
+	},
+	{
+		"id": "reeds",
+		"texturePath": "game:block/cloth/reedrope",
+		"langTag": "binding-reeds",
+		"baseHPfactor": 1.0,
+		"selfHPBonus": 0.0,
+		"handleHPBonus": 0.0,
+		"recoveryPercent": 1.0,
+		"isMetal": false,
+		"metalType": null
+	},
+	{
+		"id": "twine",
+		"texturePath": "game:block/cloth/basic/normal",
+		"langTag": "binding-twine",
+		"baseHPfactor": 1.2,
+		"selfHPBonus": 0.1,
+		"handleHPBonus": 0.05,
+		"recoveryPercent": 0.9,
+		"isMetal": false,
+		"metalType": null
+	},
+	{
+		"id": "rope",
+		"texturePath": "game:block/cloth/basic/brown",
+		"langTag": "binding-rope",
+		"baseHPfactor": 1.25,
+		"selfHPBonus": 0.15,
+		"handleHPBonus": 0.05,
+		"recoveryPercent": 0.7,
+		"isMetal": false,
+		"metalType": null
+	},
+	{
+		"id": "leather",
+		"texturePath": "game:block/leather/plain",
+		"langTag": "binding-leather",
+		"baseHPfactor": 1.5,
+		"selfHPBonus": 0.3,
+		"handleHPBonus": 0.1,
+		"recoveryPercent": 0.6,
+		"isMetal": false,
+		"metalType": null
+	},
+	{
+		"id": "glue",
+		"texturePath": "plain",
+		"langTag": "binding-glue",
+		"baseHPfactor": 2.0,
+		"selfHPBonus": 0.3,
+		"handleHPBonus": 0.3,
+		"recoveryPercent": 1.0,
+		"isMetal": false,
+		"metalType": null
+	},
+	{
+		"id": "coppernails",
+		"texturePath": "game:block/metal/plate/copper",
+		"langTag": "binding-nails-copper",
+		"baseHPfactor": 1.4,
+		"selfHPBonus": 0.1,
+		"handleHPBonus": 0.1,
+		"recoveryPercent": 0.9,
+		"isMetal": true,
+		"metalType": "copper"
+	},
+	{
+		"id": "tinbronzenails",
+		"texturePath": "game:block/metal/plate/tinbronze",
+		"langTag": "binding-nails-tinbronze",
+		"baseHPfactor": 1.7,
+		"selfHPBonus": 0.2,
+		"handleHPBonus": 0.2,
+		"recoveryPercent": 0.5,
+		"isMetal": true,
+		"metalType": "tinbronze"
+	},
+	{
+		"id": "bismuthbronzenails",
+		"texturePath": "game:block/metal/plate/bismuthbronze",
+		"langTag": "binding-nails-bismuthbronze",
+		"baseHPfactor": 1.7,
+		"selfHPBonus": 0.25,
+		"handleHPBonus": 0.2,
+		"recoveryPercent": 0.5,
+		"isMetal": true,
+		"metalType": "bismuthbronze"
+	},
+	{
+		"id": "blackbronzenails",
+		"texturePath": "game:block/metal/plate/blackbronze",
+		"langTag": "binding-nails-blackbronze",
+		"baseHPfactor": 1.7,
+		"selfHPBonus": 0.3,
+		"handleHPBonus": 0.2,
+		"recoveryPercent": 0.5,
+		"isMetal": true,
+		"metalType": "blackbronze"
+	},
+	{
+		"id": "ironnails",
+		"texturePath": "game:block/metal/plate/iron",
+		"langTag": "binding-nails-iron",
+		"baseHPfactor": 1.8,
+		"selfHPBonus": 0.3,
+		"handleHPBonus": 0.2,
+		"recoveryPercent": 0.45,
+		"isMetal": true,
+		"metalType": "iron"
+	},
+	{
+		"id": "cupronickelnails",
+		"texturePath": "game:block/metal/ingot/cupronickel",
+		"langTag": "binding-nails-cupronickel",
+		"baseHPfactor": 1.7,
+		"selfHPBonus": 0.2,
+		"handleHPBonus": 0.2,
+		"recoveryPercent": 0.5,
+		"isMetal": true,
+		"metalType": "cupronickel"
+	},
+	{
+		"id": "meteoricironnails",
+		"texturePath": "game:block/metal/plate/meteoriciron",
+		"langTag": "binding-nails-meteoriciron",
+		"baseHPfactor": 1.9,
+		"selfHPBonus": 0.5,
+		"handleHPBonus": 0.25,
+		"recoveryPercent": 0.45,
+		"isMetal": true,
+		"metalType": "meteoriciron"
+	},
+	{
+		"id": "steelnails",
+		"texturePath": "game:block/metal/plate/steel",
+		"langTag": "binding-nails-steel",
+		"baseHPfactor": 2.2,
+		"selfHPBonus": 0.6,
+		"handleHPBonus": 0.4,
+		"recoveryPercent": 0.35,
+		"isMetal": true,
+		"metalType": "steel"
+	}
+]

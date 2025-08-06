@@ -1,0 +1,8 @@
+[
+	{
+		"id": "cordage",
+		"bindingStatTag": "rope",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	}
+]

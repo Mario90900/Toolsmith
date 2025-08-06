@@ -1,0 +1,22 @@
+[
+	{
+		"id": "none",
+		"langTag": "",
+		"handleHPbonus": 0.0
+	},
+	{
+		"id": "fat",
+		"langTag": "treatment-fat",
+		"handleHPbonus": 0.2
+	},
+	{
+		"id": "wax",
+		"langTag": "treatment-wax",
+		"handleHPbonus": 0.5
+	},
+	{
+		"id": "oil",
+		"langTag": "treatment-oil",
+		"handleHPbonus": 0.65
+	}
+]

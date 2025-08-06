@@ -1,0 +1,42 @@
+[
+	{
+		"id": "stick",
+		"handleStatTag": "stick",
+		"canHaveGrip": false,
+		"handleShapePath": "toolsmith:shapes/item/parts/handles/stick/handle",
+		"canBeTreated": false,
+		"dryingTimeMult": 1.0
+    },
+    {
+		"id": "bone",
+		"handleStatTag": "bone",
+		"canHaveGrip": false,
+		"handleShapePath": "toolsmith:shapes/item/parts/handles/bone/handle",
+		"canBeTreated": false,
+		"dryingTimeMult": 1.0
+    },
+    {
+		"id": "crudehandle",
+		"handleStatTag": "crude",
+		"canHaveGrip": true,
+		"handleShapePath": "toolsmith:shapes/item/parts/handles/crude/handle",
+		"canBeTreated": false,
+		"dryingTimeMult": 1.0
+    },
+    {
+		"id": "handle",
+		"handleStatTag": "handle",
+		"canHaveGrip": true,
+		"handleShapePath": "toolsmith:shapes/item/parts/handles/regular/handle",
+		"canBeTreated": true,
+		"dryingTimeMult": 1.0
+    },
+    {
+		"id": "carpentedhandle",
+		"handleStatTag": "professional",
+		"canHaveGrip": true,
+		"handleShapePath": "toolsmith:shapes/item/parts/handles/fine/handle",
+		"canBeTreated": true,
+		"dryingTimeMult": 2.0
+    }
+]

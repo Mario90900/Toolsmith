@@ -21,7 +21,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     dsc.AppendLine(Lang.Get("toolbindingtier", ToolsmithModSystem.BindingTiers.Get(inSlot.Itemstack.Collectible.Code.Path)));
                 }
 
-                var bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithModSystem.Stats.BindingRegistry.Get(inSlot.Itemstack.Collectible.Code.Path).bindingStatTag);
+                var bindingStats = ToolsmithModSystem.Stats.BindingStats.Get(ToolsmithModSystem.Stats.BindingParts.Get(inSlot.Itemstack.Collectible.Code.Path).bindingStatTag);
                 if (bindingStats != null) {
                     var totalMult = bindingStats.baseHPfactor * (1 + bindingStats.selfHPBonus);
                     dsc.AppendLine("");

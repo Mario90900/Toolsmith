@@ -402,7 +402,7 @@ namespace Toolsmith.Client {
                 return;
             }
 
-            HandleStatPair handleStats = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(handle.Collectible.Code.Path);
+            HandlePartDefines handleStats = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(handle.Collectible.Code.Path);
             string toolSpecificHandleShape = null;
             if (toolType != null) {
                 toolSpecificHandleShape = ConvertFromHandlePathToShapePath(handleStats.handleShapePath, toolType);
@@ -453,7 +453,7 @@ namespace Toolsmith.Client {
             headPartAndTransformTree.SetPartRenderTree(headPartTree);
             toolMultiPartTree.SetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHeadName, headPartAndTransformTree);
 
-            HandleStatPair handleStats = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(handle.Collectible.Code.Path);
+            HandlePartDefines handleStats = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(handle.Collectible.Code.Path);
             if (toolSpecificHandleShape == null) {
                 if (toolType != null) {
                     toolSpecificHandleShape = ConvertFromHandlePathToShapePath(handleStats.handleShapePath, toolType);
@@ -527,8 +527,8 @@ namespace Toolsmith.Client {
             bindingTransformAndPartTree.SetPartRotationY(0);
             bindingTransformAndPartTree.SetPartRotationZ(0);
 
-            BindingStatPair bindingWithStats = ToolsmithModSystem.Stats.BindingRegistry.TryGetValue(binding.Collectible.Code.Path);
-            BindingStats bindingStats = ToolsmithModSystem.Stats.bindings.TryGetValue(bindingWithStats.bindingStatTag);
+            BindingPartDefines bindingWithStats = ToolsmithModSystem.Stats.BindingParts.TryGetValue(binding.Collectible.Code.Path);
+            BindingStatDefines bindingStats = ToolsmithModSystem.Stats.BindingStats.TryGetValue(bindingWithStats.bindingStatTag);
             var bindingPartTree = bindingTransformAndPartTree.GetPartRenderTree();
             if (toolMultiPartTree.HasPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName)) {
                 var handlePath = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName).GetPartRenderTree().GetPartShapePath();

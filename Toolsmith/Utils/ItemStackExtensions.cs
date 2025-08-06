@@ -221,7 +221,7 @@ namespace Toolsmith.Utils {
                 oldHandlePath[0] = oldHandlePath[0].Remove(0, 3);
             }
             ToolsmithModSystem.Logger.Warning("OldHandle[0] now is " + oldHandlePath[0]);
-            if (handle.Collectible?.Code == null || !ToolsmithModSystem.Stats.BaseHandleRegistry.ContainsKey(handle.Collectible.Code.Path)) {
+            if (handle.Collectible?.Code == null || !ToolsmithModSystem.Stats.BaseHandleParts.ContainsKey(handle.Collectible.Code.Path)) {
                 ItemStack newHandle = new ItemStack(ToolsmithModSystem.Api.World.GetItem(new AssetLocation("toolsmith:" + oldHandlePath[0])));
                 string treatment = null;
                 string grip = null;
@@ -247,7 +247,7 @@ namespace Toolsmith.Utils {
                 var textureTree = renderTree.GetPartTextureTree();
 
                 if (oldHandlePath[0] == "handle" || oldHandlePath[0] == "carpentedhandle") {
-                    HandleStatPair handleStats = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(oldHandlePath[0]);
+                    HandlePartDefines handleStats = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(oldHandlePath[0]);
                     newHandle.SetHandleStatTag(handleStats.handleStatTag);
                     renderTree.SetPartShapePath(handleStats.handleShapePath);
                     textureTree.SetPartTexturePathFromKey("wood", ToolsmithConstants.HandleWoodTexturePathMinusType + "oak");
@@ -257,7 +257,7 @@ namespace Toolsmith.Utils {
                     var gripTree = multiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartGripName);
                     var gripRenderTree = gripTree.GetPartRenderTree();
                     var gripTextureTree = gripRenderTree.GetPartTextureTree();
-                    var gripStats = ToolsmithModSystem.Stats.grips[grip];
+                    var gripStats = ToolsmithModSystem.Stats.GripStats[grip];
 
                     newHandle.SetHandleGripTag(grip);
                     if (oldHandlePath[0] == "crude") {
@@ -466,11 +466,11 @@ namespace Toolsmith.Utils {
 
             ItemStack handle = null;
             int maxHandleDur = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolHandleMaxDur, -1); //Specifically getting this from the attributes directly here to prevent looping the call.
-            HandleStatPair handleWithStats = null;
+            HandlePartDefines handleWithStats = null;
 
             ItemStack binding = null;
             int maxBindingDur = itemStack.Attributes.GetInt(ToolsmithAttributes.ToolBindingMaxDur, -1); //Specifically getting this from the attributes directly here to prevent looping the call.
-            BindingStatPair bindingWithStats = null;
+            BindingPartDefines bindingWithStats = null;
 
             if (maxHandleDur < 0) { //Just need to grab the basic Stick if there is no durability already set.
                 string handleCode = ToolsmithConstants.DefaultHandleCode;
@@ -478,35 +478,35 @@ namespace Toolsmith.Utils {
                     handleCode = ToolsmithConstants.BoneHandleCode;
                 }
                 handle = new ItemStack(world.GetItem(new AssetLocation(handleCode)), 1);
-                handleWithStats = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(ToolsmithConstants.DefaultHandlePartKey);
+                handleWithStats = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(ToolsmithConstants.DefaultHandlePartKey);
             } else {
                 handle = itemStack.GetToolhandle();
-                handleWithStats = ToolsmithModSystem.Stats.BaseHandleRegistry.TryGetValue(handle.Collectible.Code.Path);
+                handleWithStats = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(handle.Collectible.Code.Path);
             }
-            BindingStats bindingStats;
+            BindingStatDefines bindingStats;
             if (maxBindingDur < 0) { //Since 'None' is a valid binding, it still needs setting to that, and given the default durability levels! No Itemstack needed though.
-                bindingStats = ToolsmithModSystem.Stats.bindings.Get(ToolsmithConstants.DefaultBindingPartKey);
+                bindingStats = ToolsmithModSystem.Stats.BindingStats.Get(ToolsmithConstants.DefaultBindingPartKey);
             } else {
                 binding = itemStack.GetToolbinding();
-                bindingWithStats = ToolsmithModSystem.Stats.BindingRegistry.Get(binding.Collectible.Code.Path);
-                bindingStats = ToolsmithModSystem.Stats.bindings.Get(bindingWithStats.bindingStatTag);
+                bindingWithStats = ToolsmithModSystem.Stats.BindingParts.Get(binding.Collectible.Code.Path);
+                bindingStats = ToolsmithModSystem.Stats.BindingStats.Get(bindingWithStats.bindingStatTag);
             }
 
             var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
-            var handleStats = ToolsmithModSystem.Stats.baseHandles.Get(handleWithStats.handleStatTag);
+            var handleStats = ToolsmithModSystem.Stats.BaseHandleStats.Get(handleWithStats.handleStatTag);
 
-            GripStats gripStats;
+            GripStatDefines gripStats;
             if (handle.HasHandleGripTag()) {
-                gripStats = ToolsmithModSystem.Stats.grips.Get(handle.GetHandleGripTag());
+                gripStats = ToolsmithModSystem.Stats.GripStats.Get(handle.GetHandleGripTag());
             } else {
-                gripStats = ToolsmithModSystem.Stats.grips.Get(ToolsmithConstants.DefaultGripTag);
+                gripStats = ToolsmithModSystem.Stats.GripStats.Get(ToolsmithConstants.DefaultGripTag);
             }
 
-            TreatmentStats treatmentStats;
+            TreatmentStatDefines treatmentStats;
             if (handle.HasHandleTreatmentTag()) {
-                treatmentStats = ToolsmithModSystem.Stats.treatments.Get(handle.GetHandleTreatmentTag());
+                treatmentStats = ToolsmithModSystem.Stats.TreatmentStats.Get(handle.GetHandleTreatmentTag());
             } else {
-                treatmentStats = ToolsmithModSystem.Stats.treatments.Get(ToolsmithConstants.DefaultTreatmentTag);
+                treatmentStats = ToolsmithModSystem.Stats.TreatmentStats.Get(ToolsmithConstants.DefaultTreatmentTag);
             }
 
             var handleDur = baseDur * handleStats.baseHPfactor; //Starting with the handle: Account for baseHPfactor first in the handle...

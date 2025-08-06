@@ -35,28 +35,28 @@ namespace Toolsmith.Utils {
             return match;
         }
 
-        public static bool IsToolHandle(string toolHandle, Dictionary<string, HandleStatPair>.KeyCollection keys) {
+        public static bool IsToolHandle(string toolHandle, Dictionary<string, HandlePartDefines>.KeyCollection keys) {
             if (toolHandle == null) return false;
 
             var match = keys.Contains(toolHandle);
             return match;
         }
 
-        public static bool IsToolBinding(string toolBinding, Dictionary<string, BindingStatPair>.KeyCollection keys) {
+        public static bool IsToolBinding(string toolBinding, Dictionary<string, BindingPartDefines>.KeyCollection keys) {
             if (toolBinding == null) return false;
 
             var match = keys.Contains(toolBinding);
             return match;
         }
 
-        public static bool IsValidGripMaterial(string gripMat, Dictionary<string, GripStatPair>.KeyCollection keys) {
+        public static bool IsValidGripMaterial(string gripMat, Dictionary<string, GripPartDefines>.KeyCollection keys) {
             if (gripMat == null) return false;
 
             var match = keys.Contains(gripMat);
             return match;
         }
 
-        public static bool IsValidTreatmentMaterial(string treatmentMat, Dictionary<string,  TreatmentStatPair>.KeyCollection keys) {
+        public static bool IsValidTreatmentMaterial(string treatmentMat, Dictionary<string,  TreatmentPartDefines>.KeyCollection keys) {
             if (treatmentMat == null) return false;
 
             var match = keys.Contains(treatmentMat);
