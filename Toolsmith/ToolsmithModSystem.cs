@@ -116,7 +116,7 @@ namespace Toolsmith {
             ConfigUtility.MergeAndSetConfigStrings();
             ServerCommands.RegisterServerCommands(api);
 
-            string configJson = JsonConvert.SerializeObject(Config);
+            /*string configJson = JsonConvert.SerializeObject(Config);
             byte[] configBytes = System.Text.Encoding.UTF8.GetBytes(configJson);
             string configBase64String = Convert.ToBase64String(configBytes);
             api.World.Config.SetString(ToolsmithConstants.ToolsmithConfigKey, configBase64String);
@@ -124,7 +124,7 @@ namespace Toolsmith {
             string statsJson = JsonConvert.SerializeObject(Stats);
             byte[] statsBytes = System.Text.Encoding.UTF8.GetBytes(statsJson);
             string statsBase64String = Convert.ToBase64String(statsBytes);
-            api.World.Config.SetString(ToolsmithConstants.ToolsmithStatsKey, statsBase64String);
+            api.World.Config.SetString(ToolsmithConstants.ToolsmithStatsKey, statsBase64String);*/
         }
 
         public override void StartClientSide(ICoreClientAPI api) {
@@ -274,47 +274,89 @@ namespace Toolsmith {
         }
 
         private void ProcessJsonPartsAndStats(ICoreAPI api) {
+            Dictionary<AssetLocation, List<string>> toolHeads = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/toolheads");
+            Config.ToolHeads += "@.*(";
+            foreach (var toolHead in toolHeads) {
+                ToolsmithConfigsHelpers.AddToRegexString(toolHead.Value, ref Config.ToolHeads);
+            }
+            Config.ToolHeads = Config.ToolHeads.Remove(Config.ToolHeads.Length - 1); //Trim away the very last | that gets added on at the end.
+            Config.ToolHeads += ").*";
+
+            Dictionary<AssetLocation, List<string>> tinkerableTools = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/tinkerabletools");
+            Config.TinkerableTools += "@.*:(";
+            foreach (var tinkerableTool in tinkerableTools) {
+                ToolsmithConfigsHelpers.AddToRegexString(tinkerableTool.Value, ref Config.TinkerableTools);
+            }
+            Config.TinkerableTools = Config.TinkerableTools.Remove(Config.TinkerableTools.Length - 1);
+            Config.TinkerableTools += ").*";
+
+            Dictionary<AssetLocation, List<string>> singlePartTools = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/singleparttools");
+            Config.SinglePartTools += "@.*:(";
+            foreach (var singlePartTool in singlePartTools) {
+                ToolsmithConfigsHelpers.AddToRegexString(singlePartTool.Value, ref Config.SinglePartTools);
+            }
+            Config.SinglePartTools = Config.SinglePartTools.Remove(Config.SinglePartTools.Length - 1);
+            Config.SinglePartTools += ").*";
+
+            Dictionary<AssetLocation, List<string>> bluntHeadedTools = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/bluntheadedtools");
+            Config.BluntHeadedTools += "@.*:(";
+            foreach (var bluntHeadedTool in bluntHeadedTools) {
+                ToolsmithConfigsHelpers.AddToRegexString(bluntHeadedTool.Value, ref Config.BluntHeadedTools);
+            }
+            Config.BluntHeadedTools = Config.BluntHeadedTools.Remove(Config.BluntHeadedTools.Length - 1);
+            Config.BluntHeadedTools += ").*";
+
+            Dictionary<AssetLocation, List<string>> partBlacklists = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/partblacklist");
+            Config.PartBlacklist += "@.*(";
+            foreach (var partBlacklist in partBlacklists) {
+                ToolsmithConfigsHelpers.AddToRegexString(partBlacklist.Value, ref Config.PartBlacklist);
+            }
+            Config.PartBlacklist = Config.PartBlacklist.Remove(Config.PartBlacklist.Length - 1);
+            Config.PartBlacklist += ").*";
+
             Dictionary<AssetLocation, List<HandlePartDefines>> handleParts = api.Assets.GetMany<List<HandlePartDefines>>(api.Logger, "config/toolsmith/parts/handles");
             foreach (var handlePart in handleParts) {
-                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(handlePart.Value, ref Stats.BaseHandleParts);
+                ToolsmithPartStatsHelpers.VerifyAndStoreDefinesInDict(handlePart.Value, Config.RunFullJsonVerifying, ref Stats.BaseHandleParts);
             }
 
             Dictionary<AssetLocation, List<GripPartDefines>> gripParts = api.Assets.GetMany<List<GripPartDefines>>(api.Logger, "config/toolsmith/parts/grips");
             foreach (var gripPart in gripParts) {
-                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(gripPart.Value, ref Stats.GripParts);
+                ToolsmithPartStatsHelpers.VerifyAndStoreDefinesInDict(gripPart.Value, Config.RunFullJsonVerifying, ref Stats.GripParts);
             }
 
             Dictionary<AssetLocation, List<TreatmentPartDefines>> treatmentParts = api.Assets.GetMany<List<TreatmentPartDefines>>(api.Logger, "config/toolsmith/parts/treatments");
             foreach (var treatmentPart in treatmentParts) {
-                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(treatmentPart.Value, ref Stats.TreatmentParts);
+                ToolsmithPartStatsHelpers.VerifyAndStoreDefinesInDict(treatmentPart.Value, Config.RunFullJsonVerifying, ref Stats.TreatmentParts);
             }
 
             Dictionary<AssetLocation, List<BindingPartDefines>> bindingParts = api.Assets.GetMany<List<BindingPartDefines>>(api.Logger, "config/toolsmith/parts/bindings");
             foreach (var bindingPart in bindingParts) {
-                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(bindingPart.Value, ref Stats.BindingParts);
+                ToolsmithPartStatsHelpers.VerifyAndStoreDefinesInDict(bindingPart.Value, Config.RunFullJsonVerifying, ref Stats.BindingParts);
             }
 
             Dictionary<AssetLocation, List<HandleStatDefines>> handleStats = api.Assets.GetMany<List<HandleStatDefines>>(api.Logger, "config/toolsmith/stats/handles");
             foreach (var handleStat in handleStats) {
-                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(handleStat.Value, ref Stats.BaseHandleStats);
+                ToolsmithPartStatsHelpers.VerifyAndStoreDefinesInDict(handleStat.Value, Config.RunFullJsonVerifying, ref Stats.BaseHandleStats);
             }
 
             Dictionary<AssetLocation, List<GripStatDefines>> gripStats = api.Assets.GetMany<List<GripStatDefines>>(api.Logger, "config/toolsmith/stats/grips");
             foreach (var gripStat in gripStats) {
-                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(gripStat.Value, ref Stats.GripStats);
+                ToolsmithPartStatsHelpers.VerifyAndStoreDefinesInDict(gripStat.Value, Config.RunFullJsonVerifying, ref Stats.GripStats);
             }
 
             Dictionary<AssetLocation, List<TreatmentStatDefines>> treatmentStats = api.Assets.GetMany<List<TreatmentStatDefines>>(api.Logger, "config/toolsmith/stats/treatments");
             foreach (var treatmentStat in treatmentStats) {
-                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(treatmentStat.Value, ref Stats.TreatmentStats);
+                ToolsmithPartStatsHelpers.VerifyAndStoreDefinesInDict(treatmentStat.Value, Config.RunFullJsonVerifying, ref Stats.TreatmentStats);
             }
 
             Dictionary<AssetLocation, List<BindingStatDefines>> bindingStats = api.Assets.GetMany<List<BindingStatDefines>>(api.Logger, "config/toolsmith/stats/bindings");
             foreach (var bindingStat in bindingStats) {
-                ToolsmithPartStatsHelpers.ReadAndStoreDefinesInDict(bindingStat.Value, ref Stats.BindingStats);
+                ToolsmithPartStatsHelpers.VerifyAndStoreDefinesInDict(bindingStat.Value, Config.RunFullJsonVerifying, ref Stats.BindingStats);
             }
 
+            SaveConfigToWorldData(api);
             SaveStatsToWorldData(api);
+            SaveConfigAfterJsonAdditions(api);
             SaveStatsAfterJsonAdditions(api);
         }
 
@@ -330,9 +372,11 @@ namespace Toolsmith {
                             Config = new ToolsmithConfigs();
                         }
                     }
+                    if (!DoesConfigNeedRegen && !Config.EnableEditsForRegex) {
+                        ToolsmithConfigsHelpers.ResetRegexStrings(ref Config);
+                    }
                 }
                 Config.ModVersionNumber = ModVersion;
-                api.StoreModConfig(Config, ConfigUtility.ConfigFilename);
             } catch (Exception e) {
                 Mod.Logger.Error("Could not load config, using default settings instead!");
                 Mod.Logger.Error(e);
@@ -364,7 +408,6 @@ namespace Toolsmith {
                         Stats = new ToolsmithPartStats();
                     }
                 }
-                //api.StoreModConfig(Stats, ConfigUtility.StatsFilename);
             } catch (Exception e) {
                 Mod.Logger.Error("Could not load stats, using default settings instead!");
                 Mod.Logger.Error(e);
@@ -372,11 +415,27 @@ namespace Toolsmith {
             }
         }
 
+        private void SaveConfigToWorldData(ICoreAPI api) {
+            string configJson = JsonConvert.SerializeObject(Config);
+            byte[] configBytes = System.Text.Encoding.UTF8.GetBytes(configJson);
+            string configBase64String = Convert.ToBase64String(configBytes);
+            api.World.Config.SetString(ToolsmithConstants.ToolsmithConfigKey, configBase64String);
+        }
+
         private void SaveStatsToWorldData(ICoreAPI api) {
             string statsJson = JsonConvert.SerializeObject(Stats);
             byte[] statsBytes = System.Text.Encoding.UTF8.GetBytes(statsJson);
             string statsBase64String = Convert.ToBase64String(statsBytes);
             api.World.Config.SetString(ToolsmithConstants.ToolsmithStatsKey, statsBase64String);
+        }
+
+        private void SaveConfigAfterJsonAdditions(ICoreAPI api) {
+            try {
+                api.StoreModConfig(Config, ConfigUtility.ConfigFilename);
+            } catch (Exception e) {
+                Mod.Logger.Error("Could not save config after processing the Json additions.");
+                Mod.Logger.Error(e);
+            }
         }
 
         private void SaveStatsAfterJsonAdditions(ICoreAPI api) {

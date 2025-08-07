@@ -11,189 +11,225 @@ namespace Toolsmith.Config {
 
         public bool EnableEdits = false;
 
-        public Dictionary<string, HandlePartDefines> BaseHandleParts = new() {
-            /*["stick"] = new() { handleStatTag = "stick", handleShapePath = "toolsmith:shapes/item/parts/handles/stick/handle" },
-            ["bone"] = new() { handleStatTag = "bone", handleShapePath = "toolsmith:shapes/item/parts/handles/bone/handle" },
-            ["crudehandle"] = new() { handleStatTag = "crude", canHaveGrip = true, handleShapePath = "toolsmith:shapes/item/parts/handles/crude/handle" },
-            ["handle"] = new() { handleStatTag = "handle", canHaveGrip = true, handleShapePath = "toolsmith:shapes/item/parts/handles/regular/handle", canBeTreated = true },
-            ["carpentedhandle"] = new() { handleStatTag = "professional", canHaveGrip = true, handleShapePath = "toolsmith:shapes/item/parts/handles/fine/handle", canBeTreated = true, dryingTimeMult = 2.0f }*/
-        };
+        public Dictionary<string, HandlePartDefines> BaseHandleParts = new() { }; //These all now get populated by Json Config Files for everything! Better for compat and easy content modder integration!
+        public Dictionary<string, GripPartDefines> GripParts = new() { }; //I'm learning!
+        public Dictionary<string, TreatmentPartDefines> TreatmentParts = new() { };
+        public Dictionary<string, BindingPartDefines> BindingParts = new() { };
 
-        public Dictionary<string, GripPartDefines> GripParts = new() {
-            /*["flaxtwine"] = new() { gripStatTag = "twine", gripShapePath = "fabric" },
-            ["linen-diamond-down"] = new() { gripStatTag = "cloth", gripShapePath = "fabric" },
-            ["linen-normal-down"] = new() { gripStatTag = "cloth", gripShapePath = "fabric" },
-            ["linen-offset-down"] = new() { gripStatTag = "cloth", gripShapePath = "fabric" },
-            ["linen-square-down"] = new() { gripStatTag = "cloth", gripShapePath = "fabric" },
-            ["leather-normal-plain"] = new() { gripStatTag = "leather", gripShapePath = "fabric" },
-            ["leather-normal-orange"] = new() { gripStatTag = "leather", gripShapePath = "fabric", gripTextureOverride = "game:block/leather/orange" },
-            ["leather-normal-black"] = new() { gripStatTag = "leather", gripShapePath = "fabric", gripTextureOverride = "game:block/leather/black" },
-            ["leather-normal-red"] = new() { gripStatTag = "leather", gripShapePath = "fabric", gripTextureOverride = "game:block/leather/red" },
-            ["leather-normal-blue"] = new() { gripStatTag = "leather", gripShapePath = "fabric", gripTextureOverride = "game:block/leather/blue" },
-            ["leather-normal-purple"] = new() { gripStatTag = "leather", gripShapePath = "fabric", gripTextureOverride = "game:block/leather/purple" },
-            ["leather-normal-pink"] = new() { gripStatTag = "leather", gripShapePath = "fabric", gripTextureOverride = "game:block/leather/pink" },
-            ["leather-normal-white"] = new() { gripStatTag = "leather", gripShapePath = "fabric", gripTextureOverride = "game:block/leather/white" },
-            ["leather-normal-yellow"] = new() { gripStatTag = "leather", gripShapePath = "fabric", gripTextureOverride = "game:block/leather/yellow" },
-            ["leather-normal-gray"] = new() { gripStatTag = "leather", gripShapePath = "fabric", gripTextureOverride = "game:block/leather/gray" },
-            ["leather-normal-green"] = new() { gripStatTag = "leather", gripShapePath = "fabric", gripTextureOverride = "game:block/leather/green" },
-            ["leather-sturdy-plain"] = new() { gripStatTag = "sturdy", gripShapePath = "fabric" },
-            ["twine-wool-plain"] = new() { gripStatTag = "twine", gripShapePath = "fabric" },
-            ["twine-wool-black"] = new() { gripStatTag = "twine", gripShapePath = "fabric" },
-            ["twine-wool-brown"] = new() { gripStatTag = "twine", gripShapePath = "fabric" },
-            ["twine-wool-gray"] = new() { gripStatTag = "twine", gripShapePath = "fabric" },
-            ["twine-wool-white"] = new() { gripStatTag = "twine", gripShapePath = "fabric" },
-            ["twine-wool-yellow"] = new() { gripStatTag = "twine", gripShapePath = "fabric" }*/
-        };
-
-        public Dictionary<string, TreatmentPartDefines> TreatmentParts = new() { //All treatments will require a drying time.
-            /*["fat"] = new() { treatmentStatTag = "fat", dryingHours = 12 },
-            ["beeswax"] = new() { treatmentStatTag = "wax", dryingHours = 12 },
-            ["foodoilportion-flax"] = new() { treatmentStatTag = "oil", dryingHours = 24, isLiquid = true, litersUsed = 0.1f },
-            ["foodoilportion-seed"] = new() { treatmentStatTag = "oil", dryingHours = 24, isLiquid = true, litersUsed = 0.1f },
-            ["plantoil-flax"] = new() { treatmentStatTag = "oil", dryingHours = 24, isLiquid = true, litersUsed = 0.1f },
-            ["plantoil-walnut"] = new() { treatmentStatTag = "oil", dryingHours = 24, isLiquid = true, litersUsed = 0.1f },
-            ["woodfinish-flax"] = new() { treatmentStatTag = "oil", dryingHours = 24, isLiquid = true, litersUsed = 0.05f },
-            ["woodfinish-walnut"] = new() { treatmentStatTag = "oil", dryingHours = 24, isLiquid = true, litersUsed = 0.05f }*/
-        };
-
-        public Dictionary<string, BindingPartDefines> BindingParts = new() {
-            /*["drygrass"] = new() { bindingStatTag = "reeds", bindingShapePath = "string" },
-            ["cattailtops"] = new() { bindingStatTag = "reeds", bindingShapePath = "string" },
-            ["papyrustops"] = new() { bindingStatTag = "reeds", bindingShapePath = "string" },
-            ["flaxtwine"] = new() { bindingStatTag = "twine", bindingShapePath = "string" },
-            ["rope"] = new() { bindingStatTag = "rope", bindingShapePath = "string" },
-            ["leather-normal-plain"] = new() { bindingStatTag = "leather", bindingShapePath = "string" },
-            ["leather-normal-orange"] = new() { bindingStatTag = "leather", bindingShapePath = "string", bindingTextureOverride = "game:block/leather/orange" },
-            ["leather-normal-black"] = new() { bindingStatTag = "leather", bindingShapePath = "string", bindingTextureOverride = "game:block/leather/black" },
-            ["leather-normal-red"] = new() { bindingStatTag = "leather", bindingShapePath = "string", bindingTextureOverride = "game:block/leather/red" },
-            ["leather-normal-blue"] = new() { bindingStatTag = "leather", bindingShapePath = "string", bindingTextureOverride = "game:block/leather/blue" },
-            ["leather-normal-purple"] = new() { bindingStatTag = "leather", bindingShapePath = "string", bindingTextureOverride = "game:block/leather/purple" },
-            ["leather-normal-pink"] = new() { bindingStatTag = "leather", bindingShapePath = "string", bindingTextureOverride = "game:block/leather/pink" },
-            ["leather-normal-white"] = new() { bindingStatTag = "leather", bindingShapePath = "string", bindingTextureOverride = "game:block/leather/white" },
-            ["leather-normal-yellow"] = new() { bindingStatTag = "leather", bindingShapePath = "string", bindingTextureOverride = "game:block/leather/yellow" },
-            ["leather-normal-gray"] = new() { bindingStatTag = "leather", bindingShapePath = "string", bindingTextureOverride = "game:block/leather/gray" },
-            ["leather-normal-green"] = new() { bindingStatTag = "leather", bindingShapePath = "string", bindingTextureOverride = "game:block/leather/green" },
-            ["glueportion-pitch-hot"] = new() { bindingStatTag = "glue" }, //Okay Pitch Glue is just weird as hell in vanilla. It'll probably be changed somewhere down the line but, right now it's just weird. It's both a liquid, but ALSO a physical item? Can't pick it up normally like a liquid, but cannot store in a bucket like an item...
-            ["metalnailsandstrips-copper"] = new() { bindingStatTag = "coppernails", bindingShapePath = "metal" },
-            ["metalnailsandstrips-tinbronze"] = new() { bindingStatTag = "tinbronzenails", bindingShapePath = "metal" },
-            ["metalnailsandstrips-bismuthbronze"] = new() { bindingStatTag = "bismuthbronzenails", bindingShapePath = "metal" },
-            ["metalnailsandstrips-blackbronze"] = new() { bindingStatTag = "blackbronzenails", bindingShapePath = "metal" },
-            ["metalnailsandstrips-iron"] = new() { bindingStatTag = "ironnails", bindingShapePath = "metal" },
-            ["metalnailsandstrips-cupronickel"] = new() { bindingStatTag = "cupronickelnails", bindingShapePath = "metal" },
-            ["metalnailsandstrips-meteoriciron"] = new() { bindingStatTag = "meteoricironnails", bindingShapePath = "metal" },
-            ["metalnailsandstrips-steel"] = new() { bindingStatTag = "steelnails", bindingShapePath = "metal" },
-            ["metal-parts"] = new() { bindingStatTag = "cupronickelnails", bindingShapePath = "metal" },
-            ["cordage"] = new() { bindingStatTag = "rope", bindingShapePath = "string" },
-            ["sinew-dry"] = new() { bindingStatTag = "rope", bindingShapePath = "string", bindingTextureOverride = "butchering:item/resource/sinew" },
-            ["glueportion-sinew-cold"] = new() { bindingStatTag = "glue" },
-            ["glueportion-hide-hot"] = new() { bindingStatTag = "glue" },
-            ["leatherstrips-plain"] = new() { bindingStatTag = "leather", bindingShapePath = "string" },
-            ["twine-wool-plain"] = new() { bindingStatTag = "twine", bindingShapePath = "string" },
-            ["twine-wool-black"] = new() { bindingStatTag = "twine", bindingShapePath = "string", bindingTextureOverride = "game:block/cloth/wool/black1" },
-            ["twine-wool-brown"] = new() { bindingStatTag = "twine", bindingShapePath = "string", bindingTextureOverride = "game:block/cloth/wool/brown1" },
-            ["twine-wool-gray"] = new() { bindingStatTag = "twine", bindingShapePath = "string", bindingTextureOverride = "game:block/cloth/basic/gray" },
-            ["twine-wool-white"] = new() { bindingStatTag = "twine", bindingShapePath = "string", bindingTextureOverride = "game:block/cloth/wool/white1" },
-            ["twine-wool-yellow"] = new() { bindingStatTag = "twine", bindingShapePath = "string", bindingTextureOverride = "game:block/cloth/basic/yellow" }*/
-        };
-
-        public Dictionary<string, HandleStatDefines> BaseHandleStats = new() {
-            /*["stick"] = new() { id = "stick", baseHPfactor = 1.0f, selfHPBonus = 0.0f, bindingHPBonus = 0.0f, speedBonus = 0.0f },
-            ["bone"] = new() { id = "bone", baseHPfactor = 1.0f, selfHPBonus = 0.05f, bindingHPBonus = 0.05f, speedBonus = 0.0f },
-            ["crude"] = new() { id = "crude", baseHPfactor = 1.0f, selfHPBonus = 0.0f, bindingHPBonus = 0.05f, speedBonus = 0.0f },
-            ["handle"] = new() { id = "handle", baseHPfactor = 1.2f, selfHPBonus = 0.05f, bindingHPBonus = 0.2f, speedBonus = 0.05f },
-            ["professional"] = new() { id = "professional", baseHPfactor = 1.5f, selfHPBonus = 0.1f, bindingHPBonus = 0.4f, speedBonus = 0.1f }*/
-        };
-        public Dictionary<string, GripStatDefines> GripStats = new() {
-            /*["plain"] = new() { id = "plain", speedBonus = 0.0f, chanceToDamage = 1.0f },
-            ["twine"] = new() { id = "twine", texturePath = "game:block/cloth/reedrope", langTag = "grip-twine", speedBonus = 0.0f, chanceToDamage = 0.95f },
-            ["cloth"] = new() { id = "cloth", texturePath = "game:block/cloth/linen/normal1", langTag = "grip-cloth", speedBonus = 0.1f, chanceToDamage = 0.9f },
-            ["leather"] = new() { id = "leather", texturePath = "game:block/leather/plain", langTag = "grip-leather", speedBonus = 0.2f, chanceToDamage = 0.8f },
-            ["sturdy"] = new() { id = "sturdy", texturePath = "game:block/leather/chromium", langTag = "grip-sturdy", speedBonus = 0.3f, chanceToDamage = 0.65f }*/
-        };
-        public Dictionary<string, TreatmentStatDefines> TreatmentStats = new() {
-            /*["none"] = new() { id = "none", handleHPbonus = 0.0f },
-            ["fat"] = new() { id = "fat", langTag = "treatment-fat", handleHPbonus = 0.2f },
-            ["wax"] = new() { id = "wax", langTag = "treatment-wax", handleHPbonus = 0.5f },
-            ["oil"] = new() { id = "oil", langTag = "treatment-oil", handleHPbonus = 0.65f }*/
-        };
-        public Dictionary<string, BindingStatDefines> BindingStats = new() {
-            /*["none"] = new() { id = "none", langTag = "binding-none", baseHPfactor = 0.5f, selfHPBonus = 0.0f, handleHPBonus = 0.0f, recoveryPercent = 1.0f, isMetal = false },
-            ["reeds"] = new() { id = "reeds", texturePath = "game:block/cloth/reedrope", langTag = "binding-reeds", baseHPfactor = 1.0f, selfHPBonus = 0.0f, handleHPBonus = 0.0f, recoveryPercent = 1.0f, isMetal = false },
-            ["twine"] = new() { id = "twine", texturePath = "game:block/cloth/basic/normal", langTag = "binding-twine", baseHPfactor = 1.2f, selfHPBonus = 0.1f, handleHPBonus = 0.05f, recoveryPercent = 0.9f, isMetal = false },
-            ["rope"] = new() { id = "rope", texturePath = "game:block/cloth/basic/brown", langTag = "binding-rope", baseHPfactor = 1.25f, selfHPBonus = 0.15f, handleHPBonus = 0.05f, recoveryPercent = 0.7f, isMetal = false },
-            ["leather"] = new() { id = "leather", texturePath = "game:block/leather/plain", langTag = "binding-leather", baseHPfactor = 1.5f, selfHPBonus = 0.3f, handleHPBonus = 0.1f, recoveryPercent = 0.6f, isMetal = false },
-            ["glue"] = new() { id = "glue", langTag = "binding-glue", baseHPfactor = 2.0f, selfHPBonus = 0.3f, handleHPBonus = 0.3f, recoveryPercent = 1.0f, isMetal = false },
-            ["coppernails"] = new() { id = "coppernails", texturePath = "game:block/metal/plate/copper", langTag = "binding-nails-copper", baseHPfactor = 1.4f, selfHPBonus = 0.1f, handleHPBonus = 0.1f, recoveryPercent = 0.9f, isMetal = true, metalType = "copper" },
-            ["tinbronzenails"] = new() { id = "tinbronzenails", texturePath = "game:block/metal/plate/tinbronze", langTag = "binding-nails-tinbronze", baseHPfactor = 1.7f, selfHPBonus = 0.2f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "tinbronze" },
-            ["bismuthbronzenails"] = new() { id = "bismuthbronzenails", texturePath = "game:block/metal/plate/bismuthbronze", langTag = "binding-nails-bismuthbronze", baseHPfactor = 1.7f, selfHPBonus = 0.25f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "bismuthbronze" },
-            ["blackbronzenails"] = new() { id = "blackbronzenails", texturePath = "game:block/metal/plate/blackbronze", langTag = "binding-nails-blackbronze", baseHPfactor = 1.7f, selfHPBonus = 0.3f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "blackbronze" },
-            ["ironnails"] = new() { id = "ironnails", texturePath = "game:block/metal/plate/iron", langTag = "binding-nails-iron", baseHPfactor = 1.8f, selfHPBonus = 0.3f, handleHPBonus = 0.2f, recoveryPercent = 0.45f, isMetal = true, metalType = "iron" },
-            ["cupronickelnails"] = new() { id = "cupronickelnails", texturePath = "game:block/metal/ingot/cupronickel", langTag = "binding-nails-cupronickel", baseHPfactor = 1.7f, selfHPBonus = 0.2f, handleHPBonus = 0.2f, recoveryPercent = 0.5f, isMetal = true, metalType = "cupronickel" },
-            ["meteoricironnails"] = new() { id = "meteoricironnails", texturePath = "game:block/metal/plate/meteoriciron", langTag = "binding-nails-meteoriciron", baseHPfactor = 1.9f, selfHPBonus = 0.5f, handleHPBonus = 0.25f, recoveryPercent = 0.45f, isMetal = true, metalType = "meteoriciron" },
-            ["steelnails"] = new() { id = "steelnails", texturePath = "game:block/metal/plate/steel", langTag = "binding-nails-steel", baseHPfactor = 2.2f, selfHPBonus = 0.6f, handleHPBonus = 0.4f, recoveryPercent = 0.35f, isMetal = true, metalType = "steel" }*/
-        };
+        public Dictionary<string, HandleStatDefines> BaseHandleStats = new() { };
+        public Dictionary<string, GripStatDefines> GripStats = new() { };
+        public Dictionary<string, TreatmentStatDefines> TreatmentStats = new() { };
+        public Dictionary<string, BindingStatDefines> BindingStats = new() { };
     }
 
     public static class ToolsmithPartStatsHelpers {
 
-        public static void ReadAndStoreDefinesInDict(List<HandlePartDefines> list, ref Dictionary<string, HandlePartDefines> targetDict) {
+        public static void VerifyAndStoreDefinesInDict(List<HandlePartDefines> list, bool runFullCheck, ref Dictionary<string, HandlePartDefines> targetDict) {
             foreach (var entry in list) {
+                if (entry.id == null) {
+                    ToolsmithModSystem.Logger.Error("Attempted to read a HandlePartDefine that lacks an id assigned to it. Safely skipping this entry. Likely another mod with a compatability patch is causing this error.");
+                    continue;
+                }
+
+                if (entry.handleStatTag == null) {
+                    ToolsmithModSystem.Logger.Error("Attempted to read a HandlePartDefine for id \"" + entry.id + "\"that lacks a stat tag. Safely skipping this entry");
+                    continue;
+                }
+
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
                 }
             }
         }
 
-        public static void ReadAndStoreDefinesInDict(List<GripPartDefines> list, ref Dictionary<string, GripPartDefines> targetDict) {
+        public static void VerifyAndStoreDefinesInDict(List<GripPartDefines> list, bool runFullCheck, ref Dictionary<string, GripPartDefines> targetDict) {
             foreach (var entry in list) {
+                if (entry.id == null) {
+                    ToolsmithModSystem.Logger.Error("Attempted to read a GripPartDefine that lacks an id assigned to it. Safely skipping this entry. Likely another mod with a compatability patch is causing this error.");
+                    continue;
+                }
+
+                if (entry.gripStatTag == null) {
+                    ToolsmithModSystem.Logger.Error("Attempted to read a GripPartDefine for id \"" + entry.id + "\"that lacks a stat tag. Safely skipping this entry");
+                    continue;
+                }
+
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
                 }
             }
         }
 
-        public static void ReadAndStoreDefinesInDict(List<TreatmentPartDefines> list, ref Dictionary<string, TreatmentPartDefines> targetDict) {
+        public static void VerifyAndStoreDefinesInDict(List<TreatmentPartDefines> list, bool runFullCheck, ref Dictionary<string, TreatmentPartDefines> targetDict) {
             foreach (var entry in list) {
+                if (entry.id == null) {
+                    ToolsmithModSystem.Logger.Error("Attempted to read a TreatmentPartDefine that lacks an id assigned to it. Safely skipping this entry. Likely another mod with a compatability patch is causing this error.");
+                    continue;
+                }
+
+                if (entry.treatmentStatTag == null) {
+                    ToolsmithModSystem.Logger.Error("Attempted to read a TreatmentPartDefine for id \"" + entry.id + "\"that lacks a stat tag. Safely skipping this entry");
+                    continue;
+                }
+
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
                 }
             }
         }
 
-        public static void ReadAndStoreDefinesInDict(List<BindingPartDefines> list, ref Dictionary<string, BindingPartDefines> targetDict) {
+        public static void VerifyAndStoreDefinesInDict(List<BindingPartDefines> list, bool runFullCheck, ref Dictionary<string, BindingPartDefines> targetDict) {
             foreach (var entry in list) {
+                if (entry.id == null) {
+                    ToolsmithModSystem.Logger.Error("Attempted to read a BindingPartDefine that lacks an id assigned to it. Safely skipping this entry. Likely another mod with a compatability patch is causing this error.");
+                    continue;
+                }
+
+                if (entry.bindingStatTag == null) {
+                    ToolsmithModSystem.Logger.Error("Attempted to read a BindingPartDefine for id \"" + entry.id + "\"that lacks a stat tag. Safely skipping this entry");
+                    continue;
+                }
+
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
                 }
             }
         }
 
-        public static void ReadAndStoreDefinesInDict(List<HandleStatDefines> list, ref Dictionary<string, HandleStatDefines> targetDict) {
+        public static void VerifyAndStoreDefinesInDict(List<HandleStatDefines> list, bool runFullCheck, ref Dictionary<string, HandleStatDefines> targetDict) {
             foreach (var entry in list) {
+                if (entry.id == null) {
+                    ToolsmithModSystem.Logger.Error("Attempted to read a HandleStatDefine that lacks an id assigned to it. Safely skipping this entry. Likely another mod with a compatability patch is causing this error.");
+                    continue;
+                }
+
+                if (runFullCheck) { //Things in here don't need to run all the time unless in a dev environment. Can be enabled in the base config for easy verification for addons or compat.
+                    if (entry.baseHPfactor == -1.0f) {
+                        ToolsmithModSystem.Logger.Error("BaseHPFactor for HandleStatDefine id \"" + entry.id + "\" has not been properly set. Defaulting to 1.0 and continuing, stats will be improper but still function.");
+                        entry.baseHPfactor = 1.0f;
+                    }
+
+                    if (entry.selfHPBonus == -1.0f) {
+                        ToolsmithModSystem.Logger.Error("SelfHPBonus for HandleStatDefine id \"" + entry.id + "\" has not been properly set. Defaulting to 0.0 and continuing, stats will be improper but still function.");
+                        entry.selfHPBonus = 0.0f;
+                    }
+
+                    if (entry.bindingHPBonus == -1.0f) {
+                        ToolsmithModSystem.Logger.Error("BindingHPBonus for HandleStatDefine id \"" + entry.id + "\" has not been properly set. Defaulting to 0.0 and continuing, stats will be improper but still function.");
+                        entry.bindingHPBonus = 0.0f;
+                    }
+
+                    if (entry.speedBonus == -1.0f) {
+                        ToolsmithModSystem.Logger.Error("SpeedBonus for HandleStatDefine id \"" + entry.id + "\" has not been properly set. Defaulting to 0.0 and continuing, stats will be improper but still function.");
+                        entry.speedBonus = 0.0f;
+                    }
+                }
+
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
                 }
             }
         }
 
-        public static void ReadAndStoreDefinesInDict(List<GripStatDefines> list, ref Dictionary<string, GripStatDefines> targetDict) {
+        public static void VerifyAndStoreDefinesInDict(List<GripStatDefines> list, bool runFullCheck, ref Dictionary<string, GripStatDefines> targetDict) {
             foreach (var entry in list) {
+                if (entry.id == null) {
+                    ToolsmithModSystem.Logger.Error("Attempted to read a GripStatDefine that lacks an id assigned to it. Safely skipping this entry. Likely another mod with a compatability patch is causing this error.");
+                    continue;
+                }
+
+                if (runFullCheck) {
+                    if (entry.id != "plain" && entry.texturePath == "plain") {
+                        ToolsmithModSystem.Logger.Warning("GripStatDefine with id \"" + entry.id + "\" appears to not have a texturePath set. It will lack a texture - is this intentional?");
+                    }
+
+                    if (entry.id != "plain" && entry.langTag == "") {
+                        ToolsmithModSystem.Logger.Warning("GripStatDefine with id \"" + entry.id + "\" appears to not have a langTag set. It will likely not localize properly.");
+                    }
+
+                    if (entry.speedBonus == -1.0f) {
+                        ToolsmithModSystem.Logger.Error("SpeedBonus for GripStatDefine with id \"" + entry.id + "\" has not been properly set. Defaulting to 0.0 and continuing, stats will be improper but still function.");
+                        entry.speedBonus = 0.0f;
+                    }
+
+                    if (entry.chanceToDamage == -1.0f) {
+                        ToolsmithModSystem.Logger.Error("ChanceToDamage for GripStatDefine with id \"" + entry.id + "\" has not been properly set. Defaulting to 1.0 and continuing, stats will be improper but still function.");
+                        entry.chanceToDamage = 1.0f;
+                    }
+                }
+
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
                 }
             }
         }
 
-        public static void ReadAndStoreDefinesInDict(List<TreatmentStatDefines> list, ref Dictionary<string, TreatmentStatDefines> targetDict) {
+        public static void VerifyAndStoreDefinesInDict(List<TreatmentStatDefines> list, bool runFullCheck, ref Dictionary<string, TreatmentStatDefines> targetDict) {
             foreach (var entry in list) {
+                if (entry.id == null) {
+                    ToolsmithModSystem.Logger.Error("Attempted to read a TreatmentStatDefine that lacks an id assigned to it. Safely skipping this entry. Likely another mod with a compatability patch is causing this error.");
+                    continue;
+                }
+
+                if (runFullCheck) {
+                    if (entry.id != "plain" && entry.langTag == "") {
+                        ToolsmithModSystem.Logger.Warning("TreatmentStatDefine with id \"" + entry.id + "\" appears to not have a langTag set. It will likely not localize properly.");
+                    }
+
+                    if (entry.handleHPbonus == -1.0f) {
+                        ToolsmithModSystem.Logger.Error("HandleHPBonus for TreatmentStatDefine with id \"" + entry.id + "\" has not been properly set. Defaulting to 0.0 and continuing, stats will be improper but still function.");
+                        entry.handleHPbonus = 0.0f;
+                    }
+                }
+
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
                 }
             }
         }
 
-        public static void ReadAndStoreDefinesInDict(List<BindingStatDefines> list, ref Dictionary<string, BindingStatDefines> targetDict) {
+        public static void VerifyAndStoreDefinesInDict(List<BindingStatDefines> list, bool runFullCheck, ref Dictionary<string, BindingStatDefines> targetDict) {
             foreach (var entry in list) {
+                if (entry.id == null) {
+                    ToolsmithModSystem.Logger.Error("Attempted to read a BindingStatDefine that lacks an id assigned to it. Safely skipping this entry. Likely another mod with a compatability patch is causing this error.");
+                    continue;
+                }
+
+                if (entry.isMetal && entry.metalType == null) {
+                    ToolsmithModSystem.Logger.Error("The BindingStatDefine with id \"" + entry.id + "\" is a metal binding, but does not have a metalType set. Safely skipping this entry. Likely another mod with a compatability patch is causing this error.");
+                    continue;
+                }
+
+                if (runFullCheck) {
+                    if (entry.id != "none" && entry.texturePath == "plain") {
+                        ToolsmithModSystem.Logger.Warning("BindingStatDefine with id \"" + entry.id + "\" appears to not have a texturePath set. It will lack a texture - is this intentional?");
+                    }
+
+                    if (entry.langTag == "") {
+                        ToolsmithModSystem.Logger.Warning("BindingStatDefine with id \"" + entry.id + "\" appears to not have a langTag set. It will likely not localize properly.");
+                    }
+
+                    if (entry.baseHPfactor == -1.0f) {
+                        ToolsmithModSystem.Logger.Error("BaseHPFactor for BindingStatDefine with id \"" + entry.id + "\" has not been set. Defaulting to 1.0 and continuing, stats will be improper but still function.");
+                        entry.baseHPfactor = 1.0f;
+                    }
+
+                    if (entry.selfHPBonus == -1.0f) {
+                        ToolsmithModSystem.Logger.Error("SelfHPBonus for BindingStatDefine with id \"" + entry.id + "\" has not been set. Defaulting to 0.0 and continuing, stats will be improper but still function.");
+                        entry.selfHPBonus = 0.0f;
+                    }
+
+                    if (entry.handleHPBonus == -1.0f) {
+                        ToolsmithModSystem.Logger.Error("HandleHPBonus for BindingStatDefine with id \"" + entry.id + "\" has not been set. Defaulting to 0.0 and continuing, stats will be improper but still function.");
+                        entry.handleHPBonus = 0.0f;
+                    }
+
+                    if (entry.recoveryPercent == -1.0f) {
+                        ToolsmithModSystem.Logger.Error("RecoveryPercent for BindingStatDefine with id \"" + entry.id + "\" has not been set. Defaulting to 1.0 and continuing, stats will be improper but still function.");
+                        entry.recoveryPercent = 1.0f;
+                    }
+                }
+
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
                 }
