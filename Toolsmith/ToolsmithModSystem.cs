@@ -115,16 +115,6 @@ namespace Toolsmith {
         public override void StartServerSide(ICoreServerAPI api) {
             ConfigUtility.MergeAndSetConfigStrings();
             ServerCommands.RegisterServerCommands(api);
-
-            /*string configJson = JsonConvert.SerializeObject(Config);
-            byte[] configBytes = System.Text.Encoding.UTF8.GetBytes(configJson);
-            string configBase64String = Convert.ToBase64String(configBytes);
-            api.World.Config.SetString(ToolsmithConstants.ToolsmithConfigKey, configBase64String);
-
-            string statsJson = JsonConvert.SerializeObject(Stats);
-            byte[] statsBytes = System.Text.Encoding.UTF8.GetBytes(statsJson);
-            string statsBase64String = Convert.ToBase64String(statsBytes);
-            api.World.Config.SetString(ToolsmithConstants.ToolsmithStatsKey, statsBase64String);*/
         }
 
         public override void StartClientSide(ICoreClientAPI api) {

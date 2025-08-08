@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.Utils;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -102,6 +103,7 @@ namespace Toolsmith.Client.Behaviors {
                 if (failedPart) { //If any part fails to be found or render, it'll just default to using the item fallback. This ideally should make things cleaner in the end, and prevent invisible items.
                     return GenMesh(null, targetAtlas);
                 }
+                return mesh;
             } else if (itemstack.HasPartRenderTree()) {
                 ITreeAttribute renderTree = itemstack.GetPartRenderTree();
                 MeshData partMesh = GenMesh(renderTree, targetAtlas);
@@ -113,8 +115,6 @@ namespace Toolsmith.Client.Behaviors {
             } else {
                 return GenMesh(null, targetAtlas);
             }
-
-            return mesh;
         }
 
         public MeshData GenMesh(ITreeAttribute renderTree, ITextureAtlasAPI targetAtlas, Vec3f rotationInfo = null) { //This is only to handle JUST the 'PartRenderTree's, it will either render the data provided, or if the tree sent is null, just fall back to item defaults.
@@ -125,6 +125,7 @@ namespace Toolsmith.Client.Behaviors {
             bool needFallback = (renderTree == null); //Fallback to the properties defaults if this is the case.
 
             Shape shape = null;
+            string toolType = null;
             if (!needFallback && renderTree.HasPartShapePath() && renderTree.GetPartShapePath() != "") {
                 if (renderTree.HasShapeOverrideTag()) {
                     shape = api.Assets.TryGet(new AssetLocation(renderTree.GetPartShapePath() + renderTree.GetShapeOverrideTag() + ".json"))?.ToObject<Shape>();
@@ -136,6 +137,17 @@ namespace Toolsmith.Client.Behaviors {
                     return null;
                 }
             } else {
+                toolType = item?.FirstCodePart();
+                if (toolType != null) {
+                    var locations = capi.Assets.GetLocations("shapes/item/parts/" + toolType);
+                    if (locations != null && locations.Count > 0) {
+                        var fallbackMesh = GenFallbackGenericPartMesh(toolType, locations, targetAtlas);
+                        if (fallbackMesh != null) {
+                            return fallbackMesh;
+                        }
+                    }
+                }
+
                 if (item?.Shape != null) {
                     shape = capi.TesselatorManager.GetCachedShape(item.Shape.Base);
                 }
@@ -180,7 +192,9 @@ namespace Toolsmith.Client.Behaviors {
                     }
                     texSource.textures[entry.Key] = tex;
                 }
-            } else { //Fallback to the default textures in the properties. Ideally shouldn't hit here but uhhh.
+            } else { //Fallback to the default textures in the properties. It should only hit here generally in the case of improperly constructed or outdated render data on a tool, or those lacking
+                
+                
                 foreach (var entry in item.Textures) {
                     texSource.textures[entry.Key] = entry.Value;
                 }
@@ -194,6 +208,81 @@ namespace Toolsmith.Client.Behaviors {
 
             capi.Tesselator.TesselateShape("Modular Part rendering", shape, out MeshData mesh, texSource, rotationInfo);
             return mesh;
+        }
+
+        public MeshData GenFallbackGenericPartMesh(string toolType, List<AssetLocation> locations, ITextureAtlasAPI targetAtlas, Vec3f rotationInfo = null) {
+            if (item.HasBehavior<CollectibleBehaviorTinkeredTools>()) { //A new fallback is going to need to be made for every class of multi-part tool unfortunately. Maybe this can be written to be more generic, but this works for now as a first-pass. Perhaps defines for what parts constitute a certain tool/weapon? Hm.
+                //var isMetal = item.IsCraftableMetal();
+                string headPath = "parts/" + toolType + "/heads/";
+                string handlePath = "parts/" + toolType + "/handles/stick/handle.json";
+                string bindingPath = "parts/" + toolType + "/handles/universal/binding/string-";
+
+                if (item.IsCraftableMetal()) {
+                    headPath += "simple.json";
+                    bindingPath += "metalhead.json";
+                } else {
+                    headPath += "nonmetal.json";
+                    bindingPath += "stonehead.json";
+                }
+
+                AssetLocation headAsset = null;
+                AssetLocation handleAsset = null;
+                AssetLocation bindingAsset = null;
+
+                foreach (var loc in locations) { //Since we already did get the possible locations, can compare through these to find the proper ones. Might not be the most efficient though, but it means it should work with addon mods?
+                    if (headAsset == null && loc.Path.Contains(headPath)) {
+                        headAsset = loc;
+                        continue;
+                    }
+                    if (handleAsset == null && loc.Path.Contains(handlePath)) {
+                        handleAsset = loc;
+                        continue;
+                    }
+                    if (bindingAsset == null && loc.Path.Contains(bindingPath)) {
+                        bindingAsset = loc;
+                        continue;
+                    }
+                    if (headAsset != null && handleAsset != null && bindingAsset != null) {
+                        break;
+                    }
+                }
+
+                if (headAsset == null || handleAsset == null || bindingAsset == null) { //If there is any of these parts lacking an asset, we cannot construct a placeholder tool from parts. Revert to default, oh well we tried. Probably a modded tool without part renders.
+                    return null;
+                }
+
+                var mesh = new MeshData(6, 4);
+                Shape headShape = api.Assets.TryGet(headAsset)?.ToObject<Shape>();
+                Shape handleShape = api.Assets.TryGet(handleAsset)?.ToObject<Shape>();
+                Shape bindingShape = api.Assets.TryGet(bindingAsset)?.ToObject<Shape>();
+
+                if (headShape == null || handleShape == null || bindingShape == null) { //If any of the above shapes error somehow, even if they shouldn't I figure cause they are built from the locations, return null and just prevent a crash later.
+                    return null;
+                }
+
+                ShapeTextureSource headTexSource = new(api as ICoreClientAPI, headShape, "Compiling and Rendering Composite Shape for Fallback Modular Tool and Part rendering");
+                ShapeTextureSource handleTexSource = new(api as ICoreClientAPI, handleShape, "Compiling and Rendering Composite Shape for Fallback Modular Tool and Part rendering");
+                ShapeTextureSource bindingTexSource = new(api as ICoreClientAPI, bindingShape, "Compiling and Rendering Composite Shape for Fallback Modular Tool and Part rendering");
+
+                if (item.Textures.ContainsKey("metal")) {
+                    headTexSource.textures["material"] = item.Textures.TryGetValue("metal");
+                } else if (item.Textures.ContainsKey("material")) {
+                    headTexSource.textures["material"] = item.Textures.TryGetValue("material");
+                }
+
+                capi.Tesselator.TesselateShape("Modular Part rendering", headShape, out MeshData headMesh, headTexSource, rotationInfo);
+                mesh.AddMeshData(headMesh);
+
+                capi.Tesselator.TesselateShape("Modular Part rendering", handleShape, out MeshData handleMesh, handleTexSource, rotationInfo);
+                mesh.AddMeshData(handleMesh);
+
+                capi.Tesselator.TesselateShape("Modular Part rendering", bindingShape, out MeshData bindingMesh, bindingTexSource, rotationInfo);
+                mesh.AddMeshData(bindingMesh);
+
+                return mesh;
+            }
+
+            return null;
         }
 
         public string GetMeshCacheKey(ItemStack itemstack) {

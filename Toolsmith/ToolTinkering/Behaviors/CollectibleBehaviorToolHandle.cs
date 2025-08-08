@@ -96,10 +96,10 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     } else if (slot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) {
                         handleSlot = slot;
                     } else if (slot.Itemstack != null) {
-                        if (slot.Itemstack.Collectible.Code.Path.StartsWith(ToolsmithAttributes.OldHandlePrefix)) { //If we find an old handle it's time to convert it to the new ones. Remove this bit later on after some time.
+                        /*if (slot.Itemstack.Collectible.Code.Path.StartsWith(ToolsmithAttributes.OldHandlePrefix)) { //If we find an old handle it's time to convert it to the new ones. Remove this bit later on after some time.
                             outputSlot.Itemstack = ItemStackExtensions.CheckForOldHandleAndConvert(slot.Itemstack);
                             return;
-                        }
+                        }*/
                         gripOrTreatmentSlot = slot;
                     }
                 }

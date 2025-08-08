@@ -156,9 +156,9 @@ namespace Toolsmith.Utils {
             handle.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
 
             //With the Old Handles removed, this might be pointless to remain in the future!
-            if (handle.Collectible.Code.Path.StartsWith(ToolsmithAttributes.OldHandlePrefix)) { //If we find an old handle it's time to convert it to the new ones. Remove this bit later on after some time.
+            /*if (handle.Collectible.Code.Path.StartsWith(ToolsmithAttributes.OldHandlePrefix)) { //If we find an old handle it's time to convert it to the new ones. Remove this bit later on after some time.
                 handle = CheckForOldHandleAndConvert(handle);
-            }
+            }*/
             return handle.Clone();
         }
 
