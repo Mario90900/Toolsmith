@@ -635,9 +635,9 @@ namespace Toolsmith.ToolTinkering {
             return (curSharp < maxSharp && curDur > 0 && durPercent > 0.01f);
         }
 
-        public static bool TryWhetstoneSharpening(ref float deltaLastTick, ref float lastInterval, float secondsUsed, ItemSlot slot, EntityAgent byEntity) {
+        public static bool TryWhetstoneSharpening(ref float lastInterval, float secondsUsed, ItemSlot slot, EntityAgent byEntity) {
             if (byEntity.World.Side.IsServer()) {
-                deltaLastTick = secondsUsed - lastInterval;
+                var deltaLastTick = secondsUsed - lastInterval;
 
                 if (deltaLastTick >= ToolsmithConstants.SharpenInterval) { //Try not to repair EVERY single tick to space it out some. Cause of this, repair (configurable %) durability each time so it doesn't take forever.
                     var whetstone = WhetstoneInOffhand(byEntity);
@@ -649,10 +649,9 @@ namespace Toolsmith.ToolTinkering {
                         return false;
                     }
 
-                    deltaLastTick = 0;
                     lastInterval = MathUtility.FloorToNearestMult(secondsUsed, ToolsmithConstants.SharpenInterval);
 
-                    if (whetstone.IsDoneHoning()) {
+                    if (byEntity.LeftHandItemSlot.Empty || byEntity.LeftHandItemSlot.Itemstack.WhetstoneDoneSharpen()) {
                         return false; //End the interaction when it doesn't need sharpening anymore
                     }
                 }

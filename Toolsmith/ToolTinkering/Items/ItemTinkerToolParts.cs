@@ -12,15 +12,15 @@ using Vintagestory.API.Datastructures;
 
 namespace Toolsmith.ToolTinkering.Items {
     public class ItemTinkerToolParts : Item, IModularPartRenderer {
-        protected bool crafting = false;
+        //protected bool crafting = false;
 
-        public override string GetHeldTpUseAnimation(ItemSlot activeHotbarSlot, Entity forEntity) {
+        /*public override string GetHeldTpUseAnimation(ItemSlot activeHotbarSlot, Entity forEntity) {
             if (crafting) {
                 return "craftingwinding";
             }
 
             return null;
-        }
+        }*/
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling) {
             var entPlayer = (byEntity as EntityPlayer);
@@ -30,7 +30,7 @@ namespace Toolsmith.ToolTinkering.Items {
                 if (byEntity.World.Side == EnumAppSide.Server) {
                     byEntity.World.PlaySoundAt(new AssetLocation("sounds/player/messycraft.ogg"), byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z, null, true, 32f, 1f);
                 }
-                crafting = true;
+                slot.Itemstack.SetPartBeingCrafted();
                 return;
             }
 
@@ -38,6 +38,7 @@ namespace Toolsmith.ToolTinkering.Items {
         }
 
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
+            var crafting = slot.Itemstack.PartBeingCrafted();
             if (crafting) {
                 return (crafting && secondsUsed < ToolsmithConstants.TimeToCraftTinkerTool); //Time for crafting is now a constant variable!
             }
@@ -46,32 +47,32 @@ namespace Toolsmith.ToolTinkering.Items {
         }
 
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
-            if (crafting && secondsUsed >= (ToolsmithConstants.TimeToCraftTinkerTool - 0.1)) { //If they were crafting, verify that the countdown is up, and if so, craft it (if there still is a valid offhand handle!)
+            if (slot.Itemstack.PartBeingCrafted() && secondsUsed >= (ToolsmithConstants.TimeToCraftTinkerTool - 0.1)) { //If they were crafting, verify that the countdown is up, and if so, craft it (if there still is a valid offhand handle!)
                 if (byEntity.World.Side.IsServer() && TinkeringUtility.ValidBindingInOffhand(byEntity)) {
                     TinkeringUtility.AssembleFullTool(slot, byEntity, blockSel);
                 }
                 byEntity.StopAnimation("craftingwinding");
-                crafting = false;
+                slot.Itemstack.ClearPartBeingCrafted();
                 return;
             }
 
             byEntity.StopAnimation("craftingwinding");
-            crafting = false;
+            slot.Itemstack.ClearPartBeingCrafted();
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
         }
 
         public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason) {
-            if (crafting && secondsUsed >= (ToolsmithConstants.TimeToCraftTinkerTool - 0.1)) { //If they were crafting, verify that the countdown is up, and if so, craft it (if there still is a valid offhand handle!)
+            if (slot.Itemstack.PartBeingCrafted() && secondsUsed >= (ToolsmithConstants.TimeToCraftTinkerTool - 0.1)) { //If they were crafting, verify that the countdown is up, and if so, craft it (if there still is a valid offhand handle!)
                 if (byEntity.World.Side.IsServer() && TinkeringUtility.ValidBindingInOffhand(byEntity)) {
                     TinkeringUtility.AssembleFullTool(slot, byEntity, blockSel);
                 }
                 byEntity.StopAnimation("craftingwinding");
-                crafting = false;
+                slot.Itemstack.ClearPartBeingCrafted();
                 return true;
             }
 
             byEntity.StopAnimation("craftingwinding");
-            crafting = false;
+            slot.Itemstack.ClearPartBeingCrafted();
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
             return true;
         }

@@ -16,11 +16,6 @@ using Toolsmith.ToolTinkering.Behaviors;
 namespace Toolsmith.ToolTinkering.Blocks {
     public class BlockGrindstone : Block {
 
-        protected bool doneSharpening = false;
-        protected bool firstHoning = false;
-        protected float deltaLastTick = 0;
-        protected float lastInterval = 0;
-        protected float totalSharpnessHoned = 0;
         protected float repairInterval = 0.4f;
 
         WorldInteraction[] interactions;
@@ -95,6 +90,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
         }
 
         public override bool OnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
+            bool doneSharpening = false;
             if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null && TinkeringUtility.ToolOrHeadNeedsSharpening(byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack, world, byPlayer.Entity)) { //Make sure the slot isn't empty
                 int isTool = TinkeringUtility.IsValidSharpenTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world);
                 BlockEntityGrindstone grindstoneEnt = GetBlockEntity<BlockEntityGrindstone>(blockSel.Position);
@@ -104,13 +100,15 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 if (world.Side.IsServer() && !byPlayer.Entity.Controls.ShiftKey && isTool > 0) { //Check if it's a valid tool for repair, is made of metal and has one of the 2 behaviors, if so...
                     ItemStack item = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
 
-                    deltaLastTick = secondsUsed - lastInterval;
+                    var lastInterval = item.GetGrindstoneInUse();
+                    var deltaLastTick = secondsUsed - lastInterval;
                     if (deltaLastTick >= repairInterval) { //Try not to repair EVERY single tick to space it out some. Cause of this, repair 5 durability each time so it doesn't take forever.
                         int curDur = 0;
                         int maxDur = 0;
                         int curSharp = 0;
                         int maxSharp = 0;
-                        firstHoning = !(item.HasTotalHoneValue());
+                        var firstHoning = !(item.HasTotalHoneValue());
+                        var totalSharpnessHoned = 0.0f;
 
                         TinkeringUtility.RecieveDurabilitiesAndSharpness(ref curDur, ref maxDur, ref curSharp, ref maxSharp, ref totalSharpnessHoned, item, isTool);
 
@@ -125,8 +123,8 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
                         byPlayer.InventoryManager.ActiveHotbarSlot.MarkDirty();
 
-                        deltaLastTick = 0;
                         lastInterval = MathUtility.FloorToNearestMult(secondsUsed, repairInterval);
+                        item.SetGrindstoneInUse(lastInterval);
 
                         if (secondsUsed > 300 || !TinkeringUtility.ToolOrHeadNeedsSharpening(item, world)) { //Just in case a way to break out if someone's been holding down the repair for over a set time, so nothing gets too overloaded, or the tool is done repairing!
                             doneSharpening = true;
@@ -158,10 +156,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 grindstoneEnt.ToggleHoningSound(false);
             }
 
-            deltaLastTick = 0; //Make sure to reset these any time it's canceled
-            lastInterval = 0;
-            totalSharpnessHoned = 0;
-            doneSharpening = false;
+            byPlayer.Entity.RightHandItemSlot.Itemstack.ClearGrindstoneInUse();
 
             return true;
         }
@@ -174,10 +169,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 grindstoneEnt.ToggleHoningSound(false);
             }
 
-            deltaLastTick = 0; //Make sure to reset these any time it's canceled
-            lastInterval = 0;
-            totalSharpnessHoned = 0;
-            doneSharpening = false;
+            byPlayer.Entity.RightHandItemSlot.Itemstack.ClearGrindstoneInUse();
         }
 
         public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode) {

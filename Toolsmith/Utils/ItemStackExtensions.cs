@@ -634,6 +634,21 @@ namespace Toolsmith.Utils {
             return 0.0f;
         }
 
+        public static void SetPartBeingCrafted(this ItemStack itemStack) {
+            if (itemStack.Attributes == null) {
+                itemStack.Attributes = new TreeAttribute();
+            }
+            itemStack.Attributes.SetBool(ToolsmithAttributes.PartBeingCrafted, true);
+        }
+
+        public static void ClearPartBeingCrafted(this ItemStack itemStack) {
+            itemStack.Attributes?.RemoveAttribute(ToolsmithAttributes.PartBeingCrafted);
+        }
+
+        public static bool PartBeingCrafted(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.PartBeingCrafted);
+        }
+
         public static void SetTotalHoneValue(this ItemStack itemStack, float honed) {
             itemStack.Attributes.SetFloat(ToolsmithAttributes.TotalHonedPercentSinceLastUse, honed);
         }
@@ -644,6 +659,55 @@ namespace Toolsmith.Utils {
 
         public static bool HasTotalHoneValue(this ItemStack itemStack) {
             return itemStack.Attributes.HasAttribute(ToolsmithAttributes.TotalHonedPercentSinceLastUse);
+        }
+
+        public static void SetGrindstoneInUse(this ItemStack itemStack, float lastInterval) {
+            if (itemStack.Attributes == null) {
+                itemStack.Attributes = new TreeAttribute();
+            }
+            itemStack.Attributes.SetFloat(ToolsmithAttributes.GrindstoneInUse, lastInterval);
+        }
+
+        public static float GetGrindstoneInUse(this ItemStack itemStack) {
+            return itemStack.Attributes.GetFloat(ToolsmithAttributes.GrindstoneInUse, 0.0f);
+        }
+
+        public static void ClearGrindstoneInUse(this ItemStack itemStack) {
+            itemStack.Attributes?.RemoveAttribute(ToolsmithAttributes.GrindstoneInUse);
+        }
+
+        public static void SetWhetstoneInUse(this ItemStack itemStack, float lastInterval) {
+            if (itemStack.Attributes == null) {
+                itemStack.Attributes = new TreeAttribute();
+            }
+            itemStack.Attributes.SetFloat(ToolsmithAttributes.WhetstoneInUse, lastInterval);
+        }
+
+        public static float GetWhetstoneInUse(this ItemStack itemStack) {
+            return itemStack.Attributes.GetFloat(ToolsmithAttributes.WhetstoneInUse);
+        }
+
+        public static void ClearWhetstoneInUse(this ItemStack itemStack) {
+            itemStack.Attributes?.RemoveAttribute(ToolsmithAttributes.WhetstoneInUse);
+        }
+
+        public static bool WhetstoneInUse(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.WhetstoneInUse);
+        }
+
+        public static void SetWhetstoneDoneSharpen(this ItemStack itemStack) {
+            if (itemStack.Attributes == null) {
+                itemStack.Attributes = new TreeAttribute();
+            }
+            itemStack.Attributes.SetBool(ToolsmithAttributes.WhetstoneDoneSharpen, true);
+        }
+
+        public static void ClearWhetstoneDoneSharpen(this ItemStack itemStack) {
+            itemStack.Attributes?.RemoveAttribute(ToolsmithAttributes.WhetstoneDoneSharpen);
+        }
+
+        public static bool WhetstoneDoneSharpen(this ItemStack itemStack) {
+            return itemStack.Attributes.HasAttribute(ToolsmithAttributes.WhetstoneDoneSharpen);
         }
 
         public static void ResetHeadStats(this ItemStack itemStack) {

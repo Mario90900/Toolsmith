@@ -15,20 +15,20 @@ using Vintagestory.Server;
 namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorToolHead : CollectibleBehaviorToolPartWithHealth {
 
-        private bool crafting = false;
+        //private bool crafting = false;
 
         public CollectibleBehaviorToolHead(CollectibleObject collObj) : base(collObj) {
 
         }
 
-        public override string GetHeldTpUseAnimation(ItemSlot activeHotbarSlot, Entity forEntity, ref EnumHandling bhHandling) {
+        /*public override string GetHeldTpUseAnimation(ItemSlot activeHotbarSlot, Entity forEntity, ref EnumHandling bhHandling) {
             if (crafting == true) {
                 bhHandling = EnumHandling.PreventSubsequent;
                 return "crafting";
             }
             
             return null;
-        }
+        }*/
         
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling) { //Handle the grinding code here as well as the tool itself! Probably can offload the core interaction to a helper utility function?
             var entPlayer = (byEntity as EntityPlayer);
@@ -40,7 +40,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     byEntity.World.PlaySoundAt(new AssetLocation("sounds/player/messycraft.ogg"), byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z, null, true, 32f, 1f);
                 }
                 byEntity.StartAnimation("crafting");
-                crafting = true;
+                slot.Itemstack.SetPartBeingCrafted();
                 return;
             }
 
@@ -48,6 +48,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         }
 
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
+            var crafting = slot.Itemstack.PartBeingCrafted();
             if (crafting) {
                 handling = EnumHandling.PreventSubsequent;
                 return crafting && secondsUsed < ToolsmithConstants.TimeToCraftTinkerTool; //Time for crafting is now a constant variable!
@@ -57,22 +58,23 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         }
 
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
-            if (crafting && secondsUsed >= ToolsmithConstants.TimeToCraftTinkerTool - 0.1) { //If they were crafting, verify that the countdown is up, and if so, craft it (if there still is a valid offhand handle!)
+            if (slot.Itemstack.PartBeingCrafted() && secondsUsed >= ToolsmithConstants.TimeToCraftTinkerTool - 0.1) { //If they were crafting, verify that the countdown is up, and if so, craft it (if there still is a valid offhand handle!)
                 handling = EnumHandling.PreventDefault;
                 if (byEntity.World.Side.IsServer() && TinkeringUtility.ValidHandleInOffhand(byEntity)) {
                     TinkeringUtility.AssemblePartBundle(slot, byEntity, blockSel);
                 }
-                crafting = false;
+                byEntity.StopAnimation("crafting");
+                slot.Itemstack.ClearPartBeingCrafted();
                 return;
             }
 
             byEntity.StopAnimation("crafting");
-            crafting = false;
+            slot.Itemstack.ClearPartBeingCrafted();
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);
         }
 
         public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason, ref EnumHandling handled) {
-            if (crafting) {
+            if (slot.Itemstack.PartBeingCrafted()) {
                 if (ToolsmithModSystem.Config.AccessibilityDisableNeedToHoldClick) {
                     handled = EnumHandling.PreventSubsequent;
                     return false;
@@ -85,7 +87,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
 
             byEntity.StopAnimation("crafting");
-            crafting = false;
+            slot.Itemstack.ClearPartBeingCrafted();
             return base.OnHeldInteractCancel(secondsUsed, slot, byEntity, blockSel, entitySel, cancelReason, ref handled);
         }
 

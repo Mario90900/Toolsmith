@@ -26,6 +26,10 @@ namespace Toolsmith.Utils {
 
         //Using attributes as flags, if they exist on a tool, it means that flag is set
         public const string BrokeWhileSharpening = "toolsmithBrokeToolWhileSharpening";
+        public const string WhetstoneInUse = "toolsmithWhetstoneInUse"; //Also used to carry the lastInterval value!
+        public const string WhetstoneDoneSharpen = "toolsmithWhetstoneDoneSharpen";
+        public const string GrindstoneInUse = "toolsmithGrindstoneInUse"; //Also used to carry the lastInterval value!
+        public const string PartBeingCrafted = "partBeingCrafted";
 
         //The Attributes for the Part items themselves, used for Tool Heads and Handles currently. Try not to set these on a completed tool by mistake, use the specific above ones!
         public const string ToolPartCurrentDur = "toolPartCurrentDurability";

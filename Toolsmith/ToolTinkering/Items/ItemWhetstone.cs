@@ -17,12 +17,6 @@ using Vintagestory.ServerMods.NoObf;
 namespace Toolsmith.ToolTinkering.Items {
     public class ItemWhetstone : Item, IOffhandDominantInteractionItem {
         protected ILoadedSound honingScrape;
-        protected bool sharpening = false;
-        protected bool firstHoning = false;
-        protected bool doneHoning = false;
-        protected float totalSharpnessHoned = 0;
-        protected float deltaLastTick = 0;
-        protected float lastInterval = 0;
 
         //Copied over from the Grindstone but changed to instead be done in-hand with the items instead of on a block. It's slightly different handling.
         public void HandleSharpenTick(float secondsUsed, ItemSlot mainHandSlot, ItemSlot offhandSlot, EntityAgent byEntity, int isTool) { //"isTool" is fed by the respective items in question when they call this to try and sharpen.
@@ -32,7 +26,8 @@ namespace Toolsmith.ToolTinkering.Items {
             int maxSharp = 0;
             ItemStack item = mainHandSlot.Itemstack;
             ItemStack whetstone = offhandSlot.Itemstack;
-            firstHoning = !(item.HasTotalHoneValue());
+            var firstHoning = !(item.HasTotalHoneValue());
+            var totalSharpnessHoned = 0.0f;
 
             TinkeringUtility.RecieveDurabilitiesAndSharpness(ref curDur, ref maxDur, ref curSharp, ref maxSharp, ref totalSharpnessHoned, item, isTool);
 
@@ -42,16 +37,12 @@ namespace Toolsmith.ToolTinkering.Items {
 
             TinkeringUtility.SetResultsOfSharpening(curDur, curSharp, totalSharpnessHoned, firstHoning, item, byEntity, mainHandSlot, isTool);
 
+            if (!TinkeringUtility.ToolOrHeadNeedsSharpening(item, byEntity.World)) {
+                whetstone.SetWhetstoneDoneSharpen();
+            }
+
             mainHandSlot.MarkDirty();
             offhandSlot.MarkDirty();
-
-            if (!TinkeringUtility.ToolOrHeadNeedsSharpening(item, byEntity.World)) {
-                doneHoning = true;
-            }
-        }
-
-        public bool IsDoneHoning() {
-            return doneHoning;
         }
 
         public void ToggleHoningSound(bool startSound, EntityAgent byEntity) {
@@ -117,13 +108,13 @@ namespace Toolsmith.ToolTinkering.Items {
             base.OnModifiedInInventorySlot(world, slot, extractedStack);
         }
 
-        public override string GetHeldTpUseAnimation(ItemSlot activeHotbarSlot, Entity forEntity) {
+        /*public override string GetHeldTpUseAnimation(ItemSlot activeHotbarSlot, Entity forEntity) {
             if (sharpening) {
                 return "sharpeningstone";
             }
 
             return null;
-        }
+        }*/
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling) {
             if (!(slot is ItemSlotOffhand)) {
@@ -138,7 +129,7 @@ namespace Toolsmith.ToolTinkering.Items {
             if (firstEvent && !mainHandSlot.Empty && TinkeringUtility.ToolOrHeadNeedsSharpening(mainHandSlot.Itemstack, byEntity.World, byEntity)) {
                 handling = EnumHandHandling.PreventDefault;
                 byEntity.StartAnimation("sharpeningstone");
-                sharpening = true;
+                slot.Itemstack.SetWhetstoneInUse(0.0f);
                 ToggleHoningSound(true, byEntity);
                 return;
             } else {
@@ -147,12 +138,16 @@ namespace Toolsmith.ToolTinkering.Items {
         }
 
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
-            if (sharpening) {
+            if (slot.Itemstack.WhetstoneInUse()) {
                 var mainHandSlot = byEntity.RightHandItemSlot;
                 UpdateSoundPosition(byEntity.Api, byEntity.Pos.XYZFloat);
-                var retVal = TinkeringUtility.TryWhetstoneSharpening(ref deltaLastTick, ref lastInterval, secondsUsed, mainHandSlot, byEntity);
-                if (doneHoning || slot.Empty || slot.Itemstack.Collectible.GetRemainingDurability(slot.Itemstack) <= 1) {
+                var lastInterval = slot.Itemstack.GetWhetstoneInUse();
+                var retVal = TinkeringUtility.TryWhetstoneSharpening(ref lastInterval, secondsUsed, mainHandSlot, byEntity);
+                if (slot.Empty || slot.Itemstack.Collectible.GetRemainingDurability(slot.Itemstack) <= 1 || slot.Itemstack.WhetstoneDoneSharpen()) {
+                    byEntity.StopAnimation("sharpeningstone");
                     ToggleHoningSound(false, byEntity);
+                } else {
+                    slot.Itemstack.SetWhetstoneInUse(lastInterval);
                 }
                 return retVal;
             }
@@ -167,15 +162,12 @@ namespace Toolsmith.ToolTinkering.Items {
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
             ToggleHoningSound(false, byEntity);
 
-            if (sharpening) {
-                deltaLastTick = 0;
-                lastInterval = 0;
-                if (byEntity.World.Side.IsServer() && doneHoning) {
+            if (slot.Empty || slot.Itemstack.WhetstoneInUse()) {
+                if (byEntity.World.Side.IsServer() && slot.Itemstack.WhetstoneDoneSharpen()) {
                     byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity, randomizePitch: false);
-                    doneHoning = false;
+                    slot.Itemstack.ClearWhetstoneDoneSharpen();
                 }
-                totalSharpnessHoned = 0;
-                sharpening = false;
+                slot.Itemstack.ClearWhetstoneInUse();
             }
 
             byEntity.StopAnimation("sharpeningstone");
@@ -185,20 +177,14 @@ namespace Toolsmith.ToolTinkering.Items {
         }
 
         public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason) {
-            if (ToolsmithModSystem.Config.AccessibilityDisableNeedToHoldClick && sharpening) {
+            if (ToolsmithModSystem.Config.AccessibilityDisableNeedToHoldClick && !slot.Empty && slot.Itemstack.WhetstoneInUse()) {
                 return false;
             }
 
             ToggleHoningSound(false, byEntity);
             
-            if (sharpening) {
-                deltaLastTick = 0;
-                lastInterval = 0;
-                /*if (byEntity.World.Side.IsServer()) {
-                    byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity, randomizePitch: false);
-                }*/ //Commenting this out to see how it feels/sounds without it playing the 'finish' sound when you let go of the mouse. Seems like a great idea honestly with the current changes.
-                totalSharpnessHoned = 0;
-                sharpening = false;
+            if (slot.Empty || slot.Itemstack.WhetstoneInUse()) {
+                slot.Itemstack.ClearWhetstoneInUse();
             }
 
             byEntity.StopAnimation("sharpeningstone");

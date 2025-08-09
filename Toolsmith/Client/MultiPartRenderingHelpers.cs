@@ -517,6 +517,12 @@ namespace Toolsmith.Client {
         }
 
         public static void AddBindingToExistingToolRender(ItemStack tool, ItemStack binding) {
+            BindingPartDefines bindingPart = ToolsmithModSystem.Stats.BindingParts.TryGetValue(binding.Collectible.Code.Path);
+            if (bindingPart.bindingShapePath == "") { //If the binding has no shape path, IE currently Glue does not have visuals and it makes sense, just avoid adding any render data for the binding.
+                return; //This should just prevent actually attempting to render anything for the binding or failing to find anything and hitting the fallback.
+            }
+            BindingStatDefines bindingStats = ToolsmithModSystem.Stats.BindingStats.TryGetValue(bindingPart.bindingStatTag);
+
             var toolMultiPartTree = tool.GetMultiPartRenderTree();
 
             var bindingTransformAndPartTree = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartBindingName);
@@ -527,8 +533,6 @@ namespace Toolsmith.Client {
             bindingTransformAndPartTree.SetPartRotationY(0);
             bindingTransformAndPartTree.SetPartRotationZ(0);
 
-            BindingPartDefines bindingWithStats = ToolsmithModSystem.Stats.BindingParts.TryGetValue(binding.Collectible.Code.Path);
-            BindingStatDefines bindingStats = ToolsmithModSystem.Stats.BindingStats.TryGetValue(bindingWithStats.bindingStatTag);
             var bindingPartTree = bindingTransformAndPartTree.GetPartRenderTree();
             if (toolMultiPartTree.HasPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName)) {
                 var handlePath = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName).GetPartRenderTree().GetPartShapePath();
@@ -538,13 +542,13 @@ namespace Toolsmith.Client {
                 } else {
                     isMetal = tool.Collectible.IsCraftableMetal();
                 }
-                var bindingPath = ConvertFromTypedHandlePathToBindingShapePath(handlePath, bindingWithStats.bindingShapePath, isMetal);
+                var bindingPath = ConvertFromTypedHandlePathToBindingShapePath(handlePath, bindingPart.bindingShapePath, isMetal);
                 bindingPartTree.SetPartShapePath(bindingPath);
-            }
+            } //Might need to add an else clause here to catch any case that might not have a handle tree? But that shouldn't ever happen, I believe. Well, intentionally at least!
 
             var bindingTextureTree = bindingPartTree.GetPartTextureTree();
-            if (bindingWithStats.bindingTextureOverride != "") {
-                bindingTextureTree.SetPartTexturePathFromKey("material", bindingWithStats.bindingTextureOverride);
+            if (bindingPart.bindingTextureOverride != "") {
+                bindingTextureTree.SetPartTexturePathFromKey("material", bindingPart.bindingTextureOverride);
             } else {
                 bindingTextureTree.SetPartTexturePathFromKey("material", bindingStats.texturePath);
             }
