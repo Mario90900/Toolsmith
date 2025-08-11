@@ -9,25 +9,103 @@
 		"id": "linen-diamond-down",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": ""
+		"gripTextureOverride": "game:block/cloth/linen/diamond1"
 	},
 	{
 		"id": "linen-normal-down",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": ""
+		"gripTextureOverride": "game:block/cloth/linen/normal1"
 	},
 	{
 		"id": "linen-offset-down",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": ""
+		"gripTextureOverride": "game:block/cloth/linen/offset1"
 	},
 	{
 		"id": "linen-square-down",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": ""
+		"gripTextureOverride": "game:block/cloth/linen/square1"
+	},
+	{
+		"id": "cloth-plain",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/normal1"
+	},
+	{
+		"id": "cloth-mordant",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/mordant"
+	},
+	{
+		"id": "cloth-blue",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/blue"
+	},
+	{
+		"id": "cloth-red",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/red"
+	},
+	{
+		"id": "cloth-yellow",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/yellow"
+	},
+	{
+		"id": "cloth-green",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/green"
+	},
+	{
+		"id": "cloth-purple",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/purple"
+	},
+	{
+		"id": "cloth-pink",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/pink"
+	},
+	{
+		"id": "cloth-orange",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/orange"
+	},
+	{
+		"id": "cloth-brown",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/brown"
+	},
+	{
+		"id": "cloth-gray",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/gray"
+	},
+	{
+		"id": "cloth-black",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/black"
+	},
+	{
+		"id": "cloth-white",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/white"
 	},
 	{
 		"id": "leather-normal-plain",

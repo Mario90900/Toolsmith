@@ -131,11 +131,11 @@ namespace Toolsmith {
                     Config = JsonConvert.DeserializeObject<ToolsmithConfigs>(configJson);
                     Logger.Notification("Recieved configs successfully from Server!");
                 } catch (Exception ex) {
-                    Logger.Error("Failed to deserialize config from server: " + ex);
+                    Logger.Error("Failed to deserialize config from server: " + ex + "\nThis may cause problems for a proper server-client separation.");
                     Config = new ToolsmithConfigs();
                 }
             } else {
-                Logger.Error("Failed to retrieve config from server, running with default settings.");
+                Logger.Error("Failed to retrieve config from server, running with default settings. This may cause problems for a proper server-client separation.");
                 Config = new ToolsmithConfigs();
             }
 
@@ -147,11 +147,11 @@ namespace Toolsmith {
                     Stats = JsonConvert.DeserializeObject<ToolsmithPartStats>(statsJson);
                     Logger.Notification("Recieved part stats successfully from Server!");
                 } catch (Exception ex) {
-                    Logger.Error("Failed to deserialize part stats from server: " + ex);
+                    Logger.Error("Failed to deserialize part stats from server: " + ex + "\nThis may cause problems for a proper server-client separation.");
                     Stats = new ToolsmithPartStats();
                 }
             } else {
-                Logger.Error("Failed to retrieve part stats from server, running with default settings.");
+                Logger.Error("Failed to retrieve part stats from server, running with default settings. This may cause problems for a proper server-client separation.");
                 Stats = new ToolsmithPartStats();
             }
         }
@@ -170,9 +170,6 @@ namespace Toolsmith {
 
             ProcessJsonPartsAndStats(api);
 
-            if (Config.PrintAllParsedToolsAndParts) {
-                Logger.Debug("Single Part Tools:");
-            }
             var handleKeys = Stats.BaseHandleParts.Keys;
             var bindingKeys = Stats.BindingParts.Keys;
             var gripKeys = Stats.GripParts.Keys;
@@ -182,8 +179,16 @@ namespace Toolsmith {
             RecipeRegisterModSystem.GripList = new List<CollectibleObject>();
             RecipeRegisterModSystem.TreatmentList = new List<CollectibleObject>();
             RecipeRegisterModSystem.TinkerableToolsList = new List<CollectibleObject>();
+
+            List<CollectibleObject> SinglePartToolsList = null;
+            if (Config.PrintAllParsedToolsAndParts) {
+                SinglePartToolsList = new List<CollectibleObject>();
+            }
             foreach (var t in api.World.Collectibles.Where(t => t?.Code != null)) { //A tool/part should likely be only one of these!
                 if (ConfigUtility.IsTinkerableTool(t.Code.ToString()) && !(ConfigUtility.IsToolHead(t.Code.ToString())) && !(ConfigUtility.IsOnBlacklist(t.Code.ToString()))) { //Any tool that you actually craft from a Tool Head to create!
+                    if (Config.DebugMessages) {
+                        Logger.Debug("Attempting to register " + t.Code.ToString() + " as a Tinkerable Tool.");
+                    }
                     if (!t.HasBehavior<ModularPartRenderingFromAttributes>()) {
                         t.AddBehavior<ModularPartRenderingFromAttributes>();
                     }
@@ -198,6 +203,9 @@ namespace Toolsmith {
                     RecipeRegisterModSystem.TinkerableToolsList.Add(t);
                     continue;
                 } else if (ConfigUtility.IsSinglePartTool(t.Code.ToString()) && !(ConfigUtility.IsOnBlacklist(t.Code.ToString()))) { //A 'Smithed' tool is one that once you finish the anvil smithing recipe, the tool is done. Shears, Wrench, or Chisel in vanilla! Add the 'Smithed' Tool Behavior so they can gain the Grinding interaction to maintain them.
+                    if (Config.DebugMessages) {
+                        Logger.Debug("Attempting to register " + t.Code.ToString() + " as a Smithed Tool.");
+                    }
                     if (!t.HasBehavior<CollectibleBehaviorSmithedTools>()) {
                         t.AddBehavior<CollectibleBehaviorSmithedTools>();
                     }
@@ -206,11 +214,14 @@ namespace Toolsmith {
                             t.AddBehavior<CollectibleBehaviorToolBlunt>();
                         }
                     }
-                    if (Config.PrintAllParsedToolsAndParts) {
-                        Logger.Debug(t.Code.ToString());
+                    if (SinglePartToolsList != null) {
+                        SinglePartToolsList.Add(t);
                     }
                     continue;
                 } else if (ConfigUtility.IsToolHandle(t.Code.Path, handleKeys)) { //Probably don't need the blacklist anymore, since can assume the configs have the exact Path
+                    if (Config.DebugMessages) {
+                        Logger.Debug("Attempting to register " + t.Code.ToString() + " as a Tool Handle.");
+                    }
                     if (!t.HasBehavior<ModularPartRenderingFromAttributes>()) {
                         t.AddBehavior<ModularPartRenderingFromAttributes>();
                     }
@@ -222,6 +233,9 @@ namespace Toolsmith {
                     }
                     RecipeRegisterModSystem.HandleList.Add(t);
                 } else if (ConfigUtility.IsToolBinding(t.Code.Path, bindingKeys)) {
+                    if (Config.DebugMessages) {
+                        Logger.Debug("Attempting to register " + t.Code.ToString() + " as a Tool Binding.");
+                    }
                     if (!t.HasBehavior<CollectibleBehaviorToolBinding>()) {
                         t.AddBehavior<CollectibleBehaviorToolBinding>();
                     }
@@ -240,6 +254,10 @@ namespace Toolsmith {
             }
 
             if (Config.PrintAllParsedToolsAndParts) { //Mainly left in for debugging purposes since it's kinda useful to just let it run through everything and see what might be going wrong and where... Especially when adding other mods
+                Logger.Debug("Single Part Tools:");
+                foreach (var t in SinglePartToolsList) {
+                    Logger.Debug(t.Code.ToString());
+                }
                 Logger.Debug("Tinkerable Tools:");
                 foreach (var t in RecipeRegisterModSystem.TinkerableToolsList) {
                     Logger.Debug(t.Code.ToString());
@@ -264,6 +282,14 @@ namespace Toolsmith {
         }
 
         private void ProcessJsonPartsAndStats(ICoreAPI api) {
+            if (Config.EnableEditsForRegex) {
+                Logger.Debug("Server is starting with Config Edits for the Regex Strings enabled. If something goes wrong, the changes made could be the cause. Disable the option to reset configs to the generated default. If you report an issue with this enabled, please include your Toolsmith.json config changes as well as the logs!");
+            }
+
+            if (Stats.EnableEdits) {
+                Logger.Debug("Server is starting with Config Edits for the Parts and Stats enabled. If something goes wrong, the changes made could be the cause. Disable the option to reset configs to the generated default. If you report an issue with this enabled, please include your ToolsmithPartsStats.json config changes as well as the logs!");
+            }
+
             Dictionary<AssetLocation, List<string>> toolHeads = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/toolheads");
             Config.ToolHeads += "@.*(";
             foreach (var toolHead in toolHeads) {
@@ -304,6 +330,10 @@ namespace Toolsmith {
             Config.PartBlacklist = Config.PartBlacklist.Remove(Config.PartBlacklist.Length - 1);
             Config.PartBlacklist += ").*";
 
+            if (Config.RunFullJsonVerifying) {
+                Logger.Debug("Running full Json verification for all found Toolsmith Configs for parts and stats.");
+            }
+
             Dictionary<AssetLocation, List<HandlePartDefines>> handleParts = api.Assets.GetMany<List<HandlePartDefines>>(api.Logger, "config/toolsmith/parts/handles");
             foreach (var handlePart in handleParts) {
                 ToolsmithPartStatsHelpers.VerifyAndStoreDefinesInDict(handlePart.Value, Config.RunFullJsonVerifying, ref Stats.BaseHandleParts);
@@ -342,6 +372,10 @@ namespace Toolsmith {
             Dictionary<AssetLocation, List<BindingStatDefines>> bindingStats = api.Assets.GetMany<List<BindingStatDefines>>(api.Logger, "config/toolsmith/stats/bindings");
             foreach (var bindingStat in bindingStats) {
                 ToolsmithPartStatsHelpers.VerifyAndStoreDefinesInDict(bindingStat.Value, Config.RunFullJsonVerifying, ref Stats.BindingStats);
+            }
+
+            if (Config.RunFullJsonVerifying) {
+                Logger.Debug("Full Json Verification complete! All found errors will have been printed above.");
             }
 
             SaveConfigToWorldData(api);

@@ -1,38 +1,302 @@
 [
 	{
+		"id": "twine-wool-mordant",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/mordant"
+	},
+	{
 		"id": "twine-wool-plain",
 		"gripStatTag": "twine",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": ""
+		"gripTextureOverride": "game:block/cloth/linen/normal1"
 	},
 	{
 		"id": "twine-wool-black",
 		"gripStatTag": "twine",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": ""
+		"gripTextureOverride": "game:block/cloth/linen/black"
+	},
+	{
+		"id": "twine-wool-blue",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/blue"
 	},
 	{
 		"id": "twine-wool-brown",
 		"gripStatTag": "twine",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": ""
+		"gripTextureOverride": "game:block/cloth/linen/brown"
 	},
 	{
 		"id": "twine-wool-gray",
 		"gripStatTag": "twine",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": ""
+		"gripTextureOverride": "game:block/cloth/linen/gray"
+	},
+	{
+		"id": "twine-wool-green",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/green"
+	},
+	{
+		"id": "twine-wool-orange",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/orange"
+	},
+	{
+		"id": "twine-wool-pink",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/pink"
+	},
+	{
+		"id": "twine-wool-purple",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/purple"
+	},
+	{
+		"id": "twine-wool-red",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/red"
 	},
 	{
 		"id": "twine-wool-white",
 		"gripStatTag": "twine",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": ""
+		"gripTextureOverride": "game:block/cloth/linen/white"
 	},
 	{
 		"id": "twine-wool-yellow",
 		"gripStatTag": "twine",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": ""
+		"gripTextureOverride": "game:block/cloth/linen/yellow"
+	},
+	{
+		"id": "twine-wool-darkblue",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/darkblue"
+	},
+	{
+		"id": "twine-wool-darkbrown",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/darkbrown"
+	},
+	{
+		"id": "twine-wool-darkgreen",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/darkgreen"
+	},
+	{
+		"id": "twine-wool-darkred",
+		"gripStatTag": "twine",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/darkred"
+	},
+	{
+		"id": "cloth-wool-mordant",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "game:block/cloth/linen/mordant"
+	},
+	{
+		"id": "cloth-wool-plain",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/plain"
+	},
+	{
+		"id": "cloth-wool-black",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/black"
+	},
+	{
+		"id": "cloth-wool-blue",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/blue"
+	},
+	{
+		"id": "cloth-wool-brown",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/brown"
+	},
+	{
+		"id": "cloth-wool-gray",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/gray"
+	},
+	{
+		"id": "cloth-wool-green",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/green"
+	},
+	{
+		"id": "cloth-wool-orange",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/orange"
+	},
+	{
+		"id": "cloth-wool-pink",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/pink"
+	},
+	{
+		"id": "cloth-wool-purple",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/purple"
+	},
+	{
+		"id": "cloth-wool-red",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/red"
+	},
+	{
+		"id": "cloth-wool-white",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/white"
+	},
+	{
+		"id": "cloth-wool-yellow",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/yellow"
+	},
+	{
+		"id": "cloth-wool-darkblue",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/darkblue"
+	},
+	{
+		"id": "cloth-wool-darkbrown",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/darkbrown"
+	},
+	{
+		"id": "cloth-wool-darkgreen",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/darkgreen"
+	},
+	{
+		"id": "cloth-wool-darkred",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/darkred"
+	},
+	{
+		"id": "wool-plain",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/plain"
+	},
+	{
+		"id": "wool-black",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/black"
+	},
+	{
+		"id": "wool-blue",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/blue"
+	},
+	{
+		"id": "wool-brown",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/brown"
+	},
+	{
+		"id": "wool-gray",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/gray"
+	},
+	{
+		"id": "wool-green",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/green"
+	},
+	{
+		"id": "wool-orange",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/orange"
+	},
+	{
+		"id": "wool-pink",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/pink"
+	},
+	{
+		"id": "wool-purple",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/purple"
+	},
+	{
+		"id": "wool-red",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/red"
+	},
+	{
+		"id": "wool-white",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/white"
+	},
+	{
+		"id": "wool-yellow",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/linen/yellow"
+	},
+	{
+		"id": "wool-darkblue",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/darkblue"
+	},
+	{
+		"id": "wool-darkbrown",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/darkbrown"
+	},
+	{
+		"id": "wool-darkgreen",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/darkgreen"
+	},
+	{
+		"id": "wool-darkred",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "wool:block/cloth/wool/darkred"
 	}
 ]

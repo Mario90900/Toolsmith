@@ -854,8 +854,15 @@ namespace Toolsmith.Utils {
 
         // -- More Generic ItemStack extensions or helper methods intended to handle items/collectibleobjects --
         public static void AddBehavior<T>(this CollectibleObject collectibleObject) where T : CollectibleBehavior {
-            var existingBehavior = collectibleObject.CollectibleBehaviors.FirstOrDefault(b => b.GetType() == typeof(T));
-            collectibleObject.CollectibleBehaviors.Remove(existingBehavior);
+            if (collectibleObject == null || collectibleObject.HasBehavior<T>()) {
+                return;
+            }
+
+            /*if (collectibleObject.HasBehavior<T>()) {
+                var existingBehavior = collectibleObject.CollectibleBehaviors.FirstOrDefault(b => b.GetType() == typeof(T));
+                collectibleObject.CollectibleBehaviors.Remove(existingBehavior);
+            }*/
+
             var addedBehavior = (T)Activator.CreateInstance(typeof(T), collectibleObject);
             collectibleObject.CollectibleBehaviors = collectibleObject.CollectibleBehaviors.Append(addedBehavior);
         }

@@ -28,7 +28,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
             
             return null;
-        }*/
+        }*/ //Could this be what actually shows any animation for other players on a server? And the reason it was failing to sync the animation end was cause of this? Perhaps as is with this commented out, it will not display the animation for other players. Will need to test.
         
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling) { //Handle the grinding code here as well as the tool itself! Probably can offload the core interaction to a helper utility function?
             var entPlayer = (byEntity as EntityPlayer);

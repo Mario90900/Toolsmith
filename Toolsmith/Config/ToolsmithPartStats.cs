@@ -38,6 +38,8 @@ namespace Toolsmith.Config {
 
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
+                } else if (!ToolsmithModSystem.Stats.EnableEdits) {
+                    ToolsmithModSystem.Logger.Error("Attempted to add a HandlePartDefine that already exists in the Dictionary. There is a second entry for the code " + entry.id + " being read from the mod files or compat from other mods.");
                 }
             }
         }
@@ -56,6 +58,8 @@ namespace Toolsmith.Config {
 
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
+                } else if (!ToolsmithModSystem.Stats.EnableEdits) {
+                    ToolsmithModSystem.Logger.Error("Attempted to add a GripPartDefine that already exists in the Dictionary. There is a second entry for the code " + entry.id + " being read from the mod files or compat from other mods.");
                 }
             }
         }
@@ -74,6 +78,8 @@ namespace Toolsmith.Config {
 
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
+                } else if (!ToolsmithModSystem.Stats.EnableEdits) {
+                    ToolsmithModSystem.Logger.Error("Attempted to add a TreatmentPartDefine that already exists in the Dictionary. There is a second entry for the code " + entry.id + " being read from the mod files or compat from other mods.");
                 }
             }
         }
@@ -92,6 +98,8 @@ namespace Toolsmith.Config {
 
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
+                } else if (!ToolsmithModSystem.Stats.EnableEdits) {
+                    ToolsmithModSystem.Logger.Error("Attempted to add a BindingPartDefine that already exists in the Dictionary. There is a second entry for the code " + entry.id + " being read from the mod files or compat from other mods.");
                 }
             }
         }
@@ -127,6 +135,8 @@ namespace Toolsmith.Config {
 
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
+                } else if (!ToolsmithModSystem.Stats.EnableEdits) {
+                    ToolsmithModSystem.Logger.Error("Attempted to add a HandleStatDefine that already exists in the Dictionary. There is a second entry for the code " + entry.id + " being read from the mod files or compat from other mods.");
                 }
             }
         }
@@ -160,6 +170,8 @@ namespace Toolsmith.Config {
 
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
+                } else if (!ToolsmithModSystem.Stats.EnableEdits) {
+                    ToolsmithModSystem.Logger.Error("Attempted to add a GripStatDefine that already exists in the Dictionary. There is a second entry for the code " + entry.id + " being read from the mod files or compat from other mods.");
                 }
             }
         }
@@ -184,6 +196,8 @@ namespace Toolsmith.Config {
 
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
+                } else if (!ToolsmithModSystem.Stats.EnableEdits) {
+                    ToolsmithModSystem.Logger.Error("Attempted to add a TreatmentStatDefine that already exists in the Dictionary. There is a second entry for the code " + entry.id + " being read from the mod files or compat from other mods.");
                 }
             }
         }
@@ -232,6 +246,8 @@ namespace Toolsmith.Config {
 
                 if (!targetDict.ContainsKey(entry.id)) {
                     targetDict[entry.id] = entry;
+                } else if (!ToolsmithModSystem.Stats.EnableEdits) {
+                    ToolsmithModSystem.Logger.Error("Attempted to add a BindingStatDefine that already exists in the Dictionary. There is a second entry for the code " + entry.id + " being read from the mod files or compat from other mods.");
                 }
             }
         }
