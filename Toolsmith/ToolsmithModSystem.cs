@@ -184,7 +184,7 @@ namespace Toolsmith {
             if (Config.PrintAllParsedToolsAndParts) {
                 SinglePartToolsList = new List<CollectibleObject>();
             }
-            foreach (var t in api.World.Collectibles.Where(t => t?.Code != null)) { //A tool/part should likely be only one of these!
+            foreach (var t in api.World.Collectibles.Where(t => t?.Code != null && t?.ItemClass == EnumItemClass.Item)) { //A tool/part should likely be only one of these!
                 if (ConfigUtility.IsTinkerableTool(t.Code.ToString()) && !(ConfigUtility.IsToolHead(t.Code.ToString())) && !(ConfigUtility.IsOnBlacklist(t.Code.ToString()))) { //Any tool that you actually craft from a Tool Head to create!
                     if (Config.DebugMessages) {
                         Logger.Debug("Attempting to register " + t.Code.ToString() + " as a Tinkerable Tool.");
@@ -329,6 +329,14 @@ namespace Toolsmith {
             }
             Config.PartBlacklist = Config.PartBlacklist.Remove(Config.PartBlacklist.Length - 1);
             Config.PartBlacklist += ").*";
+
+            Dictionary<AssetLocation, List<string>> toolsWithWoodInBindingShapes = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/woodinbindingshapes");
+            Config.ToolsWithWoodInBindingShape += "@.*(";
+            foreach (var tool in toolsWithWoodInBindingShapes) {
+                ToolsmithConfigsHelpers.AddToRegexString(tool.Value, ref Config.ToolsWithWoodInBindingShape);
+            }
+            Config.ToolsWithWoodInBindingShape = Config.ToolsWithWoodInBindingShape.Remove(Config.ToolsWithWoodInBindingShape.Length - 1);
+            Config.ToolsWithWoodInBindingShape += ").*";
 
             if (Config.RunFullJsonVerifying) {
                 Logger.Debug("Running full Json verification for all found Toolsmith Configs for parts and stats.");

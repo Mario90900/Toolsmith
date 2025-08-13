@@ -169,6 +169,10 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 handle = ToolsmithModSystem.Stats.BaseHandleParts.First().Value;
             }
 
+            if (headStack != null && handleStack != null && foundToolInput == null) {
+                MultiPartRenderingHelpers.BuildToolRenderFromAllSeparateParts(outputSlot.Itemstack, headStack, handleStack, bindingStack);
+            }
+
             BindingPartDefines binding;
             if (bindingStack != null) { //If there is a binding used, then get that one.
                 if (bindingStack.Attributes != null) {

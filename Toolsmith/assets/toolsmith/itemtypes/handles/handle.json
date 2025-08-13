@@ -18,7 +18,7 @@
 				"textures": [
 					{
 						"code": "wood",
-						"Default": "game:block/wood/debarked/oak",
+						"Default": "toolsmith:block/tools/tooloak",
 						"values": [
 							"toolsmith:block/tools/toolaged",
 							"toolsmith:block/tools/toolbirch",

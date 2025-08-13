@@ -1,0 +1,102 @@
+{
+	"code": "fabricstrips",
+	"maxstacksize": 64,
+	"variantgroups": [
+		{ "code": "material", "states": [ "rawhide", "cloth", "leather", "sturdy" ] }
+	],
+	"behaviorsByType": {
+		"*-cloth": [
+			{
+				"name": "toolsmith:ModularPartRenderingFromAttributes",
+				"properties": {
+					"textures": [
+						{
+							"code": "material",
+							"Default": "game:block/cloth/linen/plain",
+							"values": [
+								"game:block/cloth/linen/plain",
+								"game:block/cloth/linen/mordant",
+								"game:block/cloth/linen/blue",
+								"game:block/cloth/linen/red",
+								"game:block/cloth/linen/yellow",
+								"game:block/cloth/linen/green",
+								"game:block/cloth/linen/purple",
+								"game:block/cloth/linen/pink",
+								"game:block/cloth/linen/orange",
+								"game:block/cloth/linen/brown",
+								"game:block/cloth/linen/gray",
+								"game:block/cloth/linen/black",
+								"game:block/cloth/linen/white"
+							]
+						}
+					],
+					"skipCreativeInventoryAdditions": false,
+					"creativeTabs": [ "general", "items" ]
+				}
+			}
+		],
+		"*-leather": [
+			{
+				"name": "toolsmith:ModularPartRenderingFromAttributes",
+				"properties": {
+					"textures": [
+						{
+							"code": "material",
+							"Default": "game:block/leather/plain",
+							"values": [
+								"game:block/leather/plain",
+								"game:block/leather/orange",
+								"game:block/leather/black",
+								"game:block/leather/red",
+								"game:block/leather/blue",
+								"game:block/leather/purple",
+								"game:block/leather/pink",
+								"game:block/leather/white",
+								"game:block/leather/yellow",
+								"game:block/leather/gray",
+								"game:block/leather/green"
+							]
+						}
+					],
+					"skipCreativeInventoryAdditions": false,
+					"creativeTabs": [ "general", "items" ]
+				}
+			}
+		]
+	},
+	"texturesByType": {
+		"*-rawhide": {
+			"material": { "base": "game:block/cloth/rawhide" }
+		},
+		"*-sturdy": { 
+			"material": { "base": "game:block/leather/chromium" }
+		}
+	},
+	"storageFlags" : 257,
+	"shape": { "base": "toolsmith:item/fabricstrips" },
+	"creativeinventory": { "general": ["*"], "items": ["*"] },
+	"tpHandTransform": {
+		"translation": { "x": -0.7, "y": -0.1, "z": -0.6 },
+		"rotation": { "x": 0, "y": -30, "z": 0 },
+		"origin": { "x": 0.5, "y": 0.5, "z": 0.52 },
+		"scale": 0.95
+	},
+	"tpOffHandTransform": {
+		"translation": { "x": -0.7, "y": -0.1, "z": -0.5 },
+		"rotation": { "x": 0, "y": 30, "z": 0 },
+		"origin": { "x": 0.5, "y": 0.5, "z": 0.51 },
+		"scale": 0.95
+	},
+	"guiTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 35, "y": 0, "z": -25 },
+		"origin": { "x": 0.64, "y": -0.3, "z": 0 },
+		"scale": 3
+	},
+	"groundTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": 0, "y": 0, "z": 0.52 },
+		"scale": 3.5
+	}
+}

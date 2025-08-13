@@ -1,0 +1,274 @@
+[
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-plain" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/plain"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-mordant" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/mordant"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-blue" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/blue"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-red" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/red"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-yellow" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/yellow"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-green" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/green"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-purple" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/purple"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-pink" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/pink"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-orange" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/orange"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-brown" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/brown"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-gray" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/gray"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-black" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/black"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "game:cloth-white" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/white"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "block", "code": "game:linen-diamond-down" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/plain"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "block", "code": "game:linen-normal-down" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/plain"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "block", "code": "game:linen-offset-down" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/plain"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "block", "code": "game:linen-square-down" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/cloth/linen/plain"
+				}
+			}
+		} }
+	}
+]

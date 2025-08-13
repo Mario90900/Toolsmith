@@ -1,5 +1,101 @@
 [
 	{
+		"id": "twine-mordant",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/linen/mordant"
+	},
+	{
+		"id": "twine-black",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/linen/black"
+	},
+	{
+		"id": "twine-blue",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/linen/blue"
+	},
+	{
+		"id": "twine-brown",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/linen/brown"
+	},
+	{
+		"id": "twine-gray",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/linen/gray"
+	},
+	{
+		"id": "twine-green",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/linen/green"
+	},
+	{
+		"id": "twine-orange",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/linen/orange"
+	},
+	{
+		"id": "twine-pink",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/linen/pink"
+	},
+	{
+		"id": "twine-purple",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/linen/purple"
+	},
+	{
+		"id": "twine-red",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/linen/red"
+	},
+	{
+		"id": "twine-white",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/linen/white"
+	},
+	{
+		"id": "twine-yellow",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "game:block/cloth/linen/yellow"
+	},
+	{
+		"id": "twine-darkblue",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "tailorsdelight:block/cloth/dark/darkblue"
+	},
+	{
+		"id": "twine-darkbrown",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "tailorsdelight:block/cloth/dark/darkbrown"
+	},
+	{
+		"id": "twine-darkgreen",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "tailorsdelight:block/cloth/dark/darkgreen"
+	},
+	{
+		"id": "twine-darkred",
+		"bindingStatTag": "twine",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": "tailorsdelight:block/cloth/dark/darkred"
+	},
+	{
 		"id": "leatherstrips-plain",
 		"bindingStatTag": "leather",
 		"bindingShapePath": "string",

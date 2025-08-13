@@ -33,6 +33,17 @@
 		"metalType": null
 	},
 	{
+		"id": "hide",
+		"texturePath": "game:block/cloth/rawhide",
+		"langTag": "binding-hide",
+		"baseHPfactor": 1.25,
+		"selfHPBonus": 0.15,
+		"handleHPBonus": 0.05,
+		"recoveryPercent": 0.8,
+		"isMetal": false,
+		"metalType": null
+	},
+	{
 		"id": "rope",
 		"texturePath": "game:block/cloth/basic/brown",
 		"langTag": "binding-rope",
@@ -44,6 +55,17 @@
 		"metalType": null
 	},
 	{
+		"id": "cloth",
+		"texturePath": "game:block/cloth/linen/plain",
+		"langTag": "binding-cloth",
+		"baseHPfactor": 1.3,
+		"selfHPBonus": 0.2,
+		"handleHPBonus": 0.1,
+		"recoveryPercent": 0.75,
+		"isMetal": false,
+		"metalType": null
+	},
+	{
 		"id": "leather",
 		"texturePath": "game:block/leather/plain",
 		"langTag": "binding-leather",
@@ -51,6 +73,17 @@
 		"selfHPBonus": 0.3,
 		"handleHPBonus": 0.1,
 		"recoveryPercent": 0.6,
+		"isMetal": false,
+		"metalType": null
+	},
+	{
+		"id": "sturdy",
+		"texturePath": "game:block/leather/chromium",
+		"langTag": "binding-sturdy",
+		"baseHPfactor": 1.8,
+		"selfHPBonus": 0.3,
+		"handleHPBonus": 0.25,
+		"recoveryPercent": 0.55,
 		"isMetal": false,
 		"metalType": null
 	},

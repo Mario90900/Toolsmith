@@ -409,8 +409,13 @@ namespace Toolsmith.Client {
             }
 
             BuildToolRenderFromHeadAndHandle(tool, head, handle, toolType, toolSpecificHandleShape);
+            var successfulBindingAdd = false;
             if (binding != null) {
-                AddBindingToExistingToolRender(tool, binding);
+                successfulBindingAdd = AddBindingToExistingToolRender(tool, binding);
+            }
+            
+            if (!successfulBindingAdd && RecipeRegisterModSystem.ToolsWithWoodInBindingShapes.Contains(toolType)) {
+                AddWoodPartsOfBindingToExistingToolRender(tool);
             }
         }
 
@@ -516,10 +521,10 @@ namespace Toolsmith.Client {
             tool.SetMultiPartRenderTree(toolMultiPartTree);
         }
 
-        public static void AddBindingToExistingToolRender(ItemStack tool, ItemStack binding) {
+        public static bool AddBindingToExistingToolRender(ItemStack tool, ItemStack binding) {
             BindingPartDefines bindingPart = ToolsmithModSystem.Stats.BindingParts.TryGetValue(binding.Collectible.Code.Path);
             if (bindingPart.bindingShapePath == "") { //If the binding has no shape path, IE currently Glue does not have visuals and it makes sense, just avoid adding any render data for the binding.
-                return; //This should just prevent actually attempting to render anything for the binding or failing to find anything and hitting the fallback.
+                return false; //This should just prevent actually attempting to render anything for the binding or failing to find anything and hitting the fallback.
             }
             BindingStatDefines bindingStats = ToolsmithModSystem.Stats.BindingStats.TryGetValue(bindingPart.bindingStatTag);
 
@@ -547,11 +552,56 @@ namespace Toolsmith.Client {
             } //Might need to add an else clause here to catch any case that might not have a handle tree? But that shouldn't ever happen, I believe. Well, intentionally at least!
 
             var bindingTextureTree = bindingPartTree.GetPartTextureTree();
-            if (bindingPart.bindingTextureOverride != "") {
+            if (binding.HasPartRenderTree()) {
+                var bindingRenderTree = binding.GetPartRenderTree();
+                var bindingTexTree = bindingRenderTree.GetPartTextureTree();
+                bindingTextureTree = bindingTexTree;
+            } else if (bindingPart.bindingTextureOverride != "") {
                 bindingTextureTree.SetPartTexturePathFromKey("material", bindingPart.bindingTextureOverride);
             } else {
                 bindingTextureTree.SetPartTexturePathFromKey("material", bindingStats.texturePath);
             }
+
+            bindingPartTree.SetPartTextureTree(bindingTextureTree);
+            bindingTransformAndPartTree.SetPartRenderTree(bindingPartTree);
+            toolMultiPartTree.SetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartBindingName, bindingTransformAndPartTree);
+            tool.SetMultiPartRenderTree(toolMultiPartTree);
+
+            return true; //Returns True/False based on success or failure here! For purposes of including the wood parts of any Binding shapes to the tools.
+        }
+
+        public static void AddWoodPartsOfBindingToExistingToolRender(ItemStack tool) { //Assumes a default of 'string' for which binding to include the wood parts from.
+            var toolMultiPartTree = tool.GetMultiPartRenderTree();
+
+            var bindingTransformAndPartTree = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartBindingName);
+            bindingTransformAndPartTree.SetPartOffsetX(0);
+            bindingTransformAndPartTree.SetPartOffsetY(0);
+            bindingTransformAndPartTree.SetPartOffsetZ(0);
+            bindingTransformAndPartTree.SetPartRotationX(0);
+            bindingTransformAndPartTree.SetPartRotationY(0);
+            bindingTransformAndPartTree.SetPartRotationZ(0);
+
+            var bindingPartTree = bindingTransformAndPartTree.GetPartRenderTree();
+            var bindingTextureTree = bindingPartTree.GetPartTextureTree();
+            bindingTextureTree.SetPartTexturePathFromKey("material", "game:block/transparent");
+            
+            if (toolMultiPartTree.HasPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName)) {
+                var handleTree = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName).GetPartRenderTree();
+                var handlePath = handleTree.GetPartShapePath();
+                bool isMetal = false;
+                if (tool.Item is ItemTinkerToolParts) {
+                    isMetal = tool.GetToolhead().Collectible.IsCraftableMetal();
+                } else {
+                    isMetal = tool.Collectible.IsCraftableMetal();
+                }
+                var bindingPath = ConvertFromTypedHandlePathToBindingShapePath(handlePath, "string", isMetal);
+                bindingPartTree.SetPartShapePath(bindingPath);
+
+                var woodTexPath = handleTree.GetPartTextureTree().GetPartTexturePathFromKey("wood");
+                if (woodTexPath != null) {
+                    bindingTextureTree.SetPartTexturePathFromKey("wood", woodTexPath);
+                }
+            } //Might need to add an else clause here to catch any case that might not have a handle tree? But that shouldn't ever happen, I believe. Well, intentionally at least!
 
             bindingPartTree.SetPartTextureTree(bindingTextureTree);
             bindingTransformAndPartTree.SetPartRenderTree(bindingPartTree);

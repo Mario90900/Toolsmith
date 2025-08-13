@@ -24,76 +24,34 @@
 		"bindingTextureOverride": ""
 	},
 	{
+		"id": "fabricstrips-rawhide",
+		"bindingStatTag": "hide",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	},
+	{
 		"id": "rope",
 		"bindingStatTag": "rope",
 		"bindingShapePath": "string",
 		"bindingTextureOverride": ""
 	},
 	{
-		"id": "leather-normal-plain",
+		"id": "fabricstrips-cloth",
+		"bindingStatTag": "cloth",
+		"bindingShapePath": "string",
+		"bindingTextureOverride": ""
+	},
+	{
+		"id": "fabricstrips-leather",
 		"bindingStatTag": "leather",
 		"bindingShapePath": "string",
 		"bindingTextureOverride": ""
 	},
 	{
-		"id": "leather-normal-orange",
-		"bindingStatTag": "leather",
+		"id": "fabricstrips-sturdy",
+		"bindingStatTag": "sturdy",
 		"bindingShapePath": "string",
-		"bindingTextureOverride": "game:block/leather/orange"
-	},
-	{
-		"id": "leather-normal-black",
-		"bindingStatTag": "leather",
-		"bindingShapePath": "string",
-		"bindingTextureOverride": "game:block/leather/black"
-	},
-	{
-		"id": "leather-normal-red",
-		"bindingStatTag": "leather",
-		"bindingShapePath": "string",
-		"bindingTextureOverride": "game:block/leather/red"
-	},
-	{
-		"id": "leather-normal-blue",
-		"bindingStatTag": "leather",
-		"bindingShapePath": "string",
-		"bindingTextureOverride": "game:block/leather/blue"
-	},
-	{
-		"id": "leather-normal-purple",
-		"bindingStatTag": "leather",
-		"bindingShapePath": "string",
-		"bindingTextureOverride": "game:block/leather/purple"
-	},
-	{
-		"id": "leather-normal-pink",
-		"bindingStatTag": "leather",
-		"bindingShapePath": "string",
-		"bindingTextureOverride": "game:block/leather/pink"
-	},
-	{
-		"id": "leather-normal-white",
-		"bindingStatTag": "leather",
-		"bindingShapePath": "string",
-		"bindingTextureOverride": "game:block/leather/white"
-	},
-	{
-		"id": "leather-normal-yellow",
-		"bindingStatTag": "leather",
-		"bindingShapePath": "string",
-		"bindingTextureOverride": "game:block/leather/yellow"
-	},
-	{
-		"id": "leather-normal-gray",
-		"bindingStatTag": "leather",
-		"bindingShapePath": "string",
-		"bindingTextureOverride": "game:block/leather/gray"
-	},
-	{
-		"id": "leather-normal-green",
-		"bindingStatTag": "leather",
-		"bindingShapePath": "string",
-		"bindingTextureOverride": "game:block/leather/green"
+		"bindingTextureOverride": ""
 	},
 	{
 		"id": "glueportion-pitch-hot",

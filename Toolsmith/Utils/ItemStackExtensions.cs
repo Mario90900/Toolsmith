@@ -863,8 +863,13 @@ namespace Toolsmith.Utils {
                 collectibleObject.CollectibleBehaviors.Remove(existingBehavior);
             }*/
 
-            var addedBehavior = (T)Activator.CreateInstance(typeof(T), collectibleObject);
-            collectibleObject.CollectibleBehaviors = collectibleObject.CollectibleBehaviors.Append(addedBehavior);
+            try {
+                var addedBehavior = (T)Activator.CreateInstance(typeof(T), collectibleObject);
+                collectibleObject.CollectibleBehaviors = collectibleObject.CollectibleBehaviors.Append(addedBehavior);
+            } catch (Exception ex) {
+                ToolsmithModSystem.Logger.Error("Something went wrong attempting to add a behavior to the provided Collectable with code: " + collectibleObject.Code + "\nIf this isn't an intended Tool or Part, try adding it to the blacklist to avoid this in the future!");
+                ToolsmithModSystem.Logger.Error(ex);
+            }
         }
 
         //Checks if a given CollectableObject is made of metal

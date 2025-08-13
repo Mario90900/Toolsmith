@@ -1,0 +1,87 @@
+[
+	{
+		"ingredientPattern": "KL",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"L": { "type": "item", "code": "tailorsdelight:leather-darkblue" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-leather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/leather/blue",
+					"material-overlay": "tailorsdelight:overlays/darkblue"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KL",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"L": { "type": "item", "code": "tailorsdelight:leather-darkbrown" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-leather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/leather/plain",
+					"material-overlay": "tailorsdelight:overlays/darkbrown"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KL",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"L": { "type": "item", "code": "tailorsdelight:leather-darkgreen" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-leather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/leather/green",
+					"material-overlay": "tailorsdelight:overlays/darkgreen"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KL",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"L": { "type": "item", "code": "tailorsdelight:leather-darkred" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-leather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/leather/red",
+					"material-overlay": "tailorsdelight:overlays/darkred"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KL",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"L": { "type": "item", "code": "tailorsdelight:leather-nadiyan" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-leather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "game:block/leather/plain",
+					"material-overlay": "tailorsdelight:overlays/lighten2"
+				}
+			}
+		} }
+	}
+]

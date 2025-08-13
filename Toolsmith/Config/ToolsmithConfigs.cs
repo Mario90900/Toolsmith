@@ -30,6 +30,7 @@ namespace Toolsmith.Config {
         public string TinkerableTools = ""; /*"@.*:(axe|hammer|hoe|knife|pickaxe|prospectingpick|saw|scythe|shovel|adze|mallet|awl|chisel-finishing|chisel-wedge|rubblehammer|forestaxe|grubaxe|maul|hayfork|bonepickaxe|huntingknife|paxel|chiselpick).*";*/
         public string SinglePartTools = ""; /*"@.*:(chisel|cleaver|shears|wrench|wedge|rollingpin|truechisel|handplaner|handwedge|laddermaker|paintbrush|paintscraper|pantograph|pathmaker|spyglass|creaser|flail|cangemchisel).*";*/
         public string BluntHeadedTools = ""; /*"@.*:(hammer|wrench|mallet|rubblehammer|rollingpin|handwedge|laddermaker|paintbrush|pantograph|pathmaker|spyglass|creaser|flail).*";*/
+        public string ToolsWithWoodInBindingShape = ""; //Since it's unlikely that the serverside can check the shapes post-boot, this will need to be manually populated with any tool that has parts where the Binding has Wood sections to build the tree fully. Only for Multi-Part Rendering Tools!
 
         public string PartBlacklist = ""; /*"@.*(helve|-wet-|chiseledblock|stickslayer|scrap|ruined|wfradmin|chiseled|chiselmold|wrenchmold|knifemold|armory|awl-bone|awl-horn|awl-flint|awl-obsidian|sawmill|sawbuck|sawhorse|sawdust|wooden).*";*/
 
@@ -44,6 +45,7 @@ namespace Toolsmith.Config {
             config.SinglePartTools = "";
             config.BluntHeadedTools = "";
             config.PartBlacklist = "";
+            config.ToolsWithWoodInBindingShape = "";
         }
 
         public static void AddToRegexString(List<string> entries, ref string regexString) {

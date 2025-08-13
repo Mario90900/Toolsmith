@@ -30,6 +30,7 @@ namespace Toolsmith.ToolTinkering.Items {
                 if (byEntity.World.Side == EnumAppSide.Server) {
                     byEntity.World.PlaySoundAt(new AssetLocation("sounds/player/messycraft.ogg"), byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z, null, true, 32f, 1f);
                 }
+                byEntity.StartAnimation("craftingwinding");
                 slot.Itemstack.SetPartBeingCrafted();
                 return;
             }

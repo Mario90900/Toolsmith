@@ -610,6 +610,10 @@ namespace Toolsmith.ToolTinkering {
                 float[] color;
 
                 if (ToolsmithModSystem.ClientConfig?.UseGradientForSharpnessInstead == true) {
+                    if (TinkeringUtility.GradiantNeedsInit()) {
+                        TinkeringUtility.InitializeSharpnessColorGradient();
+                    }
+
                     color = ColorUtil.ToRGBAFloats(TinkeringUtility.GetItemSharpnessColor(slot.Itemstack));
                     textCtx.SetSourceRGB(color[0], color[1], color[2]);
 

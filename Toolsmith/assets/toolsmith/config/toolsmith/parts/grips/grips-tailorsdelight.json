@@ -1,0 +1,26 @@
+[
+	{
+		"id": "cloth-darkblue",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "tailorsdelight:block/cloth/dark/darkblue"
+	},
+	{
+		"id": "cloth-darkbrown",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "tailorsdelight:block/cloth/dark/darkbrown"
+	},
+	{
+		"id": "cloth-darkgreen",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "tailorsdelight:block/cloth/dark/darkgreen"
+	},
+	{
+		"id": "cloth-darkred",
+		"gripStatTag": "cloth",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "tailorsdelight:block/cloth/dark/darkred"
+	}
+]

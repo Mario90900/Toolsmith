@@ -92,6 +92,13 @@ namespace Toolsmith.Utils {
             return match;
         }
 
+        public static bool IsToolWithWoodInBindingShapes(string tool) {
+            if (tool == null) return false;
+
+            var match = WildcardUtil.Match(ToolsmithModSystem.Config.ToolsWithWoodInBindingShape, tool);
+            return match;
+        }
+
         public static void PrepareAndSplitConfigStrings() {
             var dirtyHeadsSplit = ToolsmithModSystem.Config.ToolHeads.Split('|');
             var dirtyTinkerSplit = ToolsmithModSystem.Config.TinkerableTools.Split("|");

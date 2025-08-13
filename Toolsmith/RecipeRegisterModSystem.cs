@@ -29,6 +29,7 @@ namespace Toolsmith {
 
         //This is instantiated and populated in the ToolsmithModSystem, then used here to parse through the recipes once they have loaded, nulled afterwards for space.
         public static List<CollectibleObject> TinkerableToolsList;
+        public static List<string> ToolsWithWoodInBindingShapes;
 
         public static List<CollectibleObject> HandleList; //Now populated to generate Grid Recipes with the tool heads, handles, and bindings. Is cleared afterwards to free space, so do not expect it to remain populated.
         public static List<CollectibleObject> BindingList; //^^^
@@ -47,6 +48,7 @@ namespace Toolsmith {
             TinkerToolGridRecipes = new Dictionary<string, CollectibleObject>();
             ToolHeadSmithingRecipes = new Dictionary<string, SmithingRecipe>();
             ToolHeadTexturesCache = new Dictionary<string, ToolHeadTextureData>();
+            ToolsWithWoodInBindingShapes = new List<string>();
         }
 
         public override void AssetsFinalize(ICoreAPI api) {
@@ -67,6 +69,12 @@ namespace Toolsmith {
                         if (ConfigUtility.IsBluntTool(tool.Code)) { //If it is also a blunt tool, add the 'nodamage' Behavior as a tag to the Head as well
                             if (!ingredient.ResolvedItemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
                                 ingredient.ResolvedItemstack.Collectible.AddBehavior<CollectibleBehaviorToolBlunt>();
+                            }
+                        }
+
+                        if (ConfigUtility.IsToolWithWoodInBindingShapes(tool.Code.ToString())) {
+                            if (!ToolsWithWoodInBindingShapes.Contains(tool.FirstCodePart())) {
+                                ToolsWithWoodInBindingShapes.Add(tool.FirstCodePart());
                             }
                         }
 
@@ -278,6 +286,7 @@ namespace Toolsmith {
 
         public override void Dispose() {
             TinkerToolGridRecipes = null;
+            ToolsWithWoodInBindingShapes = null;
             ToolHeadSmithingRecipes = null;
             TinkerableToolsList = null;
             ToolHeadTexturesCache = null;

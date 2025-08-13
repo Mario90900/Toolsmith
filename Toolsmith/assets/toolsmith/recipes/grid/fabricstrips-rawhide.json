@@ -1,0 +1,42 @@
+[
+	{
+		"ingredientPattern": "KR",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"R": { "type": "item", "code": "game:hide-raw-small" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-rawhide", "quantity": 2 }
+	},
+	{
+		"ingredientPattern": "KR",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"R": { "type": "item", "code": "game:hide-raw-medium" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-rawhide", "quantity": 4 }
+	},
+	{
+		"ingredientPattern": "KR",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"R": { "type": "item", "code": "game:hide-raw-large" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-rawhide", "quantity": 6 }
+	},
+	{
+		"ingredientPattern": "KR",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"R": { "type": "item", "code": "game:hide-raw-huge" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-rawhide", "quantity": 10 }
+	}
+]

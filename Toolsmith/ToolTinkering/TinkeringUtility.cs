@@ -73,7 +73,7 @@ namespace Toolsmith.ToolTinkering {
             ColorUtil.Hex2Int("#ffffff"),
             ColorUtil.Hex2Int("#c050ff")
         };
-        static int[] SharpnessColorGradient;
+        static int[] SharpnessColorGradient = null;
 
         //This just sets the color gradiant for the Sharpness Bar. Only run this on the Client. This bit was copied over from GuiStyle vanilla code! And the hex values adjusted.
         public static void InitializeSharpnessColorGradient() {
@@ -85,6 +85,10 @@ namespace Toolsmith.ToolTinkering {
                     SharpnessColorGradient[10 * i + j] = ColorUtil.ColorOverlay(gradiantChoice[i], gradiantChoice[i + 1], (float)j / 10f);
                 }
             }
+        }
+
+        public static bool GradiantNeedsInit() {
+            return SharpnessColorGradient == null;
         }
 
         private static int[] SelectGradiantForSharpness() {
@@ -245,6 +249,8 @@ namespace Toolsmith.ToolTinkering {
 
             if (remainingHandleDur > 0) {
                 var handleToCheck = brokenToolStack.GetToolhandle();
+                handleToCheck.SetPartCurrentDurability(remainingHandleDur);
+                handleToCheck.SetPartMaxDurability(brokenToolStack.GetToolhandleMaxDurability());
                 var handlePercentDamage = handleToCheck.GetPartRemainingHPPercent();
                 float comparedPercent = 0.0f;
                 if (handleToCheck.Collectible.Code != ToolsmithConstants.DefaultHandleCode && handleToCheck.Collectible.Code != ToolsmithConstants.BoneHandleCode) { //Is this handle not a stick or bone?
@@ -255,8 +261,6 @@ namespace Toolsmith.ToolTinkering {
 
                 if (handlePercentDamage > comparedPercent) {
                     toolHandle = handleToCheck.Clone();
-                    toolHandle.SetPartCurrentDurability(remainingHandleDur);
-                    toolHandle.SetPartMaxDurability(brokenToolStack.GetToolhandleMaxDurability());
                 }
             }
             if (toolBinding != null) { //Binding doesn't always drop, only if the durability is above the threshold, and then if it's below, it breaks and if made of metal, drops some bits
@@ -374,13 +378,13 @@ namespace Toolsmith.ToolTinkering {
         public static void AssemblePartBundle(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel) {
             ItemStack bundle = new ItemStack(byEntity.World.GetItem(ToolsmithConstants.ToolBundleCode), 1);
             ItemSlot handleSlot = byEntity.LeftHandItemSlot;
-            ItemStack head = slot.Itemstack;
-            ItemStack handle = handleSlot.Itemstack;
+            ItemStack head = slot.TakeOut(1);
+            ItemStack handle = handleSlot.TakeOut(1); //Take out one here to not end up adding things to the initial stack. Whoops. That's why it was applying the render info to a full stack of handles.
 
             MultiPartRenderingHelpers.BuildToolRenderFromHeadAndHandle(bundle, head, handle);
 
-            bundle.SetToolhead(slot.TakeOut(1));
-            bundle.SetToolhandle(handleSlot.TakeOut(1)); //Take out one, and set it as the Bundle's tool handle!
+            bundle.SetToolhead(head);
+            bundle.SetToolhandle(handle); //Set the bundle's head and handle here!
 
             handleSlot.MarkDirty();
             ItemStack tempHolder = slot.Itemstack;
@@ -429,8 +433,15 @@ namespace Toolsmith.ToolTinkering {
                 craftedItemStack.Collectible.OnCreatedByCrafting(inputSlots, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
 
                 if (!bundleSlot.Itemstack.HasBundleHasGenericParts()) {
+                    var successfulBindingAdd = false;
                     if (!bindingSlot.Empty) {
-                        MultiPartRenderingHelpers.AddBindingToExistingToolRender(bundleSlot.Itemstack, bindingSlot.Itemstack);
+                        successfulBindingAdd = MultiPartRenderingHelpers.AddBindingToExistingToolRender(bundleSlot.Itemstack, bindingSlot.Itemstack);
+                    }
+                    if (!successfulBindingAdd) {
+                        var toolType = MultiPartRenderingHelpers.GetToolTypeFromHeadShapePath(head.Item.Shape.Base.Path);
+                        if (toolType != null && RecipeRegisterModSystem.ToolsWithWoodInBindingShapes.Contains(toolType)) {
+                            MultiPartRenderingHelpers.AddWoodPartsOfBindingToExistingToolRender(bundleSlot.Itemstack);
+                        }
                     }
                     craftedItemStack.SetMultiPartRenderTree(bundleSlot.Itemstack.GetMultiPartRenderTree());
                 }

@@ -1,0 +1,13 @@
+[
+	{
+		"op": "addeach",
+		"path": "/behaviorsByType/*-cloth/0/properties/textures/0/values/-",
+		"file": "toolsmith:itemtypes/fabricstrips.json",
+		"value": [
+			"tailorsdelight:block/cloth/dark/darkblue",
+			"tailorsdelight:block/cloth/dark/darkbrown",
+			"tailorsdelight:block/cloth/dark/darkgreen",
+			"tailorsdelight:block/cloth/dark/darkred"
+		]
+	}
+]

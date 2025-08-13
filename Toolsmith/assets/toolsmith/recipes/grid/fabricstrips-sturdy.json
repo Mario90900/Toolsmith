@@ -1,0 +1,12 @@
+[
+	{
+		"ingredientPattern": "KS",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"S": { "type": "item", "code": "game:leather-sturdy-plain" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-sturdy", "quantity": 2 }
+	}
+]

@@ -239,9 +239,10 @@ namespace Toolsmith.Server {
             }
 
             var treeString = RecursivelyPrintAttributes(heldItem.Attributes, 0, "");
+            treeString += "\n-- End of Attributes Tree --";
             ToolsmithModSystem.Logger.Debug("-- Printing attributes for " + heldItem.Collectible.Code + " --\n" + treeString);
 
-            return TextCommandResult.Success("Attributes printed to Log.");
+            return TextCommandResult.Success("Attributes printed to Debug Log.");
         }
 
         private static string RecursivelyPrintAttributes(ITreeAttribute tree, int depth, string treeString) {
