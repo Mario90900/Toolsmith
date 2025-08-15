@@ -60,11 +60,11 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling) {
             if (slot.Itemstack.PartBeingCrafted() && secondsUsed >= ToolsmithConstants.TimeToCraftTinkerTool - 0.1) { //If they were crafting, verify that the countdown is up, and if so, craft it (if there still is a valid offhand handle!)
                 handling = EnumHandling.PreventDefault;
+                slot.Itemstack.ClearPartBeingCrafted();
                 if (byEntity.World.Side.IsServer() && TinkeringUtility.ValidHandleInOffhand(byEntity)) {
                     TinkeringUtility.AssemblePartBundle(slot, byEntity, blockSel);
                 }
                 byEntity.StopAnimation("crafting");
-                slot.Itemstack.ClearPartBeingCrafted();
                 return;
             }
 
@@ -80,6 +80,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                     return false;
                 } else if (secondsUsed >= ToolsmithConstants.TimeToCraftTinkerTool - 0.1) {
                     handled = EnumHandling.PreventSubsequent;
+                    slot.Itemstack.ClearPartBeingCrafted();
                     if (byEntity.World.Side.IsServer() && TinkeringUtility.ValidHandleInOffhand(byEntity)) {
                         TinkeringUtility.AssemblePartBundle(slot, byEntity, blockSel);
                     }
@@ -87,7 +88,6 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
 
             byEntity.StopAnimation("crafting");
-            slot.Itemstack.ClearPartBeingCrafted();
             return base.OnHeldInteractCancel(secondsUsed, slot, byEntity, blockSel, entitySel, cancelReason, ref handled);
         }
 

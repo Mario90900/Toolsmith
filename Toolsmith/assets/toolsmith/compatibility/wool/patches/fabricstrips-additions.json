@@ -1,0 +1,47 @@
+[
+	{
+		"op": "addmerge",
+		"path": "/variantgroups/0/states/-",
+		"file": "toolsmith:itemtypes/fabricstrips.json",
+		"value": "wool"
+	},
+	{
+		"op": "addmerge",
+		"path": "/behaviorsByType/*-wool",
+		"file": "toolsmith:itemtypes/fabricstrips.json",
+		"value": [
+			{
+				"name": "toolsmith:ModularPartRenderingFromAttributes",
+				"properties": {
+					"textures": [
+						{
+							"code": "material",
+							"Default": "wool:block/cloth/wool/plain",
+							"values": [
+								"wool:block/cloth/wool/plain",
+								"game:block/cloth/linen/mordant",
+								"wool:block/cloth/wool/blue",
+								"wool:block/cloth/wool/red",
+								"wool:block/cloth/wool/yellow",
+								"wool:block/cloth/wool/green",
+								"wool:block/cloth/wool/purple",
+								"wool:block/cloth/wool/pink",
+								"wool:block/cloth/wool/orange",
+								"wool:block/cloth/wool/brown",
+								"wool:block/cloth/wool/gray",
+								"wool:block/cloth/wool/black",
+								"wool:block/cloth/wool/white",
+								"wool:block/cloth/wool/darkblue",
+								"wool:block/cloth/wool/darkbrown",
+								"wool:block/cloth/wool/darkgreen",
+								"wool:block/cloth/wool/darkred"
+							]
+						}
+					],
+					"skipCreativeInventoryAdditions": false,
+					"creativeTabs": [ "general", "items" ]
+				}
+			}
+		]
+	}
+]

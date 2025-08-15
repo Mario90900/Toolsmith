@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Config;
@@ -396,7 +397,7 @@ namespace Toolsmith.Client {
             return retVal;
         }
 
-        public static void BuildToolRenderFromAllSeparateParts(ItemStack tool, ItemStack head, ItemStack handle, ItemStack binding = null) {
+        public static void BuildToolRenderFromAllSeparateParts(ItemStack tool, ItemStack head, ItemStack handle, ItemStack binding = null) { //Always try to run this BEFORE putting the tool together! This will hopefully ensure that the proper render data is placed on the items themselves before they are added to the Tool's attributes.
             var toolType = GetToolTypeFromHeadShapePath(head.Item.Shape.Base.Path);
             if (toolType == null) {
                 return;
@@ -416,6 +417,7 @@ namespace Toolsmith.Client {
             
             if (!successfulBindingAdd && RecipeRegisterModSystem.ToolsWithWoodInBindingShapes.Contains(toolType)) {
                 AddWoodPartsOfBindingToExistingToolRender(tool);
+                successfulBindingAdd = true;
             }
         }
 
@@ -513,15 +515,17 @@ namespace Toolsmith.Client {
                     var genericHandlePartTree = handle.GetPartRenderTree();
                     var genericHandleTextureTree = genericHandlePartTree.GetPartTextureTree();
                     handlePartTree.SetPartTextureTree(genericHandleTextureTree);
+                    handle.RemovePartRenderTree();
                 }
                 handlePartAndTransformTree.SetPartRenderTree(handlePartTree);
                 toolMultiPartTree.SetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName, handlePartAndTransformTree);
+                handle.GetMultiPartRenderTree().SetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName, handlePartAndTransformTree);
             }
 
             tool.SetMultiPartRenderTree(toolMultiPartTree);
         }
 
-        public static bool AddBindingToExistingToolRender(ItemStack tool, ItemStack binding) {
+        public static bool AddBindingToExistingToolRender(ItemStack tool, ItemStack binding, string toolType = null) {
             BindingPartDefines bindingPart = ToolsmithModSystem.Stats.BindingParts.TryGetValue(binding.Collectible.Code.Path);
             if (bindingPart.bindingShapePath == "") { //If the binding has no shape path, IE currently Glue does not have visuals and it makes sense, just avoid adding any render data for the binding.
                 return false; //This should just prevent actually attempting to render anything for the binding or failing to find anything and hitting the fallback.
@@ -529,6 +533,9 @@ namespace Toolsmith.Client {
             BindingStatDefines bindingStats = ToolsmithModSystem.Stats.BindingStats.TryGetValue(bindingPart.bindingStatTag);
 
             var toolMultiPartTree = tool.GetMultiPartRenderTree();
+            if (toolType == null) {
+                toolType = GetToolTypeFromHeadShapePath(toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHeadName).GetPartRenderTree().GetPartShapePath());
+            }
 
             var bindingTransformAndPartTree = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartBindingName);
             bindingTransformAndPartTree.SetPartOffsetX(0);
@@ -539,8 +546,20 @@ namespace Toolsmith.Client {
             bindingTransformAndPartTree.SetPartRotationZ(0);
 
             var bindingPartTree = bindingTransformAndPartTree.GetPartRenderTree();
+            var bindingTextureTree = bindingPartTree.GetPartTextureTree();
+            if (binding.HasPartRenderTree()) {
+                var bindingRenderTree = binding.GetPartRenderTree();
+                var bindingTexTree = bindingRenderTree.GetPartTextureTree();
+                bindingTextureTree = bindingTexTree;
+            }
+
             if (toolMultiPartTree.HasPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName)) {
-                var handlePath = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName).GetPartRenderTree().GetPartShapePath();
+                var handlePartTree = toolMultiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName).GetPartRenderTree();
+                var handlePath = handlePartTree.GetPartShapePath();
+                if (handlePath == null) { //Just in case, if somehow the handlePath is unset, that ain't good, hah. Can't really continue here, so this might help to prevent a crash or error.
+                    return false;
+                }
+
                 bool isMetal = false;
                 if (tool.Item is ItemTinkerToolParts) {
                     isMetal = tool.GetToolhead().Collectible.IsCraftableMetal();
@@ -549,14 +568,14 @@ namespace Toolsmith.Client {
                 }
                 var bindingPath = ConvertFromTypedHandlePathToBindingShapePath(handlePath, bindingPart.bindingShapePath, isMetal);
                 bindingPartTree.SetPartShapePath(bindingPath);
+
+                var woodTexPath = handlePartTree.GetPartTextureTree().GetPartTexturePathFromKey("wood");
+                if (woodTexPath != null) {
+                    bindingTextureTree.SetPartTexturePathFromKey("wood", woodTexPath);
+                }
             } //Might need to add an else clause here to catch any case that might not have a handle tree? But that shouldn't ever happen, I believe. Well, intentionally at least!
 
-            var bindingTextureTree = bindingPartTree.GetPartTextureTree();
-            if (binding.HasPartRenderTree()) {
-                var bindingRenderTree = binding.GetPartRenderTree();
-                var bindingTexTree = bindingRenderTree.GetPartTextureTree();
-                bindingTextureTree = bindingTexTree;
-            } else if (bindingPart.bindingTextureOverride != "") {
+            if (bindingPart.bindingTextureOverride != "") {
                 bindingTextureTree.SetPartTexturePathFromKey("material", bindingPart.bindingTextureOverride);
             } else {
                 bindingTextureTree.SetPartTexturePathFromKey("material", bindingStats.texturePath);

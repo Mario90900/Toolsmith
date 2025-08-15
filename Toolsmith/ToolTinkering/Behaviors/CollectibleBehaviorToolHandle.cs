@@ -129,16 +129,19 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 }
             } else if (handleSlot != null && gripOrTreatmentSlot != null) {
                 outputSlot.Itemstack.Attributes = handleSlot.Itemstack.Attributes.Clone();
+                ITreeAttribute multiPartTree = outputSlot.Itemstack.GetMultiPartRenderTree();
+                ITreeAttribute handlePartAndTransformTree = multiPartTree.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
+
                 if (handleSlot.Itemstack.HasPartRenderTree()) { //If this is a spawned-in handle from creative, this will catch it and convert from a PartRenderTree to a MultiPartRenderTree.
                     ITreeAttribute handlePartTree = handleSlot.Itemstack.GetPartRenderTree().Clone();
                     outputSlot.Itemstack.RemovePartRenderTree();
-
-                    ITreeAttribute multiPartTreeTemp = outputSlot.Itemstack.GetMultiPartRenderTree();
-                    ITreeAttribute handlePartAndTransformTree = multiPartTreeTemp.GetPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName);
                     handlePartAndTransformTree.SetPartRenderTree(handlePartTree);
+                } else { //This should catch the case of a Bone or other handle type and build a possible shape string for them based on it's name.
+                    HandlePartDefines handleStats = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(outputSlot.Itemstack.Collectible.Code.Path);
+                    ITreeAttribute handlePartTree = handlePartAndTransformTree.GetPartRenderTree();
+                    handlePartTree.SetPartShapePath(handleStats.handleShapePath);
                 }
-                ITreeAttribute multiPartTree = outputSlot.Itemstack.GetMultiPartRenderTree();
-
+                
                 if (ToolsmithModSystem.Stats.GripParts.ContainsKey(gripOrTreatmentSlot.Itemstack.Collectible.Code.Path)) {
                     if (handleSlot.Itemstack.HasHandleGripTag() || handleSlot.Itemstack.HasWetTreatment()) {
                         outputSlot.Itemstack = null;

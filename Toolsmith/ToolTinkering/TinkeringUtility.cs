@@ -261,6 +261,9 @@ namespace Toolsmith.ToolTinkering {
 
                 if (handlePercentDamage > comparedPercent) {
                     toolHandle = handleToCheck.Clone();
+                    /*if (toolHandle.HasMultiPartRenderTree()) {
+
+                    }*/
                 }
             }
             if (toolBinding != null) { //Binding doesn't always drop, only if the durability is above the threshold, and then if it's below, it breaks and if made of metal, drops some bits
@@ -540,14 +543,14 @@ namespace Toolsmith.ToolTinkering {
                     }
                 };
 
-                craftedItemStack.Collectible.ConsumeCraftingIngredients(sortedSlots, placeholderOutput, DummyRecipe);
-                craftedItemStack.Collectible.OnCreatedByCrafting(sortedSlots, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
-
                 if (sortedSlots.Length > 2) {
                     MultiPartRenderingHelpers.BuildToolRenderFromAllSeparateParts(craftedItemStack, sortedSlots[0].Itemstack, sortedSlots[1].Itemstack, sortedSlots[2].Itemstack);
                 } else {
                     MultiPartRenderingHelpers.BuildToolRenderFromAllSeparateParts(craftedItemStack, sortedSlots[0].Itemstack, sortedSlots[1].Itemstack);
                 }
+
+                craftedItemStack.Collectible.ConsumeCraftingIngredients(sortedSlots, placeholderOutput, DummyRecipe);
+                craftedItemStack.Collectible.OnCreatedByCrafting(sortedSlots, placeholderOutput, DummyRecipe); //Hopefully call this just like it would if properly crafted in the grid!
 
                 sortedSlots[0].TakeOut(1);
                 sortedSlots[0].MarkDirty();

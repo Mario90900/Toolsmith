@@ -10,7 +10,7 @@
     {
 		"id": "bone",
 		"handleStatTag": "bone",
-		"canHaveGrip": false,
+		"canHaveGrip": true,
 		"handleShapePath": "toolsmith:shapes/item/parts/handles/bone/handle",
 		"canBeTreated": false,
 		"dryingTimeMult": 1.0
