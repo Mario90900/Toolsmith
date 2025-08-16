@@ -156,7 +156,9 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 grindstoneEnt.ToggleHoningSound(false);
             }
 
-            byPlayer.Entity.RightHandItemSlot.Itemstack.ClearGrindstoneInUse();
+            if (!byPlayer.Entity.RightHandItemSlot.Empty) {
+                byPlayer.Entity.RightHandItemSlot.Itemstack.ClearGrindstoneInUse();
+            }
 
             return true;
         }
@@ -169,7 +171,9 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 grindstoneEnt.ToggleHoningSound(false);
             }
 
-            byPlayer.Entity.RightHandItemSlot.Itemstack.ClearGrindstoneInUse();
+            if (!byPlayer.Entity.RightHandItemSlot.Empty) {
+                byPlayer.Entity.RightHandItemSlot.Itemstack.ClearGrindstoneInUse();
+            }
         }
 
         public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode) {

@@ -415,7 +415,7 @@ namespace Toolsmith.Client {
                 successfulBindingAdd = AddBindingToExistingToolRender(tool, binding);
             }
             
-            if (!successfulBindingAdd && RecipeRegisterModSystem.ToolsWithWoodInBindingShapes.Contains(toolType)) {
+            if (!successfulBindingAdd && ToolsmithModSystem.ToolsWithWoodInBindingShapes.Contains(toolType)) {
                 AddWoodPartsOfBindingToExistingToolRender(tool);
                 successfulBindingAdd = true;
             }

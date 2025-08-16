@@ -162,7 +162,7 @@ namespace Toolsmith.ToolTinkering.Items {
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
             ToggleHoningSound(false, byEntity);
 
-            if (slot.Empty || slot.Itemstack.WhetstoneInUse()) {
+            if (!slot.Empty && slot.Itemstack.WhetstoneInUse()) {
                 if (byEntity.World.Side.IsServer() && slot.Itemstack.WhetstoneDoneSharpen()) {
                     byEntity.World.PlaySoundAt(new AssetLocation("toolsmith:sounds/honing-finish.ogg"), byEntity, randomizePitch: false);
                     slot.Itemstack.ClearWhetstoneDoneSharpen();
@@ -183,7 +183,7 @@ namespace Toolsmith.ToolTinkering.Items {
 
             ToggleHoningSound(false, byEntity);
             
-            if (slot.Empty || slot.Itemstack.WhetstoneInUse()) {
+            if (!slot.Empty && slot.Itemstack.WhetstoneInUse()) {
                 slot.Itemstack.ClearWhetstoneInUse();
             }
 

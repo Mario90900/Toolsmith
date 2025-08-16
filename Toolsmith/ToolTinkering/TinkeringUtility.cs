@@ -442,7 +442,7 @@ namespace Toolsmith.ToolTinkering {
                     }
                     if (!successfulBindingAdd) {
                         var toolType = MultiPartRenderingHelpers.GetToolTypeFromHeadShapePath(head.Item.Shape.Base.Path);
-                        if (toolType != null && RecipeRegisterModSystem.ToolsWithWoodInBindingShapes.Contains(toolType)) {
+                        if (toolType != null && ToolsmithModSystem.ToolsWithWoodInBindingShapes.Contains(toolType)) {
                             MultiPartRenderingHelpers.AddWoodPartsOfBindingToExistingToolRender(bundleSlot.Itemstack);
                         }
                     }

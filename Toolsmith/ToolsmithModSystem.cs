@@ -54,6 +54,7 @@ namespace Toolsmith {
         public const string OffhandDominantInteractionUsePatchCategory = "offhandDominantInteractionUse";
 
         public static List<string> IgnoreCodes;
+        public static List<string> ToolsWithWoodInBindingShapes; //Used on both sides - since Grid Crafting is clientside.
         public static Dictionary<string, int> BindingTiers; //This is only initialized on the Client side! Used for just generating and storing the various bindings tier levels to display on their tooltips.
 
         public override void StartPre(ICoreAPI api) {
@@ -69,6 +70,7 @@ namespace Toolsmith {
             TryToLoadClientConfig(api);
             TryToLoadStats(api);
             IgnoreCodes = new List<string>();
+            ToolsWithWoodInBindingShapes = new List<string>();
 
             ConfigUtility.PrepareAndSplitConfigStrings(); //After this point, mods and anyone can add to the config strings!
         }
@@ -154,6 +156,22 @@ namespace Toolsmith {
                 Logger.Error("Failed to retrieve part stats from server, running with default settings. This may cause problems for a proper server-client separation.");
                 Stats = new ToolsmithPartStats();
             }
+
+            string woodInBindingBase64String = api.World.Config.GetString(ToolsmithConstants.ToolsmithWoodInToolBindingsData, "");
+            if (woodInBindingBase64String != "") {
+                try {
+                    byte[] woodInBindingBytes = Convert.FromBase64String(woodInBindingBase64String);
+                    string woodInBindingJson = System.Text.Encoding.UTF8.GetString(woodInBindingBytes);
+                    ToolsWithWoodInBindingShapes = JsonConvert.DeserializeObject<List<string>>(woodInBindingJson);
+                    Logger.Notification("Recieved the List of tools with wood in their bindings from the server!");
+                } catch (Exception ex) {
+                    Logger.Error("Failed to deserialize List of tools with Wood in their bindings from the server: " + ex + "\nAttempting clientside fallback method instead.");
+                    ClientAttemptBasicWoodInBindingsInit(api);
+                }
+            } else {
+                Logger.Error("Failed to retrieve the List of tools with wood in their bindings from the server. Attempting fallback method.");
+                ClientAttemptBasicWoodInBindingsInit(api);
+            }
         }
 
         public override void AssetsFinalize(ICoreAPI api) {
@@ -184,12 +202,12 @@ namespace Toolsmith {
             if (Config.PrintAllParsedToolsAndParts) {
                 SinglePartToolsList = new List<CollectibleObject>();
             }
-            foreach (var t in api.World.Collectibles.Where(t => t?.Code != null && t?.ItemClass == EnumItemClass.Item)) { //A tool/part should likely be only one of these!
+            foreach (var t in api.World.Collectibles.Where(t => t?.Code != null)) { //A tool/part should likely be only one of these!
                 if (ConfigUtility.IsTinkerableTool(t.Code.ToString()) && !(ConfigUtility.IsToolHead(t.Code.ToString())) && !(ConfigUtility.IsOnBlacklist(t.Code.ToString()))) { //Any tool that you actually craft from a Tool Head to create!
                     if (Config.DebugMessages) {
                         Logger.Debug("Attempting to register " + t.Code.ToString() + " as a Tinkerable Tool.");
                     }
-                    if (!t.HasBehavior<ModularPartRenderingFromAttributes>()) {
+                    if (t.ItemClass == EnumItemClass.Item && !t.HasBehavior<ModularPartRenderingFromAttributes>()) {
                         t.AddBehavior<ModularPartRenderingFromAttributes>();
                     }
                     if (!t.HasBehavior<CollectibleBehaviorTinkeredTools>()) {
@@ -200,6 +218,12 @@ namespace Toolsmith {
                             t.AddBehavior<CollectibleBehaviorToolBlunt>();
                         }
                     }
+                    if (ConfigUtility.IsToolWithWoodInBindingShapes(t.Code.ToString())) {
+                        if (!ToolsWithWoodInBindingShapes.Contains(t.FirstCodePart())) {
+                            ToolsWithWoodInBindingShapes.Add(t.FirstCodePart());
+                        }
+                    }
+
                     RecipeRegisterModSystem.TinkerableToolsList.Add(t);
                     continue;
                 } else if (ConfigUtility.IsSinglePartTool(t.Code.ToString()) && !(ConfigUtility.IsOnBlacklist(t.Code.ToString()))) { //A 'Smithed' tool is one that once you finish the anvil smithing recipe, the tool is done. Shears, Wrench, or Chisel in vanilla! Add the 'Smithed' Tool Behavior so they can gain the Grinding interaction to maintain them.
@@ -222,7 +246,7 @@ namespace Toolsmith {
                     if (Config.DebugMessages) {
                         Logger.Debug("Attempting to register " + t.Code.ToString() + " as a Tool Handle.");
                     }
-                    if (!t.HasBehavior<ModularPartRenderingFromAttributes>()) {
+                    if (t.ItemClass == EnumItemClass.Item && !t.HasBehavior<ModularPartRenderingFromAttributes>()) {
                         t.AddBehavior<ModularPartRenderingFromAttributes>();
                     }
                     if (!t.HasBehavior<CollectibleBehaviorToolHandle>()) {
@@ -252,6 +276,8 @@ namespace Toolsmith {
                     RecipeRegisterModSystem.TreatmentList.Add(t);
                 }
             }
+
+            SaveWoodInToolBindingToWorld(api);
 
             if (Config.PrintAllParsedToolsAndParts) { //Mainly left in for debugging purposes since it's kinda useful to just let it run through everything and see what might be going wrong and where... Especially when adding other mods
                 Logger.Debug("Single Part Tools:");
@@ -461,6 +487,13 @@ namespace Toolsmith {
             api.World.Config.SetString(ToolsmithConstants.ToolsmithStatsKey, statsBase64String);
         }
 
+        private void SaveWoodInToolBindingToWorld(ICoreAPI api) {
+            string woodInBindingJson = JsonConvert.SerializeObject(ToolsWithWoodInBindingShapes);
+            byte[] woodInBindingBytes = System.Text.Encoding.UTF8.GetBytes(woodInBindingJson);
+            string woodInBindingBase64String = Convert.ToBase64String(woodInBindingBytes);
+            api.World.Config.SetString(ToolsmithConstants.ToolsmithWoodInToolBindingsData, woodInBindingBase64String);
+        }
+
         private void SaveConfigAfterJsonAdditions(ICoreAPI api) {
             try {
                 api.StoreModConfig(Config, ConfigUtility.ConfigFilename);
@@ -490,6 +523,14 @@ namespace Toolsmith {
                 }
             } else {
                 Logger.Error("Found Smithing Plus loaded, but could not retrieve the Core ModLoader for it! Auto compatability will not work.");
+            }
+        }
+
+        //A bit of a fallback method so it at least gets populated with SOMETHING. While it originally is making a Regex method, it's easiest to just put the tool's code in here. This will likely let it work for most cases even if it has to use this method?
+        private void ClientAttemptBasicWoodInBindingsInit(ICoreAPI api) {
+            Dictionary<AssetLocation, List<string>> toolsWithWoodInBindingShapes = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/woodinbindingshapes");
+            foreach ((AssetLocation loc, List<string> tools) in toolsWithWoodInBindingShapes) {
+                ToolsWithWoodInBindingShapes.AddRange(tools);
             }
         }
 
@@ -610,6 +651,7 @@ namespace Toolsmith {
             ClientConfig = null;
             Stats = null;
             IgnoreCodes = null;
+            ToolsWithWoodInBindingShapes = null;
             base.Dispose();
         }
     }

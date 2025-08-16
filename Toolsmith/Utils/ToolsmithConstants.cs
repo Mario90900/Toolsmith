@@ -48,6 +48,7 @@ namespace Toolsmith.Utils {
 
         public const string ToolsmithConfigKey = "ToolsmithConfigs";
         public const string ToolsmithStatsKey = "ToolsmithPartStats";
+        public const string ToolsmithWoodInToolBindingsData = "ToolsmithWoodInBindingsList";
 
         //The keys for accessing the default part entries themselves, to recieve their stat key blocks
         public const string DefaultHandlePartKey = "stick";
