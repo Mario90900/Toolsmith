@@ -351,6 +351,20 @@ namespace Toolsmith.ToolTinkering {
 
             return true;
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CollectibleObject.Equals))]
+        private static bool EqualsModularPartPrefix(ItemStack thisStack, ItemStack otherStack, ref bool __result, params string[] ignoreAttributeSubTrees) {
+            if (ignoreAttributeSubTrees != null && thisStack.Collectible.HasBehavior<ModularPartRenderingFromAttributes>() && thisStack.Collectible.MaxStackSize > 1) {
+                if (thisStack.Class == otherStack.Class && thisStack.Id == otherStack.Id) {
+                    var newIgnoreAttributes = ignoreAttributeSubTrees.Remove(ToolsmithAttributes.ModularMultiPartDataTree).Remove(ToolsmithAttributes.ModularPartDataTree);
+                    __result = thisStack.Attributes.Equals(ToolsmithModSystem.Api.World, otherStack.Attributes, newIgnoreAttributes);
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 
     [HarmonyPatch(typeof(CollectibleObject))]

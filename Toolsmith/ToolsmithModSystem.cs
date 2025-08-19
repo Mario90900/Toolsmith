@@ -40,6 +40,7 @@ namespace Toolsmith {
         public static ToolsmithPartStats Stats;
         public static int GradientSelection = 0;
         public static bool DoesConfigNeedRegen = false;
+        public static bool IgnoreAttributesAdded = false;
 
         public const string ToolTinkeringDamagePatchCategory = "toolTinkeringDamage";
         public const string ToolTinkeringToolUseStatsPatchCategory = "toolTinkeringToolUseStats";
@@ -85,7 +86,18 @@ namespace Toolsmith {
             }
 
             //This is important to let the Treasure Hunter Trader accept a Toolsmith Pick to get the map for Story Content! Thank you Item Rarity for also having the issue and both leaving a comment in their code and pushing the commit not too long before I had the same problem :P
-            GlobalConstants.IgnoredStackAttributes = GlobalConstants.IgnoredStackAttributes.Append(ToolsmithAttributes.ToolsmithIgnoreAttributesArray);
+            if (!IgnoreAttributesAdded) { //This bool is entirely for checking if it's singleplayer or not, since we don't want to run it twice if it is. That'll just double up the attributes in the list.
+                var globalLen = GlobalConstants.IgnoredStackAttributes.Length;
+                string[] ignoreTheseAttributes = new string[globalLen + ToolsmithAttributes.ToolsmithIgnoreAttributesArray.Length];
+                for (int i = 0; i < globalLen; i++) {
+                    ignoreTheseAttributes[i] = GlobalConstants.IgnoredStackAttributes[i];
+                }
+                for (int i = globalLen; i < ToolsmithAttributes.ToolsmithIgnoreAttributesArray.Length + globalLen; i++) {
+                    ignoreTheseAttributes[i] = ToolsmithAttributes.ToolsmithIgnoreAttributesArray[i - globalLen];
+                }
+                GlobalConstants.IgnoredStackAttributes = ignoreTheseAttributes;
+                IgnoreAttributesAdded = true;
+            }
 
             //Tool Tinkering general Behaviors
             api.RegisterCollectibleBehaviorClass($"{ModId}:TinkeredTools", typeof(CollectibleBehaviorTinkeredTools));

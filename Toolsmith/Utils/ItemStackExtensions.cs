@@ -27,8 +27,17 @@ namespace Toolsmith.Utils {
                 itemStack.ResetNullHead(ToolsmithModSystem.Api.World);
             }
             var head = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHead);
-            head.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
-            return head.Clone();
+            var gotPart = false;
+            if (head != null) {
+                gotPart = head.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+            }
+
+            if (gotPart) {
+                return head.Clone();
+            } else {
+                ToolsmithModSystem.Logger.Error("Unable to fully get and resolve Toolhead for ItemStack " + itemStack.Collectible.Code + " | Returning a Candle instead to prevent null errors. If a player recieves this, this is likely why!");
+                return new ItemStack(ToolsmithModSystem.Api.World.GetItem(new AssetLocation(ToolsmithConstants.FallbackHeadCode)), 1);
+            }
         }
 
         public static ItemStack? GetToolheadForData(this ItemStack itemStack) { //A version of the above call that specifically is to be used in cases where it is not mandatory for it to be set, and resetting it would be bad. It's either not a tool, or this is just for informational purposes.
@@ -36,8 +45,17 @@ namespace Toolsmith.Utils {
                 return null;
             }
             var head = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHead);
-            head.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
-            return head.Clone();
+            var gotPart = false;
+            if (head != null) {
+                gotPart = head.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+            }
+
+            if (gotPart) {
+                return head.Clone();
+            } else {
+                ToolsmithModSystem.Logger.Error("Unable to fully get and resolve ToolheadForData for ItemStack " + itemStack.Collectible.Code + " | Returning Null instead, should be handled on the calling side, as it is possible to return null before this.");
+                return null;
+            }
         }
 
         public static void SetToolhead(this ItemStack itemStack, ItemStack toolhead) {
@@ -153,13 +171,22 @@ namespace Toolsmith.Utils {
             }
             // !!! Test for old handles here, and change them to new ones if they are pulled from a tool !!!
             var handle = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHandle);
-            handle.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+            var gotPart = false;
+            if (handle != null) {
+                gotPart = handle.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+            }
 
             //With the Old Handles removed, this might be pointless to remain in the future!
             /*if (handle.Collectible.Code.Path.StartsWith(ToolsmithAttributes.OldHandlePrefix)) { //If we find an old handle it's time to convert it to the new ones. Remove this bit later on after some time.
                 handle = CheckForOldHandleAndConvert(handle);
             }*/
-            return handle.Clone();
+
+            if (gotPart) {
+                return handle.Clone();
+            } else {
+                ToolsmithModSystem.Logger.Error("Unable to fully get and resolve ToolHandle for ItemStack " + itemStack.Collectible.Code + " | Returning a Stick instead to prevent null errors. If a player recieves this, this is likely why!");
+                return new ItemStack(ToolsmithModSystem.Api.World.GetItem(new AssetLocation(ToolsmithConstants.DefaultHandleCode)), 1);
+            }
         }
 
         public static ItemStack? GetToolhandleForData(this ItemStack itemStack) { //A version of the above call that specifically is to be used in cases where it is not mandatory for it to be set, and resetting it would be bad. It's either not a tool, or this is just for informational purposes.
@@ -167,8 +194,17 @@ namespace Toolsmith.Utils {
                 return null;
             }
             var handle = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolHandle);
-            handle.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
-            return handle.Clone();
+            var gotPart = false;
+            if (handle != null) {
+                gotPart = handle.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+            }
+
+            if (gotPart) {
+                return handle.Clone();
+            } else {
+                ToolsmithModSystem.Logger.Error("Unable to fully get and resolve ToolHandleForData for ItemStack " + itemStack.Collectible.Code + " | Returning Null instead, should be handled on the calling side, as it is possible to return null before this.");
+                return null;
+            }
         }
 
         public static void SetToolhandle(this ItemStack itemStack, ItemStack toolhandle) {
@@ -284,8 +320,17 @@ namespace Toolsmith.Utils {
                 return null;
             }
             var binding = itemStack.Attributes.GetItemstack(ToolsmithAttributes.ToolBinding);
-            binding.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
-            return binding.Clone();
+            var gotPart = false;
+            if (binding != null) {
+                gotPart = binding.ResolveBlockOrItem(ToolsmithModSystem.Api.World);
+            }
+
+            if (gotPart) {
+                return binding.Clone();
+            } else {
+                ToolsmithModSystem.Logger.Error("Unable to fully get and resolve ToolBinding for ItemStack " + itemStack.Collectible.Code + " | Returning Null instead, should be handled on the calling side, as it is possible to return null before this.");
+                return null;
+            }
         }
 
         public static void SetToolbinding(this ItemStack itemStack, ItemStack binding) {
