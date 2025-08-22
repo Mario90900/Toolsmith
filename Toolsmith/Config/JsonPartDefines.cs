@@ -7,10 +7,15 @@ using System.Threading.Tasks;
 
 namespace Toolsmith.Config {
 
-    public class HandlePartDefines { //The ID is mandatory for each of these, it should always be the code of the item as written in the ItemTypes defines. It becomes the Dictionary entry and the search parameter to get that part.
+    public class ToolsmithPart {
+        [JsonProperty]
+        public bool enabled = true;
+
         [JsonProperty]
         public string id = null;
+    }
 
+    public class HandlePartDefines : ToolsmithPart { //The ID is mandatory for each of these, it should always be the code of the item as written in the ItemTypes defines. It becomes the Dictionary entry and the search parameter to get that part.
         [JsonProperty]
         public string handleStatTag = null; //The associated stat block id for this handle. Also must be set to something!
 
@@ -27,10 +32,7 @@ namespace Toolsmith.Config {
         public float dryingTimeMult = 1.0f; //If this handle can be treated, this is a multiplier on all treatments drying times when applied to this handle.
     }
 
-    public class GripPartDefines {
-        [JsonProperty]
-        public string id = null;
-
+    public class GripPartDefines : ToolsmithPart {
         [JsonProperty]
         public string gripStatTag = null;
 
@@ -41,10 +43,7 @@ namespace Toolsmith.Config {
         public string gripTextureOverride = ""; //If the Grip has a Shape Path for Multi-Part rendering, setting this to a path to a texture will tell the Multi-Part system to use this texture in place of whatever the Stat Block has for the 'base' texture. IE the colored Leathers is a good use case example!
     }
 
-    public class TreatmentPartDefines { 
-        [JsonProperty]
-        public string id = null;
-
+    public class TreatmentPartDefines : ToolsmithPart {
         [JsonProperty]
         public string treatmentStatTag = null;
 
@@ -58,10 +57,7 @@ namespace Toolsmith.Config {
         public float litersUsed = 0.0f; //If the above is true, how many Liters are consumed on application?
     }
 
-    public class BindingPartDefines {
-        [JsonProperty]
-        public string id = null;
-
+    public class BindingPartDefines : ToolsmithPart {
         [JsonProperty]
         public string bindingStatTag = null;
 

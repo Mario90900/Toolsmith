@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace Toolsmith.Config {
     //Most stats here are required and expected unless otherwise stated!
-    public class HandleStatDefines { //In an effort to keep things similarly vanilla for durability values, the baseHPfactor is a multiplier on the base durability of the tool-to-be-crafted
+    public class ToolsmithStat {
         [JsonProperty]
         public string id = null; //An ID to help access and find what it is - make sure this is the same as the Dictionary Key. It might help to keep an id associated with the stats.
+    }
 
+    public class HandleStatDefines : ToolsmithStat { //In an effort to keep things similarly vanilla for durability values, the baseHPfactor is a multiplier on the base durability of the tool-to-be-crafted
         [JsonProperty]
         public float baseHPfactor = -1.0f; //It's the main part of Handles and Bindings.
         
@@ -24,10 +26,7 @@ namespace Toolsmith.Config {
         public float speedBonus = -1.0f; //Advanced handles can make it easier to use the tool as well!
     }
 
-    public class GripStatDefines {
-        [JsonProperty]
-        public string id = null;
-
+    public class GripStatDefines : ToolsmithStat {
         [JsonProperty]
         public string texturePath = "plain"; //The default here is effectively no path.
 
@@ -41,10 +40,7 @@ namespace Toolsmith.Config {
         public float chanceToDamage = -1.0f; //And more efficiently too. Gives the handle a chance to ignore damage!
     }
 
-    public class TreatmentStatDefines {
-        [JsonProperty]
-        public string id;
-
+    public class TreatmentStatDefines : ToolsmithStat {
         [JsonProperty]
         public string langTag = ""; //A tag to set for localization purposes that describes the treatment on the tool IE: "treatment-wax" for wax
 
@@ -52,10 +48,7 @@ namespace Toolsmith.Config {
         public float handleHPbonus = -1.0f; //Treating the handle makes it last longer
     }
 
-    public class BindingStatDefines {
-        [JsonProperty]
-        public string id = null;
-
+    public class BindingStatDefines : ToolsmithStat {
         [JsonProperty]
         public string texturePath = "plain";
 

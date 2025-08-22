@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Config;
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.Util;
 using Vintagestory.Common;
 
@@ -35,32 +36,48 @@ namespace Toolsmith.Utils {
             return match;
         }
 
-        public static bool IsToolHandle(string toolHandle, Dictionary<string, HandlePartDefines>.KeyCollection keys) {
+        public static bool IsToolHandle(string toolHandle, Dictionary<string, HandlePartDefines> dict) {
             if (toolHandle == null) return false;
 
-            var match = keys.Contains(toolHandle);
-            return match;
+            var match = dict.TryGetValue(toolHandle);
+            if (match == null) {
+                return false;
+            } else {
+                return match.enabled;
+            }
         }
 
-        public static bool IsToolBinding(string toolBinding, Dictionary<string, BindingPartDefines>.KeyCollection keys) {
+        public static bool IsToolBinding(string toolBinding, Dictionary<string, BindingPartDefines> dict) {
             if (toolBinding == null) return false;
 
-            var match = keys.Contains(toolBinding);
-            return match;
+            var match = dict.TryGetValue(toolBinding);
+            if (match == null) {
+                return false;
+            } else {
+                return match.enabled;
+            }
         }
 
-        public static bool IsValidGripMaterial(string gripMat, Dictionary<string, GripPartDefines>.KeyCollection keys) {
+        public static bool IsValidGripMaterial(string gripMat, Dictionary<string, GripPartDefines> dict) {
             if (gripMat == null) return false;
 
-            var match = keys.Contains(gripMat);
-            return match;
+            var match = dict.TryGetValue(gripMat);
+            if (match == null) {
+                return false;
+            } else {
+                return match.enabled;
+            }
         }
 
-        public static bool IsValidTreatmentMaterial(string treatmentMat, Dictionary<string,  TreatmentPartDefines>.KeyCollection keys) {
+        public static bool IsValidTreatmentMaterial(string treatmentMat, Dictionary<string,  TreatmentPartDefines> dict) {
             if (treatmentMat == null) return false;
 
-            var match = keys.Contains(treatmentMat);
-            return match;
+            var match = dict.TryGetValue(treatmentMat);
+            if (match == null) {
+                return false;
+            } else {
+                return match.enabled;
+            }
         }
 
         public static bool IsTinkerableTool(string tool) {

@@ -200,10 +200,10 @@ namespace Toolsmith {
 
             ProcessJsonPartsAndStats(api);
 
-            var handleKeys = Stats.BaseHandleParts.Keys;
-            var bindingKeys = Stats.BindingParts.Keys;
-            var gripKeys = Stats.GripParts.Keys;
-            var treatmentKeys = Stats.TreatmentParts.Keys;
+            var handleDict = Stats.BaseHandleParts;
+            var bindingDict = Stats.BindingParts;
+            var gripDict = Stats.GripParts;
+            var treatmentDict = Stats.TreatmentParts;
             RecipeRegisterModSystem.HandleList = new List<CollectibleObject>();
             RecipeRegisterModSystem.BindingList = new List<CollectibleObject>();
             RecipeRegisterModSystem.GripList = new List<CollectibleObject>();
@@ -254,7 +254,7 @@ namespace Toolsmith {
                         SinglePartToolsList.Add(t);
                     }
                     continue;
-                } else if (ConfigUtility.IsToolHandle(t.Code.Path, handleKeys)) { //Probably don't need the blacklist anymore, since can assume the configs have the exact Path
+                } else if (ConfigUtility.IsToolHandle(t.Code.Path, handleDict)) { //Probably don't need the blacklist anymore, since can assume the configs have the exact Path
                     if (Config.DebugMessages) {
                         Logger.Debug("Attempting to register " + t.Code.ToString() + " as a Tool Handle.");
                     }
@@ -268,7 +268,7 @@ namespace Toolsmith {
                         t.StorageFlags += 0x100;
                     }
                     RecipeRegisterModSystem.HandleList.Add(t);
-                } else if (ConfigUtility.IsToolBinding(t.Code.Path, bindingKeys)) {
+                } else if (ConfigUtility.IsToolBinding(t.Code.Path, bindingDict)) {
                     if (Config.DebugMessages) {
                         Logger.Debug("Attempting to register " + t.Code.ToString() + " as a Tool Binding.");
                     }
@@ -281,10 +281,10 @@ namespace Toolsmith {
                     RecipeRegisterModSystem.BindingList.Add(t);
                 }
 
-                if (ConfigUtility.IsValidGripMaterial(t.Code.Path, gripKeys)) {
+                if (ConfigUtility.IsValidGripMaterial(t.Code.Path, gripDict)) {
                     RecipeRegisterModSystem.GripList.Add(t);
                 }
-                if (ConfigUtility.IsValidTreatmentMaterial(t.Code.Path, treatmentKeys)) {
+                if (ConfigUtility.IsValidTreatmentMaterial(t.Code.Path, treatmentDict)) {
                     RecipeRegisterModSystem.TreatmentList.Add(t);
                 }
             }
