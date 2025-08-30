@@ -13,6 +13,7 @@ using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Datastructures;
+using Vintagestory.GameContent;
 
 namespace Toolsmith.Client {
     public static class MultiPartRenderingHelpers {
@@ -412,6 +413,11 @@ namespace Toolsmith.Client {
             BuildToolRenderFromHeadAndHandle(tool, head, handle, toolType, toolSpecificHandleShape);
             var successfulBindingAdd = false;
             if (binding != null) {
+                if (binding.Block as BlockLiquidContainerBase != null) {
+                    var liquidContainer = binding.Block as BlockLiquidContainerBase;
+                    var actualbinding = liquidContainer.GetContent(binding);
+                    successfulBindingAdd = AddBindingToExistingToolRender(tool, actualbinding);
+                }
                 successfulBindingAdd = AddBindingToExistingToolRender(tool, binding);
             }
             
@@ -527,7 +533,7 @@ namespace Toolsmith.Client {
 
         public static bool AddBindingToExistingToolRender(ItemStack tool, ItemStack binding, string toolType = null) {
             BindingPartDefines bindingPart = ToolsmithModSystem.Stats.BindingParts.TryGetValue(binding.Collectible.Code.Path);
-            if (bindingPart.bindingShapePath == "") { //If the binding has no shape path, IE currently Glue does not have visuals and it makes sense, just avoid adding any render data for the binding.
+            if (bindingPart == null || bindingPart.bindingShapePath == "") { //If the binding has no shape path, IE currently Glue does not have visuals and it makes sense, just avoid adding any render data for the binding.
                 return false; //This should just prevent actually attempting to render anything for the binding or failing to find anything and hitting the fallback.
             }
             BindingStatDefines bindingStats = ToolsmithModSystem.Stats.BindingStats.TryGetValue(bindingPart.bindingStatTag);

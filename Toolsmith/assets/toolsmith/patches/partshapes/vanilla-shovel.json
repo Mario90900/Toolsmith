@@ -14,7 +14,8 @@
 			"*-meteoriciron": { "base": "toolsmith:item/parts/shovel/heads/advanced" },
 			"*": { "base": "toolsmith:item/parts/shovel/heads/nonmetal" },
 		},
-		"file": "game:itemtypes/toolhead/shovelhead.json"
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -34,7 +35,8 @@
 				"scale": 2.45
 			}
 		},
-		"file": "game:itemtypes/toolhead/shovelhead.json"
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -51,7 +53,8 @@
 				"scale": 0.85
 			}
 		},
-		"file": "game:itemtypes/toolhead/shovelhead.json"
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -60,7 +63,8 @@
 			"translation": { "x": -0.2, "y": -0.76, "z": -0.48 },
 			"rotation": { "x": 30, "y": -10, "z": 0 }
 		},
-		"file": "game:itemtypes/toolhead/shovelhead.json"
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "addmerge",
@@ -70,6 +74,7 @@
 			"rotation": { "x": 0, "y": 90, "z": 0 },
 			"scale": 0.7
 		},
-		"file": "game:itemtypes/toolhead/shovelhead.json"
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	}
 ]

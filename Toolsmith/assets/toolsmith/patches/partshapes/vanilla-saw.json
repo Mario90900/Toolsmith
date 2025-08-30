@@ -13,7 +13,8 @@
 			"*-meteoriciron": { "base": "toolsmith:item/parts/saw/heads/advanced" },
 			"*": { "base": "toolsmith:item/parts/saw/heads/simple" },
 		},
-		"file": "game:itemtypes/toolhead/sawblade.json"
+		"file": "game:itemtypes/toolhead/sawblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "addmerge",
@@ -21,13 +22,15 @@
 		"value": {
 			"material": { "base": "block/metal/ingot/{metal}" }
 		},
-		"file": "game:itemtypes/toolhead/sawblade.json"
+		"file": "game:itemtypes/toolhead/sawblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
 		"path": "/shape",
 		"value": { "base": "toolsmith:item/parts/saw/heads/simple" },
-		"file": "game:itemtypes/toolhead/sawblade.json"
+		"file": "game:itemtypes/toolhead/sawblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -38,7 +41,8 @@
 			"origin": { "x": 0.5, "y": 0, "z": 0.5 },
 			"scale": 3.35
 		},
-		"file": "game:itemtypes/toolhead/sawblade.json"
+		"file": "game:itemtypes/toolhead/sawblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -49,7 +53,8 @@
 			"origin": { "x": 0.5, "y": 0.05, "z": 0.64 },
 			"scale": 3.5
 		},
-		"file": "game:itemtypes/toolhead/sawblade.json"
+		"file": "game:itemtypes/toolhead/sawblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -59,7 +64,8 @@
 			"rotation": { "x": 90, "y": -174, "z": 0 },
 			"scale": 1
 		},
-		"file": "game:itemtypes/toolhead/sawblade.json"
+		"file": "game:itemtypes/toolhead/sawblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -68,7 +74,8 @@
 			"translation": { "x": -0.41, "y": -1.3, "z": -0.8 },
 			"rotation": { "x": 113, "y": -14, "z": 83 }
 		},
-		"file": "game:itemtypes/toolhead/sawblade.json"
+		"file": "game:itemtypes/toolhead/sawblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "addmerge",
@@ -78,7 +85,8 @@
 			"rotation": { "x": 0, "y": 90, "z": 0 },
 			"scale": 0.7
 		},
-		"file": "game:itemtypes/toolhead/sawblade.json"
+		"file": "game:itemtypes/toolhead/sawblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -89,7 +97,8 @@
 			"origin": { "x": 0.45, "y": 0, "z": 0.425 },
 			"scale": 1.9
 		},
-		"file": "game:itemtypes/tool/saw.json"
+		"file": "game:itemtypes/tool/saw.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -99,7 +108,8 @@
 			"rotation": { "x": 90, "y": -174, "z": 0 },
 			"scale": 1
 		},
-		"file": "game:itemtypes/tool/saw.json"
+		"file": "game:itemtypes/tool/saw.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -109,7 +119,8 @@
 			"rotation": { "x": 26, "y": 90, "z": -90 },
 			"scale": 0.88
 		},
-		"file": "game:itemtypes/tool/saw.json"
+		"file": "game:itemtypes/tool/saw.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -119,6 +130,7 @@
 			"rotation": { "x": 0, "y": 1, "z": -1 },
 			"scale": 1.35
 		},
-		"file": "game:itemtypes/tool/saw.json"
+		"file": "game:itemtypes/tool/saw.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 ]

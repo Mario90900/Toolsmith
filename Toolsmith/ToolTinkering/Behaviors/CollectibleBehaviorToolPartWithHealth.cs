@@ -19,7 +19,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
 
             if (!inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
-                if (inSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
+                if (TinkeringUtility.IsValidHead(inSlot.Itemstack)) {
                     if (inSlot.Itemstack.HasTotalHoneValue() && inSlot.Itemstack.GetTotalHoneValue() > 0 && inSlot.Itemstack.GetTotalHoneValue() < 1) {
                         dsc.AppendLine(Lang.Get("toolheadhoninginprogress"));
                     } else if (!inSlot.Itemstack.HasTotalHoneValue()) {

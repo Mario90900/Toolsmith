@@ -36,7 +36,7 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
 
         public static bool IsBelowPercentDurability(ItemStack stack, float percent) {
             float percentDamage = 1.1f;
-            if (stack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
+            if (TinkeringUtility.IsValidHead(stack)) {
                 percentDamage = stack.GetPartRemainingHPPercent();
             } else if (stack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
                 percentDamage = stack.GetSmithedRemainingHPPercent();
@@ -51,7 +51,7 @@ namespace Toolsmith.ToolTinkering.Drawbacks {
 
         public static float GetReforgablePercentDamage(ItemStack stack) {
             float percentDamage = 1.0f;
-            if (stack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
+            if (TinkeringUtility.IsValidHead(stack)) {
                 percentDamage = stack.GetPartRemainingHPPercent();
             } else if (stack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
                 percentDamage = stack.GetSmithedRemainingHPPercent();

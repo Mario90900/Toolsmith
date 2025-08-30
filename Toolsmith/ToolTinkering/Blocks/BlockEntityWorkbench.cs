@@ -268,6 +268,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                     var craftedTool = TinkeringUtility.TryCraftToolFromSlots(craftingSlots, world, blockSel);
                     if (craftedTool != null) {
                         DropItemInMiddleOfBench(craftedTool, world);
+                        PopDisabledSlots(world);
                         UpdateSlotIndicators(world);
 
                         if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible.Tool == EnumTool.Hammer) {
@@ -388,7 +389,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 if (!Inventory.IsSelectSlotEmpty(i)) {
                     var slot = Inventory.GetSlotFromSelectionID(i);
                     if (slot != null) {
-                        var whatPart = TinkeringUtility.IsAnyToolPart(slot.Itemstack.Collectible, world); //Returns a 1 for a Tool Head, 2 for Handle, 3 for Binding.
+                        var whatPart = TinkeringUtility.IsAnyToolPart(slot.Itemstack, world); //Returns a 1 for a Tool Head, 2 for Handle, 3 for Binding.
                         switch (whatPart) {
                             case 1:
                                 SetSlotsHoldsString(i, "head");
@@ -650,7 +651,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             wiggledOffset.z += wiggleFactor.zoff;
 
             mesh.Scale(new Vec3f(), 0.5f, 0.5f, 0.5f);
-            if (stack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
+            if (TinkeringUtility.IsValidHead(stack)) {
                 mesh.Translate(wiggledOffset.x - 0.65f, wiggledOffset.y, wiggledOffset.z + 0.35f);
                 mesh.Rotate(new Vec3f(0.5f, 0.5f, 0.5f), 0, (90 + wiggleFactor.rot) * (MathF.PI / 180), 0);
             } else {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Client;
 using Toolsmith.Client.Behaviors;
+using Toolsmith.ToolTinkering;
 using Toolsmith.ToolTinkering.Behaviors;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
@@ -116,7 +117,7 @@ namespace Toolsmith.Server {
             if (heldItem == null) {
                 return TextCommandResult.Error("Could not find an active hotbar, or a held item for the player running the command!");
             }
-            if (!heldItem.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && !heldItem.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>() && !heldItem.Collectible.HasBehavior<CollectibleBehaviorToolHead>() && !heldItem.Collectible.HasBehavior<CollectibleBehaviorToolPartWithHealth>()) {
+            if (!heldItem.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && !heldItem.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>() && !TinkeringUtility.IsValidHead(heldItem) && !heldItem.Collectible.HasBehavior<CollectibleBehaviorToolPartWithHealth>()) {
                 return TextCommandResult.Error("Held Item is not a valid item with a Toolsmith Behavior. Skipping adding or changing any attributes to avoid stacking problems!");
             }
 
@@ -193,7 +194,7 @@ namespace Toolsmith.Server {
                     default:
                         return TextCommandResult.Error("That type of part is not valid for the held item, will avoid setting any attributes. Try using \"tool\", \"sharp\" or \"sharpness\" instead!");
                 }
-            } else if (heldItem.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
+            } else if (TinkeringUtility.IsValidHead(heldItem)) {
                 switch (partTarget) {
                     case "head":
                     case "part":

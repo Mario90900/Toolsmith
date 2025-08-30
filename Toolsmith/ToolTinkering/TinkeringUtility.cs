@@ -108,7 +108,7 @@ namespace Toolsmith.ToolTinkering {
             if (!item.HasToolCurrentSharpness() || !item.HasToolMaxSharpness()) { //Since technically this accesses the same attribute as the Part variants, no real edit is needed here.
                 return false;
             }
-            if ((item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || item.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>() || item.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) && !item.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) { //Just add a check for a toolhead
+            if ((item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || item.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>() || IsValidHead(item)) && !item.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) { //Just add a check for a toolhead
                 return item.GetToolCurrentSharpness() != item.GetToolMaxSharpness();
             } else {
                 return false;
@@ -130,7 +130,7 @@ namespace Toolsmith.ToolTinkering {
         }
 
         public static int ToolsmithGetItemDamageColor(ItemStack item) {
-            if (item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || item.Collectible.HasBehavior<CollectibleBehaviorToolHead>() || item.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) {
+            if (item.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || IsValidHead(item) || item.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) {
                 var max = FindLowestMaxDurabilityForBar(item);
                 if (max == 0) {
                     return 0;
@@ -164,7 +164,7 @@ namespace Toolsmith.ToolTinkering {
                 } else {
                     return head;
                 }
-            } else if (itemStack.Collectible.HasBehavior<CollectibleBehaviorToolHead>() || itemStack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) {
+            } else if (IsValidHead(itemStack) || IsValidHandle(itemStack)) {
                 return itemStack.GetPartCurrentDurability();
             } else {
                 return itemStack.Collectible.GetRemainingDurability(itemStack);
@@ -192,7 +192,7 @@ namespace Toolsmith.ToolTinkering {
                 } else {
                     return head;
                 }
-            } else if (itemStack.Collectible.HasBehavior<CollectibleBehaviorToolHead>() || itemStack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) {
+            } else if (IsValidHead(itemStack) || IsValidHandle(itemStack)) {
                 return itemStack.GetPartMaxDurability();
             } else {
                 return itemStack.Collectible.GetMaxDurability(itemStack);
@@ -361,21 +361,48 @@ namespace Toolsmith.ToolTinkering {
             return offhandItem as ItemWhetstone;
         }
 
-        public static bool ValidHandleInOffhand(EntityAgent byEntity) {
-            var offhandItemCol = byEntity.LeftHandItemSlot?.Itemstack?.Collectible;
-            var offhandItemstack = byEntity.LeftHandItemSlot?.Itemstack;
-            if (offhandItemCol == null || offhandItemstack.HasWetTreatment()) {
+        public static bool IsValidHead(ItemStack stack) {
+            if (stack == null) {
                 return false;
             }
-            return offhandItemCol.HasBehavior<CollectibleBehaviorToolHandle>();
+            return stack.Collectible.HasBehavior<CollectibleBehaviorToolHead>();
+        }
+
+        public static bool ValidHandleInOffhand(EntityAgent byEntity) {
+            return IsValidHandle(byEntity.LeftHandItemSlot?.Itemstack);
+        }
+
+        public static bool IsValidHandle(ItemStack stack) {
+            if (stack == null || stack.HasWetTreatment()) {
+                return false;
+            }
+            return stack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>();
         }
 
         public static bool ValidBindingInOffhand(EntityAgent byEntity) {
-            var offhandItem = byEntity.LeftHandItemSlot?.Itemstack?.Collectible;
-            if (offhandItem == null) {
+            return IsValidBinding(byEntity.LeftHandItemSlot?.Itemstack);
+        }
+
+        public static bool IsValidBinding(ItemStack stack) {
+            if (stack == null) {
                 return true;
             }
-            return offhandItem.HasBehavior<CollectibleBehaviorToolBinding>();
+
+            var offhandItemCol = stack.Collectible;
+            if (offhandItemCol.HasBehavior<CollectibleBehaviorToolBinding>()) {
+                return true;
+            } else if (stack.Block as BlockLiquidContainerBase != null) {
+                var liquidContainer = stack.Block as BlockLiquidContainerBase;
+                var liquid = liquidContainer.GetContent(stack);
+                if (liquid != null) {
+                    var bindingPart = ToolsmithModSystem.Stats.BindingParts.TryGetValue(liquid.Collectible.Code.Path);
+                    if (bindingPart != null) {
+                        return liquidContainer.GetCurrentLitres(stack) >= bindingPart.litersUsed;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public static void AssemblePartBundle(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel) {
@@ -438,7 +465,13 @@ namespace Toolsmith.ToolTinkering {
                 if (!bundleSlot.Itemstack.HasBundleHasGenericParts()) {
                     var successfulBindingAdd = false;
                     if (!bindingSlot.Empty) {
-                        successfulBindingAdd = MultiPartRenderingHelpers.AddBindingToExistingToolRender(bundleSlot.Itemstack, bindingSlot.Itemstack);
+                        if (bindingSlot.Itemstack.Block as BlockLiquidContainerBase != null) {
+                            var liquidContainer = bindingSlot.Itemstack.Block as BlockLiquidContainerBase;
+                            var binding = liquidContainer.GetContent(bindingSlot.Itemstack);
+                            successfulBindingAdd = MultiPartRenderingHelpers.AddBindingToExistingToolRender(bundleSlot.Itemstack, binding);
+                        } else {
+                            successfulBindingAdd = MultiPartRenderingHelpers.AddBindingToExistingToolRender(bundleSlot.Itemstack, bindingSlot.Itemstack);
+                        }
                     }
                     if (!successfulBindingAdd) {
                         var toolType = MultiPartRenderingHelpers.GetToolTypeFromHeadShapePath(head.Item.Shape.Base.Path);
@@ -450,8 +483,16 @@ namespace Toolsmith.ToolTinkering {
                 }
 
                 if (!bindingSlot.Empty) {
-                    bindingSlot.TakeOut(1);
-                    bindingSlot.MarkDirty();
+                    if (bindingSlot.Itemstack.Block as BlockLiquidContainerBase != null) {
+                        var liquidContainer = bindingSlot.Itemstack.Block as BlockLiquidContainerBase;
+                        var binding = liquidContainer.GetContent(bindingSlot.Itemstack);
+                        var bindingPart = ToolsmithModSystem.Stats.BindingParts.TryGetValue(binding.Collectible.Code.Path);
+                        liquidContainer.TryTakeLiquid(bindingSlot.Itemstack, bindingPart.litersUsed);
+                        bindingSlot.MarkDirty();
+                    } else {
+                        bindingSlot.TakeOut(1);
+                        bindingSlot.MarkDirty();
+                    }
                 }
                 bundleSlot.Itemstack = craftedItemStack;
                 bundleSlot.MarkDirty();
@@ -479,15 +520,15 @@ namespace Toolsmith.ToolTinkering {
             int bindingSlot = -1;
 
             for (int i = 0; i < slots.Length; i++) {
-                if (!foundHead && slots[i].Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
+                if (!foundHead && IsValidHead(slots[i].Itemstack)) {
                     foundHead = true;
                     headSlot = i;
                 }
-                if (!foundHandle && slots[i].Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) {
+                if (!foundHandle && IsValidHandle(slots[i].Itemstack)) {
                     foundHandle = true;
                     handleSlot = i;
                 }
-                if (!foundBinding && slots[i].Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBinding>()) {
+                if (!foundBinding && IsValidBinding(slots[i].Itemstack)) {
                     foundBinding = true;
                     bindingSlot = i;
                 }
@@ -557,8 +598,16 @@ namespace Toolsmith.ToolTinkering {
                 sortedSlots[1].TakeOut(1); //Decrement inputs, and place the finished item in the ToolHead's Slot
                 sortedSlots[1].MarkDirty();
                 if (sortedSlots.Length == 3) {
-                    sortedSlots[2].TakeOut(1);
-                    sortedSlots[2].MarkDirty();
+                    if (sortedSlots[2].Itemstack.Block as BlockLiquidContainerBase != null) {
+                        var liquidContainer = sortedSlots[2].Itemstack.Block as BlockLiquidContainerBase;
+                        var binding = liquidContainer.GetContent(sortedSlots[2].Itemstack);
+                        var bindingPart = ToolsmithModSystem.Stats.BindingParts.TryGetValue(binding.Collectible.Code.Path);
+                        liquidContainer.TryTakeLiquid(sortedSlots[2].Itemstack, bindingPart.litersUsed);
+                        sortedSlots[2].MarkDirty();
+                    } else {
+                        sortedSlots[2].TakeOut(1);
+                        sortedSlots[2].MarkDirty();
+                    }
                 }
 
                 return craftedItemStack;
@@ -567,14 +616,14 @@ namespace Toolsmith.ToolTinkering {
             return null;
         }
 
-        public static int IsAnyToolPart(CollectibleObject item, IWorldAccessor world) {
-            if (world.Side.IsServer() && ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(item.Code.ToString())) {
+        public static int IsAnyToolPart(ItemStack itemstack, IWorldAccessor world) {
+            if (world.Side.IsServer() && ToolsmithModSystem.IgnoreCodes.Count > 0 && ToolsmithModSystem.IgnoreCodes.Contains(itemstack.Collectible.Code.ToString())) {
                 return 0;
-            } else if (item.HasBehavior<CollectibleBehaviorToolHead>()) {
+            } else if (IsValidHead(itemstack)) {
                 return 1;
-            } else if (item.HasBehavior<CollectibleBehaviorToolHandle>()) {
+            } else if (IsValidHandle(itemstack)) {
                 return 2;
-            } else if (item.HasBehavior<CollectibleBehaviorToolBinding>()) {
+            } else if (IsValidBinding(itemstack)) {
                 return 3;
             }
 

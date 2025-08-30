@@ -13,7 +13,8 @@
 			"*-meteoriciron": { "base": "toolsmith:item/parts/hammer/heads/advanced" },
 			"*": { "base": "toolsmith:item/parts/hammer/heads/simple" },
 		},
-		"file": "game:itemtypes/toolhead/hammerhead.json"
+		"file": "game:itemtypes/toolhead/hammerhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "addmerge",
@@ -21,13 +22,15 @@
 		"value": {
 			"material": { "base": "block/metal/ingot/{metal}" }
 		},
-		"file": "game:itemtypes/toolhead/hammerhead.json"
+		"file": "game:itemtypes/toolhead/hammerhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
 		"path": "/shape",
 		"value": { "base": "toolsmith:item/parts/hammer/heads/simple" },
-		"file": "game:itemtypes/toolhead/hammerhead.json"
+		"file": "game:itemtypes/toolhead/hammerhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -38,7 +41,8 @@
 			"origin": { "x": 1, "y": 0, "z": 0.5 },
 			"scale": 4.5
 		},
-		"file": "game:itemtypes/toolhead/hammerhead.json"
+		"file": "game:itemtypes/toolhead/hammerhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -48,7 +52,8 @@
 			"rotation": { "x": 60, "y": -70, "z": -50 },
 			"scale": 1.2
 		},
-		"file": "game:itemtypes/toolhead/hammerhead.json"
+		"file": "game:itemtypes/toolhead/hammerhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -59,7 +64,8 @@
 			"origin": { "x": 0.84, "y": 0, "z": 0.5 },
 			"scale": 4.0
 		},
-		"file": "game:itemtypes/toolhead/hammerhead.json"
+		"file": "game:itemtypes/toolhead/hammerhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -68,7 +74,8 @@
 			"translation": { "x": -0.84, "y": -0.7, "z": 0.76 },
 			"rotation": { "x": 0, "y": 83, "z": -37 }
 		},
-		"file": "game:itemtypes/toolhead/hammerhead.json"
+		"file": "game:itemtypes/toolhead/hammerhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "addmerge",
@@ -78,7 +85,8 @@
 			"rotation": { "x": 0, "y": 90, "z": 0 },
 			"scale": 0.7
 		},
-		"file": "game:itemtypes/toolhead/hammerhead.json"
+		"file": "game:itemtypes/toolhead/hammerhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -89,7 +97,8 @@
 			"origin": { "x": 0.5, "y": 0, "z": 0.5 },
 			"scale": 4.5
 		},
-		"file": "game:itemtypes/tool/hammer.json"
+		"file": "game:itemtypes/tool/hammer.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -99,7 +108,8 @@
 			"rotation": { "x": 90, "y": 1, "z": 0 },
 			"scale": 1.2
 		},
-		"file": "game:itemtypes/tool/hammer.json"
+		"file": "game:itemtypes/tool/hammer.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -110,7 +120,8 @@
 			"origin": { "x": 0.7, "y": 0.5, "z": 0.41 },
 			"scale": 2.6
 		},
-		"file": "game:itemtypes/tool/hammer.json"
+		"file": "game:itemtypes/tool/hammer.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -121,7 +132,8 @@
 			"origin": { "x": 0.5, "y": -0.9, "z": 0.5 },
 			"scale": 1.5
 		},
-		"file": "game:itemtypes/tool/hammer.json"
+		"file": "game:itemtypes/tool/hammer.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -131,6 +143,7 @@
 			"rotation": { "x": 26, "y": 88, "z": -95 },
 			"scale": 1.01
 		},
-		"file": "game:itemtypes/tool/hammer.json"
+		"file": "game:itemtypes/tool/hammer.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	}
 ]

@@ -347,7 +347,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 return bench.TryGetItemFromWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
             } else {
                 ItemStack stack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
-                var isPart = TinkeringUtility.IsAnyToolPart(stack.Collectible, world);
+                var isPart = TinkeringUtility.IsAnyToolPart(stack, world);
                 if (bench.IsSelectSlotEmpty(blockSel.SelectionBoxIndex) && (isPart > 0 || ReforgingUtility.IsPossibleMergeItem(stack, world))) {
                     if (isPart == 0) {
                         if (world.Side.IsClient()) {
@@ -396,7 +396,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 return bench.TryGetItemFromWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
             } else {
                 ItemStack stack = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
-                if ((stack.Collectible.HasBehavior<CollectibleBehaviorToolHead>() || stack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) && stack.Collectible.IsCraftableMetal()) {
+                if ((TinkeringUtility.IsValidHead(stack) || stack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) && stack.Collectible.IsCraftableMetal()) {
                     return bench.TryGetOrPutItemOnWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);
                 } else {
                     return bench.TryGetItemFromWorkbench(blockSel.SelectionBoxIndex, byPlayer.InventoryManager.ActiveHotbarSlot, byPlayer, world);

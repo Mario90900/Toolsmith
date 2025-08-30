@@ -84,6 +84,12 @@ namespace Toolsmith {
             } else {
                 api.World.Config.SetBool(ToolsmithConstants.SmithWithBitsEnabled, Config.UseBitsForSmithing); //If it's not, then check the config.
             }
+            
+            if (!ClientConfig.DisableMultiPartRendering) {
+                api.World.Config.SetBool(ToolsmithConstants.DisabledMultiPartRenders, true);
+            } else {
+                api.World.Config.SetBool(ToolsmithConstants.DisabledMultiPartRenders, false);
+            }
 
             //This is important to let the Treasure Hunter Trader accept a Toolsmith Pick to get the map for Story Content! Thank you Item Rarity for also having the issue and both leaving a comment in their code and pushing the commit not too long before I had the same problem :P
             if (!IgnoreAttributesAdded) { //This bool is entirely for checking if it's singleplayer or not, since we don't want to run it twice if it is. That'll just double up the attributes in the list.
@@ -209,6 +215,7 @@ namespace Toolsmith {
             RecipeRegisterModSystem.GripList = new List<CollectibleObject>();
             RecipeRegisterModSystem.TreatmentList = new List<CollectibleObject>();
             RecipeRegisterModSystem.TinkerableToolsList = new List<CollectibleObject>();
+            RecipeRegisterModSystem.LiquidContainers = new List<CollectibleObject>();
 
             List<CollectibleObject> SinglePartToolsList = null;
             if (Config.PrintAllParsedToolsAndParts) {
@@ -287,6 +294,12 @@ namespace Toolsmith {
                 if (ConfigUtility.IsValidTreatmentMaterial(t.Code.Path, treatmentDict)) {
                     RecipeRegisterModSystem.TreatmentList.Add(t);
                 }
+                if (t.Attributes?.KeyExists("liquidContainerProps") == true) {
+                    if (!t.StorageFlags.HasFlag(EnumItemStorageFlags.Offhand)) {
+                        t.StorageFlags += 0x100;
+                    }
+                    RecipeRegisterModSystem.LiquidContainers.Add(t);
+                }
             }
 
             SaveWoodInToolBindingToWorld(api);
@@ -314,6 +327,10 @@ namespace Toolsmith {
                 }
                 Logger.Debug("Treatment Materials:");
                 foreach (var t in RecipeRegisterModSystem.TreatmentList) {
+                    Logger.Debug(t.Code.ToString());
+                }
+                Logger.Debug("Registered Liquid Containers:");
+                foreach (var t in RecipeRegisterModSystem.LiquidContainers) {
                     Logger.Debug(t.Code.ToString());
                 }
             }

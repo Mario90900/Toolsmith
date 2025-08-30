@@ -1,5 +1,6 @@
 ﻿using ItemRarity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -91,19 +92,25 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             ItemStack headStack = null;
             ItemStack handleStack = null;
             ItemStack bindingStack = null;
+            bool liquidBinding = false;
             ItemStack foundToolInput = null;
 
             bhHandling = EnumHandling.Handled;
             foreach (var itemSlot in allInputslots.Where(i => i.Itemstack != null)) { //Is it possible any slot could even be null here...? Like when a grid-craft is done. Better to be safe though?
-                if (itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) { //If it has this behavior, found the tool head!
+                if (TinkeringUtility.IsValidHead(itemSlot.Itemstack)) { //If it has this behavior, found the tool head!
                     headStack = itemSlot.Itemstack.Clone();
                     headStack.StackSize = 1;
-                } else if (itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) { //If this one, then handle found!
+                } else if (TinkeringUtility.IsValidHandle(itemSlot.Itemstack)) { //If this one, then handle found!
                     handleStack = itemSlot.Itemstack.Clone();
                     handleStack.StackSize = 1;
-                } else if (itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBinding>()) { //And finally the (possible) binding! This isn't garenteed though remember, the others are.
-                    bindingStack = itemSlot.Itemstack.Clone();
-                    bindingStack.StackSize = 1;
+                } else if (TinkeringUtility.IsValidBinding(itemSlot.Itemstack)) { //And finally the (possible) binding! This isn't garenteed though remember, the others are.
+                    if (itemSlot.Itemstack.Block as BlockLiquidContainerBase != null) {
+                        liquidBinding = true;
+                        bindingStack = (itemSlot.Itemstack.Block as BlockLiquidContainerBase).GetContent(itemSlot.Itemstack);
+                    } else {
+                        bindingStack = itemSlot.Itemstack.Clone();
+                        bindingStack.StackSize = 1;
+                    }
                 } else if (itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && itemSlot.Itemstack.Collectible.Code == outputSlot.Itemstack.Collectible.Code) {
                     foundToolInput = itemSlot.Itemstack.Clone();
                     foundToolInput.StackSize = 1;
@@ -281,7 +288,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             //Then don't forget to add the ItemStacks for the parts to the tool's attributes to retrieve later on damage/destruction!
             outputSlot.Itemstack.SetToolhead(headStack);
             outputSlot.Itemstack.SetToolhandle(handleStack);
-            if (bindingStack != null) {
+            if (!liquidBinding && bindingStack != null) {
                 outputSlot.Itemstack.SetToolbinding(bindingStack);
             }
         }
@@ -296,7 +303,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
 
             if (ToolsmithModSystem.Api.ModLoader.IsModEnabled("canjewelry")) {
-                foreach (var input in allInputslots.Where(i => !i.Empty && i.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>())) {
+                foreach (var input in allInputslots.Where(i => !i.Empty && TinkeringUtility.IsValidHead(i.Itemstack))) {
                     TinkeringUtility.CheckAndHandleJewelryStatTransfer(input.Itemstack, outputSlot.Itemstack);
                     break;
                 }

@@ -14,7 +14,8 @@
 			"*-meteoriciron": { "base": "toolsmith:item/parts/knife/heads/advanced" },
 			"*": { "base": "toolsmith:item/parts/knife/heads/nonmetal" },
 		},
-		"file": "game:itemtypes/toolhead/knifeblade.json"
+		"file": "game:itemtypes/toolhead/knifeblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -34,7 +35,8 @@
 				"scale": 3.53
 			}
 		},
-		"file": "game:itemtypes/toolhead/knifeblade.json"
+		"file": "game:itemtypes/toolhead/knifeblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "addmerge",
@@ -44,6 +46,7 @@
 			"rotation": { "x": 0, "y": 90, "z": 0 },
 			"scale": 0.7
 		},
-		"file": "game:itemtypes/toolhead/knifeblade.json"
+		"file": "game:itemtypes/toolhead/knifeblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 ]

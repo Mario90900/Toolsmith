@@ -59,6 +59,10 @@ namespace Toolsmith.Client.Behaviors {
         }
 
         public override void OnBeforeRender(ICoreClientAPI capi, ItemStack itemstack, EnumItemRenderTarget target, ref ItemRenderInfo renderinfo) {
+            if (ToolsmithModSystem.ClientConfig.DisableMultiPartRendering) {
+                return;
+            }
+            
             int meshrefID = itemstack.TempAttributes.GetInt(ToolsmithAttributes.ToolsmithMeshID);
             if (api != null && (meshrefID == 0 || !meshrefs.TryGetValue(meshrefID, out renderinfo.ModelRef))) { //This checks if it has already been rendered and cached, and if so, send that again - otherwise generate one.
                 int id = meshrefs.Count + 1;
@@ -79,6 +83,8 @@ namespace Toolsmith.Client.Behaviors {
             if (itemstack == null) {
                 return new MeshData();
             }
+
+            
 
             var mesh = new MeshData(6, 4);
             if (itemstack.HasMultiPartRenderTree()) {
@@ -137,13 +143,15 @@ namespace Toolsmith.Client.Behaviors {
                     return null;
                 }
             } else {
-                toolType = item?.FirstCodePart();
-                if (toolType != null) {
-                    var locations = capi.Assets.GetLocations("shapes/item/parts/" + toolType);
-                    if (locations != null && locations.Count > 0) {
-                        var fallbackMesh = GenFallbackGenericPartMesh(toolType, locations, targetAtlas);
-                        if (fallbackMesh != null) {
-                            return fallbackMesh;
+                if (!ToolsmithModSystem.ClientConfig.DisableMultiPartRendering) {
+                    toolType = item?.FirstCodePart();
+                    if (toolType != null) {
+                        var locations = capi.Assets.GetLocations("shapes/item/parts/" + toolType);
+                        if (locations != null && locations.Count > 0) {
+                            var fallbackMesh = GenFallbackGenericPartMesh(toolType, locations, targetAtlas);
+                            if (fallbackMesh != null) {
+                                return fallbackMesh;
+                            }
                         }
                     }
                 }
@@ -193,12 +201,9 @@ namespace Toolsmith.Client.Behaviors {
                     texSource.textures[entry.Key] = tex;
                 }
             } else { //Fallback to the default textures in the properties. It should only hit here generally in the case of improperly constructed or outdated render data on a tool, or those lacking
-                
-                
                 foreach (var entry in item.Textures) {
                     texSource.textures[entry.Key] = entry.Value;
                 }
-                
                 if (properties != null && properties.textures?.Length > 0) {
                     foreach (TextureData texConfig in properties.textures) { //Then go through each texture entry in the properties, see if the itemstack in question has that attribute set and retrieve it if so
                         texSource.textures[texConfig.code] = new CompositeTexture(new AssetLocation(texConfig.Default + ".png"));

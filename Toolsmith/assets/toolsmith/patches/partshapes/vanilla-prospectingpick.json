@@ -13,7 +13,8 @@
 			"*-meteoriciron": { "base": "toolsmith:item/parts/prospectingpick/heads/advanced" },
 			"*": { "base": "toolsmith:item/parts/prospectingpick/heads/simple" },
 		},
-		"file": "game:itemtypes/toolhead/prospectingpickhead.json"
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "addmerge",
@@ -21,12 +22,14 @@
 		"value": {
 			"material": { "base": "block/metal/ingot/{metal}" }
 		},
-		"file": "game:itemtypes/toolhead/prospectingpickhead.json"
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
 		"path": "/shape",
 		"value": { "base": "toolsmith:item/parts/prospectingpick/heads/simple" },
-		"file": "game:itemtypes/toolhead/prospectingpickhead.json"
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 ]

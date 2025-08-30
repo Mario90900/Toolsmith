@@ -13,7 +13,8 @@
 			"*-meteoriciron": { "base": "toolsmith:item/parts/pickaxe/heads/advanced" },
 			"*": { "base": "toolsmith:item/parts/pickaxe/heads/simple" },
 		},
-		"file": "game:itemtypes/toolhead/pickaxehead.json"
+		"file": "game:itemtypes/toolhead/pickaxehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "addmerge",
@@ -21,13 +22,15 @@
 		"value": {
 			"*": { "material": { "base": "block/metal/ingot/{metal}" } }
 		},
-		"file": "game:itemtypes/toolhead/pickaxehead.json"
+		"file": "game:itemtypes/toolhead/pickaxehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
 		"path": "/shape",
 		"value": { "base": "toolsmith:item/parts/pickaxe/heads/simple" },
-		"file": "game:itemtypes/toolhead/pickaxehead.json"
+		"file": "game:itemtypes/toolhead/pickaxehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -38,7 +41,8 @@
 			"origin": { "x": 1, "y": 0, "z": 0.5 },
 			"scale": 4.17
 		},
-		"file": "game:itemtypes/toolhead/pickaxehead.json"
+		"file": "game:itemtypes/toolhead/pickaxehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -49,7 +53,8 @@
 			"origin": { "x": -1.5, "y": 0.05, "z": 2 },
 			"scale": 0.8
 		},
-		"file": "game:itemtypes/toolhead/pickaxehead.json"
+		"file": "game:itemtypes/toolhead/pickaxehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -60,7 +65,8 @@
 			"origin": { "x": 0.85, "y": 0, "z": 0.45 },
 			"scale": 2.0
 		},
-		"file": "game:itemtypes/toolhead/pickaxehead.json"
+		"file": "game:itemtypes/toolhead/pickaxehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -70,6 +76,7 @@
 			"rotation": { "x": 0, "y": -54, "z": 0 },
 			"origin": { "x": 0, "y": 0, "z": 0 }
 		},
-		"file": "game:itemtypes/toolhead/pickaxehead.json"
+		"file": "game:itemtypes/toolhead/pickaxehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	}
 ]

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Client;
@@ -34,6 +35,7 @@ namespace Toolsmith {
         public static List<CollectibleObject> BindingList; //^^^
         public static List<CollectibleObject> GripList; //^^^
         public static List<CollectibleObject> TreatmentList; //^^^
+        public static List<CollectibleObject> LiquidContainers; //^^^
 
         public override bool ShouldLoad(EnumAppSide forSide) {
             return forSide == EnumAppSide.Server;
@@ -113,6 +115,7 @@ namespace Toolsmith {
             }
 
             var handleRecipes = GenerateHandleRecipes(api);
+            var sandpaperRecipes = GenerateSandpaperRecipes(api);
 
             if (toolRecipes != null && toolRecipes.Count > 0) {
                 api.World.GridRecipes.AddRange(toolRecipes);
@@ -120,13 +123,17 @@ namespace Toolsmith {
             if (handleRecipes != null && handleRecipes.Count > 0) {
                 api.World.GridRecipes.AddRange(handleRecipes);
             }
+            if (sandpaperRecipes != null && sandpaperRecipes.Count > 0) {
+                api.World.GridRecipes.AddRange(sandpaperRecipes);
+            }
 
             //Make sure to clean up the five lists that were used in all this here! Would be nice not to leave that overhead information when it likely won't be needed after this point.
             TinkerableToolsList = null;
             HandleList = null;
             BindingList = null;
             GripList = null;
-            BindingList = null;
+            TreatmentList = null;
+            LiquidContainers = null;
 
             toolRecipes = null;
             handleRecipes = null;
@@ -155,7 +162,6 @@ namespace Toolsmith {
                 }
             }
 
-            //Do the recipes need to be resolved here? Or will the server handle it automatically after this concludes?
             if (list.Count > 0) {
                 return list;
             } else {
@@ -195,8 +201,6 @@ namespace Toolsmith {
 
                     //Same for Treatments here! Add to the list afterwards!
                     if (handlesStats.canBeTreated) {
-                        var bucket = api.World.GetBlock(new AssetLocation("game:woodbucket"));
-                        var bowl = api.World.GetBlock(new AssetLocation("game:bowl-fired"));
                         foreach (var treatmentMat in TreatmentList) {
                             var treatmentStats = ToolsmithModSystem.Stats.TreatmentParts.Get(treatmentMat.Code.Path);
                             if (treatmentStats != null && !treatmentStats.isLiquid) {
@@ -215,22 +219,22 @@ namespace Toolsmith {
                                 };
                                 recipe.ResolveIngredients(api.World);
                                 list.Add(recipe);
-                            } else if (treatmentStats != null && (bucket != null || bowl != null)) {
+                            } else if (treatmentStats != null && LiquidContainers.Count > 0) {
                                 ITreeAttribute liquidProps = new TreeAttribute();
                                 var liqProps = liquidProps.GetOrAddTreeAttribute("liquidContainerProps");
                                 var reqCont = liqProps.GetOrAddTreeAttribute("requiresContent");
                                 reqCont.SetString("type", "item");
                                 reqCont.SetString("code", treatmentMat.Code);
                                 liqProps.SetFloat("requiresLitres", treatmentStats.litersUsed);
-
-                                if (bucket != null) {
+                                
+                                foreach (var container in LiquidContainers) {
                                     var bucketRecipe = new GridRecipe {
                                         IngredientPattern = "ht",
                                         Width = 2,
                                         Height = 1,
                                         Ingredients = new Dictionary<string, CraftingRecipeIngredient> {
                                             ["h"] = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code },
-                                            ["t"] = new CraftingRecipeIngredient { Type = bucket.ItemClass, Code = bucket.Code }
+                                            ["t"] = new CraftingRecipeIngredient { Type = container.ItemClass, Code = container.Code }
                                         },
                                         Attributes = new JsonObject(JToken.Parse(liquidProps.ToJsonToken())),//new JsonObject(JToken.Parse("{liquidContainerProps: {requiresContent: {type: \"item\", code: \"" + treatmentMat.Code + "\" }, requiresLitres: " + treatmentStats.litersUsed + "}}")),
                                         RecipeGroup = 3,
@@ -242,33 +246,48 @@ namespace Toolsmith {
                                     bucketRecipe.ResolveIngredients(api.World);
                                     list.Add(bucketRecipe);
                                 }
-
-                                if (bowl != null) {
-                                    var bowlRecipe = new GridRecipe {
-                                        IngredientPattern = "ht",
-                                        Width = 2,
-                                        Height = 1,
-                                        Ingredients = new Dictionary<string, CraftingRecipeIngredient> {
-                                            ["h"] = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code },
-                                            ["t"] = new CraftingRecipeIngredient { Type = bowl.ItemClass, Code = bowl.Code }
-                                        },
-                                        Attributes = new JsonObject(JToken.Parse(liquidProps.ToJsonToken())),//new JsonObject(JToken.Parse("{liquidContainerProps: {requiresContent: {type: \"item\", code: \"" + treatmentMat.Code + "\" }, requiresLitres: " + treatmentStats.litersUsed + "}}")),
-                                        RecipeGroup = 3,
-                                        ShowInCreatedBy = false,
-                                        Name = "Add " + treatmentMat.Code + " as a handle treatment.",
-                                        Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
-                                    };
-
-                                    bowlRecipe.ResolveIngredients(api.World);
-                                    list.Add(bowlRecipe);
-                                }
                             }
                         }
                     }
                 }
             }
 
-            //Do the recipes need to be resolved here? Or will the server handle it automatically after this concludes?
+            if (list.Count > 0) {
+                return list;
+            } else {
+                return null;
+            }
+        }
+
+        private List<GridRecipe> GenerateSandpaperRecipes(ICoreAPI api) {
+            var list = new List<GridRecipe>();
+            ITreeAttribute liquidProps = new TreeAttribute();
+            var liqProps = liquidProps.GetOrAddTreeAttribute("liquidContainerProps");
+            var reqCont = liqProps.GetOrAddTreeAttribute("requiresContent");
+            reqCont.SetString("type", "item");
+            reqCont.SetString("code", "game:glueportion-pitch-hot");
+            liqProps.SetFloat("requiresLitres", 0.5f);
+
+            foreach (var container in LiquidContainers) {
+                var containerRecipe = new GridRecipe {
+                    IngredientPattern = "SG,P_",
+                    Width = 2,
+                    Height = 2,
+                    Ingredients = new Dictionary<string, CraftingRecipeIngredient> {
+                        ["S"] = new CraftingRecipeIngredient { Type = EnumItemClass.Block, Code = new AssetLocation("game:sand-*") },
+                        ["G"] = new CraftingRecipeIngredient { Type = container.ItemClass, Code = container.Code },
+                        ["P"] = new CraftingRecipeIngredient { Type = EnumItemClass.Item, Code = new AssetLocation("game:paper-parchment") }
+                    },
+                    Attributes = new JsonObject(JToken.Parse(liquidProps.ToJsonToken())),
+                    ShowInCreatedBy = true,
+                    Name = "Make sandpaper from Pitch Glue in a " + container.Code + ".",
+                    Output = new CraftingRecipeIngredient { Type = EnumItemClass.Item, Code = new AssetLocation("toolsmith:sandpaper"), Quantity = 4 }
+                };
+
+                containerRecipe.ResolveIngredients(api.World);
+                list.Add(containerRecipe);
+            }
+
             if (list.Count > 0) {
                 return list;
             } else {

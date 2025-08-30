@@ -62,6 +62,12 @@ namespace Toolsmith.Config {
         public string bindingStatTag = null;
 
         [JsonProperty]
+        public bool isLiquid = false;
+
+        [JsonProperty]
+        public float litersUsed = 0.0f;
+
+        [JsonProperty]
         public string bindingShapePath = "";
 
         [JsonProperty]

@@ -93,7 +93,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                         toolSlot = slot;
                     } else if (slot.Itemstack.Collectible.Code.FirstCodePart() == ToolsmithConstants.HandleBlankCode) {
                         blankSlot = slot;
-                    } else if (slot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>()) {
+                    } else if (TinkeringUtility.IsValidHandle(slot.Itemstack)) {
                         handleSlot = slot;
                     } else if (slot.Itemstack != null) {
                         /*if (slot.Itemstack.Collectible.Code.Path.StartsWith(ToolsmithAttributes.OldHandlePrefix)) { //If we find an old handle it's time to convert it to the new ones. Remove this bit later on after some time.

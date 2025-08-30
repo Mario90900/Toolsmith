@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Toolsmith.Utils {
     public static class ToolsmithConstants {
         public const string SmithWithBitsEnabled = "Toolsmith_SmithWithBits";
+        public const string DisabledMultiPartRenders = "Toolsmith_MultiPartRendering";
 
         public const string FallbackHeadCode = "game:candle";
         public const string DefaultHandleCode = "game:stick";

@@ -14,7 +14,8 @@
 			"*-meteoriciron": { "base": "toolsmith:item/parts/axe/heads/advanced" },
 			"*": { "base": "toolsmith:item/parts/axe/heads/nonmetal" },
 		},
-		"file": "game:itemtypes/toolhead/axehead.json"
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -39,7 +40,8 @@
 				"scale": 3.55
 			}
 		},
-		"file": "game:itemtypes/toolhead/axehead.json"
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -50,7 +52,8 @@
 			"origin": { "x": 0.5, "y": 0.5, "z": 0.9 },
 			"scale": 0.8
 		},
-		"file": "game:itemtypes/toolhead/axehead.json"
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "replace",
@@ -65,6 +68,7 @@
 				"rotation": { "x": 35, "y": -70, "z": -35 }
 			}
 		},
-		"file": "game:itemtypes/toolhead/axehead.json"
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	}
 ]
