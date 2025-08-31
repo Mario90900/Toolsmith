@@ -32,7 +32,12 @@ namespace Toolsmith.ToolTinkering.Items {
             if (metalcode == null) {
                 return Array.Empty<SmithingRecipe>().ToList();
             }
-            ItemStack ingot = new ItemStack(api.World.GetItem(new AssetLocation("ingot-" + metalcode)));
+
+            var ingotItem = api.World.GetItem(new AssetLocation("ingot-" + metalcode));
+            if (ingotItem == null) {
+                return Array.Empty<SmithingRecipe>().ToList();
+            }
+            ItemStack ingot = new ItemStack(ingotItem);
 
             return api.GetSmithingRecipes()
                 .Where(r => r.Ingredient.SatisfiesAsIngredient(ingot))

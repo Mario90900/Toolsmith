@@ -15,13 +15,17 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) {
-            if (world.Side.IsClient()) {
+            if (world != null && world.Side.IsClient()) {
                 dsc.AppendLine(Lang.Get("toolbindingdirections"));
                 if (ToolsmithModSystem.BindingTiers != null) {
                     dsc.AppendLine(Lang.Get("toolbindingtier", ToolsmithModSystem.BindingTiers.Get(inSlot.Itemstack.Collectible.Code.Path)));
                 }
 
-                var bindingStats = ToolsmithModSystem.Stats.BindingStats.Get(ToolsmithModSystem.Stats.BindingParts.Get(inSlot.Itemstack.Collectible.Code.Path).bindingStatTag);
+                var bindingPart = ToolsmithModSystem.Stats.BindingParts.Get(inSlot.Itemstack.Collectible.Code.Path);
+                if (bindingPart == null) {
+                    return;
+                }
+                var bindingStats = ToolsmithModSystem.Stats.BindingStats.Get(bindingPart.bindingStatTag);
                 if (bindingStats != null) {
                     var totalMult = bindingStats.baseHPfactor * (1 + bindingStats.selfHPBonus);
                     dsc.AppendLine("");
