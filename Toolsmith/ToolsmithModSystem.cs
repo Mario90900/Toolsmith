@@ -338,60 +338,60 @@ namespace Toolsmith {
 
         private void ProcessJsonPartsAndStats(ICoreAPI api) {
             if (Config.EnableEditsForRegex) {
-                Logger.Debug("Server is starting with Config Edits for the Regex Strings enabled. If something goes wrong, the changes made could be the cause. Disable the option to reset configs to the generated default. If you report an issue with this enabled, please include your Toolsmith.json config changes as well as the logs!");
+                Logger.Debug("Server is starting with Config Edits for the Regex Strings enabled. If something goes wrong, the changes made could be the cause. Disable the option to reset configs to the generated default, or if you want to update the defaults from the JSON files again - it will not update from any compatability files while this is active. If you report an issue with this enabled, please include your Toolsmith.json config changes as well as the logs!");
+            } else {
+                Dictionary<AssetLocation, List<string>> toolHeads = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/toolheads");
+                Config.ToolHeads += "@.*(";
+                foreach (var toolHead in toolHeads) {
+                    ToolsmithConfigsHelpers.AddToRegexString(toolHead.Value, ref Config.ToolHeads);
+                }
+                Config.ToolHeads = Config.ToolHeads.Remove(Config.ToolHeads.Length - 1); //Trim away the very last | that gets added on at the end.
+                Config.ToolHeads += ").*";
+
+                Dictionary<AssetLocation, List<string>> tinkerableTools = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/tinkerabletools");
+                Config.TinkerableTools += "@.*:(";
+                foreach (var tinkerableTool in tinkerableTools) {
+                    ToolsmithConfigsHelpers.AddToRegexString(tinkerableTool.Value, ref Config.TinkerableTools);
+                }
+                Config.TinkerableTools = Config.TinkerableTools.Remove(Config.TinkerableTools.Length - 1);
+                Config.TinkerableTools += ").*";
+
+                Dictionary<AssetLocation, List<string>> singlePartTools = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/singleparttools");
+                Config.SinglePartTools += "@.*:(";
+                foreach (var singlePartTool in singlePartTools) {
+                    ToolsmithConfigsHelpers.AddToRegexString(singlePartTool.Value, ref Config.SinglePartTools);
+                }
+                Config.SinglePartTools = Config.SinglePartTools.Remove(Config.SinglePartTools.Length - 1);
+                Config.SinglePartTools += ").*";
+
+                Dictionary<AssetLocation, List<string>> bluntHeadedTools = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/bluntheadedtools");
+                Config.BluntHeadedTools += "@.*:(";
+                foreach (var bluntHeadedTool in bluntHeadedTools) {
+                    ToolsmithConfigsHelpers.AddToRegexString(bluntHeadedTool.Value, ref Config.BluntHeadedTools);
+                }
+                Config.BluntHeadedTools = Config.BluntHeadedTools.Remove(Config.BluntHeadedTools.Length - 1);
+                Config.BluntHeadedTools += ").*";
+
+                Dictionary<AssetLocation, List<string>> partBlacklists = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/partblacklist");
+                Config.PartBlacklist += "@.*(";
+                foreach (var partBlacklist in partBlacklists) {
+                    ToolsmithConfigsHelpers.AddToRegexString(partBlacklist.Value, ref Config.PartBlacklist);
+                }
+                Config.PartBlacklist = Config.PartBlacklist.Remove(Config.PartBlacklist.Length - 1);
+                Config.PartBlacklist += ").*";
+
+                Dictionary<AssetLocation, List<string>> toolsWithWoodInBindingShapes = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/woodinbindingshapes");
+                Config.ToolsWithWoodInBindingShape += "@.*(";
+                foreach (var tool in toolsWithWoodInBindingShapes) {
+                    ToolsmithConfigsHelpers.AddToRegexString(tool.Value, ref Config.ToolsWithWoodInBindingShape);
+                }
+                Config.ToolsWithWoodInBindingShape = Config.ToolsWithWoodInBindingShape.Remove(Config.ToolsWithWoodInBindingShape.Length - 1);
+                Config.ToolsWithWoodInBindingShape += ").*";
             }
 
             if (Stats.EnableEdits) {
                 Logger.Debug("Server is starting with Config Edits for the Parts and Stats enabled. If something goes wrong, the changes made could be the cause. Disable the option to reset configs to the generated default. If you report an issue with this enabled, please include your ToolsmithPartsStats.json config changes as well as the logs!");
             }
-
-            Dictionary<AssetLocation, List<string>> toolHeads = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/toolheads");
-            Config.ToolHeads += "@.*(";
-            foreach (var toolHead in toolHeads) {
-                ToolsmithConfigsHelpers.AddToRegexString(toolHead.Value, ref Config.ToolHeads);
-            }
-            Config.ToolHeads = Config.ToolHeads.Remove(Config.ToolHeads.Length - 1); //Trim away the very last | that gets added on at the end.
-            Config.ToolHeads += ").*";
-
-            Dictionary<AssetLocation, List<string>> tinkerableTools = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/tinkerabletools");
-            Config.TinkerableTools += "@.*:(";
-            foreach (var tinkerableTool in tinkerableTools) {
-                ToolsmithConfigsHelpers.AddToRegexString(tinkerableTool.Value, ref Config.TinkerableTools);
-            }
-            Config.TinkerableTools = Config.TinkerableTools.Remove(Config.TinkerableTools.Length - 1);
-            Config.TinkerableTools += ").*";
-
-            Dictionary<AssetLocation, List<string>> singlePartTools = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/singleparttools");
-            Config.SinglePartTools += "@.*:(";
-            foreach (var singlePartTool in singlePartTools) {
-                ToolsmithConfigsHelpers.AddToRegexString(singlePartTool.Value, ref Config.SinglePartTools);
-            }
-            Config.SinglePartTools = Config.SinglePartTools.Remove(Config.SinglePartTools.Length - 1);
-            Config.SinglePartTools += ").*";
-
-            Dictionary<AssetLocation, List<string>> bluntHeadedTools = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/bluntheadedtools");
-            Config.BluntHeadedTools += "@.*:(";
-            foreach (var bluntHeadedTool in bluntHeadedTools) {
-                ToolsmithConfigsHelpers.AddToRegexString(bluntHeadedTool.Value, ref Config.BluntHeadedTools);
-            }
-            Config.BluntHeadedTools = Config.BluntHeadedTools.Remove(Config.BluntHeadedTools.Length - 1);
-            Config.BluntHeadedTools += ").*";
-
-            Dictionary<AssetLocation, List<string>> partBlacklists = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/partblacklist");
-            Config.PartBlacklist += "@.*(";
-            foreach (var partBlacklist in partBlacklists) {
-                ToolsmithConfigsHelpers.AddToRegexString(partBlacklist.Value, ref Config.PartBlacklist);
-            }
-            Config.PartBlacklist = Config.PartBlacklist.Remove(Config.PartBlacklist.Length - 1);
-            Config.PartBlacklist += ").*";
-
-            Dictionary<AssetLocation, List<string>> toolsWithWoodInBindingShapes = api.Assets.GetMany<List<string>>(api.Logger, "config/toolsmith/regex/woodinbindingshapes");
-            Config.ToolsWithWoodInBindingShape += "@.*(";
-            foreach (var tool in toolsWithWoodInBindingShapes) {
-                ToolsmithConfigsHelpers.AddToRegexString(tool.Value, ref Config.ToolsWithWoodInBindingShape);
-            }
-            Config.ToolsWithWoodInBindingShape = Config.ToolsWithWoodInBindingShape.Remove(Config.ToolsWithWoodInBindingShape.Length - 1);
-            Config.ToolsWithWoodInBindingShape += ").*";
 
             if (Config.RunFullJsonVerifying) {
                 Logger.Debug("Running full Json verification for all found Toolsmith Configs for parts and stats.");

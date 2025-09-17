@@ -190,7 +190,8 @@ namespace Toolsmith {
                                     ["g"] = new CraftingRecipeIngredient { Type = gripMat.ItemClass, Code = gripMat.Code }
                                 },
                                 RecipeGroup = 2,
-                                ShowInCreatedBy = false,
+                                ShowInCreatedBy = true,
+                                Shapeless = true,
                                 Name = "Add " + gripMat.Code + " as a handle grip.",
                                 Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
                             };
@@ -213,7 +214,8 @@ namespace Toolsmith {
                                         ["t"] = new CraftingRecipeIngredient { Type = treatmentMat.ItemClass, Code = treatmentMat.Code }
                                     },
                                     RecipeGroup = 3,
-                                    ShowInCreatedBy = false,
+                                    ShowInCreatedBy = true,
+                                    Shapeless = true,
                                     Name = "Add " + treatmentMat.Code + " as a handle treatment.",
                                     Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
                                 };
@@ -238,7 +240,8 @@ namespace Toolsmith {
                                         },
                                         Attributes = new JsonObject(JToken.Parse(liquidProps.ToJsonToken())),//new JsonObject(JToken.Parse("{liquidContainerProps: {requiresContent: {type: \"item\", code: \"" + treatmentMat.Code + "\" }, requiresLitres: " + treatmentStats.litersUsed + "}}")),
                                         RecipeGroup = 3,
-                                        ShowInCreatedBy = false,
+                                        ShowInCreatedBy = true,
+                                        Shapeless = true,
                                         Name = "Add " + treatmentMat.Code + " as a handle treatment.",
                                         Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
                                     };

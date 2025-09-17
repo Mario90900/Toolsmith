@@ -91,43 +91,45 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
         public override bool OnBlockInteractStep(float secondsUsed, IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel) {
             bool doneSharpening = false;
-            if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null && TinkeringUtility.ToolOrHeadNeedsSharpening(byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack, world, byPlayer.Entity)) { //Make sure the slot isn't empty
-                int isTool = TinkeringUtility.IsValidSharpenTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world);
-                BlockEntityGrindstone grindstoneEnt = GetBlockEntity<BlockEntityGrindstone>(blockSel.Position);
-                if (grindstoneEnt != null && !byPlayer.Entity.Controls.ShiftKey && isTool > 0) {
-                    grindstoneEnt.ToggleHoningSound(true);
-                }
-                if (world.Side.IsServer() && !byPlayer.Entity.Controls.ShiftKey && isTool > 0) { //Check if it's a valid tool for repair, is made of metal and has one of the 2 behaviors, if so...
-                    ItemStack item = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
+            if (byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack != null) {
+                if (TinkeringUtility.ToolOrHeadNeedsSharpening(byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack, world, byPlayer.Entity) && !byPlayer.Entity.Controls.ShiftKey) { //Make sure the slot isn't empty
+                    int isTool = TinkeringUtility.IsValidSharpenTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world);
+                    BlockEntityGrindstone grindstoneEnt = GetBlockEntity<BlockEntityGrindstone>(blockSel.Position);
+                    if (grindstoneEnt != null && isTool > 0) {
+                        grindstoneEnt.ToggleHoningSound(true);
+                    }
+                    if (world.Side.IsServer() && isTool > 0) { //Check if it's a valid tool for repair, is made of metal and has one of the 2 behaviors, if so...
+                        ItemStack item = byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack;
 
-                    var lastInterval = item.GetGrindstoneInUse();
-                    var deltaLastTick = secondsUsed - lastInterval;
-                    if (deltaLastTick >= repairInterval) { //Try not to repair EVERY single tick to space it out some. Cause of this, repair 5 durability each time so it doesn't take forever.
-                        int curDur = 0;
-                        int maxDur = 0;
-                        int curSharp = 0;
-                        int maxSharp = 0;
-                        var firstHoning = !(item.HasTotalHoneValue());
-                        var totalSharpnessHoned = 0.0f;
+                        var lastInterval = item.GetGrindstoneInUse();
+                        var deltaLastTick = secondsUsed - lastInterval;
+                        if (deltaLastTick >= repairInterval) { //Try not to repair EVERY single tick to space it out some. Cause of this, repair 5 durability each time so it doesn't take forever.
+                            int curDur = 0;
+                            int maxDur = 0;
+                            int curSharp = 0;
+                            int maxSharp = 0;
+                            var firstHoning = !(item.HasTotalHoneValue());
+                            var totalSharpnessHoned = 0.0f;
 
-                        TinkeringUtility.RecieveDurabilitiesAndSharpness(ref curDur, ref maxDur, ref curSharp, ref maxSharp, ref totalSharpnessHoned, item, isTool);
+                            TinkeringUtility.RecieveDurabilitiesAndSharpness(ref curDur, ref maxDur, ref curSharp, ref maxSharp, ref totalSharpnessHoned, item, isTool);
 
-                        TinkeringUtility.ActualSharpenTick(ref curDur, ref curSharp, maxSharp, ref totalSharpnessHoned, firstHoning, byPlayer.Entity);
+                            TinkeringUtility.ActualSharpenTick(ref curDur, ref curSharp, maxSharp, ref totalSharpnessHoned, firstHoning, byPlayer.Entity);
 
-                        if (ToolsmithModSystem.Config.DebugMessages) {
-                            ToolsmithModSystem.Logger.Warning("Total Sharpness Percent recovered this action: " + totalSharpnessHoned);
-                            ToolsmithModSystem.Logger.Warning("Seconds the Grindstone has been going: " + secondsUsed);
-                        }
+                            if (ToolsmithModSystem.Config.DebugMessages) {
+                                ToolsmithModSystem.Logger.Warning("Total Sharpness Percent recovered this action: " + totalSharpnessHoned);
+                                ToolsmithModSystem.Logger.Warning("Seconds the Grindstone has been going: " + secondsUsed);
+                            }
 
-                        TinkeringUtility.SetResultsOfSharpening(curDur, curSharp, totalSharpnessHoned, firstHoning, item, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, isTool);
+                            TinkeringUtility.SetResultsOfSharpening(curDur, curSharp, totalSharpnessHoned, firstHoning, item, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot, isTool);
 
-                        byPlayer.InventoryManager.ActiveHotbarSlot.MarkDirty();
+                            byPlayer.InventoryManager.ActiveHotbarSlot.MarkDirty();
 
-                        lastInterval = MathUtility.FloorToNearestMult(secondsUsed, repairInterval);
-                        item.SetGrindstoneInUse(lastInterval);
+                            lastInterval = MathUtility.FloorToNearestMult(secondsUsed, repairInterval);
+                            item.SetGrindstoneInUse(lastInterval);
 
-                        if (secondsUsed > 300 || !TinkeringUtility.ToolOrHeadNeedsSharpening(item, world)) { //Just in case a way to break out if someone's been holding down the repair for over a set time, so nothing gets too overloaded, or the tool is done repairing!
-                            doneSharpening = true;
+                            if (secondsUsed > 300 || !TinkeringUtility.ToolOrHeadNeedsSharpening(item, world)) { //Just in case a way to break out if someone's been holding down the repair for over a set time, so nothing gets too overloaded, or the tool is done repairing!
+                                doneSharpening = true;
+                            }
                         }
                     }
                 } else if (byPlayer.Entity.Controls.ShiftKey && TinkeringUtility.IsDeconstructableTool(byPlayer.InventoryManager.ActiveHotbarSlot?.Itemstack.Collectible, world)) {

@@ -140,8 +140,8 @@ namespace Toolsmith.ToolTinkering.Items {
         }
 
         public string GetMetalType() {
-            var smeltedCode = CombustibleProps?.SmeltedStack?.ResolvedItemstack?.Collectible.LastCodePart();
-            if (smeltedCode == null) {
+            var smeltedCode = CombustibleProps?.SmeltedStack?.ResolvedItemstack?.Collectible?.LastCodePart();
+            if (ToolsmithModSystem.Config.DebugMessages && smeltedCode == null) {
                 ToolsmithModSystem.Logger.Error("Something is being given the Workable Nugget Class but has no combustible props. This will cause the item to not function like a proper workable item. The item in question is: " + Code);
             }
             return smeltedCode;
