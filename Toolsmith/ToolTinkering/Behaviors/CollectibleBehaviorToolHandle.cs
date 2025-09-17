@@ -143,7 +143,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 }
                 
                 if (ToolsmithModSystem.Stats.GripParts.ContainsKey(gripOrTreatmentSlot.Itemstack.Collectible.Code.Path)) {
-                    if (handleSlot.Itemstack.HasHandleGripTag() || handleSlot.Itemstack.HasWetTreatment()) {
+                    if (handleSlot.Itemstack.HasHandleGripTag()) {
                         outputSlot.Itemstack = null;
                         outputSlot.Itemstack = new ItemStack(ToolsmithModSystem.Api.World.GetBlock(new AssetLocation("game:air")));
                         outputSlot.Itemstack.SetDisposeMeNowPlease();
@@ -219,6 +219,13 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 if (!TinkeringUtility.IsStickOrBone(outputSlot.Itemstack)) {
                     var renderTree = outputSlot.Itemstack.GetPartRenderTree();
                     renderTree.GetPartTextureTree();
+                }
+                
+                if (handleSlot == null && gripOrTreatmentSlot != null && ToolsmithModSystem.Stats.GripParts.ContainsKey(gripOrTreatmentSlot.Itemstack.Collectible.Code.Path)) { //Copying this down here as well since the changes to the 'valid handle' check resulted in not returning a valid handle when it has a Wet Treatment, so it never hit this check when trying to apply a grip.
+                    outputSlot.Itemstack = null;
+                    outputSlot.Itemstack = new ItemStack(ToolsmithModSystem.Api.World.GetBlock(new AssetLocation("game:air")));
+                    outputSlot.Itemstack.SetDisposeMeNowPlease();
+                    bhHandling = EnumHandling.PreventDefault;
                 }
             }
 
