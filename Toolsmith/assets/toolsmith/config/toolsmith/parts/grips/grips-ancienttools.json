@@ -1,0 +1,86 @@
+[
+	{
+		"id": "leather-normal-acacia",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/acacia"
+	},
+	{
+		"id": "leather-normal-aged",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/aged"
+	},
+	{
+		"id": "leather-normal-baldcypress",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/baldcypress"
+	},
+	{
+		"id": "leather-normal-birch",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/birch"
+	},
+	{
+		"id": "leather-normal-cypress",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/cypress"
+	},
+	{
+		"id": "leather-normal-ebony",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/ebony"
+	},
+	{
+		"id": "leather-normal-kapok",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/kapok"
+	},
+	{
+		"id": "leather-normal-larch",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/larch"
+	},
+	{
+		"id": "leather-normal-maple",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/maple"
+	},
+	{
+		"id": "leather-normal-pine",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/pine"
+	},
+	{
+		"id": "leather-normal-purpleheart",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/purpleheart"
+	},
+	{
+		"id": "leather-normal-redwood",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/redwood"
+	},
+	{
+		"id": "leather-normal-walnut",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/leather/walnut"
+	},
+	{
+		"id": "buckskin",
+		"gripStatTag": "leather",
+		"gripShapePath": "fabric",
+		"gripTextureOverride": "ancienttools:item/resource/buckskin"
+	}
+]

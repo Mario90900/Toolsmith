@@ -1,0 +1,24 @@
+[
+	{
+		"ingredientPattern": "SG,P_",
+		"ingredients": {
+			"S": { "type": "block", "code": "game:sand-*" },
+			"G": { "type": "item", "code": "butchering:glueportion-sinew-cold" },
+			"P": { "type": "item", "code": "game:paper-parchment" }
+		},
+		"width": 2,
+		"height": 2,
+		"output": { "type": "item", "code": "toolsmith:sandpaper", "quantity": 4 }
+	},
+	{
+		"ingredientPattern": "SG,P_",
+		"ingredients": {
+			"S": { "type": "block", "code": "game:sand-*" },
+			"G": { "type": "item", "code": "butchering:glueportion-hide-hot" },
+			"P": { "type": "item", "code": "game:paper-parchment" }
+		},
+		"width": 2,
+		"height": 2,
+		"output": { "type": "item", "code": "toolsmith:sandpaper", "quantity": 4 }
+	}
+]

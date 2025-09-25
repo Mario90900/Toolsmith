@@ -1,0 +1,44 @@
+[
+	{
+		"op": "addmerge",
+		"path": "/variantgroups/0/states/-",
+		"file": "toolsmith:itemtypes/fabricstrips.json",
+		"value": "atleather"
+	},
+	{
+		"op": "addmerge",
+		"path": "/behaviorsByType/*-atleather",
+		"file": "toolsmith:itemtypes/fabricstrips.json",
+		"value": [
+			{
+				"name": "toolsmith:ModularPartRenderingFromAttributes",
+				"properties": {
+					"textures": [
+						{
+							"code": "material",
+							"Default": "wool:block/cloth/wool/plain",
+							"values": [
+								"ancienttools:item/resource/leather/acacia",
+								"ancienttools:item/resource/leather/aged",
+								"ancienttools:item/resource/leather/baldcypress",
+								"ancienttools:item/resource/leather/birch",
+								"ancienttools:item/resource/leather/cypress",
+								"ancienttools:item/resource/leather/ebony",
+								"ancienttools:item/resource/leather/kapok",
+								"ancienttools:item/resource/leather/larch",
+								"ancienttools:item/resource/leather/maple",
+								"ancienttools:item/resource/leather/pine",
+								"ancienttools:item/resource/leather/purpleheart",
+								"ancienttools:item/resource/leather/redwood",
+								"ancienttools:item/resource/leather/walnut",
+								"ancienttools:item/resource/buckskin"
+							]
+						}
+					],
+					"skipCreativeInventoryAdditions": false,
+					"creativeTabs": [ "general", "items" ]
+				}
+			}
+		]
+	}
+]

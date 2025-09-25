@@ -1,0 +1,226 @@
+[
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-acacia" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/acacia"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-aged" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/aged"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-baldcypress" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/baldcypress"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-birch" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/birch"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-cypress" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/cypress"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-ebony" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/ebony"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-kapok" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/kapok"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-larch" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/larch"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-maple" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/maple"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-pine" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/pine"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-purpleheart" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/purpleheart"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-redwood" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/redwood"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:leather-normal-walnut" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/leather/walnut"
+				}
+			}
+		} }
+	},
+	{
+		"ingredientPattern": "KC",
+		"ingredients": {
+			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"C": { "type": "item", "code": "ancienttools:buckskin" }
+		},
+		"width": 2,
+		"height": 1,
+		"output": { "type": "item", "code": "toolsmith:fabricstrips-atleather", "quantity": 2, "attributes": {
+			"modularPartRenderData": {
+				"partTextures": {
+					"material": "ancienttools:item/resource/buckskin"
+				}
+			}
+		} }
+	}
+]

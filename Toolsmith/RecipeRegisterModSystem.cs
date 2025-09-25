@@ -262,7 +262,7 @@ namespace Toolsmith {
             }
         }
 
-        private List<GridRecipe> GenerateSandpaperRecipes(ICoreAPI api) {
+        private List<GridRecipe> GenerateSandpaperRecipes(ICoreAPI api) { //TODO: Rework this eventually to pull from the config files again. Guh. I don't really want to go that far right now.
             var list = new List<GridRecipe>();
             ITreeAttribute liquidProps = new TreeAttribute();
             var liqProps = liquidProps.GetOrAddTreeAttribute("liquidContainerProps");
@@ -270,6 +270,26 @@ namespace Toolsmith {
             reqCont.SetString("type", "item");
             reqCont.SetString("code", "game:glueportion-pitch-hot");
             liqProps.SetFloat("requiresLitres", 0.5f);
+            var butcheringModEnabled = api.ModLoader.IsModEnabled("butchering");
+
+            /*
+            ITreeAttribute sinewProps = null;
+            ITreeAttribute hideProps = null;
+            if (butcheringModEnabled) {
+                sinewProps = new TreeAttribute();
+                var sinewLiqProps = sinewProps.GetOrAddTreeAttribute("liquidContainerProps");
+                var sinewReqCont = sinewLiqProps.GetOrAddTreeAttribute("requiresContent");
+                sinewReqCont.SetString("type", "item");
+                sinewReqCont.SetString("code", "butchering:glueportion-sinew-cold");
+                sinewLiqProps.SetFloat("requiresLitres", 0.5f);
+
+                hideProps = new TreeAttribute();
+                var hideLiqProps = hideProps.GetOrAddTreeAttribute("liquidContainerProps");
+                var hideReqCont = hideLiqProps.GetOrAddTreeAttribute("requiresContent");
+                hideReqCont.SetString("type", "item");
+                hideReqCont.SetString("code", "butchering:glueportion-hide-hot");
+                hideLiqProps.SetFloat("requiresLitres", 0.5f);
+            }*/
 
             foreach (var container in LiquidContainers) {
                 var containerRecipe = new GridRecipe {
@@ -282,13 +302,49 @@ namespace Toolsmith {
                         ["P"] = new CraftingRecipeIngredient { Type = EnumItemClass.Item, Code = new AssetLocation("game:paper-parchment") }
                     },
                     Attributes = new JsonObject(JToken.Parse(liquidProps.ToJsonToken())),
-                    ShowInCreatedBy = true,
                     Name = "Make sandpaper from Pitch Glue in a " + container.Code + ".",
                     Output = new CraftingRecipeIngredient { Type = EnumItemClass.Item, Code = new AssetLocation("toolsmith:sandpaper"), Quantity = 4 }
                 };
 
                 containerRecipe.ResolveIngredients(api.World);
                 list.Add(containerRecipe);
+
+                /*if (butcheringModEnabled) {
+                    var containerSinewRecipe = new GridRecipe {
+                        IngredientPattern = "SG,P_",
+                        Width = 2,
+                        Height = 2,
+                        Ingredients = new Dictionary<string, CraftingRecipeIngredient> {
+                            ["S"] = new CraftingRecipeIngredient { Type = EnumItemClass.Block, Code = new AssetLocation("game:sand-*") },
+                            ["G"] = new CraftingRecipeIngredient { Type = container.ItemClass, Code = container.Code },
+                            ["P"] = new CraftingRecipeIngredient { Type = EnumItemClass.Item, Code = new AssetLocation("game:paper-parchment") }
+                        },
+                        Attributes = new JsonObject(JToken.Parse(sinewProps.ToJsonToken())),
+                        ShowInCreatedBy = true,
+                        Name = "Make sandpaper from Sinew Glue in a " + container.Code + ".",
+                        Output = new CraftingRecipeIngredient { Type = EnumItemClass.Item, Code = new AssetLocation("toolsmith:sandpaper"), Quantity = 4 }
+                    };
+
+                    var containerHideRecipe = new GridRecipe {
+                        IngredientPattern = "SG,P_",
+                        Width = 2,
+                        Height = 2,
+                        Ingredients = new Dictionary<string, CraftingRecipeIngredient> {
+                            ["S"] = new CraftingRecipeIngredient { Type = EnumItemClass.Block, Code = new AssetLocation("game:sand-*") },
+                            ["G"] = new CraftingRecipeIngredient { Type = container.ItemClass, Code = container.Code },
+                            ["P"] = new CraftingRecipeIngredient { Type = EnumItemClass.Item, Code = new AssetLocation("game:paper-parchment") }
+                        },
+                        Attributes = new JsonObject(JToken.Parse(hideProps.ToJsonToken())),
+                        ShowInCreatedBy = true,
+                        Name = "Make sandpaper from Hide Glue in a " + container.Code + ".",
+                        Output = new CraftingRecipeIngredient { Type = EnumItemClass.Item, Code = new AssetLocation("toolsmith:sandpaper"), Quantity = 4 }
+                    };
+
+                    containerSinewRecipe.ResolveIngredients(api.World);
+                    containerHideRecipe.ResolveIngredients(api.World);
+                    list.Add(containerSinewRecipe);
+                    list.Add(containerHideRecipe);
+                }*/
             }
 
             if (list.Count > 0) {

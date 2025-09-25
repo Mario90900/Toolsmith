@@ -257,6 +257,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                         var combinedStack = ReforgingUtility.MergeDupesAndReturn(craftingSlots);
                         DropItemInMiddleOfBench(combinedStack, world);
                         UpdateSlotIndicators(world);
+                        PopDisabledSlots(world);
 
                         if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible.Tool == EnumTool.Hammer) {
                             byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
@@ -268,8 +269,8 @@ namespace Toolsmith.ToolTinkering.Blocks {
                     var craftedTool = TinkeringUtility.TryCraftToolFromSlots(craftingSlots, world, blockSel);
                     if (craftedTool != null) {
                         DropItemInMiddleOfBench(craftedTool, world);
-                        PopDisabledSlots(world);
                         UpdateSlotIndicators(world);
+                        PopDisabledSlots(world);
 
                         if (byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible.Tool == EnumTool.Hammer) {
                             byPlayer.InventoryManager.ActiveHotbarSlot.Itemstack.Collectible.DamageItem(world, byPlayer.Entity, byPlayer.InventoryManager.ActiveHotbarSlot);
