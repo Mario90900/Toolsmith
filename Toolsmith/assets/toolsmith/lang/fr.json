@@ -1,0 +1,110 @@
+{
+	"game:pristinecondition": "Cette pièce d’outil est en parfait état !",
+	"game:partiallydamaged": "Cette pièce d’outil a environ {0}% de durabilité restante.",
+	"game:fullysharpened": "Cette tête d’outil ne pourrait pas être plus aiguisée !",
+	"game:partiallysharpened": "Cette tête d’outil est aiguisée à environ {0}%.",
+	"game:toolheadhoninginprogress": "Cette tête est en cours d’affûtage, elle peut encore être améliorée.",
+	"game:toolheadfreehone": "Cette tête sort tout juste de l’enclume, affûtez-la pour terminer ! Cela ne réduira pas la durabilité cette fois.",
+	"game:smithedtoolhoninginprogress": "Cet outil est en cours d’affûtage, il peut encore être amélioré.",
+	"game:smithedtoolfreehone": "Cet outil sort tout juste de l’enclume, affûtez-le pour terminer ! Cela ne réduira pas la durabilité cette fois.",
+	"game:tinkeredtoolhoninginprogress": "La tête de cet outil est en cours d’affûtage, elle peut encore être améliorée.",
+	"game:tinkeredtoolfreehone": "La tête de cet outil sort tout juste de l’enclume, affûtez-la pour terminer ! Cela ne réduira pas la durabilité cette fois.",
+	"game:toolheaddurability": "Durabilité de la tête : {0} / {1}",
+	"game:toolhandledurability": "Durabilité du manche : {0} / {1}",
+	"game:toolbindingdurability": "Durabilité de la ligature : {0} / {1}",
+	"game:toolsharpness": "Tranchant : {0} / {1}",
+	"game:tinkeredtoolverylowdamage": "La tête émoussée de cet outil a peu de chances d’être endommagée, mais assurez-vous que le manche et les ligatures tiennent.",
+	"game:smithedtoolverylowdamage": "Cet outil à tête émoussée a peu de chances d’être endommagé à l’usage.",
+	"game:toolheadverylowdamage": "Cette tête d’outil est émoussée et a peu de chances d’être endommagée à l’usage.",
+	"game:toolheaddirections": "Préparez cet outil en maintenant clic droit avec un manche dans la main secondaire ! Ou fabriquez-le simplement comme d’habitude pour une version basique.",
+	"game:toolhandledirections": "Cela ressemble à un bon manche pour un outil.",
+	"game:toolbindingdirections": "Ceci semble très utile pour assembler un outil.",
+	"game:toolbindingtier": "Niveau de ligature : {0}",
+	"game:toolbindingtotalmult": "Multiplicateur de durabilité de la ligature : x{0}",
+	"game:toolbindinghandlebonus": "Bonus de durabilité du manche : +{0}%",
+	"game:toolbindingrecoverychance": "La ligature est perdue si l’outil casse et que sa durabilité est en dessous de {0}%",
+	"game:toolbindingmetaldrops": "Si elle casse, elle laissera tomber quelques fragments de métal correspondants",
+	"game:tinkertoolpartscontains": "Préparé un {0} et un {1} pour l’assemblage en outil. Vous pouvez maintenant choisir une ligature comme pour le manche !",
+	"game:handleiswet": " (Humide)",
+	"game:toolhandlefullyprepared": "Ce manche a été traité avec {0} et équipé d’une prise en {1}.",
+	"game:toolhandletreated": "Ce manche a été traité avec {0}.",
+	"game:toolhandlegripped": "Ce manche a une prise en {0}.",
+	"game:toolhandletotalmult": "Multiplicateur de durabilité du manche : x{0}",
+	"game:toolhandlebindingbonus": "Bonus de durabilité de la ligature : +{0}%",
+	"game:toolhandleusespeedbonus": "Bonus de vitesse d’utilisation : {0}%",
+	"game:toolhandletreatmentbonus": "Bonus de durabilité du traitement : +{0}%",
+	"game:toolhandlegripspeedbonus": "Bonus de vitesse d’utilisation de la prise : {0}%",
+	"game:toolhandlegripchancenodamage": "Cette prise donne {0}% de chances que le manche n’encaisse pas de dégâts",
+
+    "toolsmith:item-crudehandle": "Manche brut",
+	"toolsmith:item-handle": "Manche taillé",
+	"toolsmith:item-carpentedhandle": "Manche professionnel",
+	"toolsmith:item-sandpaper": "Papier de verre",
+
+	"game:grip-twine": "Ficelle",
+	"game:grip-cloth": "Tissu",
+	"game:grip-leather": "Cuir",
+	"game:grip-sturdy": "Solide",
+
+	"game:treatment-fat": "Graissé",
+	"game:treatment-wax": "Ciré",
+	"game:treatment-oil": "Huilé",
+
+	"toolsmith:item-fabricstrips-rawhide": "Lanières de peau brute",
+	"toolsmith:item-fabricstrips-cloth": "Bandes de tissu",
+	"toolsmith:item-fabricstrips-leather": "Lanières de cuir",
+	"toolsmith:item-fabricstrips-sturdy": "Lanières de cuir solide",
+	"toolsmith:item-fabricstrips-wool": "Bandes de laine",
+
+	"toolsmith:item-whetstone-chert": "Pierre à aiguiser en silex",
+	"toolsmith:item-whetstone-granite": "Pierre à aiguiser en granite",
+	"toolsmith:item-whetstone-andesite": "Pierre à aiguiser en andésite",
+	"toolsmith:item-whetstone-basalt": "Pierre à aiguiser en basalte",
+	"toolsmith:item-whetstone-peridotite": "Pierre à aiguiser en péridotite",
+
+	"toolsmith:item-tinkertoolparts": "Tête d’outil et manche",
+
+	"toolsmith:block-grindstone-granite-north": "Meule en granite",
+	"toolsmith:block-grindstone-sandstone-north": "Meule en grès",
+	"toolsmith:block-grindstone-shale-north": "Meule en schiste",
+	"toolsmith:block-grindstone-andesite-north": "Meule en andésite",
+
+	"game:blockhelp-grindstone-hone": "Affûter un objet en métal",
+	"game:honing-cutoff-message": "Il reste très peu de matière à affûter. C’est le bon moment pour reforger !",
+	"game:blockhelp-grindstone-deconstruct": "Décomposer un outil",
+
+	"toolsmith:block-workbench-north": "Établi",
+
+	"game:blockhelp-workbench-reforge": "Reforger un outil ou une tête d’outil",
+	"game:blockhelp-workbench-deconstruct": "Décomposer un outil",
+	"game:blockhelp-workbench-breakdownworkpiece": "Décomposer une pièce en fragments",
+	"game:blockhelp-workbench-craftingspot-head": "Placer la tête d’outil pour l’assemblage",
+	"game:blockhelp-workbench-craftingspot-handle": "Placer le manche d’outil pour l’assemblage",
+	"game:blockhelp-workbench-craftingspot-binding": "Placer la ligature pour l’assemblage",
+	"game:blockhelp-workbench-craftingspot-mergable": "Placer un objet similaire pour fusion",
+	"game:blockhelp-workbench-retrieve-item": "Récupérer une pièce d’outil",
+	"game:blockhelp-workbench-strike-craft": "Frappez pour fabriquer !",
+	"game:blockhelp-workbench-reforge-head": "Préparer la pièce pour reforger",
+
+	"game:craftinginfo-toolsmithingbasics-title": "Forgerie d’outils – Les bases",
+	"game:craftinginfo-toolsmithingbasics-text": "<strong>Forgerie d’outils</strong><br><i>Laisse-moi te montrer comment prendre soin de cette hachette.</i><br>Tu remarqueras rapidement que certains outils ont plusieurs parties, ainsi qu’une seconde jauge au-dessus de la durabilité : la barre de tranchant. Tout outil composé de trois parties ou plus est un « outil assemblé » (Tinkered Tool). Les autres, forgés en un seul bloc ou fabriqués via la grille, sont des « outils forgés » (Smithed Tools).<br><br>La différence est importante : les outils assemblés peuvent être personnalisés, avec des pièces choisies et fabriquées pour augmenter leur durabilité et leurs performances. Les outils forgés sont plus simples, mais ils peuvent eux aussi être entretenus et réparés. Beaucoup d’infos utiles se trouvent aussi dans les infobulles, donc n’hésite pas à les lire si tu es perdu !<br><br><strong>Méthodes de fabrication</strong><br>Il existe maintenant plusieurs façons de fabriquer tes outils. La méthode classique de la grille reste valable, avec plus d’options pour les manches et les ligatures (facultatives). Place un manche sous la tête d’outil, et une ligature à droite de la tête pour assembler le tout.<br>Une autre méthode est la fabrication « en main » (In-Hand), réservée aux outils assemblés. Pour commencer, prends une tête d’outil dans ta main principale et un manche dans l’autre main. Maintiens clic droit quelques secondes pour les assembler en une seule pièce. Ensuite, tu peux répéter l’opération avec cette nouvelle pièce dans la main principale et une ligature éventuelle dans l’autre main. La ligature n’est pas obligatoire, tu peux laisser ta main libre si tu veux. Bon bricolage !<br><br><strong>Tranchant et usure</strong><br>La seconde jauge – le tranchant – apparaît sur tous les outils qui doivent être aiguisés pour fonctionner. Ne la laisse pas tomber à zéro : sinon, ton outil s’abîmera beaucoup plus vite et un malus (pas encore implémenté !) sera appliqué. Pour entretenir le tranchant, tu peux utiliser soit une pierre à aiguiser taillée (Whetstone) fabriquée avec n’importe quelle pierre taillable, soit une meule.<br>La meule peut être fabriquée une fois que tu as accès à des planches et à une bonne pierre : le grès ou le granite sont parfaits, mais le schiste ou l’andésite fonctionnent aussi. La pierre à aiguiser est pratique en voyage, tandis que la meule, plus encombrante, est idéale pour l’atelier.",
+
+	"game:craftinginfo-toolsmithcraftingmethods-title": "Forgerie d’outils – Fabrication et démontage",
+	"game:craftinginfo-toolsmithcraftingmethods-text": "<strong>Fabrication en main</strong><br>La méthode principale pour créer un outil assemblé est la fabrication « en main ». Comme pour la grille, tu peux l’utiliser partout, il suffit d’avoir les deux mains libres. Prends les pièces nécessaires : une tête d’outil, un manche, et éventuellement une ligature. La ligature n’est pas obligatoire, mais elle renforce ton outil et peut apporter des bonus supplémentaires si elle est de bonne qualité.<br>Pour commencer, prends la tête d’outil dans ta main principale et mets le manche dans l’autre. Vérifie les infobulles pour voir ce qui fait un bon manche ou une bonne ligature ! Maintiens clic droit quelques secondes et les deux parties seront assemblées. Ensuite, si tu veux ajouter une ligature, mets-la dans ta main secondaire et refais un clic droit prolongé avec l’outil partiellement assemblé dans la main principale. Et voilà, ton outil est prêt !<br><br><strong>Fabrication sur établi</strong><br>Tu peux aussi fabriquer tes outils sur ton fidèle établi. Les cinq emplacements du milieu servent à poser les pièces. Une fois les parties placées, prends ton marteau et frappe-les avec clic droit pour assembler l’outil. Ces mêmes emplacements servent aussi à « fusionner » des têtes ou outils forgés métalliques pour équilibrer leur durabilité, ce qui est très pratique pour les préparer à une reforgerie.<br><br><strong>Fabrication en grille</strong><br>Enfin, tu peux aussi assembler un outil via la grille classique. Place la tête au-dessus d’un manche, et une ligature (optionnelle) à droite de la tête. Cette méthode est identique à la fabrication en main. Les recettes sont générées au chargement du jeu et peuvent varier selon la configuration du serveur.<br><br><strong>Démontage</strong><br>Tu peux décomposer un outil assemblé pour récupérer la tête ou le manche. Il te faut pour cela une meule ou un établi (qui nécessitent des planches pour être fabriqués). Attention : si l’outil a été utilisé, tu ne pourras pas récupérer la ligature, car elle devra être brisée pour séparer les parties sans endommager le manche ou la tête.<br>Pour décomposer via une meule, tiens ton outil en main, vise la meule, maintiens Maj et fais clic droit quelques secondes. Sur l’établi, il faut viser l’étau situé à gauche et interagir de la même façon.",
+
+	"game:craftinginfo-toolsmithdurabilityandwear-title": "Forgerie d’outils – Durabilité, tranchant et usure",
+	"game:craftinginfo-toolsmithdurabilityandwear-text": "<strong>Tranchant et durabilité</strong><br>Tout outil tranchant a un niveau d’affûtage. Une tête forgée n’est jamais parfaitement aiguisée, elle devra donc être polie après fabrication. Tant que ton outil reste bien affûté, il sera plus agréable à utiliser et bénéficiera d’un petit bonus de vitesse de 5 %. De plus, au-dessus de 98 % de tranchant, ni la tête ni les ligatures ne prennent de dégâts, et le manche est protégé tant que le tranchant reste au-dessus de 95 %. Pour un outil forgé, seule la tête compte.<br>Si un outil devient émoussé, il risque de s’abîmer à chaque utilisation. Pour un outil tranchant, la probabilité est de 15 %, mais elle descend à 2 % si l’outil est émoussé. Ces valeurs sont configurables. Les manches et ligatures, eux, subissent toujours 1 point de dégât par utilisation.<br>Quand le tranchant descend sous 33 %, l’outil devient plus lent : -10 % de vitesse. Et s’il tombe à 0, l’outil est garanti de subir un malus et la tête prendra désormais 2 dégâts à chaque utilisation.<br><br><strong>Réparer le tranchant</strong><br>Tu peux restaurer le tranchant avec une pierre à aiguiser ou une meule. Les pierres à aiguiser sont faciles à obtenir : il suffit de tailler une pierre adaptée. Les meules demandent une pierre abrasive (comme granite ou grès, mais l’andésite et le schiste fonctionnent aussi) et des planches pour le cadre. La différence : les pierres à aiguiser ont une durabilité limitée, tandis que la meule est infinie mais encombrante. Pour aiguiser, prends la pierre en main secondaire et l’outil en main principale, puis maintiens clic droit. Pour la meule, pose-la au sol, prends ton outil et fais la même chose en la visant.<br>Important : affûter consomme de la durabilité de la tête. Les 20 premiers % affûtés consomment le double de durabilité. Entre 20 et 40 %, la consommation diminue progressivement, puis à 50 % affûtés, la tête ne subit plus qu’une faible probabilité de dégâts (5 %), et cela reste stable jusqu’à 100 %.",
+
+	"game:craftinginfo-toolsmithreforging-title": "Forgerie d’outils – Les secrets du reforgage",
+	"game:craftinginfo-toolsmithreforging-text": "<strong>Reforger</strong><br>Quand tes têtes d’outils s’approchent de la fin de leur durabilité, inutile de les jeter ! Tu peux maintenant les reforger à l’établi, fabriqué en planches. Pour lancer un reforgage, place ton outil ou ta tête dans l’emplacement devant la boîte à outils, à droite. Prends ton marteau et fais un clic droit dessus pour préparer la pièce. Elle se transforme en ébauche qu’il faudra ensuite apporter à la forge pour la réparer.<br>Attention : si la recette de ton outil produit plusieurs pièces, tu dois en avoir le bon nombre pour lancer le reforgage. L’établi permet de fusionner ces pièces et d’équilibrer leur durabilité, pratique pour ça !",
+
+	"game:craftinginfo-toolsmithmiscaddons-title": "Forgerie d’outils – Ajouts divers",
+	"game:craftinginfo-toolsmithmiscaddons-text": "<strong>Forge à froid du cuivre</strong><br>En guise de réalisme, Toolsmith te permet de forger le cuivre à froid ! Tu n’as pas besoin de le chauffer : ce métal est tellement tendre qu’il peut être travaillé à température ambiante.<br><br>D’autres ajouts viendront plus tard !",
+
+	"game:craftinginfo-toolsmithtooltypes-title": "Forgerie d’outils – Types d’outils",
+	"game:craftinginfo-toolsmithtooltypes-text": "<strong>Outils assemblés</strong><br>Un outil assemblé est fabriqué à partir d’une tête et d’un manche. Avec Toolsmith, tu peux améliorer le manche, le traiter pour protéger le bois, lui ajouter une prise confortable et utiliser de meilleures ligatures pour maintenir la tête plus longtemps. Chaque partie a maintenant sa propre durabilité : des options basiques ou faibles dureront moins longtemps avant de casser. N’oublie pas : il existe plusieurs façons de les fabriquer, regarde la page correspondante dans le manuel. Un outil assemblé a toujours besoin d’une tête (qui définit le type d’outil) et d’un manche. La ligature est optionnelle, mais sans elle la tête risque de vite se détacher !<br><br><strong>Outils forgés</strong><br>Si un outil n’est pas assemblé, c’est un outil forgé. Ces outils sont obtenus par forgeage : une fois l’ébauche terminée, tu reçois directement l’outil complet, comme le ciseau. Cela inclut aussi des outils spéciaux venant d’autres mods (par exemple les outils de QP Chisel Tools ou certains outils d’Age of Growing). Ces outils n’ont qu’une seule partie fonctionnelle – leur tête. S’ils sont en métal, ils peuvent être reforgés quand ils s’usent.<br><br><strong>Outils contondants</strong><br>Un outil contondant peut être de n’importe quel type : c’est juste une catégorie particulière. Comme son nom l’indique, il ne dépend pas du tranchant et n’a pas besoin d’être aiguisé. Il ne gagne donc ni bonus ni malus liés au tranchant. En revanche, ils sont souvent très solides : la tête a moins de chances de s’endommager à l’usage qu’un outil tranchant. Si c’est un outil contondant assemblé, surveille tout de même le manche et la ligature.",
+
+	"game:craftinginfo-toolsmithtoolparts-title": "Forgerie d’outils – Les parties d’un outil",
+	"game:craftinginfo-toolsmithtoolparts-text": "<strong>Têtes d’outils</strong><br>La tête est la partie la plus importante : elle définit le type d’outil et son matériau détermine aussi la durabilité des autres parties. Les métaux sont plus durables que la pierre ou le bois, et les alliages avancés encore plus. Si l’outil est tranchant, la tête a une jauge de tranchant que tu peux restaurer, mais cela consomme de la durabilité.<br><br><strong>Manches</strong><br>Le manche peut être fabriqué à partir d’un simple bâton ou d’un os, mais tu pourras ensuite créer de meilleures versions comme un manche brut ou un manche taillé. Les manches taillés ou professionnels peuvent être traités (graisse, cire, huile) et équipés d’une prise pour plus de confort. Le manche brut, lui, ne peut recevoir qu’une prise, puisqu’il n’est qu’un morceau de bois grossièrement taillé. Le manche influe directement sur la durabilité globale, et les versions avancées peuvent aussi renforcer la ligature et accélérer l’usage de l’outil.<br><br><strong>Traitements</strong><br>Traiter ton manche n’est pas obligatoire, mais cela augmente grandement sa résistance à l’usure et aux éléments. Les options vont de la graisse (simple, mais peu efficace) à la cire, puis à l’huile (la plus efficace). Certaines huiles viennent d’autres mods (lin, noix, graines, etc.).<br><br><strong>Prises</strong><br>Une bonne prise apporte deux bonus : plus de vitesse et une chance d’éviter que le manche ne prenne des dégâts. Les meilleurs matériaux incluent la ficelle, le tissu, le cuir (de toutes couleurs, pour un côté esthétique) ou le cuir solide. Consulte les infobulles pour les valeurs exactes.<br><br><strong>Ligatures</strong><br>Un bon outil ne tient pas sans une ligature ! Tu peux fabriquer un outil sans, mais la tête se détachera vite. Pour résoudre ça, utilise simplement de l’herbe sèche ou des roseaux pour attacher la tête. Selon le matériau choisi, la ligature détermine sa durabilité, apporte un petit bonus au manche, et définit à quel pourcentage elle peut encore être récupérée si une autre partie de l’outil casse. Les options avancées incluent la ficelle, la corde, le cuir, la poix chaude (colle), les clous en métal ou même des pièces métalliques. Fouille le manuel et les infobulles pour plus d’infos !"
+
+}
