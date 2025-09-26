@@ -115,7 +115,7 @@ namespace Toolsmith {
             }
 
             var handleRecipes = GenerateHandleRecipes(api);
-            var sandpaperRecipes = GenerateSandpaperRecipes(api);
+            //var sandpaperRecipes = GenerateSandpaperRecipes(api);
 
             if (toolRecipes != null && toolRecipes.Count > 0) {
                 api.World.GridRecipes.AddRange(toolRecipes);
@@ -123,9 +123,9 @@ namespace Toolsmith {
             if (handleRecipes != null && handleRecipes.Count > 0) {
                 api.World.GridRecipes.AddRange(handleRecipes);
             }
-            if (sandpaperRecipes != null && sandpaperRecipes.Count > 0) {
+            /*if (sandpaperRecipes != null && sandpaperRecipes.Count > 0) {
                 api.World.GridRecipes.AddRange(sandpaperRecipes);
-            }
+            }*/
 
             //Make sure to clean up the five lists that were used in all this here! Would be nice not to leave that overhead information when it likely won't be needed after this point.
             TinkerableToolsList = null;
@@ -262,6 +262,7 @@ namespace Toolsmith {
             }
         }
 
+        //Eeeeeh, just cutting this out to only use vanilla containers like the Jug, Bowl and Bucket.
         private List<GridRecipe> GenerateSandpaperRecipes(ICoreAPI api) { //TODO: Rework this eventually to pull from the config files again. Guh. I don't really want to go that far right now.
             var list = new List<GridRecipe>();
             ITreeAttribute liquidProps = new TreeAttribute();

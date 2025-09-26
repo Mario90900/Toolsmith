@@ -8,12 +8,16 @@
 	{
 		"id": "glueportion-sinew-cold",
 		"bindingStatTag": "glue",
+		"isLiquid": true,
+		"litersUsed": 0.5,
 		"bindingShapePath": "",
 		"bindingTextureOverride": ""
 	},
 	{
 		"id": "glueportion-hide-hot",
 		"bindingStatTag": "glue",
+		"isLiquid": true,
+		"litersUsed": 0.5,
 		"bindingShapePath": "",
 		"bindingTextureOverride": ""
 	}
