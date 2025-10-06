@@ -87,20 +87,24 @@ namespace Toolsmith {
                         if (!ToolHeadTexturesCache.ContainsKey(ingredient.Code)) {
                             if (ingredient.Type == EnumItemClass.Item) {
                                 Item item = ingredient.ResolvedItemstack.Item;
-                                ToolHeadTextureData textures = new ToolHeadTextureData();
-                                foreach (var tex in item.Textures) {
-                                    textures.Tags.Add(tex.Key);
-                                    textures.Paths.Add(tex.Value.Base);
+                                if (item.Textures != null) {
+                                    ToolHeadTextureData textures = new ToolHeadTextureData();
+                                    foreach (var tex in item.Textures) {
+                                        textures.Tags.Add(tex.Key);
+                                        textures.Paths.Add(tex.Value.Base);
+                                    }
+                                    ToolHeadTexturesCache.Add(item.Code, textures);
                                 }
-                                ToolHeadTexturesCache.Add(item.Code, textures);
                             } else {
                                 Block block = ingredient.ResolvedItemstack.Block;
-                                ToolHeadTextureData textures = new ToolHeadTextureData();
-                                foreach (var tex in block.Textures) {
-                                    textures.Tags.Add(tex.Key);
-                                    textures.Paths.Add(tex.Value.Base);
+                                if (block.Textures != null) {
+                                    ToolHeadTextureData textures = new ToolHeadTextureData();
+                                    foreach (var tex in block.Textures) {
+                                        textures.Tags.Add(tex.Key);
+                                        textures.Paths.Add(tex.Value.Base);
+                                    }
+                                    ToolHeadTexturesCache.Add(block.Code, textures);
                                 }
-                                ToolHeadTexturesCache.Add(block.Code, textures);
                             }
                         }
 
