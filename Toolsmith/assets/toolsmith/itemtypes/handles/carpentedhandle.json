@@ -1,5 +1,6 @@
 {
 	"code": "carpentedhandle",
+	"tags": ["toolsmith-part", "toolsmith-handle"],
 	"maxstacksize": 4,
 	"behaviors": [
 		{

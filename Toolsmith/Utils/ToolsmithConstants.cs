@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vintagestory.API.Datastructures;
 
 namespace Toolsmith.Utils {
     public static class ToolsmithConstants {
@@ -50,6 +51,15 @@ namespace Toolsmith.Utils {
         public const string ToolsmithConfigKey = "ToolsmithConfigs";
         public const string ToolsmithStatsKey = "ToolsmithPartStats";
         public const string ToolsmithWoodInToolBindingsData = "ToolsmithWoodInBindingsList";
+
+        public static ItemTagArray ToolsmithHeadItemTag;
+        public static ItemTagArray ToolsmithHandleItemTag;
+        public static ItemTagArray ToolsmithBindingItemTag;
+        public static ItemTagArray ToolsmithPartItemTag;
+        public static ItemTagArray ToolsmithMaintenanceItemTag;
+
+        public static BlockTagArray ToolsmithBindingBlockTag;
+        public static BlockTagArray ToolsmithPartBlockTag;
 
         //The keys for accessing the default part entries themselves, to recieve their stat key blocks
         public const string DefaultHandlePartKey = "stick";

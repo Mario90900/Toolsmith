@@ -362,10 +362,10 @@ namespace Toolsmith.ToolTinkering {
         }
 
         public static bool IsValidHead(ItemStack stack) {
-            if (stack == null) {
+            if (stack == null || stack.Class != EnumItemClass.Item) {
                 return false;
             }
-            return stack.Collectible.HasBehavior<CollectibleBehaviorToolHead>();
+            return ToolsmithConstants.ToolsmithHeadItemTag.isPresentIn(ref stack.Item.Tags); //stack.Collectible.HasBehavior<CollectibleBehaviorToolHead>();
         }
 
         public static bool ValidHandleInOffhand(EntityAgent byEntity) {
@@ -373,10 +373,10 @@ namespace Toolsmith.ToolTinkering {
         }
 
         public static bool IsValidHandle(ItemStack stack) {
-            if (stack == null || stack.HasWetTreatment()) {
+            if (stack == null || stack.Class != EnumItemClass.Item || stack.HasWetTreatment()) {
                 return false;
             }
-            return stack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>();
+            return ToolsmithConstants.ToolsmithHandleItemTag.isPresentIn(ref stack.Item.Tags); //stack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>();
         }
 
         public static bool ValidBindingInOffhand(EntityAgent byEntity) {
@@ -388,21 +388,24 @@ namespace Toolsmith.ToolTinkering {
                 return true;
             }
 
-            var offhandItemCol = stack.Collectible;
-            if (offhandItemCol.HasBehavior<CollectibleBehaviorToolBinding>()) {
-                return true;
-            } else if (stack.Block as BlockLiquidContainerBase != null) {
-                var liquidContainer = stack.Block as BlockLiquidContainerBase;
-                var liquid = liquidContainer.GetContent(stack);
-                if (liquid != null) {
-                    var bindingPart = ToolsmithModSystem.Stats.BindingParts.TryGetValue(liquid.Collectible.Code.Path);
-                    if (bindingPart != null) {
-                        return liquidContainer.GetCurrentLitres(stack) >= bindingPart.litersUsed;
+            if (stack.Collectible.ItemClass == EnumItemClass.Item) {
+                return ToolsmithConstants.ToolsmithBindingItemTag.isPresentIn(ref stack.Item.Tags);
+            } else {
+                if (stack.Block as BlockLiquidContainerBase != null) {
+                    var liquidContainer = stack.Block as BlockLiquidContainerBase;
+                    var liquid = liquidContainer.GetContent(stack);
+                    if (liquid != null) {
+                        var bindingPart = ToolsmithModSystem.Stats.BindingParts.TryGetValue(liquid.Collectible.Code.Path);
+                        if (bindingPart != null) {
+                            return liquidContainer.GetCurrentLitres(stack) >= bindingPart.litersUsed;
+                        }
                     }
+
+                    return false;
+                } else {
+                    return ToolsmithConstants.ToolsmithBindingBlockTag.isPresentIn(ref stack.Block.Tags);
                 }
             }
-
-            return false;
         }
 
         public static void AssemblePartBundle(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel) {
@@ -432,7 +435,6 @@ namespace Toolsmith.ToolTinkering {
             ItemStack head = bundleSlot.Itemstack.GetToolhead();
             var success = RecipeRegisterModSystem.TinkerToolGridRecipes.TryGetValue(head.Collectible.Code.ToString(), out craftedTool);
             if (success) {
-                ItemSlot bindingSlot = byEntity.LeftHandItemSlot;
                 ItemStack craftedItemStack = new ItemStack(byEntity.World.GetItem(craftedTool.Code), 1); //Create the tool in question
                 ItemSlot placeholderOutput = new ItemSlot(new DummyInventory(ToolsmithModSystem.Api));
                 placeholderOutput.Itemstack = craftedItemStack;
@@ -450,6 +452,7 @@ namespace Toolsmith.ToolTinkering {
                 headSlot.Itemstack = head;
                 ItemSlot handleSlot = new ItemSlot(new DummyInventory(ToolsmithModSystem.Api));
                 handleSlot.Itemstack = handle;
+                ItemSlot bindingSlot = byEntity.LeftHandItemSlot;
 
                 ItemSlot[] inputSlots;
                 if (bindingSlot.Empty) {

@@ -556,7 +556,7 @@ namespace Toolsmith.Client {
             if (binding.HasPartRenderTree()) {
                 var bindingRenderTree = binding.GetPartRenderTree();
                 var bindingTexTree = bindingRenderTree.GetPartTextureTree();
-                bindingTextureTree = bindingTexTree;
+                bindingTextureTree = bindingTexTree.Clone();
             }
 
             if (toolMultiPartTree.HasPartAndTransformRenderTree(ToolsmithAttributes.ModularPartHandleName)) {
@@ -575,15 +575,17 @@ namespace Toolsmith.Client {
                 var bindingPath = ConvertFromTypedHandlePathToBindingShapePath(handlePath, bindingPart.bindingShapePath, isMetal);
                 bindingPartTree.SetPartShapePath(bindingPath);
 
-                var woodTexPath = handlePartTree.GetPartTextureTree().GetPartTexturePathFromKey("wood");
-                if (woodTexPath != null) {
-                    bindingTextureTree.SetPartTexturePathFromKey("wood", woodTexPath);
+                if (toolType != null && ToolsmithModSystem.ToolsWithWoodInBindingShapes.Contains(toolType)) {
+                    var woodTexPath = handlePartTree.GetPartTextureTree().GetPartTexturePathFromKey("wood");
+                    if (woodTexPath != null) {
+                        bindingTextureTree.SetPartTexturePathFromKey("wood", woodTexPath);
+                    }
                 }
             } //Might need to add an else clause here to catch any case that might not have a handle tree? But that shouldn't ever happen, I believe. Well, intentionally at least!
 
             if (bindingPart.bindingTextureOverride != "") {
                 bindingTextureTree.SetPartTexturePathFromKey("material", bindingPart.bindingTextureOverride);
-            } else {
+            } else if (!binding.HasPartRenderTree()) {
                 bindingTextureTree.SetPartTexturePathFromKey("material", bindingStats.texturePath);
             }
 

@@ -1,5 +1,6 @@
 {
 	"code": "fabricstrips",
+	"tags": ["toolsmith-part", "toolsmith-binding"],
 	"maxstacksize": 64,
 	"variantgroups": [
 		{ "code": "material", "states": [ "rawhide", "cloth", "leather", "sturdy" ] }

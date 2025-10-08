@@ -1,6 +1,7 @@
 {
 	"code": "whetstone",
 	"class": "toolsmith:ItemWhetstone",
+	"tags": ["toolsmith-maintenance"],
 	"maxstacksize": 1,
 	"durability": 300,
 	"variantgroups": [

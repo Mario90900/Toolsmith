@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using HarmonyLib;
+using Newtonsoft.Json.Linq;
 using SmithingPlus.Metal;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,8 @@ namespace Toolsmith {
         public override void AssetsFinalize(ICoreAPI api) {
             base.AssetsFinalize(api);
 
+            var headItemTag = api.TagRegistry.ItemTagsToTagArray(["toolsmith-part", "toolsmith-head"]);
+
             if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) {
                 ToolsmithModSystem.Logger.Debug("Tool Heads:");
             }
@@ -70,6 +73,12 @@ namespace Toolsmith {
                             if (!ingredient.ResolvedItemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
                                 ingredient.ResolvedItemstack.Collectible.AddBehavior<CollectibleBehaviorToolBlunt>();
                             }
+                        }
+
+                        if (ingredient.ResolvedItemstack.Item != null && !headItemTag.isPresentIn(ref ingredient.ResolvedItemstack.Item.Tags)) {
+                            var tagArray = ingredient.ResolvedItemstack.Item.Tags.ToArray(api).ToArray();
+                            tagArray = tagArray.AddRangeToArray(["toolsmith-part", "toolsmith-head"]);
+                            ingredient.ResolvedItemstack.Item.Tags = api.TagRegistry.ItemTagsToTagArray(tagArray);
                         }
 
                         if (ToolsmithModSystem.Config.EnableGridRecipesForToolCrafting) {

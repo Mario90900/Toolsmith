@@ -84,8 +84,6 @@ namespace Toolsmith.Client.Behaviors {
                 return new MeshData();
             }
 
-            
-
             var mesh = new MeshData(6, 4);
             if (itemstack.HasMultiPartRenderTree()) {
                 ITreeAttribute partTransTree = itemstack.GetMultiPartRenderTree(); //The Multi-Part tree contains sub-trees of the PartRenderTrees paired with their render data like rotation and everything. So loop through them all and add them together on the Mesh.
