@@ -365,7 +365,7 @@ namespace Toolsmith.ToolTinkering {
             if (stack == null || stack.Class != EnumItemClass.Item) {
                 return false;
             }
-            return ToolsmithConstants.ToolsmithHeadItemTag.isPresentIn(ref stack.Item.Tags); //stack.Collectible.HasBehavior<CollectibleBehaviorToolHead>();
+            return stack.Collectible.HasBehavior<CollectibleBehaviorToolHead>(); //ToolsmithConstants.ToolsmithHeadItemTag.isPresentIn(ref stack.Item.Tags);
         }
 
         public static bool ValidHandleInOffhand(EntityAgent byEntity) {
@@ -376,7 +376,7 @@ namespace Toolsmith.ToolTinkering {
             if (stack == null || stack.Class != EnumItemClass.Item || stack.HasWetTreatment()) {
                 return false;
             }
-            return ToolsmithConstants.ToolsmithHandleItemTag.isPresentIn(ref stack.Item.Tags); //stack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>();
+            return stack.Collectible.HasBehavior<CollectibleBehaviorToolHandle>(); //ToolsmithConstants.ToolsmithHandleItemTag.isPresentIn(ref stack.Item.Tags);
         }
 
         public static bool ValidBindingInOffhand(EntityAgent byEntity) {
@@ -389,7 +389,7 @@ namespace Toolsmith.ToolTinkering {
             }
 
             if (stack.Collectible.ItemClass == EnumItemClass.Item) {
-                return ToolsmithConstants.ToolsmithBindingItemTag.isPresentIn(ref stack.Item.Tags);
+                return stack.Collectible.HasBehavior<CollectibleBehaviorToolBinding>(); //ToolsmithConstants.ToolsmithBindingItemTag.isPresentIn(ref stack.Item.Tags);
             } else {
                 if (stack.Block as BlockLiquidContainerBase != null) {
                     var liquidContainer = stack.Block as BlockLiquidContainerBase;
@@ -403,7 +403,7 @@ namespace Toolsmith.ToolTinkering {
 
                     return false;
                 } else {
-                    return ToolsmithConstants.ToolsmithBindingBlockTag.isPresentIn(ref stack.Block.Tags);
+                    return stack.Collectible.HasBehavior<CollectibleBehaviorToolBinding>(); //ToolsmithConstants.ToolsmithBindingBlockTag.isPresentIn(ref stack.Block.Tags);
                 }
             }
         }

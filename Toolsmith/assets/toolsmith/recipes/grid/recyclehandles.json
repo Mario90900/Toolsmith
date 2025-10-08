@@ -7,7 +7,7 @@
 		},
 		"width": 2,
 		"height": 1,
-		"output": { "type": "item", "code": "game:firewood", "quantity": 1 }
+		"output": { "type": "item", "code": "game:stick", "quantity": 1 }
 	},
 	{
 		"ingredientPattern": "KH",

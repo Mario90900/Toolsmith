@@ -197,11 +197,22 @@ namespace Toolsmith {
             base.AssetsFinalize(api);
 
             if (api.Side.IsClient()) {
+                //Init these Clientside as well, in the case of Multiplayer
+                ToolsmithConstants.ToolsmithHeadItemTag = api.TagRegistry.ItemTagsToTagArray(["toolsmith-head"]);
+                ToolsmithConstants.ToolsmithHandleItemTag = api.TagRegistry.ItemTagsToTagArray(["toolsmith-handle"]);
+                ToolsmithConstants.ToolsmithBindingItemTag = api.TagRegistry.ItemTagsToTagArray(["toolsmith-binding"]);
+                ToolsmithConstants.ToolsmithPartItemTag = api.TagRegistry.ItemTagsToTagArray(["toolsmith-part"]);
+                ToolsmithConstants.ToolsmithMaintenanceItemTag = api.TagRegistry.ItemTagsToTagArray(["toolsmith-maintenance"]);
+
+                ToolsmithConstants.ToolsmithBindingBlockTag = api.TagRegistry.BlockTagsToTagArray(["toolsmith-binding"]);
+                ToolsmithConstants.ToolsmithPartBlockTag = api.TagRegistry.BlockTagsToTagArray(["toolsmith-part"]);
+
                 if (BindingTiers == null) {
                     BindingTiers = new Dictionary<string, int>();
                 }
                 CalculateBindingTiers();
                 CacheAlternateWorkbenchSlots(api as ICoreClientAPI);
+
                 return;
             }
 
