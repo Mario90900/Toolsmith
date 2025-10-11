@@ -1,4 +1,5 @@
 ﻿using ItemRarity;
+using ScientificSmithy.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -216,10 +217,19 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
             //Various math and calculating the end effect of each part here.
             HandleExtraModCompat(allInputslots, outputSlot); //Handle some mod compatability here! Anything that needs a little bit of extra handling before getting the first BaseMaxDurability.
-
+             
             var baseDur = outputSlot.Itemstack.Collectible.GetBaseMaxDurability(outputSlot.Itemstack);
             int headMaxDur = outputSlot.Itemstack.GetToolheadMaxDurability();//Start with the tool head.
-            int maxSharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);//Calculate the sharpness next similarly to the durability.
+            int maxSharpness;
+            if (headStack.Attributes.HasAttribute(ScientificSmithyAttr.StatsAttr))
+            {
+                ITreeAttribute stats = headStack.Attributes.GetTreeAttribute(ScientificSmithyAttr.StatsAttr);
+                float sharpMult = stats.GetFloat(ScientificSmithyAttr.HardnessMultAttr, (float)ToolsmithModSystem.Config.SharpnessMult);
+                int halfTough = stats.GetInt(ScientificSmithyAttr.HalfToughAttr, baseDur);
+                maxSharpness = (int)(sharpMult * halfTough);
+            }
+            else
+                maxSharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);//Calculate the sharpness next similarly to the durability.
 
             var handleDur = baseDur * handleStats.baseHPfactor; //Starting with the handle: Account for baseHPfactor first in the handle...
             handleDur = handleDur + handleDur * handleStats.selfHPBonus; //plus the selfDurabilityBonus
