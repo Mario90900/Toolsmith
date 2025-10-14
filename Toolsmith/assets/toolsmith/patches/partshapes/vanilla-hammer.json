@@ -71,19 +71,21 @@
 		"op": "replace",
 		"path": "/attributes/onTongTransform",
 		"value": {
-			"translation": { "x": -0.84, "y": -0.7, "z": 0.76 },
-			"rotation": { "x": 0, "y": 83, "z": -37 }
+			"translation": { "x": -0.5, "y": -0.52, "z": -0.3 },
+			"rotation": { "x": -80, "y": -25, "z": 80 }
 		},
 		"file": "game:itemtypes/toolhead/hammerhead.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "addmerge",
-		"path": "/attributes/inForgeTransform",
+		"path": "/attributes",
 		"value": {
-			"translation": { "x": 0, "y": -0.1, "z": 0.2 },
-			"rotation": { "x": 0, "y": 90, "z": 0 },
-			"scale": 0.7
+			"inForgeTransform": {
+				"translation": { "x": 0, "y": -0.1, "z": 0.225 },
+				"rotation": { "x": 0, "y": 90, "z": 0 },
+				"scale": 0.7
+			}
 		},
 		"file": "game:itemtypes/toolhead/hammerhead.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }

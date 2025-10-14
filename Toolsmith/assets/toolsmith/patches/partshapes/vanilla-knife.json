@@ -40,11 +40,13 @@
 	},
 	{
 		"op": "addmerge",
-		"path": "/attributes/inForgeTransform",
+		"path": "/attributes",
 		"value": {
-			"translation": { "x": 0, "y": -0.1, "z": 0.1 },
-			"rotation": { "x": 0, "y": 90, "z": 0 },
-			"scale": 0.7
+			"inForgeTransform": {
+				"translation": { "x": -0.3, "y": -0.48, "z": 0.1 },
+				"rotation": { "x": -90, "y": 0, "z": 90 },
+				"scale": 0.7
+			}
 		},
 		"file": "game:itemtypes/toolhead/knifeblade.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }

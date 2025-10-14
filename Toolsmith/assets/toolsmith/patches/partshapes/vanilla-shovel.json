@@ -60,19 +60,21 @@
 		"op": "replace",
 		"path": "/attributes/onTongTransform",
 		"value": {
-			"translation": { "x": -0.2, "y": -0.76, "z": -0.48 },
-			"rotation": { "x": 30, "y": -10, "z": 0 }
+			"translation": { "x": -0.3, "y": -0.68, "z": -0.98 },
+			"rotation": { "x": -90, "y": 0, "z": 0 }
 		},
 		"file": "game:itemtypes/toolhead/shovelhead.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
 		"op": "addmerge",
-		"path": "/attributes/inForgeTransform",
+		"path": "/attributes",
 		"value": {
-			"translation": { "x": 0, "y": -0.1, "z": 0.55 },
-			"rotation": { "x": 0, "y": 90, "z": 0 },
-			"scale": 0.7
+			"inForgeTransform": {
+				"translation": { "x": 0, "y": -0.1, "z": 0.55 },
+				"rotation": { "x": 0, "y": 90, "z": 0 },
+				"scale": 0.7
+			}
 		},
 		"file": "game:itemtypes/toolhead/shovelhead.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }

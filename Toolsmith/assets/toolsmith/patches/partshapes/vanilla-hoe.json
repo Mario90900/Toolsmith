@@ -44,6 +44,19 @@
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
+		"op": "addmerge",
+		"path": "/attributes",
+		"value": {
+			"inForgeTransform": {
+				"translation": { "x": 0.1, "y": -0.1, "z": 0.3 },
+				"rotation": { "x": 0, "y": 90, "z": 0 },
+				"scale": 0.7
+			}
+		},
+		"file": "game:itemtypes/toolhead/hoehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
 		"op": "replace",
 		"path": "/tpHandTransform",
 		"value": {

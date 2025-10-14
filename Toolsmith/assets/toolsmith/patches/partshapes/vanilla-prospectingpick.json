@@ -32,4 +32,17 @@
 		"file": "game:itemtypes/toolhead/prospectingpickhead.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
+	{
+		"op": "addmerge",
+		"path": "/attributes",
+		"value": {
+			"inForgeTransform": {
+				"translation": { "x": 0.09, "y": -0.1, "z": 0.35 },
+				"rotation": { "x": 0, "y": 90, "z": 0 },
+				"scale": 0.7
+			}
+		},
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	}
 ]

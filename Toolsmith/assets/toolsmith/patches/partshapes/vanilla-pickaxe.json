@@ -72,9 +72,22 @@
 		"op": "replace",
 		"path": "/attributes/onTongTransform",
 		"value": {
-			"translation": { "x": -0.15, "y": -0.7, "z": 0.75 },
-			"rotation": { "x": 0, "y": -54, "z": 0 },
+			"translation": { "x": -0.75, "y": 0.22, "z": 0.94 },
+			"rotation": { "x": -90, "y": -25, "z": 90 },
 			"origin": { "x": 0, "y": 0, "z": 0 }
+		},
+		"file": "game:itemtypes/toolhead/pickaxehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/attributes",
+		"value": {
+			"inForgeTransform": {
+				"translation": { "x": 0.15, "y": -0.1, "z": 0.175 },
+				"rotation": { "x": 0, "y": 130, "z": 0 },
+				"scale": 0.7
+			}
 		},
 		"file": "game:itemtypes/toolhead/pickaxehead.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
