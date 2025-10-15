@@ -1,5 +1,6 @@
 ﻿using Cairo;
 using HarmonyLib;
+using ScientificSmithy.Behaviour;
 using SmithingPlus.Util;
 using System;
 using System.Collections.Generic;
@@ -213,7 +214,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPatch(nameof(CollectibleObject.GetMaxDurability))]
         private static void TinkeredToolGetMaxDurabilityPostfix(ref int __result, ItemStack itemstack) {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
-                __result = (int)((double)__result * ToolsmithModSystem.Config.HeadDurabilityMult);
+                    __result = (int)((double)__result * ToolsmithModSystem.Config.HeadDurabilityMult);
             }
         }
 

@@ -219,7 +219,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             HandleExtraModCompat(allInputslots, outputSlot); //Handle some mod compatability here! Anything that needs a little bit of extra handling before getting the first BaseMaxDurability.
              
             var baseDur = outputSlot.Itemstack.Collectible.GetBaseMaxDurability(outputSlot.Itemstack);
-            int headMaxDur = outputSlot.Itemstack.GetToolheadMaxDurability();//Start with the tool head.
+            int headMaxDur = outputSlot.Itemstack.GetToolheadMaxDurability();
             int maxSharpness;
             if (headStack.Attributes.HasAttribute(ScientificSmithyAttr.StatsAttr))
             {
@@ -229,7 +229,9 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 maxSharpness = (int)(sharpMult * halfTough);
             }
             else
+            {
                 maxSharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);//Calculate the sharpness next similarly to the durability.
+            }
 
             var handleDur = baseDur * handleStats.baseHPfactor; //Starting with the handle: Account for baseHPfactor first in the handle...
             handleDur = handleDur + handleDur * handleStats.selfHPBonus; //plus the selfDurabilityBonus
