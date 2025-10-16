@@ -20,6 +20,7 @@ using Vintagestory.API.Config;
 using Toolsmith.ToolTinkering.Drawbacks;
 using Vintagestory.API.Datastructures;
 using canjewelry.src;
+using ScientificSmithy.Utils;
 
 namespace Toolsmith.ToolTinkering {
     //This is beginning to hold the MEAT of the whole tinkering system. It has various helper functions that are being used in multiple places to help keep everything just running the single code calls and ensuring it isn't spaghetti while I add more ways to do the same things.
@@ -1079,6 +1080,11 @@ namespace Toolsmith.ToolTinkering {
             } else {
                 return false;
             }
+        }
+
+        public static void HandleStressStrainTransfer(ItemStack outStack, ItemStack inStack, ICoreAPI api)
+        {
+            outStack.TransferStressStrainAttr(inStack, api);
         }
     }
 }
