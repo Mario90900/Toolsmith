@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScientificSmithy.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using Toolsmith.Utils;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.Datastructures;
 using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
@@ -67,7 +69,18 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
             var baseDur = outputSlot.Itemstack.Collectible.GetBaseMaxDurability(outputSlot.Itemstack);
             var toolDur = outputSlot.Itemstack.GetSmithedMaxDurability();
-            int sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
+            int sharpness;
+
+            if (outputSlot.Itemstack.Attributes.HasAttribute(ScientificSmithyAttr.StatsAttr))
+            {
+                ITreeAttribute stats = outputSlot.Itemstack.Attributes.GetTreeAttribute(ScientificSmithyAttr.StatsAttr);
+                float sharpMult = stats.GetFloat(ScientificSmithyAttr.HardnessMultAttr, (float)ToolsmithModSystem.Config.SharpnessMult);
+                int halfTough = stats.GetInt(ScientificSmithyAttr.HalfToughAttr, baseDur);
+                sharpness = (int)(sharpMult * halfTough);
+            }
+            else
+                sharpness = (int)(baseDur * ToolsmithModSystem.Config.SharpnessMult);
+
             int startingSharpness;
             if (isToolMetal) {
                 startingSharpness = (int)(sharpness * ToolsmithConstants.StartingSharpnessMult);

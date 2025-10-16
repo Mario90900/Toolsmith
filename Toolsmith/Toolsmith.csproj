@@ -8,17 +8,20 @@
 
   <ItemGroup>
     <Reference Include="canjewelry">
-      <HintPath>..\..\Other Mod's DLLs for Integration Purposes\CANJewelry\canjewelry.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\Mod DLLs\canjewelry.dll</HintPath>
+	  <Private>false</Private>
     </Reference>
     <Reference Include="ItemRarity">
-      <HintPath>..\..\Other Mod's DLLs for Integration Purposes\ItemRarity\ItemRarity.dll</HintPath>
-      <Private>False</Private>
-      <EmbedInteropTypes></EmbedInteropTypes>
+      <HintPath>..\..\Mod DLLs\ItemRarity.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ScientificSmithy">
+      <HintPath>..\..\Mod DLLs\ScientificSmithy.dll</HintPath>
+	  <Private>False</Private>
     </Reference>
     <Reference Include="SmithingPlus">
-      <HintPath>..\..\Other Mod's DLLs for Integration Purposes\SmithingPlus\SmithingPlus.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\Mod DLLs\SmithingPlus.dll</HintPath>
+	  <Private>false</Private>
     </Reference>
     <Reference Include="VintagestoryAPI">
       <HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>
