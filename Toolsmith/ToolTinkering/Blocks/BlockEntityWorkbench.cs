@@ -1,4 +1,5 @@
-﻿using SmithingPlus.Util;
+﻿using ScientificSmithy.Utils;
+using SmithingPlus.Util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -337,6 +338,11 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
             if (world.Api.ModLoader.IsModEnabled("canjewelry")) {
                 TinkeringUtility.HandleGemDropsForJewelry(byPlayer.Entity, reforgingSlot.Itemstack);
+            }
+
+            if (world.Api.ModLoader.IsModEnabled("scientificsmithy"))
+            {
+                TinkeringUtility.HandleStressStrainTransfer(workItem, reforgingSlot.Itemstack, world.Api);
             }
 
             //Generate the complete work item voxel data from the recipe.
