@@ -1,0 +1,13 @@
+[
+	{
+		"id": "meteoricsteelnails",
+		"texturePath": "game:block/metal/plate/meteoricsteel",
+		"langTag": "binding-nails-meteoricsteel",
+		"baseHPfactor": 2.3,
+		"selfHPBonus": 0.65,
+		"handleHPBonus": 0.45,
+		"recoveryPercent": 0.3,
+		"isMetal": true,
+		"metalType": "meteoricsteel"
+	}
+]

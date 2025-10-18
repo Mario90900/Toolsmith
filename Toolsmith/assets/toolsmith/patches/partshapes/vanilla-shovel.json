@@ -42,7 +42,7 @@
 		"op": "replace",
 		"path": "/tpHandTransformByType",
 		"value": {
-			"@shovelhead-(copper|tinbronze|bismuthbronze|blackbronze|iron|meteoriciron|gold|silver)": {
+			"@shovelhead-(copper|tinbronze|bismuthbronze|blackbronze|iron|meteoriciron|steel|gold|silver)": {
 				"translation": { "x": -0.2, "y": -0.4, "z": -0.15 },
 				"rotation": { "x": 90, "y": 20, "z": 0 },
 				"scale": 0.85

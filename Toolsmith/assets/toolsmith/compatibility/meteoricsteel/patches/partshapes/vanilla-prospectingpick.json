@@ -1,0 +1,26 @@
+[
+	{
+		"op": "addmerge",
+		"path": "/shapeByType/*-meteoricsteel",
+		"value": {
+			"base": "toolsmith:item/parts/prospectingpick/heads/advanced"
+		},
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "remove",
+		"path": "/shapeByType/*",
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/shapeByType/*",
+		"value": {
+			"base": "toolsmith:item/parts/prospectingpick/heads/simple"
+		},
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	}
+]
