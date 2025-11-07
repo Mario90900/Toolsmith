@@ -5,6 +5,15 @@
 	"variantgroups": [
 		{ "code": "material", "states": [ "rawhide", "cloth", "leather", "sturdy" ] }
 	],
+	"attributes": {
+		"handbook": {
+			"groupBy": [
+				"fabricstrips-cloth",
+				"fabricstrips-wool",
+				"fabricstrips-leather"
+			]
+		}
+	},
 	"behaviorsByType": {
 		"*-cloth": [
 			{
