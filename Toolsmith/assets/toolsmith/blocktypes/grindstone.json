@@ -7,6 +7,11 @@
 		{ "code": "stone", "states": [ "granite", "sandstone", "shale", "andesite" ] },
 		{ "code": "side", "loadFromProperties": "abstract/horizontalorientation" }
 	],
+	"attributes": {
+		"handbook": {
+			"groupBy": ["grindstone-*"]
+		}
+	},
 	"shapeByType": {
 		"*-north": { "base": "toolsmith:block/grindstone", "rotateY": 0 },
 		"*-east": { "base": "toolsmith:block/grindstone", "rotateY": 270 },
