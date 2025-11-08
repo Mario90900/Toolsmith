@@ -24,6 +24,11 @@
 			"stone": { "base": "game:block/stone/polishedrock/andesite-inside" }
 		}
 	},
+	"attributes": {
+		"handbook": {
+			"groupBy": ["grindstone-*"]
+		}
+	},
 	"creativeinventory": { "general": [ "grindstone-*-north" ] },
 	"entityBehaviors": [{ "name": "Animatable" }],
 	"blockmaterial": "Stone",
