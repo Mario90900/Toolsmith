@@ -75,11 +75,9 @@
 	},
 	"attributes": {
 		"handbook": {
-			"groupBy": [
-				"fabricstrips-cloth",
-				"fabricstrips-wool",
-				"fabricstrips-leather"
-			]
+			"groupByByType": {
+				"*": ["fabricstrips-{material}"]
+			}
 		}
 	},
 	"storageFlags" : 257,
