@@ -49,7 +49,7 @@
 			"scale": 1.25
 		},
 		"handbook": {
-			"groupBy": ["handle-*"]
+			"groupBy": ["handle"]
 		}
 	},
 	"storageFlags" : 257,
