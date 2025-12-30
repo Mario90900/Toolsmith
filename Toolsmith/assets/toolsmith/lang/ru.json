@@ -17,8 +17,8 @@
 	"game:smithedtoolverylowdamage": "Этот инструмент с тупым оголовьем вряд ли повредится при использовании.",
 	"game:toolheadverylowdamage": "Оголовье этого инструмента тупое и вряд ли повредится при использовании.",
 	"game:toolheaddirections": "Подготовьте этот инструмент, удерживая правую кнопку мыши с рукоятью в левой руке!\nИли просто создайте его как базовый инструмент!",
-	"game:toolhandledirections": "Похоже, это будет хорошая рукоять для инструмента.",
-	"game:toolbindingdirections": "Это выглядит очень полезным для связывания инструмента воедино.",
+	"game:toolhandledirections": "Отлично подойдет для рукояти инструмента.",
+	"game:toolbindingdirections": "Идеально для связывания инструмента воедино.",
 	"game:toolbindingtier": "Уровень крепления: {0}",
 	"game:toolbindingtotalmult": "Множитель прочности крепления: x{0}",
 	"game:toolbindinghandlebonus": "Бонус прочности рукояти: x{0}",
@@ -55,6 +55,7 @@
 	"toolsmith:item-fabricstrips-leather": "Кожаные полоски",
 	"toolsmith:item-fabricstrips-sturdy": "Прочные кожаные полоски",
 	"toolsmith:item-fabricstrips-wool": "Полоски из шерстяной ткани",
+	"toolsmith:item-fabricstrips-atleather": "Кожаные полоски",
 	
 	"toolsmith:item-whetstone-chert": "Точильный камень (Кремнистый сланец)",
 	"toolsmith:item-whetstone-granite": "Точильный камень (Гранит)",
