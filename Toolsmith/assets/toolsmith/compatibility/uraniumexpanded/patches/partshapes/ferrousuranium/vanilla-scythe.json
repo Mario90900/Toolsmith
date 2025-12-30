@@ -1,0 +1,26 @@
+[
+	{
+		"op": "addmerge",
+		"path": "/shapeByType/*-ferrousuranium",
+		"value": {
+			"base": "toolsmith:item/parts/scythe/heads/advanced"
+		},
+		"file": "game:itemtypes/toolhead/scythehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "remove",
+		"path": "/shapeByType/*",
+		"file": "game:itemtypes/toolhead/scythehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/shapeByType/*",
+		"value": {
+			"base": "toolsmith:item/parts/scythe/heads/simple"
+		},
+		"file": "game:itemtypes/toolhead/scythehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	}
+]

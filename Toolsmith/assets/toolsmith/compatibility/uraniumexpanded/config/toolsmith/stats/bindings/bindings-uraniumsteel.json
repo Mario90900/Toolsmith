@@ -1,0 +1,13 @@
+[
+	{
+		"id": "uraniumsteelnails",
+		"texturePath": "game:block/metal/plate/uraniumsteel",
+		"langTag": "binding-nails-uraniumsteel",
+		"baseHPfactor": 2.35,
+		"selfHPBonus": 0.70,
+		"handleHPBonus": 0.48,
+		"recoveryPercent": 0.28,
+		"isMetal": true,
+		"metalType": "uraniumsteel"
+	}
+]
