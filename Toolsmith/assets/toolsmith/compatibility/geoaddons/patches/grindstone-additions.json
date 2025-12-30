@@ -1,0 +1,36 @@
+[
+	{
+		"op": "addeach",
+		"path": "/variantgroups/0/states/-",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": [
+			"diorite",
+			"gabbro",
+			"quartzite"
+		]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-diorite-*",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/diorite-inside" }
+		}
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-gabbro-*",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/gabbro-inside" }
+		}
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-quartzite-*",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/quartzite-inside" }
+		}
+	}
+]

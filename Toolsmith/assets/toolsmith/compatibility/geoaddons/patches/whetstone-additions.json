@@ -1,0 +1,54 @@
+[
+	{
+		"op": "addeach",
+		"path": "/variantgroups/0/states/-",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": [
+			"diorite",
+			"gabbro",
+			"quartzite",
+			"jade",
+			"jasper"
+		]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-diorite",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/diorite-inside" }
+		}
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-gabbro",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/gabbro-inside" }
+		}
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-quartzite",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/quartzite-inside" }
+		}
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-jade",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/jade-inside" }
+		}
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-jasper",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/jasper-inside" }
+		}
+	}
+]

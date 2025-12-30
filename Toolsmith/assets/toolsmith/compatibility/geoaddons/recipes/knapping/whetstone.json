@@ -1,0 +1,19 @@
+[
+	{
+		"ingredient": { "type": "item", "code": "game:stone-*", "name": "rock", "allowedVariants": ["diorite", "gabbro", "quartzite", "jade", "jasper"] },
+		"pattern": [[
+			"__________",
+			"___####___",
+			"___####___",
+			"___####___",
+			"___####___",
+			"___####___",
+			"___####___",
+			"___####___",
+			"___####___",
+			"__________"
+		]],
+		"name": "Stone whetstone",
+		"output": { "type": "item", "code": "toolsmith:whetstone-{rock}" }
+	}
+]

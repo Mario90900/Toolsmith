@@ -1,0 +1,35 @@
+[
+	{
+		"ingredientPattern": "PSP,QQQ,Q_Q",
+		"ingredients": {
+			"S": { "type": "block", "code": "game:rock-diorite" },
+			"P": { "type": "item", "code": "game:plank-*" },
+			"Q": { "type": "item", "code": "game:plank-*", "quantity": 2 }
+		},
+		"width": 3,
+		"height": 3,
+		"output": { "type": "block", "code": "toolsmith:grindstone-diorite-north", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "PSP,QQQ,Q_Q",
+		"ingredients": {
+			"S": { "type": "block", "code": "game:rock-gabbro" },
+			"P": { "type": "item", "code": "game:plank-*" },
+			"Q": { "type": "item", "code": "game:plank-*", "quantity": 2 }
+		},
+		"width": 3,
+		"height": 3,
+		"output": { "type": "block", "code": "toolsmith:grindstone-gabbro-north", "quantity": 1 }
+	},
+	{
+		"ingredientPattern": "PSP,QQQ,Q_Q",
+		"ingredients": {
+			"S": { "type": "block", "code": "game:rock-quartzite" },
+			"P": { "type": "item", "code": "game:plank-*" },
+			"Q": { "type": "item", "code": "game:plank-*", "quantity": 2 }
+		},
+		"width": 3,
+		"height": 3,
+		"output": { "type": "block", "code": "toolsmith:grindstone-quartzite-north", "quantity": 1 }
+	}
+]

@@ -62,6 +62,16 @@
 	"toolsmith:item-whetstone-andesite": "Andesite Whetstone",
 	"toolsmith:item-whetstone-basalt": "Basalt Whetstone",
 	"toolsmith:item-whetstone-peridotite": "Peridotite Whetstone",
+	"toolsmith:item-whetstone-diorite": "Diorite Whetstone",
+	"toolsmith:item-whetstone-gabbro": "Gabbro Whetstone",
+	"toolsmith:item-whetstone-quartzite": "Quartzite Whetstone",
+	"toolsmith:item-whetstone-jade": "Jade Whetstone",
+	"toolsmith:item-whetstone-jasper": "Jasper Whetstone",
+	"toolsmith:item-whetstone-komatiite": "Komatiite Whetstone",
+	"toolsmith:item-whetstone-monzonite": "Monzonite Whetstone",
+	"toolsmith:item-whetstone-pyroxenite": "Pyroxenite Whetstone",
+	"toolsmith:item-whetstone-serpentinite": "Serpentinite Whetstone",
+	"toolsmith:item-whetstone-syenite": "Syenite Whetstone",
 
 	"toolsmith:item-tinkertoolparts": "Tool Head and Handle",
 
@@ -69,6 +79,9 @@
 	"toolsmith:block-grindstone-sandstone-north": "Sandstone Grindstone",
 	"toolsmith:block-grindstone-shale-north": "Shale Grindstone",
 	"toolsmith:block-grindstone-andesite-north": "Andesite Grindstone",
+	"toolsmith:block-grindstone-diorite-north": "Diorite Grindstone",
+	"toolsmith:block-grindstone-gabbro-north": "Gabbro Grindstone",
+	"toolsmith:block-grindstone-quartzite-north": "Quartzite Grindstone",
 
 	"game:blockhelp-grindstone-hone": "Hone metal item",
 	"game:honing-cutoff-message": "There's very little material left for honing. It looks like a great time for a reforge!",

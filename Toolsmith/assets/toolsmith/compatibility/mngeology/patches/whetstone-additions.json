@@ -1,0 +1,54 @@
+[
+	{
+		"op": "addeach",
+		"path": "/variantgroups/0/states/-",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": [
+			"komatiite",
+			"monzonite",
+			"pyroxenite",
+			"serpentinite",
+			"syenite"
+		]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-komatiite",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/komatiite-inside" }
+		}
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-pyroxenite",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/pyroxenite-inside" }
+		}
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-serpentinite",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/serpentinite-inside" }
+		}
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-monzonite",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/monzonite-inside" }
+		}
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-syenite",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/syenite-inside" }
+		}
+	}
+]
