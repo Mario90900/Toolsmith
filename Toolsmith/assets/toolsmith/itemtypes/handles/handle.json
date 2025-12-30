@@ -47,6 +47,9 @@
 		"toolrackTransform": {
 			"translation": { "x": 0, "y": 0.6, "z":0 },
 			"scale": 1.25
+		},
+		"handbook": {
+			"groupBy": ["handle"]
 		}
 	},
 	"storageFlags" : 257,

@@ -73,6 +73,13 @@
 			"material": { "base": "game:block/leather/chromium" }
 		}
 	},
+	"attributes": {
+		"handbook": {
+			"groupByByType": {
+				"*": ["fabricstrips-{material}"]
+			}
+		}
+	},
 	"storageFlags" : 257,
 	"shape": { "base": "toolsmith:item/fabricstrips" },
 	"creativeinventory": { "general": ["*"], "items": ["*"] },
