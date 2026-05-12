@@ -79,6 +79,15 @@ namespace Toolsmith.Client.Behaviors {
             }
         }
 
+        // IContainedMeshSource interface methods. 1.22 takes ItemSlot, not ItemStack, so these delegate to the existing ItemStack implementations below.
+        public MeshData GenMesh(ItemSlot slot, ITextureAtlasAPI targetAtlas, BlockPos atBlockPos) {
+            return GenMesh(slot?.Itemstack, targetAtlas, atBlockPos);
+        }
+
+        public string GetMeshCacheKey(ItemSlot slot) {
+            return GetMeshCacheKey(slot?.Itemstack);
+        }
+
         public MeshData GenMesh(ItemStack itemstack, ITextureAtlasAPI targetAtlas, BlockPos atBlockPos) {
             if (itemstack == null) {
                 return new MeshData();

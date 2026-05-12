@@ -49,7 +49,18 @@ namespace Toolsmith.ToolTinkering.Blocks {
             if (capi != null ) {
                 slotMeshes = ObjectCacheUtil.TryGet<Dictionary<string, MeshData>>(api, ToolsmithConstants.WorkbenchSlotShapesCache);
                 UpdateMeshes();
+                //Pre-populate the per-slot mesh cache on every slot change. SlotModified fires from
+                //whichever thread mutated the slot, which is always the main thread for player
+                //interactions and inbound sync packets - so any TesselateShape work that happens
+                //inside UpdateMesh runs against the texture atlas safely. Without this hook the
+                //first chunk-tesselation pass after a slot change runs on the tesselation worker
+                //thread, hits an uncached texture, and throws "InsertTexture outside main thread".
+                Inventory.SlotModified += OnInventorySlotModified;
             }
+        }
+
+        private void OnInventorySlotModified(int slotId) {
+            UpdateMesh(slotId);
         }
 
         public bool IsSelectSlotEmpty(int slotID) {
@@ -489,7 +500,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             IContainedMeshSource meshSource = stack.Collectible?.GetCollectibleInterface<IContainedMeshSource>();
             var facing = BlockFacing.FromCode(Block.LastCodePart());
             if (meshSource != null) {
-                return facing.Code + "-slot-" + slotIndex + "-" + WhatSlotMarkerIndicator(slotIndex) + "-" + craftingHitsCount + "-" + meshSource.GetMeshCacheKey(stack);
+                return facing.Code + "-slot-" + slotIndex + "-" + WhatSlotMarkerIndicator(slotIndex) + "-" + craftingHitsCount + "-" + meshSource.GetMeshCacheKey(new DummySlot(stack));
             }
 
             return facing.Code + "-slot-" + slotIndex + "-" + WhatSlotMarkerIndicator(slotIndex) + "-" + craftingHitsCount + "-" + stack.Collectible.Code.ToString();
@@ -572,7 +583,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             IContainedMeshSource meshSource = stack.Collectible?.GetCollectibleInterface<IContainedMeshSource>();
 
             if (meshSource != null) {
-                mesh = meshSource.GenMesh(stack, capi.ItemTextureAtlas, Pos);
+                mesh = meshSource.GenMesh(new DummySlot(stack), capi.ItemTextureAtlas, Pos);
             }
 
             MeshData originalMeshData;
@@ -710,7 +721,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
             IContainedMeshSource meshSource = stack.Collectible?.GetCollectibleInterface<IContainedMeshSource>();
 
             if (meshSource != null) {
-                mesh = meshSource.GenMesh(stack, capi.ItemTextureAtlas, Pos);
+                mesh = meshSource.GenMesh(new DummySlot(stack), capi.ItemTextureAtlas, Pos);
             }
 
             if (mesh == null) {
@@ -780,6 +791,11 @@ namespace Toolsmith.ToolTinkering.Blocks {
         }
 
         public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tessThreadTesselator) {
+            //OnTesselation runs on the chunk-tesselation worker thread. Any TesselateShape work
+            //inside this method walks through the texture atlas, and the atlas can only be mutated
+            //from the main thread. We use cache-only reads here. If a slot's mesh is not cached,
+            //we schedule a main-thread UpdateMesh and return empty for this pass; MarkDirty in
+            //the scheduled task causes a re-tesselation that picks up the fresh cache entry.
             if (!Inventory.AllSlotsEmpty()) {
                 for (int i = 1; i <= 7; i++) {
                     if (i == 6) {
@@ -790,20 +806,32 @@ namespace Toolsmith.ToolTinkering.Blocks {
                     ItemSlot slot = Inventory.GetSlotFromSelectionID(i);
                     if (i >= (int)WorkbenchSlots.CraftingSlot1 && i <= (int)WorkbenchSlots.CraftingSlot5) {
                         if (!slot.Empty) {
-                            mesh = GetOrCreateFullSlotMesh(slot.Itemstack, i);
-                            mesher.AddMeshData(mesh);
+                            mesh = GetSlotWithItemMesh(slot.Itemstack, i);
+                            if (mesh != null) {
+                                mesher.AddMeshData(mesh);
+                            } else {
+                                SchedulePrecacheOnMainThread(i);
+                            }
                             continue;
                         } else {
                             if (capi != null && ToolsmithModSystem.ClientConfig.ShouldRenderWorkbenchSlotMarkers) {
-                                mesh = GetOrCreateEmptySlotMesh(i);
-                                mesher.AddMeshData(mesh);
+                                mesh = GetEmptySlotMesh(i);
+                                if (mesh != null) {
+                                    mesher.AddMeshData(mesh);
+                                } else {
+                                    SchedulePrecacheOnMainThread(i);
+                                }
                             }
                             continue;
                         }
                     } else if (i == (int)WorkbenchSlots.ReforgeStaging) {
                         if (!slot.Empty) {
-                            mesh = GetOrCreateReforgeSlotMesh(slot.Itemstack, i);
-                            mesher.AddMeshData(mesh);
+                            mesh = GetSlotWithItemMesh(slot.Itemstack, i);
+                            if (mesh != null) {
+                                mesher.AddMeshData(mesh);
+                            } else {
+                                SchedulePrecacheOnMainThread(i);
+                            }
                             continue;
                         } else {
                             continue;
@@ -813,6 +841,18 @@ namespace Toolsmith.ToolTinkering.Blocks {
             }
 
             return base.OnTesselation(mesher, tessThreadTesselator);
+        }
+
+        private readonly HashSet<int> pendingSlotPrecaches = new();
+        private void SchedulePrecacheOnMainThread(int slotIndex) {
+            if (capi == null) return;
+            if (pendingSlotPrecaches.Contains(slotIndex)) return;
+            pendingSlotPrecaches.Add(slotIndex);
+            capi.Event.EnqueueMainThreadTask(() => {
+                pendingSlotPrecaches.Remove(slotIndex);
+                UpdateMesh(slotIndex);
+                MarkDirty(redrawOnClient: true);
+            }, "ToolsmithWorkbenchMeshPrecache");
         }
 
         public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve) {

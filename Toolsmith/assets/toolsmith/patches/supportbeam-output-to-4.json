@@ -1,6 +1,6 @@
 [
 	{
-		"file": "game:recipes/grid/beams.json",
+		"file": "game:recipes/grid/supportbeams.json",
         "op": "replace",
         "path": "/0/output/quantity",
         "value": 4,

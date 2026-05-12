@@ -55,7 +55,7 @@ namespace Toolsmith {
         public override void AssetsFinalize(ICoreAPI api) {
             base.AssetsFinalize(api);
 
-            var headItemTag = api.TagRegistry.ItemTagsToTagArray(["toolsmith-part", "toolsmith-head"]);
+            var headItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-part", "toolsmith-head"]);
 
             if (ToolsmithModSystem.Config.PrintAllParsedToolsAndParts) {
                 ToolsmithModSystem.Logger.Debug("Tool Heads:");
@@ -64,21 +64,20 @@ namespace Toolsmith {
             List<GridRecipe> toolRecipes = new List<GridRecipe>();
             foreach (var recipe in api.World.GridRecipes) { //Check each recipe...
                 foreach (var tool in TinkerableToolsList.Where(t => recipe.Output.Code.Equals(t.Code))) { //Where the output code matches anything on the Tinkered Tool List (from the configs)...
-                    foreach (var ingredient in recipe.resolvedIngredients.Where(i => (i != null) && (i.ResolvedItemstack != null) && (ConfigUtility.IsToolHead(i.ResolvedItemstack.Collectible?.Code.ToString())))) { //And the recipe in question has a Tool Head item that is on the Tool Head Config List
-                        if (!ingredient.ResolvedItemstack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
-                            ingredient.ResolvedItemstack.Collectible.AddBehavior<CollectibleBehaviorToolHead>(); //Therefore it is a Tool Head! Give it the behavior.
+                    foreach (var ingredient in recipe.ResolvedIngredients.Where(i => (i != null) && (i.ResolvedItemStack != null) && (ConfigUtility.IsToolHead(i.ResolvedItemStack.Collectible?.Code.ToString())))) { //And the recipe in question has a Tool Head item that is on the Tool Head Config List
+                        if (!ingredient.ResolvedItemStack.Collectible.HasBehavior<CollectibleBehaviorToolHead>()) {
+                            ingredient.ResolvedItemStack.Collectible.AddBehavior<CollectibleBehaviorToolHead>(); //Therefore it is a Tool Head! Give it the behavior.
                         }
 
                         if (ConfigUtility.IsBluntTool(tool.Code)) { //If it is also a blunt tool, add the 'nodamage' Behavior as a tag to the Head as well
-                            if (!ingredient.ResolvedItemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
-                                ingredient.ResolvedItemstack.Collectible.AddBehavior<CollectibleBehaviorToolBlunt>();
+                            if (!ingredient.ResolvedItemStack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>()) {
+                                ingredient.ResolvedItemStack.Collectible.AddBehavior<CollectibleBehaviorToolBlunt>();
                             }
                         }
 
-                        if (ingredient.ResolvedItemstack.Item != null && !headItemTag.isPresentIn(ref ingredient.ResolvedItemstack.Item.Tags)) {
-                            var tagArray = ingredient.ResolvedItemstack.Item.Tags.ToArray(api).ToArray();
-                            tagArray = tagArray.AddRangeToArray(["toolsmith-part", "toolsmith-head"]);
-                            ingredient.ResolvedItemstack.Item.Tags = api.TagRegistry.ItemTagsToTagArray(tagArray);
+                        if (ingredient.ResolvedItemStack.Item != null && !headItemTag.IsFullyContainedIn(in ingredient.ResolvedItemStack.Item.Tags)) {
+                            var tagNames = api.CollectibleTagRegistry.SlowEnumerateTagNames(ingredient.ResolvedItemStack.Item.Tags).Concat(["toolsmith-part", "toolsmith-head"]);
+                            ingredient.ResolvedItemStack.Item.Tags = api.CollectibleTagRegistry.CreateTagSet(tagNames);
                         }
 
                         if (ToolsmithModSystem.Config.EnableGridRecipesForToolCrafting) {
@@ -86,8 +85,8 @@ namespace Toolsmith {
                         }
 
                         var gridRecipeTag = ingredient.Code.ToString();
-                        foreach (var otherIngredients in recipe.resolvedIngredients.Where(o => (o != null) && (o.ResolvedItemstack != null) && (o.ResolvedItemstack.Collectible.Code.Path == "bone"))) { //Is this one of the bone + head recipes?
-                            if (otherIngredients.ResolvedItemstack.Collectible.Code == ToolsmithConstants.BoneHandleCode) {
+                        foreach (var otherIngredients in recipe.ResolvedIngredients.Where(o => (o != null) && (o.ResolvedItemStack != null) && (o.ResolvedItemStack.Collectible.Code.Path == "bone"))) { //Is this one of the bone + head recipes?
+                            if (otherIngredients.ResolvedItemStack.Collectible.Code == ToolsmithConstants.BoneHandleCode) {
                                 gridRecipeTag += "-bone";
                                 break;
                             }
@@ -95,7 +94,7 @@ namespace Toolsmith {
 
                         if (!ToolHeadTexturesCache.ContainsKey(ingredient.Code)) {
                             if (ingredient.Type == EnumItemClass.Item) {
-                                Item item = ingredient.ResolvedItemstack.Item;
+                                Item item = ingredient.ResolvedItemStack.Item;
                                 if (item.Textures != null) {
                                     ToolHeadTextureData textures = new ToolHeadTextureData();
                                     foreach (var tex in item.Textures) {
@@ -105,7 +104,7 @@ namespace Toolsmith {
                                     ToolHeadTexturesCache.Add(item.Code, textures);
                                 }
                             } else {
-                                Block block = ingredient.ResolvedItemstack.Block;
+                                Block block = ingredient.ResolvedItemStack.Block;
                                 if (block.Textures != null) {
                                     ToolHeadTextureData textures = new ToolHeadTextureData();
                                     foreach (var tex in block.Textures) {
@@ -152,7 +151,7 @@ namespace Toolsmith {
             handleRecipes = null;
         }
 
-        private List<GridRecipe> GenerateToolGridRecipes(ICoreAPI api, GridRecipeIngredient head, CollectibleObject tool) {
+        private List<GridRecipe> GenerateToolGridRecipes(ICoreAPI api, CraftingRecipeIngredient head, CollectibleObject tool) {
             var list = new List<GridRecipe>();
             foreach (var handle in HandleList) {
                 foreach (var binding in BindingList) {
@@ -170,7 +169,7 @@ namespace Toolsmith {
                         Name = "Craft a " + tool.Code + " from a " + handle.Code + " and " + binding.Code + ".",
                         Output = new CraftingRecipeIngredient { Type = tool.ItemClass, Code = tool.Code }
                     };
-                    recipe.ResolveIngredients(api.World);
+                    recipe.Resolve(api.World, "Toolsmith");
                     list.Add(recipe);
                 }
             }
@@ -208,7 +207,7 @@ namespace Toolsmith {
                                 Name = "Add " + gripMat.Code + " as a handle grip.",
                                 Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
                             };
-                            recipe.ResolveIngredients(api.World);
+                            recipe.Resolve(api.World, "Toolsmith");
                             list.Add(recipe);
                         }
                     }
@@ -232,7 +231,7 @@ namespace Toolsmith {
                                     Name = "Add " + treatmentMat.Code + " as a handle treatment.",
                                     Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
                                 };
-                                recipe.ResolveIngredients(api.World);
+                                recipe.Resolve(api.World, "Toolsmith");
                                 list.Add(recipe);
                             } else if (treatmentStats != null && LiquidContainers.Count > 0) {
                                 ITreeAttribute liquidProps = new TreeAttribute();
@@ -259,7 +258,7 @@ namespace Toolsmith {
                                         Output = new CraftingRecipeIngredient { Type = handle.ItemClass, Code = handle.Code }
                                     };
 
-                                    bucketRecipe.ResolveIngredients(api.World);
+                                    bucketRecipe.Resolve(api.World, "Toolsmith");
                                     list.Add(bucketRecipe);
                                 }
                             }
@@ -320,7 +319,7 @@ namespace Toolsmith {
                     Output = new CraftingRecipeIngredient { Type = EnumItemClass.Item, Code = new AssetLocation("toolsmith:sandpaper"), Quantity = 4 }
                 };
 
-                containerRecipe.ResolveIngredients(api.World);
+                containerRecipe.Resolve(api.World, "Toolsmith");
                 list.Add(containerRecipe);
 
                 /*if (butcheringModEnabled) {
@@ -354,8 +353,8 @@ namespace Toolsmith {
                         Output = new CraftingRecipeIngredient { Type = EnumItemClass.Item, Code = new AssetLocation("toolsmith:sandpaper"), Quantity = 4 }
                     };
 
-                    containerSinewRecipe.ResolveIngredients(api.World);
-                    containerHideRecipe.ResolveIngredients(api.World);
+                    containerSinewRecipe.Resolve(api.World, "Toolsmith");
+                    containerHideRecipe.Resolve(api.World, "Toolsmith");
                     list.Add(containerSinewRecipe);
                     list.Add(containerHideRecipe);
                 }*/

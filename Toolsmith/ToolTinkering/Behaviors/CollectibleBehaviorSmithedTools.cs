@@ -47,7 +47,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             dsc.Append(workingDsc);
         }
 
-        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, GridRecipe byRecipe, ref EnumHandling bhHandling) {
+        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, IRecipeBase byRecipe, ref EnumHandling bhHandling) {
             ItemStack foundToolInput = null; //I do hope this gets called when Smithing completes. I think it should?
             if (allInputslots.Length > 0) {
                 foreach (var slot in allInputslots.Where(i => i.Itemstack != null)) {

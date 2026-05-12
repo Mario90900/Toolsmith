@@ -34,10 +34,10 @@ namespace Toolsmith.ToolTinkering {
         //Since it is probably impossible to tell what called to damage the tool, through an attack or just using the tool, it might just be simpler to render blunt tools undamagable.
         /*[HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
-        private static bool SmithedToolsDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) {
-            if (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>() && !itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Api.Side.IsServer()) {
+        private static bool SmithedToolsDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemSlot, int amount, CollectibleObject __instance) {
+            if (itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>() && itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>() && !itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && world.Api.Side.IsServer()) {
                 //If the tools is a Smithed Tool but not a Tinkered Tool with three parts, then simply don't damage it and interrupt the rest of the calls.
-                itemslot.MarkDirty();
+                itemSlot.MarkDirty();
                 return false; //Skip default and others
             } else { //If it's not a Smithed Tool, don't touch anything.
                 return true; //Run default and others
@@ -47,14 +47,18 @@ namespace Toolsmith.ToolTinkering {
         //This Prefix Patch is entirely to hook into the DamageItem calls and see if the item in question is a Tinkered Tool, and if it is, manage the Damage to the 3 tool parts instead of the base item durability
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
-        private static bool TinkeredToolDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) { //The Itemslot in question has to finish this call Null if the item is broken, other parts of the game, IE Treecutting code, only check for if the slot is null to keep on cutting the tree. This works for vanilla, cause when a tool breaks, it WILL be gone.
-            if (world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && (ToolsmithModSystem.IgnoreCodes.Count == 0 || !ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString()))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
-                ItemStack itemStack = itemslot.Itemstack;
+        //Param name `itemSlot` (capital S) must match the target method's parameter name exactly; in 1.22
+        //the base signature is DamageItem(IWorldAccessor, Entity, ItemSlot itemSlot, int amount, bool
+        //destroyOnZeroDurability), with `itemSlot` capitalized. Lowercase `itemSlot` here breaks
+        //Harmony's parameter injection at patch time.
+        private static bool TinkeredToolDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemSlot, int amount, CollectibleObject __instance) { //The Itemslot in question has to finish this call Null if the item is broken, other parts of the game, IE Treecutting code, only check for if the slot is null to keep on cutting the tree. This works for vanilla, cause when a tool breaks, it WILL be gone.
+            if (world.Side.IsServer() && !itemSlot.Itemstack.GetBrokeWhileSharpeningFlag() && itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && (ToolsmithModSystem.IgnoreCodes.Count == 0 || !ToolsmithModSystem.IgnoreCodes.Contains(itemSlot.Itemstack.Collectible.Code.ToString()))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
+                ItemStack itemStack = itemSlot.Itemstack;
                 int remainingHeadDur = itemStack.GetToolheadCurrentDurability(); //Grab all the current durabilities of the parts!
                 int remainingHandleDur = itemStack.GetToolhandleCurrentDurability(); //But none should be -1 already, if any are, it means it's likely a Creative-spawned tool, or the mod was added to a world -- ((world.Side.IsClient()) || (
                 int remainingBindingDur = itemStack.GetToolbindingCurrentDurability();
                 float chanceToDamage = itemStack.GetGripChanceToDamage();
-                bool isBluntTool = itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>();
+                bool isBluntTool = itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>();
                 bool headBroke = false;
 
                 //Time for SHARPNESS and WEAR! Lets a go!
@@ -138,22 +142,22 @@ namespace Toolsmith.ToolTinkering {
                 itemStack.SetToolbindingCurrentDurability(remainingBindingDur);
 
                 if (remainingHeadDur > 0) {
-                    DrawbackUtility.TryChanceForDrawback(world, byEntity, itemslot, sharpnessPer);
+                    DrawbackUtility.TryChanceForDrawback(world, byEntity, itemSlot, sharpnessPer);
                 }
 
                 //Check each part and see if the health of any of them is <= 0, thus the tool broke, handle it
                 //Any or all parts COULD hit 0 at the same time, technically. I'd love to see it though, but it needs to be possible!
                 if (remainingBindingDur <= 0 || remainingHandleDur <= 0 || remainingHeadDur <= 0) {
-                    TinkeringUtility.HandleBrokenTinkeredTool(world, byEntity, itemslot, remainingHeadDur, currentSharpness, remainingHandleDur, remainingBindingDur, headBroke, !headBroke);
+                    TinkeringUtility.HandleBrokenTinkeredTool(world, byEntity, itemSlot, remainingHeadDur, currentSharpness, remainingHandleDur, remainingBindingDur, headBroke, !headBroke);
                 }
 
-                itemslot.MarkDirty();
+                itemSlot.MarkDirty();
                 if (!headBroke) { //If the head did not break, then don't run everything!
                     return false; //Skip default and others
                 }
-            } else if (world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) { //If it's a smithed tool, only need to deal with the Sharpness, and any extra "head" damage. Head in this case is just the tool as a whole.
-                ItemStack itemStack = itemslot.Itemstack;
-                bool isBluntTool = itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>();
+            } else if (world.Side.IsServer() && !itemSlot.Itemstack.GetBrokeWhileSharpeningFlag() && itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) { //If it's a smithed tool, only need to deal with the Sharpness, and any extra "head" damage. Head in this case is just the tool as a whole.
+                ItemStack itemStack = itemSlot.Itemstack;
+                bool isBluntTool = itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>();
                 var currentDur = itemStack.GetSmithedDurability();
 
                 //Time for SHARPNESS and WEAR! Lets a go!
@@ -196,9 +200,9 @@ namespace Toolsmith.ToolTinkering {
                     }
                 }
 
-                itemslot.MarkDirty();
+                itemSlot.MarkDirty();
                 return doDamageTool;
-            } else if (!world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && (itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>())) {
+            } else if (!world.Side.IsServer() && !itemSlot.Itemstack.GetBrokeWhileSharpeningFlag() && (itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>())) {
                 return false; //Clientside Catch for hitting this point, wait for the server sync to update everything to hopefully prevent that desync from the client
             }
             //If it's not a tinkered or smithed tool, then let everything else run as well!
@@ -305,31 +309,47 @@ namespace Toolsmith.ToolTinkering {
             var targetTransitionNow = AccessTools.Method(typeof(CollectibleObject), nameof(CollectibleObject.OnTransitionNow));
             var codes = new List<CodeInstruction>(instructions);
 
+            //First, analyse without mutating: find the Callvirt to OnTransitionNow, locate the Ldloc_0
+            //that supplies its arg, and walk back to the Ldfld whose preceding operand we want to
+            //preserve. If any of these can't be located - the vanilla IL shape has drifted (1.22
+            //changed it) - we leave the original instructions alone. Mutating in-place before we
+            //know the operand is valid would corrupt the upstream IL and surface as "Wrong null
+            //argument: ldloc.s NULL" inside HarmonyLib.MethodCreatorTools.EmitCodes.
+            int callvirtIndex = -1;
+            int ldloc0Index = -1;
+            object loadOperand = null;
             for (int i = 0; i < codes.Count; i++) {
                 if (codes[i].opcode == OpCodes.Callvirt && (MethodInfo)codes[i].operand == targetTransitionNow) {
-                    int j = i - 1;
-                    while (j > 0) {
-                        if (codes[j].opcode == OpCodes.Ldloc_0) {
-                            codes[j].opcode = OpCodes.Ldloc_S;
-                            object operand = null;
-                            int k = j - 1;
-                            while (k > 0) {
-                                if (codes[k].opcode == OpCodes.Ldfld) {
-                                    operand = codes[k - 1].operand;
-                                    break;
-                                }
-                                k--;
-                            }
-                            codes[j].operand = operand;
-                            break;
-                        } else {
-                            codes[j].opcode = OpCodes.Nop;
-                        }
-                        j--;
-                    }
+                    callvirtIndex = i;
                     break;
                 }
             }
+            if (callvirtIndex > 0) {
+                for (int j = callvirtIndex - 1; j > 0; j--) {
+                    if (codes[j].opcode == OpCodes.Ldloc_0) {
+                        ldloc0Index = j;
+                        for (int k = j - 1; k > 0; k--) {
+                            if (codes[k].opcode == OpCodes.Ldfld) {
+                                loadOperand = codes[k - 1].operand;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            if (ldloc0Index < 0 || loadOperand == null) {
+                ToolsmithModSystem.Logger?.Warning("Toolsmith: skipping UpdateAndGetTransitionStatesNative transpiler - vanilla IL shape has drifted. Part transition logic may not behave exactly as intended; please open an issue if you observe spoilage/curing oddities on tinkered tool parts.");
+                return instructions;
+            }
+
+            //Match found - safe to apply the rewrites now.
+            for (int j = callvirtIndex - 1; j > ldloc0Index; j--) {
+                codes[j].opcode = OpCodes.Nop;
+            }
+            codes[ldloc0Index].opcode = OpCodes.Ldloc_S;
+            codes[ldloc0Index].operand = loadOperand;
 
             return codes.AsEnumerable();
         }
@@ -609,6 +629,16 @@ namespace Toolsmith.ToolTinkering {
 
         //This is basically the vanilla way of handling the Durability bar, but instead I tweaked it to be a little above, and also look at the Sharpness instead of Durability values. ShouldRenderSharpness checks if it's even a tool with sharpness, so this shouldn't run on anything that doesn't actually have it.
         private static void DrawSharpnessBar(ItemSlot slot, int slotId, int slotIndex, Context textCtx, GuiElementItemSlotGridBase instance) {
+            //Guard against null slots / empty stacks / out-of-range slot indices. ComposeSlotOverlays runs
+            //for every slot in every visible inventory grid (chests, storage vessels, etc.), so a slot
+            //containing a non-Toolsmith item is the common case. Without these guards Toolsmith crashes
+            //the game on any chest interaction; see issue #35.
+            if (slot?.Itemstack == null) {
+                return;
+            }
+            if (instance?.SlotBounds == null || slotIndex < 0 || slotIndex >= instance.SlotBounds.Length) {
+                return;
+            }
             if (TinkeringUtility.ShouldRenderSharpnessBar(slot.Itemstack)) {
                 double x = ElementBounds.scaled(4);
                 double y = (int)instance.SlotBounds[slotIndex].InnerHeight - ElementBounds.scaled(8) - ElementBounds.scaled(4);

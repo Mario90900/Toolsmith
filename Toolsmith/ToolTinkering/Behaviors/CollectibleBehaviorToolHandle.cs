@@ -77,7 +77,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
         }
 
-        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, GridRecipe byRecipe, ref EnumHandling bhHandling) {
+        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, IRecipeBase byRecipe, ref EnumHandling bhHandling) {
             if (outputSlot as DummySlot != null) {
                 return;
             }

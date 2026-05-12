@@ -1,4 +1,5 @@
 ﻿using ItemRarity;
+using ItemRarity.Rarities;
 using ScientificSmithy.Utils;
 using System;
 using System.Collections;
@@ -88,7 +89,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         //Output Slot contains the completed tool, the input slots will - at minimum - have a Toolhead and Handle (which could simply be a stick), and may or may not have a binding.
         //Should be true for even the Vanilla crafting recipes? Barring any changes to them but... probably can be accounted for with looping through the array.
         //Order of the array cannot be assumed either cause of this.
-        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, GridRecipe byRecipe, ref EnumHandling bhHandling) {
+        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, IRecipeBase byRecipe, ref EnumHandling bhHandling) {
             //First, figure out what actually went into the tool. Investigate the Inputs and look for the individual behaviors. This will find the parts!
             ItemStack headStack = null;
             ItemStack handleStack = null;
@@ -338,11 +339,11 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
         private void HandleItemRarityCompat(ItemSlot[] allInputslots, ItemSlot outputSlot) {
             var itemStack = outputSlot.Itemstack;
-            if (itemStack == null || itemStack.Item?.Tool == null || itemStack.Attributes.HasAttribute(ModAttributes.Guid)) {
+            if (!Rarity.IsSuitableFor(itemStack)) {
                 return;
             }
             var rarity = Rarity.GetRandomRarity();
-            itemStack.SetRarity(rarity.Key);
+            Rarity.ApplyRarity(itemStack, rarity);
         }
     }
 }

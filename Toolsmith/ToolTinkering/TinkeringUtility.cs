@@ -443,7 +443,7 @@ namespace Toolsmith.ToolTinkering {
                 GridRecipe DummyRecipe = new() {
                     AverageDurability = false,
                     Output = new() {
-                        ResolvedItemstack = craftedItemStack
+                        ResolvedItemStack = craftedItemStack
                     },
                     Name = new AssetLocation("toolsmith:inhandtinkertoolcrafting")
                 };
@@ -584,7 +584,7 @@ namespace Toolsmith.ToolTinkering {
                 GridRecipe DummyRecipe = new() {
                     AverageDurability = false,
                     Output = new() {
-                        ResolvedItemstack = craftedItemStack
+                        ResolvedItemStack = craftedItemStack
                     }
                 };
 
