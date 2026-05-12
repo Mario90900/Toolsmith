@@ -333,7 +333,7 @@ namespace Toolsmith.ToolTinkering {
                 if (!headBroke) { //This needs to be in here as well since no matter what, this needs to run
                     itemslot.Itemstack = null; //Actually 'break' the original item, but only if the head part isn't broken yet. Handle the 'falling apart' of the tools here, but let the 'breaking' happen elsewhere if the head DID fully break.
                     if (world.Side.IsServer()) {
-                        world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), byEntity.SidedPos.X, byEntity.SidedPos.Y, byEntity.SidedPos.Z, null, 1f, 16f);
+                        world.PlaySoundAt(new AssetLocation("sounds/effect/toolbreak"), byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z, null, 1f, 16f);
                     }
                 }
             }
