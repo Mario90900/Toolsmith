@@ -77,7 +77,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
         }
 
-        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, GridRecipe byRecipe, ref EnumHandling bhHandling) {
+        public override void OnCreatedByCrafting(ItemSlot[] allInputslots, ItemSlot outputSlot, IRecipeBase byRecipe, ref EnumHandling bhHandling) {
             if (outputSlot as DummySlot != null) {
                 return;
             }
@@ -265,6 +265,16 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 gripPartAndTransform.SetPartOffsetY(0);
                 gripPartAndTransform.SetPartOffsetZ(0);
             }
+        }
+
+        public override bool RequiresTransitionableTicking(IWorldAccessor world, ItemStack itemstack, ref EnumHandling handling) {
+            handling = EnumHandling.PreventDefault;
+
+            if (itemstack.HasWetTreatment()) {
+                return true;
+            }
+
+            return false;
         }
     }
 }

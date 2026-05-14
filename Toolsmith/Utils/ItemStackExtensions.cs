@@ -597,7 +597,7 @@ namespace Toolsmith.Utils {
         }
 
         //The Attribute Flags for tools! These will all be similar except for their intended use and name.
-        public static void SetBrokeWhileSharpeningFlag(this ItemStack itemStack) {
+        public static void SetBrokeWhileSharpeningFlag(this ItemStack itemStack) { //Since I removed breaking the tool while sharpening, this actually isn't needed anymore? I think.
             itemStack.Attributes.SetBool(ToolsmithAttributes.BrokeWhileSharpening, true);
         }
 

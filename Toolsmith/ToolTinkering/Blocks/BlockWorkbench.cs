@@ -470,8 +470,8 @@ namespace Toolsmith.ToolTinkering.Blocks {
             return offsetHalfSelectionsCopy;
         }
 
-        public bool MBDoParticalSelection(IWorldAccessor world, BlockPos pos, Vec3i offset) {
-            return DoParticalSelection(world, pos + offset.AsBlockPos);
+        public bool MBDoPartialSelection(IWorldAccessor world, BlockPos pos, Vec3i offset) {
+            return DoPartialSelection(world, pos + offset.AsBlockPos);
         }
 
         public bool MBOnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, Vec3i offset) {

@@ -5,7 +5,7 @@
     "woodaged":"game:block/wood/debarked/aged",
     "lead":"game:block/metal/plate/lead",
     "wood":"game:block/wood/table/normal/legs",
-    "string":"game:item/tool/material/string",
+    "string":"game:item/resource/string",
     "stone":"game:block/stone/polishedrock/granite-inside"
   },
   "textureSizes":{

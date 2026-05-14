@@ -26,9 +26,9 @@ using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering {
 
-    [HarmonyPatch(typeof(CollectibleObject))]
+    /*[HarmonyPatch(typeof(CollectibleObject))]
     [HarmonyPatchCategory(ToolsmithModSystem.ToolTinkeringDamagePatchCategory)]
-    public class ToolTinkeringPatches {
+    public class ToolTinkeringPatches {*/
 
         //This Prefix Patch is for Smithed Tools, the ones that are simply smithed on an anvil and then you get the finished item. Mostly for just checking for 'Blunt' Tools.
         //Since it is probably impossible to tell what called to damage the tool, through an attack or just using the tool, it might just be simpler to render blunt tools undamagable.
@@ -45,9 +45,9 @@ namespace Toolsmith.ToolTinkering {
         }*/
 
         //This Prefix Patch is entirely to hook into the DamageItem calls and see if the item in question is a Tinkered Tool, and if it is, manage the Damage to the 3 tool parts instead of the base item durability
-        [HarmonyPrefix]
+        /*[HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.DamageItem)), HarmonyPriority(Priority.High)]
-        private static bool TinkeredToolDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, CollectibleObject __instance) { //The Itemslot in question has to finish this call Null if the item is broken, other parts of the game, IE Treecutting code, only check for if the slot is null to keep on cutting the tree. This works for vanilla, cause when a tool breaks, it WILL be gone.
+        private static bool TinkeredToolDamageItemPrefix(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount, bool destroyOnZeroDurability, CollectibleObject __instance) { //The Itemslot in question has to finish this call Null if the item is broken, other parts of the game, IE Treecutting code, only check for if the slot is null to keep on cutting the tree. This works for vanilla, cause when a tool breaks, it WILL be gone.
             if (world.Side.IsServer() && !itemslot.Itemstack.GetBrokeWhileSharpeningFlag() && itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() && (ToolsmithModSystem.IgnoreCodes.Count == 0 || !ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString()))) { //Important to check if it even is a Tinkered Tool, as well as making sure it isn't on the ignore list.
                 ItemStack itemStack = itemslot.Itemstack;
                 int remainingHeadDur = itemStack.GetToolheadCurrentDurability(); //Grab all the current durabilities of the parts!
@@ -143,7 +143,7 @@ namespace Toolsmith.ToolTinkering {
 
                 //Check each part and see if the health of any of them is <= 0, thus the tool broke, handle it
                 //Any or all parts COULD hit 0 at the same time, technically. I'd love to see it though, but it needs to be possible!
-                if (remainingBindingDur <= 0 || remainingHandleDur <= 0 || remainingHeadDur <= 0) {
+                if (destroyOnZeroDurability && (remainingBindingDur <= 0 || remainingHandleDur <= 0 || remainingHeadDur <= 0)) {
                     TinkeringUtility.HandleBrokenTinkeredTool(world, byEntity, itemslot, remainingHeadDur, currentSharpness, remainingHandleDur, remainingBindingDur, headBroke, !headBroke);
                 }
 
@@ -204,9 +204,9 @@ namespace Toolsmith.ToolTinkering {
             //If it's not a tinkered or smithed tool, then let everything else run as well!
             return true;
         }
-    }
+    }*/
 
-    [HarmonyPatch(typeof(CollectibleObject))]
+    /*[HarmonyPatch(typeof(CollectibleObject))]
     [HarmonyPatchCategory(ToolsmithModSystem.ToolTinkeringToolUseStatsPatchCategory)]
     public class ToolTinkeringDurabilityPatches {
 
@@ -216,7 +216,7 @@ namespace Toolsmith.ToolTinkering {
             if (itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>() || itemstack.Collectible.HasBehavior<CollectibleBehaviorSmithedTools>()) {
                     __result = (int)((double)__result * ToolsmithModSystem.Config.HeadDurabilityMult);
             }
-        }
+        }*/
 
         /*[HarmonyPrefix] //Commented this out because it wasn't really _needed_ exactly? Also ended up causing a loop with Smithing Plus in the end, woo. Thanks Jayu for figuring this out.
         [HarmonyPatch(nameof(CollectibleObject.SetDurability))]
@@ -240,7 +240,7 @@ namespace Toolsmith.ToolTinkering {
         }*/
 
         //The Postfix Patch that handles the Mining Speed (ms) Boost from any Tinkered Tools, simply just takes the output of the original call and if it's a Tinkered Tool? Add ms + ms*bonus
-        [HarmonyPostfix]
+        /*[HarmonyPostfix]
         [HarmonyPatch(nameof(CollectibleObject.GetMiningSpeed))]
         private static void TinkeredToolMiningSpeedPostfix(ref float __result, IItemStack itemstack, BlockSelection blockSel, Block block, IPlayer forPlayer) {
             var isTinkeredTool = itemstack.Collectible.HasBehavior<CollectibleBehaviorTinkeredTools>();
@@ -263,7 +263,7 @@ namespace Toolsmith.ToolTinkering {
 
             __result = newMiningSpeed;
         }
-    }
+    }*/
 
     [HarmonyPatch(typeof(CollectibleObject))]
     [HarmonyPatchCategory(ToolsmithModSystem.ToolTinkeringTransitionalPropsPatchCategory)]
@@ -289,7 +289,7 @@ namespace Toolsmith.ToolTinkering {
             }
         }
 
-        [HarmonyPostfix]
+        /*[HarmonyPostfix]
         [HarmonyPatch(nameof(CollectibleObject.RequiresTransitionableTicking))]
         private static void ToolPartRequiresTransitionOverridePostfix(ref bool __result, IWorldAccessor world, ItemStack itemstack) {
             if (itemstack.Collectible.HasBehavior<ModularPartRenderingFromAttributes>()) {
@@ -297,10 +297,10 @@ namespace Toolsmith.ToolTinkering {
                     __result = true;
                 }
             }
-        }
+        }*/
 
-        [HarmonyTranspiler]
-        [HarmonyPatch("UpdateAndGetTransitionStatesNative")]
+        /*[HarmonyTranspiler]
+        [HarmonyPatch("UpdateAndGetTransitionStatesNative")] //I don't remember what this patch does... Hm. Was this fixing a bug? I think maybe. It looks like it's in Vanilla now? AH. It was because I return a kinda dummy transitional prop that isn't in the Collectible itself for the Treatments!
         private static IEnumerable<CodeInstruction> UpdateAndGetTransitionStatesNativeTranspiler(IEnumerable<CodeInstruction> instructions) {
             var targetTransitionNow = AccessTools.Method(typeof(CollectibleObject), nameof(CollectibleObject.OnTransitionNow));
             var codes = new List<CodeInstruction>(instructions);
@@ -314,7 +314,7 @@ namespace Toolsmith.ToolTinkering {
                             object operand = null;
                             int k = j - 1;
                             while (k > 0) {
-                                if (codes[k].opcode == OpCodes.Ldfld) {
+                                if (codes[k].opcode == OpCodes.Ldfld) { //I believe this part was basically just null-op'ing up to the point where it simply re-accesses the already existing TransitionalProps Array it got at the start.
                                     operand = codes[k - 1].operand;
                                     break;
                                 }
@@ -332,7 +332,7 @@ namespace Toolsmith.ToolTinkering {
             }
 
             return codes.AsEnumerable();
-        }
+        }*/
     }
 
     [HarmonyPatch(typeof(CollectibleObject))]

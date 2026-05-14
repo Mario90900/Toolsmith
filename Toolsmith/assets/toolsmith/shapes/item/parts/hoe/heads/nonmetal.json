@@ -2,7 +2,7 @@
   "textureWidth":16,
   "textureHeight":16,
   "textures":{
-    "material":"game:item/tool/material/flint"
+    "material":"game:block/stone/flint"
   },
   "textureSizes":{
     "material":[

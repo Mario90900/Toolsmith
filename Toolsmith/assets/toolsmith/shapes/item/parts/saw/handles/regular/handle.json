@@ -1,9 +1,9 @@
 {
   "textureWidth":16,
   "textureHeight":16,
-  "textures":{
-    "wood":"game:block/wood/debarked/oak",
-    "linen":"game:item/tool/material/string"
+  "textures": {
+    "wood": "game:block/wood/debarked/oak",
+    "linen": "game:item/resource/string"
   },
   "textureSizes":{
     "wood":[

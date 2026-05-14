@@ -1,8 +1,8 @@
 {
   "textureWidth":16,
   "textureHeight":16,
-  "textures":{
-    "material":"game:item/tool/material/string"
+  "textures": {
+    "material": "game:item/resource/string"
   },
   "textureSizes":{
     "material":[

@@ -489,7 +489,8 @@ namespace Toolsmith.ToolTinkering.Blocks {
             IContainedMeshSource meshSource = stack.Collectible?.GetCollectibleInterface<IContainedMeshSource>();
             var facing = BlockFacing.FromCode(Block.LastCodePart());
             if (meshSource != null) {
-                return facing.Code + "-slot-" + slotIndex + "-" + WhatSlotMarkerIndicator(slotIndex) + "-" + craftingHitsCount + "-" + meshSource.GetMeshCacheKey(stack);
+                var slot = new DummySlot(stack);
+                return facing.Code + "-slot-" + slotIndex + "-" + WhatSlotMarkerIndicator(slotIndex) + "-" + craftingHitsCount + "-" + meshSource.GetMeshCacheKey(slot);
             }
 
             return facing.Code + "-slot-" + slotIndex + "-" + WhatSlotMarkerIndicator(slotIndex) + "-" + craftingHitsCount + "-" + stack.Collectible.Code.ToString();
@@ -572,7 +573,8 @@ namespace Toolsmith.ToolTinkering.Blocks {
             IContainedMeshSource meshSource = stack.Collectible?.GetCollectibleInterface<IContainedMeshSource>();
 
             if (meshSource != null) {
-                mesh = meshSource.GenMesh(stack, capi.ItemTextureAtlas, Pos);
+                var slot = new DummySlot(stack);
+                mesh = meshSource.GenMesh(slot, capi.ItemTextureAtlas, Pos);
             }
 
             MeshData originalMeshData;
@@ -710,7 +712,8 @@ namespace Toolsmith.ToolTinkering.Blocks {
             IContainedMeshSource meshSource = stack.Collectible?.GetCollectibleInterface<IContainedMeshSource>();
 
             if (meshSource != null) {
-                mesh = meshSource.GenMesh(stack, capi.ItemTextureAtlas, Pos);
+                var slot = new DummySlot(stack);
+                mesh = meshSource.GenMesh(slot, capi.ItemTextureAtlas, Pos);
             }
 
             if (mesh == null) {
