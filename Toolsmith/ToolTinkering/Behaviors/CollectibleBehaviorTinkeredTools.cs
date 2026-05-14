@@ -1,4 +1,5 @@
 ﻿using ItemRarity;
+using ItemRarity.Rarities;
 using ScientificSmithy.Utils;
 using System;
 using System.Collections;
@@ -338,11 +339,11 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
         private void HandleItemRarityCompat(ItemSlot[] allInputslots, ItemSlot outputSlot) {
             var itemStack = outputSlot.Itemstack;
-            if (itemStack == null || itemStack.Item?.Tool == null || itemStack.Attributes.HasAttribute(ModAttributes.Guid)) {
+            if (!Rarity.IsSuitableFor(itemStack)) {
                 return;
             }
             var rarity = Rarity.GetRandomRarity();
-            itemStack.SetRarity(rarity.Key);
+            Rarity.ApplyRarity(itemStack, rarity);
         }
 
         public override void OnDamageItem(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, ref int amount, ref EnumHandling bhHandling) {

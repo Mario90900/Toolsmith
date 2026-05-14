@@ -353,8 +353,8 @@ namespace Toolsmith {
                         Output = new CraftingRecipeIngredient { Type = EnumItemClass.Item, Code = new AssetLocation("toolsmith:sandpaper"), Quantity = 4 }
                     };
 
-                    containerSinewRecipe.ResolveIngredients(api.World);
-                    containerHideRecipe.ResolveIngredients(api.World);
+                    containerSinewRecipe.Resolve(api.World, "Toolsmith");
+                    containerHideRecipe.Resolve(api.World, "Toolsmith");
                     list.Add(containerSinewRecipe);
                     list.Add(containerHideRecipe);
                 }*/

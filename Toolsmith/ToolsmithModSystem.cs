@@ -197,6 +197,16 @@ namespace Toolsmith {
             }
         }
 
+        public override void AssetsLoaded(ICoreAPI api) {
+            base.AssetsLoaded(api);
+
+            //In 1.22 the CollectibleTagRegistry locks before AssetsFinalize, so tag registration must
+            //happen in AssetsLoaded (or earlier). Both sides need to register so the names and ids
+            //match for the TagSet construction that follows in AssetsFinalize.
+            string[] allTags = ["toolsmith-part", "toolsmith-maintenance", "toolsmith-binding", "toolsmith-handle", "toolsmith-head"];
+            api.CollectibleTagRegistry.Register(allTags);
+        }
+
         public override void AssetsFinalize(ICoreAPI api) {
             base.AssetsFinalize(api);
 
