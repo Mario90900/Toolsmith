@@ -1,0 +1,158 @@
+[
+    {
+        "id": "cord-bamboo",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:bamboo/cord"
+    },
+    {
+        "id": "cord-bark",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:bark/cord"
+    },
+    {
+        "id": "cord-coconut",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:coconut/cord"
+    },
+    {
+        "id": "cord-flax",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:flax/cord"
+    },
+    {
+        "id": "cord-nzflax",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:nzflax/cord"
+    },
+    {
+        "id": "cord-palm",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:palm/cord"
+    },
+    {
+        "id": "cord-papyrus",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:papyrus/cord"
+    },
+    {
+        "id": "cord-porcupine",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:porcupine/cord"
+    },
+    {
+        "id": "cord-reed",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:reed/cord"
+    },
+    {
+        "id": "cord-sinew",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:sinew/cord"
+    },
+    {
+        "id": "cord-straw",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:straw/cord"
+    },
+    {
+        "id": "cord-vine",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:vine/cord"
+    },
+    {
+        "id": "cord-larch",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:larch/cord"
+    },
+    {
+        "id": "cord-tuja",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:tuja/cord"
+    },
+    {
+        "id": "cord-honeylocust",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:honeylocust/cord"
+    },
+    {
+        "id": "cord-birch",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:birch/cord"
+    },
+    {
+        "id": "cord-brideinwhite",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:brideinwhite/cord"
+    },
+    {
+        "id": "cord-alder",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:alder/cord"
+    },
+    {
+        "id": "cord-bearnut",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:bearnut/cord"
+    },
+    {
+        "id": "cord-willow",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:willow/cord"
+    },
+    {
+        "id": "cord-redwillow",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:redwillow/cord"
+    },
+    {
+        "id": "cord-poplar",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:poplar/cord"
+    },
+    {
+        "id": "cord-aspen",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:aspen/cord"
+    },
+    {
+        "id": "cord-eucalyptus",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:eucalyptus/cord"
+    },
+    {
+        "id": "cord-kapok",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:kapok/cord"
+    },
+    {
+        "id": "cord-sapele",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:sapele/cord"
+    }
+]
