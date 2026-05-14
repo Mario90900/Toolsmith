@@ -266,5 +266,15 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 gripPartAndTransform.SetPartOffsetZ(0);
             }
         }
+
+        public override bool RequiresTransitionableTicking(IWorldAccessor world, ItemStack itemstack, ref EnumHandling handling) {
+            handling = EnumHandling.PreventDefault;
+
+            if (itemstack.HasWetTreatment()) {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

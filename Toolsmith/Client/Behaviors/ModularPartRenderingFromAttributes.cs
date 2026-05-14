@@ -67,7 +67,8 @@ namespace Toolsmith.Client.Behaviors {
             if (api != null && (meshrefID == 0 || !meshrefs.TryGetValue(meshrefID, out renderinfo.ModelRef))) { //This checks if it has already been rendered and cached, and if so, send that again - otherwise generate one.
                 int id = meshrefs.Count + 1;
 
-                var mesh = GenMesh(itemstack, capi.ItemTextureAtlas, null);
+                ItemSlot dummySlot = new DummySlot(itemstack);
+                var mesh = GenMesh(dummySlot, capi.ItemTextureAtlas, null);
                 if (mesh != null) {
                     MultiTextureMeshRef modelref = capi.Render.UploadMultiTextureMesh(mesh);
                     renderinfo.ModelRef = meshrefs[id] = modelref;
@@ -79,20 +80,12 @@ namespace Toolsmith.Client.Behaviors {
             }
         }
 
-        // IContainedMeshSource interface methods. 1.22 takes ItemSlot, not ItemStack, so these delegate to the existing ItemStack implementations below.
-        public MeshData GenMesh(ItemSlot slot, ITextureAtlasAPI targetAtlas, BlockPos atBlockPos) {
-            return GenMesh(slot?.Itemstack, targetAtlas, atBlockPos);
-        }
-
-        public string GetMeshCacheKey(ItemSlot slot) {
-            return GetMeshCacheKey(slot?.Itemstack);
-        }
-
-        public MeshData GenMesh(ItemStack itemstack, ITextureAtlasAPI targetAtlas, BlockPos atBlockPos) {
-            if (itemstack == null) {
+        public MeshData GenMesh(ItemSlot itemslot, ITextureAtlasAPI targetAtlas, BlockPos atBlockPos) {
+            if (itemslot == null || itemslot.Empty) {
                 return new MeshData();
             }
 
+            var itemstack = itemslot.Itemstack;
             var mesh = new MeshData(6, 4);
             if (itemstack.HasMultiPartRenderTree()) {
                 ITreeAttribute partTransTree = itemstack.GetMultiPartRenderTree(); //The Multi-Part tree contains sub-trees of the PartRenderTrees paired with their render data like rotation and everything. So loop through them all and add them together on the Mesh.
@@ -297,9 +290,13 @@ namespace Toolsmith.Client.Behaviors {
             return null;
         }
 
-        public string GetMeshCacheKey(ItemStack itemstack) {
+        public string GetMeshCacheKey(ItemSlot itemslot) {
             string cacheKey = item.Code.ToShortString();
+            if (itemslot == null || itemslot.Empty) {
+                return cacheKey;
+            }
 
+            var itemstack = itemslot.Itemstack;
             if (itemstack.HasPartRenderTree()) {
                 var renderTree = itemstack.GetPartRenderTree();
                 GetMeshCacheKeyFromSubTrees(ref cacheKey, renderTree);

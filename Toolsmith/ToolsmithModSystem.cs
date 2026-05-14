@@ -130,6 +130,10 @@ namespace Toolsmith {
             api.RegisterItemClass($"{ModId}:ItemTinkerToolParts", typeof(ItemTinkerToolParts));
             api.RegisterItemClass($"{ModId}:WorkableBits", typeof(ItemWorkableNugget));
 
+            //Register CollectibleTags here
+            string[] itemTags = ["toolsmith-part", "toolsmith-maintenance", "toolsmith-binding", "toolsmith-handle", "toolsmith-head"];
+            api.CollectibleTagRegistry.TryRegister(itemTags);
+
             HarmonyPatch();
         }
 
@@ -208,14 +212,11 @@ namespace Toolsmith {
 
             if (api.Side.IsClient()) {
                 //Init these Clientside as well, in the case of Multiplayer
-                ToolsmithConstants.ToolsmithHeadItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-head"]);
-                ToolsmithConstants.ToolsmithHandleItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-handle"]);
-                ToolsmithConstants.ToolsmithBindingItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-binding"]);
-                ToolsmithConstants.ToolsmithPartItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-part"]);
-                ToolsmithConstants.ToolsmithMaintenanceItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-maintenance"]);
-
-                ToolsmithConstants.ToolsmithBindingBlockTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-binding"]);
-                ToolsmithConstants.ToolsmithPartBlockTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-part"]);
+                api.CollectibleTagRegistry.TryCreateTagSet(out ToolsmithConstants.ToolsmithHeadTag, ["toolsmith-head"]);
+                api.CollectibleTagRegistry.TryCreateTagSet(out ToolsmithConstants.ToolsmithHandleTag, ["toolsmith-handle"]);
+                api.CollectibleTagRegistry.TryCreateTagSet(out ToolsmithConstants.ToolsmithBindingTag, ["toolsmith-binding"]);
+                api.CollectibleTagRegistry.TryCreateTagSet(out ToolsmithConstants.ToolsmithMaintenanceItemTag, ["toolsmith-maintenance"]);
+                api.CollectibleTagRegistry.TryCreateTagSet(out ToolsmithConstants.ToolsmithPartTag, ["toolsmith-part"]);
 
                 if (BindingTiers == null) {
                     BindingTiers = new Dictionary<string, int>();
@@ -244,20 +245,14 @@ namespace Toolsmith {
                 SinglePartToolsList = new List<CollectibleObject>();
             }
 
-            //Tags themselves are registered earlier in AssetsLoaded; the registry is locked by the time
-            //AssetsFinalize runs in 1.22. We only construct TagSets from already-registered names here.
-            var bindingItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-part", "toolsmith-binding"]);
-            var bindingBlockTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-part", "toolsmith-binding"]);
-            var handleItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-part", "toolsmith-handle"]);
+            var bindingTags = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-part", "toolsmith-binding"]);
+            var handleTags = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-part", "toolsmith-handle"]);
 
-            ToolsmithConstants.ToolsmithHeadItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-head"]);
-            ToolsmithConstants.ToolsmithHandleItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-handle"]);
-            ToolsmithConstants.ToolsmithBindingItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-binding"]);
-            ToolsmithConstants.ToolsmithPartItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-part"]);
+            ToolsmithConstants.ToolsmithHeadTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-head"]);
+            ToolsmithConstants.ToolsmithHandleTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-handle"]);
+            ToolsmithConstants.ToolsmithBindingTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-binding"]);
             ToolsmithConstants.ToolsmithMaintenanceItemTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-maintenance"]);
-
-            ToolsmithConstants.ToolsmithBindingBlockTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-binding"]);
-            ToolsmithConstants.ToolsmithPartBlockTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-part"]);
+            ToolsmithConstants.ToolsmithPartTag = api.CollectibleTagRegistry.CreateTagSet(["toolsmith-part"]);
 
             foreach (var t in api.World.Collectibles.Where(t => t?.Code != null)) { //A tool/part should likely be only one of these!
                 if (ConfigUtility.IsTinkerableTool(t.Code.ToString()) && !(ConfigUtility.IsToolHead(t.Code.ToString())) && !(ConfigUtility.IsOnBlacklist(t.Code.ToString()))) { //Any tool that you actually craft from a Tool Head to create!
@@ -312,12 +307,9 @@ namespace Toolsmith {
                     if (!t.StorageFlags.HasFlag(EnumItemStorageFlags.Offhand)) {
                         t.StorageFlags += 0x100;
                     }
-                    if (t.ItemClass == EnumItemClass.Item) {
-                        var item = ((Item)t);
-                        if (!handleItemTag.IsFullyContainedIn(in item.Tags)) {
-                            var tagNames = api.CollectibleTagRegistry.SlowEnumerateTagNames(item.Tags).Concat(["toolsmith-part", "toolsmith-handle"]);
-                            item.Tags = api.CollectibleTagRegistry.CreateTagSet(tagNames);
-                        }
+                    if (!handleTags.IsFullyContainedIn(t.Tags)) {
+                        var tagArray = t.Tags;
+                        t.Tags = api.CollectibleTagRegistry.CreateMergedTagSet(handleTags, tagArray);
                     }
                     RecipeRegisterModSystem.HandleList.Add(t);
                 } else if (ConfigUtility.IsToolBinding(t.Code.Path, bindingDict)) {
@@ -330,18 +322,9 @@ namespace Toolsmith {
                     if (!t.StorageFlags.HasFlag(EnumItemStorageFlags.Offhand)) {
                         t.StorageFlags += 0x100;
                     }
-                    if (t.ItemClass == EnumItemClass.Item) {
-                        var item = ((Item)t);
-                        if (!bindingItemTag.IsFullyContainedIn(in item.Tags)) {
-                            var tagNames = api.CollectibleTagRegistry.SlowEnumerateTagNames(item.Tags).Concat(["toolsmith-part", "toolsmith-binding"]);
-                            item.Tags = api.CollectibleTagRegistry.CreateTagSet(tagNames);
-                        }
-                    } else {
-                        var block = ((Block)t);
-                        if (!bindingBlockTag.IsFullyContainedIn(in block.Tags)) {
-                            var tagNames = api.CollectibleTagRegistry.SlowEnumerateTagNames(block.Tags).Concat(["toolsmith-part", "toolsmith-binding"]);
-                            block.Tags = api.CollectibleTagRegistry.CreateTagSet(tagNames);
-                        }
+                    if (!bindingTags.IsFullyContainedIn(t.Tags)) {
+                        var tagArray = t.Tags;
+                        t.Tags = api.CollectibleTagRegistry.CreateMergedTagSet(bindingTags, tagArray);
                     }
                     RecipeRegisterModSystem.BindingList.Add(t);
                 }

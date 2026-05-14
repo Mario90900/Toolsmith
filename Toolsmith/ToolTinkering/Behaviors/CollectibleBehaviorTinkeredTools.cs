@@ -9,10 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Toolsmith.Client;
 using Toolsmith.Config;
+using Toolsmith.ToolTinkering.Drawbacks;
 using Toolsmith.ToolTinkering.Items;
 using Toolsmith.Utils;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.Util;
@@ -20,8 +22,6 @@ using Vintagestory.GameContent;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
     public class CollectibleBehaviorTinkeredTools : CollectibleBehavior {
-
-
 
         public CollectibleBehaviorTinkeredTools(CollectibleObject collObj) : base(collObj) {
 
@@ -344,6 +344,143 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
             var rarity = Rarity.GetRandomRarity();
             Rarity.ApplyRarity(itemStack, rarity);
+        }
+
+        public override void OnDamageItem(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, ref int amount, ref EnumHandling bhHandling) {
+            if (world.Side.IsServer() && (ToolsmithModSystem.IgnoreCodes.Count == 0 || !ToolsmithModSystem.IgnoreCodes.Contains(itemslot.Itemstack.Collectible.Code.ToString()))) { //Lets just make sure it isn't on the ignore list.
+                bhHandling = EnumHandling.PreventDefault; //Prevent all default damage handling serverside as long as it's not on the ignore list!
+
+                ItemStack itemStack = itemslot.Itemstack;
+                int remainingHeadDur = itemStack.GetToolheadCurrentDurability(); //Grab all the current durabilities of the parts!
+                int remainingHandleDur = itemStack.GetToolhandleCurrentDurability(); //But none should be -1 already, if any are, it means it's likely a Creative-spawned tool, or the mod was added to a world -- ((world.Side.IsClient()) || (
+                int remainingBindingDur = itemStack.GetToolbindingCurrentDurability();
+                float chanceToDamage = itemStack.GetGripChanceToDamage();
+                bool isBluntTool = itemslot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorToolBlunt>();
+                bool headBroke = false;
+
+                //Time for SHARPNESS and WEAR! Lets a go!
+                bool doDamageHead = false;
+                bool doubleHeadDamage = false;
+                bool doDamageHandle = false;
+                bool doDamageBinding = false;
+
+                //First, the most important question, what is the current sharpness percentage? Then lower the sharpness by amount.
+                int currentSharpness = itemStack.GetToolCurrentSharpness();
+                int maxSharpness = itemStack.GetToolMaxSharpness();
+                float sharpnessPer = itemStack.GetToolSharpnessPercent();
+
+                if (maxSharpness <= 1) { //If the Sharpness Max is 1, likely means something got marked improperly. I don't think it could be 1 otherwise?
+                    sharpnessPer = 0f; //Set the percent to one as a placeholder to just avoid infinite sharpness.
+                }
+                if (currentSharpness > 0) {
+                    currentSharpness -= amount;
+                }
+                else {
+                    doubleHeadDamage = true;
+                }
+
+                if (!isBluntTool) {
+                    itemStack.SetToolCurrentSharpness(currentSharpness);
+                    itemStack.SetTotalHoneValue(0);
+                }
+
+                //Then based on the percentage, which parts do we actually damage?
+                //Above 0.98, nothing on the tool takes durability damage as a little bonus
+                if (sharpnessPer >= 0.98f) { //Since even if the tool isn't going to regularly take damage to all parts, we still want to damage the binding by 1 point just cause it's been 'used' once. It won't get damaged again anyway.
+                    if (remainingBindingDur == itemStack.GetToolbindingMaxDurability()) {
+                        remainingBindingDur -= 1;
+                    }
+                } else if (sharpnessPer >= 0.95f) {
+                    doDamageBinding = true;
+                } else {
+                    doDamageBinding = true;
+                    doDamageHandle = true;
+                }
+
+                if (sharpnessPer < 0.98f) {
+                    doDamageHead = true;
+                }
+
+                //Handle damaging each part, the handle only if it should based on the chance to damage it
+                if (doDamageHead && (doubleHeadDamage || (!isBluntTool && world.Rand.NextDouble() <= ToolsmithModSystem.Config.SharpWear) || world.Rand.NextDouble() <= ToolsmithModSystem.Config.BluntWear)) { //If this Tinkered Tool is also marked as a blunted tool, then apply the much much smaller chance to damage it. Damage the other parts though!
+                    remainingHeadDur -= amount;
+                    if (doubleHeadDamage) {
+                        remainingHeadDur -= amount;
+                    }
+                }
+                itemStack.SetToolheadCurrentDurability(remainingHeadDur);
+                if (remainingHeadDur <= 0) {
+                    headBroke = true;
+                }
+
+                if (doDamageHandle && chanceToDamage < 1.0f) {
+                    var damageToTake = 0;
+                    if (world.Rand.NextDouble() <= chanceToDamage) {
+                        damageToTake++;
+                    }
+
+                    if (amount > 1) { //Only run this if it's actually needed, to actually 'roll' for damage each point of damage. Is there a better way to do this?
+                        var count = 1;
+                        while (count < amount) {
+                            if (world.Rand.NextDouble() <= chanceToDamage) { //For each point of damage, roll for change to damage
+                                damageToTake++;
+                            }
+                            count++;
+                        }
+                    }
+                    remainingHandleDur -= damageToTake;
+                } else if (doDamageHandle) {
+                    remainingHandleDur -= amount;
+                }
+                itemStack.SetToolhandleCurrentDurability(remainingHandleDur);
+
+                if (doDamageBinding) {
+                    remainingBindingDur -= amount;
+                }
+                itemStack.SetToolbindingCurrentDurability(remainingBindingDur);
+
+                if (remainingHeadDur > 0) {
+                    DrawbackUtility.TryChanceForDrawback(world, byEntity, itemslot, sharpnessPer);
+                }
+
+                //Check each part and see if the health of any of them is <= 0, thus the tool broke, handle it
+                //Any or all parts COULD hit 0 at the same time, technically. I'd love to see it though, but it needs to be possible!
+                if (remainingBindingDur <= 0 || remainingHandleDur <= 0 || remainingHeadDur <= 0) {
+                    TinkeringUtility.HandleBrokenTinkeredTool(world, byEntity, itemslot, remainingHeadDur, currentSharpness, remainingHandleDur, remainingBindingDur, headBroke, !headBroke);
+                }
+
+                itemslot.MarkDirty();
+                if (headBroke) { //If the head did not break, then don't run everything!
+                    itemStack.Collectible.DestroyItem(world, byEntity, itemslot);
+                }
+            } else if (!world.Side.IsServer()) {
+                bhHandling = EnumHandling.PreventDefault; //This should prevent the clientside from running the vanilla damage calculations, but the serverside is still doing it's proper stuff above. Then the client will recieve the update, so there is no desync.
+            }
+
+            //If neither of these conditions are hit, that means it's on the serverside and the item in question is on the ignore list. So, to prevent any issues (hopefully?), lets just let the default run normally.
+        }
+
+        //Tyron and Co you are fucking amazing for this. Actually sending the BH the initial max durability like this is SO HELPFUL...
+        public override int GetMaxDurability(ItemStack itemstack, int durability, ref EnumHandling bhHandling) {
+            bhHandling = EnumHandling.PreventDefault;
+            return (int)((double)durability * ToolsmithModSystem.Config.HeadDurabilityMult);
+        }
+
+        //THIS TOO! It's like- Holy crap, it's like it was made for me.
+        public override float GetMiningSpeed(ItemStack itemstack, BlockSelection blockSel, Block block, IPlayer forPlayer, ref EnumHandling bhHandling) {
+            bhHandling = EnumHandling.Handled;
+
+            float speedMult = 1f;
+            var sharpnessPer = itemstack.GetToolSharpnessPercent();
+            if (sharpnessPer >= 0.9) {
+                speedMult += speedMult * ToolsmithConstants.HighSharpnessSpeedBonusMult;
+            } else if (sharpnessPer <= 0.33) {
+                speedMult += speedMult * ToolsmithConstants.LowSharpnessSpeedMalusMult;
+            }
+
+            speedMult += speedMult * itemstack.GetSpeedBonus();
+
+            return speedMult;
         }
     }
 }

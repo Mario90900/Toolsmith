@@ -35,7 +35,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
         }
 
         public bool IsSelectSlotEmpty(int slotID) {
-            ItemSlot? slot = GetSlotFromSelectionID(slotID);
+            var slot = GetSlotFromSelectionID(slotID);
             if (slot == null) {
                 return false;
             }
@@ -88,7 +88,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
         }
 
         public ItemStack? GetItemFromSlot(int slotID) {
-            ItemSlot? slot = GetSlotFromSelectionID(slotID);
+            var slot = GetSlotFromSelectionID(slotID);
 
             if (slot == null || slot.Empty) {
                 return null;
@@ -98,7 +98,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
         }
 
         public bool AddItemToSlot(int slotID, ItemSlot fromSlot) {
-            ItemSlot? slot = GetSlotFromSelectionID(slotID);
+            var slot = GetSlotFromSelectionID(slotID);
 
             if (slot == null || fromSlot.Empty) {
                 return false;
@@ -111,7 +111,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
         public bool AddAdditionalToSlot(int slotID, ItemSlot fromSlot) { //Currently only the Reforging Slot can hold more then one item at a time
             if (slotID == (int)WorkbenchSlots.ReforgeStaging) {
-                ItemSlot? slot = GetSlotFromSelectionID(slotID);
+                var slot = GetSlotFromSelectionID(slotID);
 
                 if (slot == null || fromSlot.Itemstack.Collectible.Code != slot.Itemstack.Collectible.Code || slot.MaxSlotStackSize == slot.StackSize) {
                     return false;

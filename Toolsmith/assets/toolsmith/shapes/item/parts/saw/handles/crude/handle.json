@@ -5,7 +5,7 @@
 		"bark":"game:block/wood/firewood/bark",
 		"side":"game:block/wood/firewood/side",
 		"south":"game:block/wood/firewood/south",
-		"linen":"game:item/tool/material/string"
+		"linen":"game:item/resource/string"
   },
   "textureSizes":{
     "bark":[

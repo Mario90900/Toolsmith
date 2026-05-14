@@ -1,6 +1,6 @@
 [
 	{
-		"op": "addmerge",
+		"op": "replace",
 		"path": "/shapeByType",
 		"value": {
 			"*-tinbronze": { "base": "toolsmith:item/parts/pickaxe/heads/normal" },

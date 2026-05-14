@@ -8,7 +8,7 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"stone": "game:item/tool/material/flint"
+		"stone": "game:block/stone/flint"
 	},
 	"elements": [
 		{

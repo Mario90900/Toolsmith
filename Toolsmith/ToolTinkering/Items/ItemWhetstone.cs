@@ -86,7 +86,7 @@ namespace Toolsmith.ToolTinkering.Items {
             }
         }
 
-        public override void DamageItem(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount = 1, bool destroyOnZeroDurability = true) {
+        public override void DamageItem(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount = 1, bool destroyOnZeroDurabilty = true) {
             if (itemslot.Itemstack.Collectible.GetRemainingDurability(itemslot.Itemstack) <= amount) {
                 if (honingScrape != null && honingScrape.IsPlaying) {
                     honingScrape?.FadeOut(0.2f, (s) => { s.Dispose(); honingScrape = null; });
@@ -97,7 +97,7 @@ namespace Toolsmith.ToolTinkering.Items {
                 }
             }
 
-            base.DamageItem(world, byEntity, itemslot, amount);
+            base.DamageItem(world, byEntity, itemslot, amount, destroyOnZeroDurabilty);
         }
 
         public override void OnModifiedInInventorySlot(IWorldAccessor world, ItemSlot slot, ItemStack extractedStack = null) {
