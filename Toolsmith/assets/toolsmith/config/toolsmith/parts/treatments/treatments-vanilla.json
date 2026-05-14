@@ -7,10 +7,31 @@
 		"litersUsed": 0.0
 	},
 	{
+		"id": "fat-rendered",
+		"treatmentStatTag": "fat",
+		"dryingHours": 12,
+		"isLiquid": false,
+		"litersUsed": 0.0
+	},
+	{
 		"id": "beeswax",
 		"treatmentStatTag": "wax",
 		"dryingHours": 12,
 		"isLiquid": false,
 		"litersUsed": 0.0
+	},
+	{
+		"id": "oilportion-flax",
+		"treatmentStatTag": "oil",
+		"dryingHours": 24,
+		"isLiquid": true,
+		"litersUsed": 0.1
+	},
+	{
+		"id": "oilportion-olive",
+		"treatmentStatTag": "oil",
+		"dryingHours": 24,
+		"isLiquid": true,
+		"litersUsed": 0.1
 	}
 ]
