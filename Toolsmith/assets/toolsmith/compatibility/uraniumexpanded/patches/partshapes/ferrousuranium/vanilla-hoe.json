@@ -1,0 +1,56 @@
+[
+	{
+		"op": "addmerge",
+		"path": "/shapeByType/*-ferrousuranium",
+		"value": {
+			"base": "toolsmith:item/parts/hoe/heads/advanced"
+		},
+		"file": "game:itemtypes/toolhead/hoehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "remove",
+		"path": "/shapeByType/*",
+		"file": "game:itemtypes/toolhead/hoehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/shapeByType/*",
+		"value": {
+			"base": "toolsmith:item/parts/hoe/heads/nonmetal"
+		},
+		"file": "game:itemtypes/toolhead/hoehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/guiTransformByType/@*-(ferrousuranium)",
+		"value": {
+			"translation": { "x": 0, "y": 0, "z": 0 },
+			"rotation": { "x": -60, "y": -60, "z": -105 },
+			"origin": { "x": 0.95, "y": 0, "z": 0.33 },
+			"scale": 2.9
+		},
+		"file": "game:itemtypes/toolhead/hoehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "remove",
+		"path": "/guiTransformByType/*",
+		"file": "game:itemtypes/toolhead/hoehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/guiTransformByType/*",
+		"value": {
+			"translation": { "x": 0, "y": 0, "z": 0 },
+			"rotation": { "x": -60, "y": -60, "z": -125 },
+			"origin": { "x": 0.95, "y": 0, "z": 0.38 },
+			"scale": 3.76
+		},
+		"file": "game:itemtypes/toolhead/hoehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	}
+]

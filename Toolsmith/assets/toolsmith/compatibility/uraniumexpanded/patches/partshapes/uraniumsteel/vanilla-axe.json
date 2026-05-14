@@ -1,0 +1,56 @@
+[
+	{
+		"op": "addmerge",
+		"path": "/shapeByType/*-uraniumsteel",
+		"value": {
+			"base": "toolsmith:item/parts/axe/heads/advanced"
+		},
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "remove",
+		"path": "/shapeByType/*",
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/shapeByType/*",
+		"value": {
+			"base": "toolsmith:item/parts/axe/heads/nonmetal"
+		},
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/guiTransformByType/@*-(uraniumsteel)",
+		"value": {
+			"translation": { "x": 0, "y": 0, "z": 0 },
+			"rotation": { "x": -70, "y": 70, "z": -50 },
+			"origin": { "x": 1.07, "y": 0, "z": 0.4 },
+			"scale": 3.2
+		},
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "remove",
+		"path": "/guiTransformByType/*",
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/guiTransformByType/*",
+		"value": {
+			"translation": { "x": 0, "y": 0, "z": 0 },
+			"rotation": { "x": -70, "y": 70, "z": -50 },
+			"origin": { "x": 1.07, "y": 0, "z": 0.43 },
+			"scale": 3.55
+		},
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	}
+]

@@ -1,0 +1,82 @@
+[
+	{
+		"op": "addmerge",
+		"path": "/shapeByType/*-ferrousuranium",
+		"value": {
+			"base": "toolsmith:item/parts/shovel/heads/advanced"
+		},
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "remove",
+		"path": "/shapeByType/*",
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/shapeByType/*",
+		"value": {
+			"base": "toolsmith:item/parts/shovel/heads/nonmetal"
+		},
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/tpHandTransformByType/@shovelhead-(ferrousuranium)",
+		"value": {
+			"translation": { "x": -0.2, "y": -0.4, "z": -0.15 },
+			"rotation": { "x": 90, "y": 20, "z": 0 },
+			"scale": 0.85
+		},
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "remove",
+		"path": "/tpHandTransformByType/*",
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/tpHandTransformByType/*",
+		"value": {
+			"translation": { "x": 0, "y": -0.4, "z": -0.1 },
+			"rotation": { "x": 90, "y": 20, "z": 0 },
+			"scale": 0.85
+		},
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/attributes/groundStorageTransformByType/@shovel-(ferrousuranium)",
+		"value": {
+			"translation": { "x": 0, "y": 0.5, "z": -0.15 },
+			"rotation": { "x": 13, "y": 88, "z": -87 },
+			"scale": 0.88
+		},
+		"file": "game:itemtypes/tool/shovel.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "remove",
+		"path": "/attributes/groundStorageTransformByType/*",
+		"file": "game:itemtypes/tool/shovel.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/attributes/groundStorageTransformByType/*",
+		"value": {
+			"translation": { "x": 0, "y": 0.5, "z": -0.15 },
+			"rotation": { "x": 13, "y": 88, "z": -87 },
+			"scale": 0.88
+		},
+		"file": "game:itemtypes/tool/shovel.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	}
+]

@@ -1,0 +1,13 @@
+[
+	{
+		"id": "ferrousuraniumnails",
+		"texturePath": "game:block/metal/plate/ferrousuranium",
+		"langTag": "binding-nails-ferrousuranium",
+		"baseHPfactor": 1.7,
+		"selfHPBonus": 0.28,
+		"handleHPBonus": 0.18,
+		"recoveryPercent": 0.48,
+		"isMetal": true,
+		"metalType": "ferrousuranium"
+	}
+]
