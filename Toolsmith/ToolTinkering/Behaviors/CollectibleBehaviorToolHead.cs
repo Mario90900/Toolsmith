@@ -11,6 +11,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
+using Vintagestory.GameContent;
 using Vintagestory.Server;
 
 namespace Toolsmith.ToolTinkering.Behaviors {
@@ -33,6 +34,14 @@ namespace Toolsmith.ToolTinkering.Behaviors {
         
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling) { //Handle the grinding code here as well as the tool itself! Probably can offload the core interaction to a helper utility function?
             var entPlayer = (byEntity as EntityPlayer);
+
+            //If clicking on a ground-storage block, defer to vanilla deposit. Prevents the crafting
+            //intercept from racing with BlockEntityGroundStorage's accept path, which was duping
+            //heads when the player clicked a partially occupied quadrant with a valid handle in offhand.
+            if (blockSel != null && byEntity.World.BlockAccessor.GetBlockEntity(blockSel.Position) is BlockEntityGroundStorage) {
+                base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);
+                return;
+            }
 
             if (TinkeringUtility.ValidHandleInOffhand(byEntity)) { //Check for Handle in Offhand
                 handHandling = EnumHandHandling.PreventDefault;
