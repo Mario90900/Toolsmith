@@ -617,15 +617,20 @@ namespace Toolsmith.ToolTinkering.Blocks {
             }
 
             if (mesh == null) {
-                Shape shape;
+                Shape shape = null;
                 if (stack.Class == EnumItemClass.Item) {
                     if ((stack.Item as ItemWorkItem) != null) {
                         return new MeshData();
-                    } else {
-                        shape = capi.TesselatorManager.GetCachedShape(stack.Item.Shape.Base);
+                    }
+                    AssetLocation shapeBase = stack.Item?.Shape?.Base;
+                    if (shapeBase != null) {
+                        shape = capi.TesselatorManager.GetCachedShape(shapeBase);
                     }
                 } else {
-                    shape = capi.TesselatorManager.GetCachedShape(stack.Block.Shape.Base);
+                    AssetLocation shapeBase = stack.Block?.Shape?.Base;
+                    if (shapeBase != null) {
+                        shape = capi.TesselatorManager.GetCachedShape(shapeBase);
+                    }
                 }
 
                 if (shape == null) {
@@ -728,15 +733,20 @@ namespace Toolsmith.ToolTinkering.Blocks {
             }
 
             if (mesh == null) {
-                Shape shape;
+                Shape shape = null;
                 if (stack.Class == EnumItemClass.Item) {
                     if ((stack.Item as ItemWorkItem) != null) {
                         return new MeshData();
-                    } else {
-                        shape = capi.TesselatorManager.GetCachedShape(stack.Item.Shape.Base);
+                    }
+                    AssetLocation shapeBase = stack.Item?.Shape?.Base;
+                    if (shapeBase != null) {
+                        shape = capi.TesselatorManager.GetCachedShape(shapeBase);
                     }
                 } else {
-                    shape = capi.TesselatorManager.GetCachedShape(stack.Block.Shape.Base);
+                    AssetLocation shapeBase = stack.Block?.Shape?.Base;
+                    if (shapeBase != null) {
+                        shape = capi.TesselatorManager.GetCachedShape(shapeBase);
+                    }
                 }
 
                 if (shape == null) {
