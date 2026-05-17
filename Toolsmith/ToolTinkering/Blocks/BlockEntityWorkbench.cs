@@ -646,7 +646,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 ShapeTextureSource texSource = new(capi, shape, "For rendering item on a Workbench");
                 texSource.textures.Clear();
 
-                if (shape.Textures == null || shape.Textures.Count > 0) {
+                if (shape.Textures != null && shape.Textures.Count > 0) {
                     foreach ((string texCode, AssetLocation assetLoc) in shape.Textures) { //Go through the shape's textures and populate the texSource with any that the shape already has defined
                         if (stack.Class == EnumItemClass.Item && stack.Item.Textures.TryGetValue(texCode, out CompositeTexture texture)) { //Grab the item's own textures to slap on instead of the shape's base, or just run with the base.
                             texSource.textures[texCode] = texture;
@@ -756,7 +756,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                 ShapeTextureSource texSource = new(capi, shape, "For rendering item on a Workbench");
                 texSource.textures.Clear();
 
-                if (shape.Textures == null || shape.Textures.Count > 0) {
+                if (shape.Textures != null && shape.Textures.Count > 0) {
                     foreach ((string texCode, AssetLocation assetLoc) in shape.Textures) { //Go through the shape's textures and populate the texSource with any that the shape already has defined
                         if (stack.Class == EnumItemClass.Item && stack.Item.Textures.TryGetValue(texCode, out CompositeTexture texture)) { //Grab the item's own textures to slap on instead of the shape's base, or just run with the base.
                             texSource.textures[texCode] = texture;
