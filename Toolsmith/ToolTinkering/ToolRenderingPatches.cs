@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using Toolsmith;
 using Vintagestory.API.Common;
 using Vintagestory.GameContent;
 
@@ -30,6 +31,11 @@ namespace Toolsmith.ToolTinkering {
                 CodeInstruction.LoadArgument(1),
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(CollectibleObject), "OnLoaded", new Type[1] { typeof(ICoreAPI) }))
             };
+
+            if (codes.Count <= 5) {
+                ToolsmithModSystem.Logger?.Warning("Toolsmith: ItemHoe.OnLoaded IL has fewer instructions than expected ({0}); skipping base-call insertion.", codes.Count);
+                return instructions;
+            }
 
             codes.InsertRange(5, addBaseCall);
 

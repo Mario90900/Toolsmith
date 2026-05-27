@@ -456,7 +456,21 @@ namespace Toolsmith.Utils {
                 }
 
                 var baseDur = itemStack.Collectible.GetBaseMaxDurability(itemStack);
-                var headStack = new ItemStack(world.GetItem(new AssetLocation(headCode)), 1);
+                var headItem = world.GetItem(new AssetLocation(headCode));
+                if (headItem == null) {
+                    //Head code resolved from the GridRecipes dictionary but no item with that code is registered
+                    //in the current load (mod uninstalled, modid renamed in a takeover, or wildcard resolved
+                    //without a backing item). Route through the same fallback the "headCode is null" path above uses.
+                    ToolsmithModSystem.Logger.Error("Tool head code '" + headCode + "' resolved from the GridRecipes Dictionary but no item with that code is registered. The mod that provided it is likely uninstalled or has been renamed. Adding " + itemStack.Collectible.Code + " to the ignore list and assigning placeholder values.");
+                    ToolsmithModSystem.IgnoreCodes.Add(itemStack.Collectible.Code.ToString());
+                    var headStackBackup = new ItemStack(world.GetItem(new AssetLocation(ToolsmithConstants.FallbackHeadCode)), 1);
+                    itemStack.SetToolhead(headStackBackup);
+                    itemStack.SetToolheadCurrentDurability(1);
+                    itemStack.SetToolCurrentSharpness(1);
+                    itemStack.SetToolMaxSharpness(1);
+                    return;
+                }
+                var headStack = new ItemStack(headItem, 1);
                 var headDur = (int)(itemStack.Attributes.GetInt(ToolsmithAttributes.Durability, baseDur) * ToolsmithModSystem.Config.HeadDurabilityMult); //If the tool has already been used some, this hopefully should reset it to have the head-damage be the existing durability, but generate new binding and handle stats.
                 var headMaxDur = itemStack.GetToolheadMaxDurability();
 

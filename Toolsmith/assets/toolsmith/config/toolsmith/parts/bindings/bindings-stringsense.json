@@ -24,6 +24,12 @@
         "bindingTextureOverride": "stringsense:flax/cord"
     },
     {
+        "id": "cord-mixed",
+        "bindingStatTag": "reeds",
+        "bindingShapePath": "string",
+        "bindingTextureOverride": "stringsense:mixed/cord"
+    },
+    {
         "id": "cord-nzflax",
         "bindingStatTag": "reeds",
         "bindingShapePath": "string",
