@@ -153,6 +153,9 @@ namespace Toolsmith {
 
         private List<GridRecipe> GenerateToolGridRecipes(ICoreAPI api, CraftingRecipeIngredient head, CollectibleObject tool) {
             var list = new List<GridRecipe>();
+            TreeAttribute applyQuenchable = new TreeAttribute();
+            applyQuenchable.SetBool("applyquenchablebuffs", true);
+
             foreach (var handle in HandleList) {
                 foreach (var binding in BindingList) {
                     var recipe = new GridRecipe {
@@ -167,7 +170,7 @@ namespace Toolsmith {
                         RecipeGroup = 2,
                         ShowInCreatedBy = false,
                         Name = "Craft a " + tool.Code + " from a " + handle.Code + " and " + binding.Code + ".",
-                        Output = new CraftingRecipeIngredient { Type = tool.ItemClass, Code = tool.Code }
+                        Output = new CraftingRecipeIngredient { Type = tool.ItemClass, Code = tool.Code, RecipeAttributes = new JsonObject(JToken.Parse(applyQuenchable.ToJsonToken())) }
                     };
                     recipe.Resolve(api.World, "Generated Toolsmith recipe for " + head.Code.ToString());
                     list.Add(recipe);

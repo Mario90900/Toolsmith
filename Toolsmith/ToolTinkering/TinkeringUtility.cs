@@ -21,6 +21,7 @@ using Toolsmith.ToolTinkering.Drawbacks;
 using Vintagestory.API.Datastructures;
 using canjewelry.src;
 using ScientificSmithy.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace Toolsmith.ToolTinkering {
     //This is beginning to hold the MEAT of the whole tinkering system. It has various helper functions that are being used in multiple places to help keep everything just running the single code calls and ensuring it isn't spaghetti while I add more ways to do the same things.
@@ -439,11 +440,14 @@ namespace Toolsmith.ToolTinkering {
                 ItemStack craftedItemStack = new ItemStack(byEntity.World.GetItem(craftedTool.Code), 1); //Create the tool in question
                 ItemSlot placeholderOutput = new ItemSlot(new DummyInventory(ToolsmithModSystem.Api));
                 placeholderOutput.Itemstack = craftedItemStack;
+                TreeAttribute applyQuenchable = new TreeAttribute();
+                applyQuenchable.SetBool("applyquenchablebuffs", true);
 
                 GridRecipe DummyRecipe = new() {
                     AverageDurability = false,
                     Output = new() {
-                        ResolvedItemStack = craftedItemStack
+                        ResolvedItemStack = craftedItemStack,
+                        RecipeAttributes = new JsonObject(JToken.Parse(applyQuenchable.ToJsonToken()))
                     },
                     Name = new AssetLocation("toolsmith:inhandtinkertoolcrafting")
                 };
@@ -580,11 +584,14 @@ namespace Toolsmith.ToolTinkering {
                 ItemStack craftedItemStack = new ItemStack(world.GetItem(craftedTool.Code), 1); //Create the tool in question
                 ItemSlot placeholderOutput = new ItemSlot(new DummyInventory(world.Api));
                 placeholderOutput.Itemstack = craftedItemStack;
+                TreeAttribute applyQuenchable = new TreeAttribute();
+                applyQuenchable.SetBool("applyquenchablebuffs", true);
 
                 GridRecipe DummyRecipe = new() {
                     AverageDurability = false,
                     Output = new() {
-                        ResolvedItemStack = craftedItemStack
+                        ResolvedItemStack = craftedItemStack,
+                        RecipeAttributes = new JsonObject(JToken.Parse(applyQuenchable.ToJsonToken()))
                     }
                 };
 
