@@ -40,11 +40,14 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             var maxBindingDur = inSlot.Itemstack.GetToolbindingMaxDurability();
             var curSharp = inSlot.Itemstack.GetToolCurrentSharpness();
             var maxSharp = inSlot.Itemstack.GetToolMaxSharpness();
-
+            
+            bool didResetParts = false;
+            
             //This extra reset parts bit might be redundant now after moving the resets into the Get calls themselves. It also might not ever call because it will always be > 0?
             if (curHeadDur < 0) { //If this is 0 then assume something went wrong and reset things, it's a new item spawned in, or a player added the mod to their save.
                 inSlot.Itemstack.ResetNullHead(world); //Moved the client-half of resetting the tool head into this call. Can be safely called on both sides, and handle it over there. Make sure to mark the itemslot as dirty on the client though after using this.
                 curHeadDur = inSlot.Itemstack.GetToolheadCurrentDurability();
+                didResetParts = true;
             }
             if (maxHandleDur < 0 || maxBindingDur < 0) { //Same as above
                 inSlot.Itemstack.ResetNullHandleOrBinding(world);
@@ -52,6 +55,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                 maxHandleDur = inSlot.Itemstack.GetToolhandleMaxDurability();
                 curBindingDur = inSlot.Itemstack.GetToolbindingCurrentDurability();
                 maxBindingDur = inSlot.Itemstack.GetToolbindingMaxDurability();
+                didResetParts = true;
             }
 
             //It would be loads easier to just add what I want to a new one...
@@ -82,7 +86,12 @@ namespace Toolsmith.ToolTinkering.Behaviors {
 
             dsc.Clear();
             dsc.Append(workingDsc);
-            inSlot.MarkDirty();
+            if (didResetParts) {try {inSlot.MarkDirty();} catch (Exception e) {
+                    ToolsmithModSystem.Logger.Warning("Toolsmith: Could not mark an itemslot dirty after fixing null tool part data (the slot likely belongs to a non-standard/virtual inventory, e.g. an auction house listing or handbook preview). This is expected and harmless in that case. Exception details: " + e.Message);
+                }
+            }
+        }
+
         }
 
         //Now to break down the ingredients used in the craft... This may or may not be VERY interesting when the vanilla crafting recipes call OnCreatedByCrafting...
