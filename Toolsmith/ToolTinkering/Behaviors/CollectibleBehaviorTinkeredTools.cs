@@ -92,8 +92,6 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             }
         }
 
-        }
-
         //Now to break down the ingredients used in the craft... This may or may not be VERY interesting when the vanilla crafting recipes call OnCreatedByCrafting...
         //Output Slot contains the completed tool, the input slots will - at minimum - have a Toolhead and Handle (which could simply be a stick), and may or may not have a binding.
         //Should be true for even the Vanilla crafting recipes? Barring any changes to them but... probably can be accounted for with looping through the array.
