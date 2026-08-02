@@ -58,6 +58,18 @@
 	},
 	{
 		"op": "replace",
+		"path": "/attributes/inForgeTransform",
+		"value": {
+			"translation": { "x": -0.97, "y": -0.17, "z": 0.45 },
+			"rotation": { "x": 15, "y": 30, "z": 0 },
+			"origin": { "x": 1.5, "y": 0.5, "z": 0.3 },
+			"scale": 0.7
+		},
+		"file": "game:itemtypes/toolhead/scythehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
 		"path": "/attributes/onTongTransform",
 		"value": {
 			"translation": { "x": 0.15, "y": -1, "z": -0.97 },
@@ -67,14 +79,12 @@
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
-		"op": "addmerge",
-		"path": "/attributes",
+		"op": "replace",
+		"path": "/attributes/onMetalTongTransform",
 		"value": {
-			"inForgeTransform": {
-				"translation": { "x": -0.4, "y": -0.1, "z": 0.65 },
-				"rotation": { "x": 0, "y": 40, "z": 0 },
-				"scale": 0.7
-			}
+			"translation": { "x": -1.92, "y": -0.166, "z": 0 },
+			"rotation": { "x": 0, "y": 0, "z": -3 },
+			"origin": { "x": 1.5, "y": 0, "z": 0 }
 		},
 		"file": "game:itemtypes/toolhead/scythehead.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }

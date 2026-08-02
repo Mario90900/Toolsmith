@@ -73,16 +73,40 @@
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
+		"op": "replace",
+		"path": "/attributes/inForgeTransform",
+		"value": {
+			"translation": { "x": -0.42, "y": 0.06, "z": -0.04 },
+			"rotation": { "x": 15, "y": 45, "z": 0 },
+			"origin": { "x": 1, "y": 0, "z": 0.5 },
+			"scale": 0.7
+		},
+		"file": "game:itemtypes/toolhead/pickaxehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/displayable/shelf/transform",
+		"value": {
+			"translation": { "x": -0.45, "y": -0.12, "z": 0.12 },
+			"origin": { "x": 1, "y": 0.5, "z": 0.5 },
+			"scale": 0.7
+		},
+		"file": "game:itemtypes/toolhead/pickaxehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
 		"op": "addmerge",
 		"path": "/attributes",
 		"value": {
-			"inForgeTransform": {
-				"translation": { "x": 0.15, "y": -0.1, "z": 0.175 },
-				"rotation": { "x": 0, "y": 130, "z": 0 },
+			"onshelfTransform": { 
+				"translation": { "x": -0.42, "y": -0.135, "z": 0.1 },
+				"rotation": { "x": 0, "y": -45, "z": 0 },
+				"origin": { "x": 1, "y": 0.5, "z": 0.5 },
 				"scale": 0.7
 			}
 		},
 		"file": "game:itemtypes/toolhead/pickaxehead.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
-	}
+	},
 ]

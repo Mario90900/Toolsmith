@@ -57,6 +57,35 @@
 	},
 	{
 		"op": "replace",
+		"path": "/attributes/displayable/shelf/transformByType",
+		"value": {
+			"@*-(copper|tinbronze|bismuthbronze|blackbronze)": {
+				"translation": { "x": -0.44, "y": 0, "z": 0.27 },
+				"rotation": { "x": 0, "y": 25, "z": 0 }
+			},
+			"@*-(gold|silver|iron|meteoriciron|steel)": {
+				"translation": { "x": -0.32, "y": 0, "z": 0.44 },
+				"rotation": { "x": 0, "y": 45, "z": 0 }
+			},
+			"*": {
+				"translation": { "x": 0.53, "y": -0.1, "z": 0.05 }
+			}
+		},
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/attributes/onshelfTransform",
+		"value": {
+			"translation": { "x": 0.4, "y": -0.0, "z": 0.3 },
+			"rotation": { "x": 0, "y": 135, "z": 0 }
+		},
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
 		"path": "/attributes/onTongTransformByType",
 		"value": {
 			"@axehead-(copper|bismuthbronze|tinbronze|blackbronze)": {
@@ -70,5 +99,21 @@
 		},
 		"file": "game:itemtypes/toolhead/axehead.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
-	}
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/onMetalTongTransformByType",
+		"value": {
+			"@axehead-(copper|bismuthbronze|tinbronze|blackbronze)": {
+				"translation": { "x": -1.6, "y": -0.22, "z": -0.55 },
+				"rotation": { "x": 0, "y": -175, "z": 5 }
+			},
+			"*": {
+				"translation": { "x": -1.6, "y": -0.22, "z": -0.55 },
+				"rotation": { "x": 0, "y": -175, "z": 5 }
+			}
+		},
+		"file": "game:itemtypes/toolhead/axehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
 ]

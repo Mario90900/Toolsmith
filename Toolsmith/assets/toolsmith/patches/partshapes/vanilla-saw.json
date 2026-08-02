@@ -78,14 +78,57 @@
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
+		"op": "replace",
+		"path": "/attributes/onMetalTongTransform",
+		"value": {
+			"translation": { "x": -1.04, "y": -0.18, "z": -0.75 },
+			"rotation": { "x": 0, "y": 89, "z": 4 },
+			"origin": { "x": 0.5, "y": 0.5, "z": 0.6 }
+		},
+		"file": "game:itemtypes/toolhead/sawblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/inForgeTransform",
+		"value": {
+			"translation": { "x": -0.12, "y": -0.15, "z": 0.125 },
+			"rotation": { "x": 15, "y": 110, "z": 0 },
+			"origin": { "x": 0.5, "y": 0.56, "z": 0.5 },
+			"scale": 0.7
+		},
+		"file": "game:itemtypes/toolhead/sawblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/displayable/shelf/transform",
+		"value": {
+			"translation": { "x": -0.1, "y": -0.05, "z": 0.05 },
+			"rotation": { "x": 0, "y": 90, "z": 0 }
+		},
+		"file": "game:itemtypes/toolhead/sawblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
 		"op": "addmerge",
 		"path": "/attributes",
 		"value": {
-			"inForgeTransform": {
-				"translation": { "x": -0.06, "y": -0.1, "z": -0.02 },
-				"rotation": { "x": 0, "y": 90, "z": 0 },
-				"scale": 0.7
+			"onshelfTransform": { 
+				"translation": { "x": -0.05, "y": -0.05, "z": -0.05 },
+				"rotation": { "x": 0, "y": 45, "z": 0 },
 			}
+		},
+		"file": "game:itemtypes/toolhead/sawblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/groundStorageTransform",
+		"value": {
+			"translation": { "x": 0.01, "y": -0.04, "z": -0.1 },
+			"rotation": { "x": 0, "y": -54, "z": 0 },
+			"origin": { "x": 0.5, "y": 0.5, "z": 0.6 },
 		},
 		"file": "game:itemtypes/toolhead/sawblade.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
@@ -98,6 +141,18 @@
 			"rotation": { "x": -77, "y": 47, "z": -151 },
 			"origin": { "x": 0.45, "y": 0, "z": 0.425 },
 			"scale": 1.9
+		},
+		"file": "game:itemtypes/tool/saw.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
+		"path": "/groundTransform",
+		"value": {
+			"translation": { "x": 0, "y": 0.3, "z": 0 },
+			"rotation": { "x": 0, "y": 0, "z": 0 },
+			"origin": { "x": 0.5, "y": 0.45, "z": 0.5 },
+			"scale": 3.6
 		},
 		"file": "game:itemtypes/tool/saw.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }

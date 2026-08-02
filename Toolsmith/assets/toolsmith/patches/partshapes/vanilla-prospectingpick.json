@@ -33,16 +33,47 @@
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
+		"op": "replace",
+		"path": "/attributes/onMetalTongTransform",
+		"value": {
+			"translation": { "x": -1.54, "y": -0.075, "z": -0.54 },
+			"rotation": { "x": 176, "y": 0, "z": 8 },
+			"origin": { "x": 1, "y": 0, "z": 0.5 }
+		},
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/inForgeTransform",
+		"value": {
+			"translation": { "x": -0.2, "y": -0.06, "z": 0.35 },
+			"rotation": { "x": 15, "y": 45, "z": 0 },
+			"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+			"scale": 0.7
+		},
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/displayable/shelf/transform",
+		"value": {
+			"translation": { "x": -0.48, "y": 0, "z": 0.1 }
+		},
+		"file": "game:itemtypes/toolhead/prospectingpickhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
 		"op": "addmerge",
 		"path": "/attributes",
 		"value": {
-			"inForgeTransform": {
-				"translation": { "x": 0.09, "y": -0.1, "z": 0.35 },
-				"rotation": { "x": 0, "y": 90, "z": 0 },
-				"scale": 0.7
+			"onshelfTransform": { 
+				"translation": { "x": -0.25, "y": 0, "z": 0.42 },
+				"rotation": { "x": 0, "y": -45, "z": 0 },
 			}
 		},
 		"file": "game:itemtypes/toolhead/prospectingpickhead.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
-	}
+	},
 ]

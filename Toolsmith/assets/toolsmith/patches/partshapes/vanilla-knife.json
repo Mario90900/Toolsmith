@@ -39,16 +39,28 @@
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
-		"op": "addmerge",
-		"path": "/attributes",
+		"op": "replace",
+		"path": "/attributes/inForgeTransform",
 		"value": {
-			"inForgeTransform": {
-				"translation": { "x": -0.3, "y": -0.48, "z": 0.1 },
-				"rotation": { "x": -90, "y": 0, "z": 90 },
-				"scale": 0.7
-			}
+			"translation": { "x": 0, "y": -0.05, "z": 0.1 },
+			"rotation": { "x": -75, "y": 0, "z": 135 },
+			"origin": { "x": 0.5, "y": 0.1, "z": 0.5 },
+			"scale": 0.7
 		},
 		"file": "game:itemtypes/toolhead/knifeblade.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
+	{
+		"op": "addmerge",
+		"path": "/attributes",
+		"value": {
+			"onshelfTransform": {
+				"translation": { "x": -0.08, "y": -0.09, "z": 0.04 },
+				"rotation": { "x": -90, "y": 0, "z": 45 },
+				"origin": { "x": 0.5, "y": 0.1, "z": 0.5 }
+			}
+		},
+		"file": "game:itemtypes/toolhead/knifeblade.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	}
 ]

@@ -44,14 +44,13 @@
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
-		"op": "addmerge",
-		"path": "/attributes",
+		"op": "replace",
+		"path": "/attributes/inForgeTransform",
 		"value": {
-			"inForgeTransform": {
-				"translation": { "x": 0.1, "y": -0.1, "z": 0.3 },
-				"rotation": { "x": 0, "y": 90, "z": 0 },
-				"scale": 0.7
-			}
+			"translation": { "x": -0.3, "y": 0.04, "z": 0 },
+			"rotation": { "x": 0, "y": 90, "z": 0 },
+			"origin": { "x": 0.9, "y": 0, "z": 0.5 },
+			"scale": 0.7
 		},
 		"file": "game:itemtypes/toolhead/hoehead.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
@@ -64,6 +63,32 @@
 			"rotation": { "x": 96, "y": -85, "z": -8 },
 			"origin": { "x": 0.5, "y": 0.5, "z": 0.5 },
 			"scale": 1
+		},
+		"file": "game:itemtypes/toolhead/hoehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "addmerge",
+		"path": "/attributes",
+		"value": {
+			"onshelfTransform": {
+				"translation": { "x": -0.3, "y": 0, "z": 0.3 },
+				"rotation": { "x": 0, "y": 35, "z": 0 }
+			}
+		},
+		"file": "game:itemtypes/toolhead/hoehead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/displayable/shelf/transformByType",
+		"value": {
+			"@*-(copper|tinbronze|bismuthbronze|blackbronze|gold|silver|iron|meteoriciron|steel)": {
+				"translation": { "x": -0.43, "y": 0.02, "z": 0.12 }
+			},
+			"*": {
+				"translation": { "x": -0.45, "y": 0, "z": 0.06 }
+			}
 		},
 		"file": "game:itemtypes/toolhead/hoehead.json",
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }

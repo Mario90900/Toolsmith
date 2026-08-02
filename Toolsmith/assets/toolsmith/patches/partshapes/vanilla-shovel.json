@@ -67,13 +67,75 @@
 		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
 	},
 	{
+		"op": "replace",
+		"path": "/attributes/onMetalTongTransform",
+		"value": {
+			"translation": { "x": -1.15, "y": -0.23, "z": -1.3 },
+			"rotation": { "x": -2, "y": 90, "z": 0 },
+			"origin": { "x": 0.5, "y": 0, "z": 0.5 }
+		},
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/inForgeTransform",
+		"value": {
+			"translation": { "x": 0, "y": -0.01, "z": 0.4 },
+			"rotation": { "x": 0, "y": 120, "z": 0 },
+			"origin": { "x": 0.7, "y": 0, "z": 0.5 },
+			"scale": 0.7
+		},
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
 		"op": "addmerge",
 		"path": "/attributes",
 		"value": {
-			"inForgeTransform": {
-				"translation": { "x": 0, "y": -0.1, "z": 0.55 },
+			"onshelfTransform": {
+				"translation": { "x": -0.76, "y": -0.05, "z": 0 },
+				"rotation": { "x": 0, "y": 20, "z": 0 },
+				"origin": { "x": 1.2, "y": 0.5, "z": 0.5 },
+				"scale": 0.9
+			}
+		},
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/displayable/shelf/transformByType",
+		"value": {
+			"@*-(copper|tinbronze|bismuthbronze|blackbronze|gold|silver|iron|meteoriciron|steel)": {
+				"translation": { "x": -0.71, "y": -0.1, "z": 0.05 },
 				"rotation": { "x": 0, "y": 90, "z": 0 },
-				"scale": 0.7
+				"origin": { "x": 1.2, "y": 0.5, "z": 0.5 },
+				"scale": 0.8
+			},
+			"*": {
+				"translation": { "x": -0.72, "y": -0.11, "z": 0.1 },
+				"rotation": { "x": 0, "y": 90, "z": 0 },
+				"origin": { "x": 1.2, "y": 0.5, "z": 0.5 },
+				"scale": 0.8
+			}
+		},
+		"file": "game:itemtypes/toolhead/shovelhead.json",
+		"condition": { "when": "Toolsmith_MultiPartRendering", "isValue": "true" }
+	},
+	{
+		"op": "replace",
+		"path": "/attributes/groundStorageTransformByType",
+		"value": {
+			"@*-(copper|tinbronze|bismuthbronze|blackbronze|gold|silver|iron|meteoriciron|steel)": {
+				"translation": { "x": -0.45, "y": -0.03, "z": 0.45 },
+				"rotation": { "x": 0, "y": 45, "z": -3 },
+				"scale": 0.9
+			},
+			"*": {
+				"translation": { "x": -0.75, "y": -0.02, "z": 0.1 },
+				"rotation": { "x": 0, "y": 44, "z": 0 },
+				"origin": { "x": 1.2, "y": 0.5, "z": 0.5 }
 			}
 		},
 		"file": "game:itemtypes/toolhead/shovelhead.json",
