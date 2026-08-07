@@ -2,6 +2,7 @@
 using SmithingPlus.Util;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
         protected WorkbenchInventory Inventory { get; private set; }
         protected ICoreClientAPI capi;
-        protected Dictionary<string, MeshData> WorkbenchItemMeshCache => ObjectCacheUtil.GetOrCreate(Api, ToolsmithConstants.WorkbenchItemRenderingMeshRefs, () => new Dictionary<string, MeshData>());
+        //This cache is read on the chunk-tesselation worker thread in OnTesselation while the main thread fills it in UpdateMesh, so it needs to be a ConcurrentDictionary.
+        protected ConcurrentDictionary<string, MeshData> WorkbenchItemMeshCache => ObjectCacheUtil.GetOrCreate(Api, ToolsmithConstants.WorkbenchItemRenderingMeshRefs, () => new ConcurrentDictionary<string, MeshData>());
         private (float x, float y, float z)[] offsetBySlot = { (0f, 0f, 0f), (0.4f, 1f, 0.3f), (0.6f, 1f, 0.6f), (0.8f, 1f, 0.3f), (1.0f, 1f, 0.6f), (1.2f, 1f, 0.3f), (0f, 0f, 0f), (1.65f, 1f, 0.55f) };
 
         private int craftingHitsCount = 0;
@@ -613,7 +615,7 @@ namespace Toolsmith.ToolTinkering.Blocks {
                         }
                         break;
                 }
-                markerMeshData = originalMeshData.Clone();
+                markerMeshData = originalMeshData?.Clone(); //Null when the marker lookup above missed - everything below already handles a null marker, so the item still shows like the warnings promise.
             }
 
             if (mesh == null) {
@@ -648,9 +650,9 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
                 if (shape.Textures != null && shape.Textures.Count > 0) {
                     foreach ((string texCode, AssetLocation assetLoc) in shape.Textures) { //Go through the shape's textures and populate the texSource with any that the shape already has defined
-                        if (stack.Class == EnumItemClass.Item && stack.Item.Textures.TryGetValue(texCode, out CompositeTexture texture)) { //Grab the item's own textures to slap on instead of the shape's base, or just run with the base.
+                        if (stack.Class == EnumItemClass.Item && stack.Item.Textures != null && stack.Item.Textures.TryGetValue(texCode, out CompositeTexture texture)) { //Grab the item's own textures to slap on instead of the shape's base, or just run with the base.
                             texSource.textures[texCode] = texture;
-                        } else if (stack.Class == EnumItemClass.Block && stack.Block.Textures.TryGetValue(texCode, out CompositeTexture blockTexture)) {
+                        } else if (stack.Class == EnumItemClass.Block && stack.Block.Textures != null && stack.Block.Textures.TryGetValue(texCode, out CompositeTexture blockTexture)) {
                             texSource.textures[texCode] = blockTexture;
                         } else {
                             texSource.textures[texCode] = new CompositeTexture(assetLoc);
@@ -758,9 +760,9 @@ namespace Toolsmith.ToolTinkering.Blocks {
 
                 if (shape.Textures != null && shape.Textures.Count > 0) {
                     foreach ((string texCode, AssetLocation assetLoc) in shape.Textures) { //Go through the shape's textures and populate the texSource with any that the shape already has defined
-                        if (stack.Class == EnumItemClass.Item && stack.Item.Textures.TryGetValue(texCode, out CompositeTexture texture)) { //Grab the item's own textures to slap on instead of the shape's base, or just run with the base.
+                        if (stack.Class == EnumItemClass.Item && stack.Item.Textures != null && stack.Item.Textures.TryGetValue(texCode, out CompositeTexture texture)) { //Grab the item's own textures to slap on instead of the shape's base, or just run with the base.
                             texSource.textures[texCode] = texture;
-                        } else if (stack.Class == EnumItemClass.Block && stack.Block.Textures.TryGetValue(texCode, out CompositeTexture blockTexture)) {
+                        } else if (stack.Class == EnumItemClass.Block && stack.Block.Textures != null && stack.Block.Textures.TryGetValue(texCode, out CompositeTexture blockTexture)) {
                             texSource.textures[texCode] = blockTexture;
                         } else {
                             texSource.textures[texCode] = new CompositeTexture(assetLoc);
@@ -856,13 +858,13 @@ namespace Toolsmith.ToolTinkering.Blocks {
             return base.OnTesselation(mesher, tessThreadTesselator);
         }
 
-        private readonly HashSet<int> pendingSlotPrecaches = new();
+        //Added to from the tesselation worker thread and cleared on the main thread, so this can't be a plain HashSet.
+        private readonly ConcurrentDictionary<int, byte> pendingSlotPrecaches = new();
         private void SchedulePrecacheOnMainThread(int slotIndex) {
             if (capi == null) return;
-            if (pendingSlotPrecaches.Contains(slotIndex)) return;
-            pendingSlotPrecaches.Add(slotIndex);
+            if (!pendingSlotPrecaches.TryAdd(slotIndex, 0)) return;
             capi.Event.EnqueueMainThreadTask(() => {
-                pendingSlotPrecaches.Remove(slotIndex);
+                pendingSlotPrecaches.TryRemove(slotIndex, out _);
                 UpdateMesh(slotIndex);
                 MarkDirty(redrawOnClient: true);
             }, "ToolsmithWorkbenchMeshPrecache");
