@@ -439,9 +439,15 @@ namespace Toolsmith.ToolTinkering {
             for (int i = 0; i < codes.Count(); i++) {
                 if (codes[i].opcode == OpCodes.Callvirt && (MethodInfo)codes[i].operand == breakBlockMethod) {
                     indexAfterBreakBlock = i + 1;
-                    if (codes[i - 12].opcode == OpCodes.Callvirt) {
-                        indexBeforeBreakBlock = i - 13;
+
+                    for (int j = i; j > 0; j--) { //Lets roll it back until we find the loading of arg 1, world
+                        if (codes[j].opcode == OpCodes.Ldarg_1) {
+                            indexBeforeBreakBlock = j;
+                            break;
+                        }
                     }
+
+                    break;
                 }
             }
 
