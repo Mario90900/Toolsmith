@@ -269,20 +269,25 @@ namespace Toolsmith.ToolTinkering {
                 }
             }
             if (toolBinding != null) { //Binding doesn't always drop, only if the durability is above the threshold, and then if it's below, it breaks and if made of metal, drops some bits
-                BindingStatDefines bindingStats = ToolsmithModSystem.Stats.BindingStats.Get(ToolsmithModSystem.Stats.BindingParts.Get(toolBinding.Collectible.Code.Path).bindingStatTag);
-                float bindingPercentRemains = (float)(remainingBindingDur) / (float)(brokenToolStack.GetToolbindingMaxDurability());
-                if (bindingPercentRemains < bindingStats.recoveryPercent) { //If the remaining HP percent is less then the recovery percent, the binding is used up.
-                    toolBinding = null; //Set it back to null to prevent dropping anything later! And then to see if Bits should drop!
-                }
-
-                if (toolBinding == null && bindingStats.isMetal) {
-                    int numBits;
-                    if (world.Rand.NextDouble() < 0.5) {
-                        numBits = ToolsmithConstants.NumBitsReturnMinimum;
-                    } else {
-                        numBits = ToolsmithConstants.NumBitsReturnMinimum + 1;
+                var bindingPart = ToolsmithModSystem.Stats.BindingParts.Get(toolBinding.Collectible.Code.Path);
+                BindingStatDefines bindingStats = bindingPart != null ? ToolsmithModSystem.Stats.BindingStats.Get(bindingPart.bindingStatTag) : null;
+                if (bindingStats == null) { //A saved tool can hold a binding that no longer has any stats registered, likely from a config change or removed compat mod. Nothing sensible to drop then.
+                    toolBinding = null;
+                } else {
+                    float bindingPercentRemains = (float)(remainingBindingDur) / (float)(brokenToolStack.GetToolbindingMaxDurability());
+                    if (bindingPercentRemains < bindingStats.recoveryPercent) { //If the remaining HP percent is less then the recovery percent, the binding is used up.
+                        toolBinding = null; //Set it back to null to prevent dropping anything later! And then to see if Bits should drop!
                     }
-                    bitsDrop = new ItemStack(world.GetItem(new AssetLocation("game:metalbit-" + bindingStats.metalType)), numBits);
+
+                    if (toolBinding == null && bindingStats.isMetal) {
+                        int numBits;
+                        if (world.Rand.NextDouble() < 0.5) {
+                            numBits = ToolsmithConstants.NumBitsReturnMinimum;
+                        } else {
+                            numBits = ToolsmithConstants.NumBitsReturnMinimum + 1;
+                        }
+                        bitsDrop = new ItemStack(world.GetItem(new AssetLocation("game:metalbit-" + bindingStats.metalType)), numBits);
+                    }
                 }
             }
 
