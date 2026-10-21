@@ -2,7 +2,7 @@
 	{
 		"ingredientPattern": "KL",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"L": { "type": "item", "code": "tailorsdelight:leather-darkblue" }
 		},
 		"width": 2,
@@ -19,7 +19,7 @@
 	{
 		"ingredientPattern": "KL",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"L": { "type": "item", "code": "tailorsdelight:leather-darkbrown" }
 		},
 		"width": 2,
@@ -36,7 +36,7 @@
 	{
 		"ingredientPattern": "KL",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"L": { "type": "item", "code": "tailorsdelight:leather-darkgreen" }
 		},
 		"width": 2,
@@ -53,7 +53,7 @@
 	{
 		"ingredientPattern": "KL",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"L": { "type": "item", "code": "tailorsdelight:leather-darkred" }
 		},
 		"width": 2,
@@ -70,7 +70,7 @@
 	{
 		"ingredientPattern": "KL",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"L": { "type": "item", "code": "tailorsdelight:leather-nadiyan" }
 		},
 		"width": 2,

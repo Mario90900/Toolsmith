@@ -2,7 +2,7 @@
 	{
 		"ingredientPattern": "KH",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"H": { "type": "item", "code": "toolsmith:crudehandle" }
 		},
 		"width": 2,
@@ -12,7 +12,7 @@
 	{
 		"ingredientPattern": "KH",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"H": { "type": "item", "code": "toolsmith:handle" }
 		},
 		"width": 2,
@@ -22,7 +22,7 @@
 	{
 		"ingredientPattern": "KH",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"H": { "type": "item", "code": "toolsmith:carpentedhandle" }
 		},
 		"width": 2,

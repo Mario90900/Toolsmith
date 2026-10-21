@@ -2,7 +2,7 @@
 	{
 		"ingredientPattern": "K,W",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"W": { "type": "item", "code": "game:firewood" }
 		},
 		"width": 1,

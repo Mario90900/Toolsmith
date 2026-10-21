@@ -2,7 +2,7 @@
 	{
 		"ingredientPattern": "KS",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"S": { "type": "item", "code": "game:leather-sturdy-plain" }
 		},
 		"width": 2,

@@ -32,5 +32,15 @@
 		"value": {
 			"stone": { "base": "game:block/stone/polishedrock/quartzite-inside" }
 		}
+	},
+	{
+		"op": "addeach",
+		"path": "/0/allowedVariants/rock/-",
+		"file": "toolsmith:recipes/grid/grindstone.json",
+		"value": [
+			"diorite",
+			"gabbro",
+			"quartzite"
+		]
 	}
 ]

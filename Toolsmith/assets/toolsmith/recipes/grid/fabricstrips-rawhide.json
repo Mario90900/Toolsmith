@@ -2,7 +2,7 @@
 	{
 		"ingredientPattern": "KR",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"R": { "type": "item", "code": "game:hide-raw-small" }
 		},
 		"width": 2,
@@ -12,7 +12,7 @@
 	{
 		"ingredientPattern": "KR",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"R": { "type": "item", "code": "game:hide-raw-medium" }
 		},
 		"width": 2,
@@ -22,7 +22,7 @@
 	{
 		"ingredientPattern": "KR",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"R": { "type": "item", "code": "game:hide-raw-large" }
 		},
 		"width": 2,
@@ -32,7 +32,7 @@
 	{
 		"ingredientPattern": "KR",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"R": { "type": "item", "code": "game:hide-raw-huge" }
 		},
 		"width": 2,

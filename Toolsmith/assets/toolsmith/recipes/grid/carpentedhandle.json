@@ -2,9 +2,9 @@
 	{
 		"ingredientPattern": "KS,W_",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"S": { "type": "item", "code": "toolsmith:sandpaper" },
-			"W": { "type": "block", "code": "game:supportbeam-*" }
+			"W": { "type": "block", "code": "*:supportbeam-*" }
 		},
 		"width": 2,
 		"height": 2,

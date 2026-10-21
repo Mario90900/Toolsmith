@@ -1,0 +1,106 @@
+[
+	{
+		"op": "addeach",
+		"path": "/variantgroups/0/states/-",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": [
+			"dacite",
+			"diorite",
+			"gabbro",
+			"granulite",
+			"quartzite",
+			"rhyolite",
+			"syenite",
+			"tonalite"
+		],
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-dacite-*",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/dacite-inside" }
+		},
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-diorite-*",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/diorite-inside" }
+		},
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-gabbro-*",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/gabbro-inside" }
+		},
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-granulite-*",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/granulite-inside" }
+		},
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-quartzite-*",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/quartzite-inside" }
+		},
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-rhyolite-*",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/rhyolite-inside" }
+		},
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-syenite-*",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/syenite-inside" }
+		},
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-tonalite-*",
+		"file": "toolsmith:blocktypes/grindstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/tonalite-inside" }
+		},
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addeach",
+		"path": "/0/allowedVariants/rock/-",
+		"file": "toolsmith:recipes/grid/grindstone.json",
+		"value": [
+			"dacite",
+			"diorite",
+			"gabbro",
+			"granulite",
+			"quartzite",
+			"rhyolite",
+			"syenite",
+			"tonalite"
+		],
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	}
+]

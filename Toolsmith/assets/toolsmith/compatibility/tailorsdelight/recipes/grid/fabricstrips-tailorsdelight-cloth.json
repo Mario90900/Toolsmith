@@ -2,63 +2,18 @@
 	{
 		"ingredientPattern": "KC",
 		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
-			"C": { "type": "item", "code": "tailorsdelight:cloth-darkblue" }
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
+			"C": { "type": "item", "code": "tailorsdelight:cloth-{color}" }
 		},
 		"width": 2,
 		"height": 1,
-		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
-			"modularPartRenderData": {
-				"partTextures": {
-					"material": "tailorsdelight:block/cloth/dark/darkblue"
-				}
-			}
-		} }
-	},
-	{
-		"ingredientPattern": "KC",
-		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
-			"C": { "type": "item", "code": "tailorsdelight:cloth-darkbrown" }
+		"allowedVariants": {
+			"color": [ "darkblue", "darkbrown", "darkgreen", "darkred" ]
 		},
-		"width": 2,
-		"height": 1,
 		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
 			"modularPartRenderData": {
 				"partTextures": {
-					"material": "tailorsdelight:block/cloth/dark/darkbrown"
-				}
-			}
-		} }
-	},
-	{
-		"ingredientPattern": "KC",
-		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
-			"C": { "type": "item", "code": "tailorsdelight:cloth-darkgreen" }
-		},
-		"width": 2,
-		"height": 1,
-		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
-			"modularPartRenderData": {
-				"partTextures": {
-					"material": "tailorsdelight:block/cloth/dark/darkgreen"
-				}
-			}
-		} }
-	},
-	{
-		"ingredientPattern": "KC",
-		"ingredients": {
-			"K": { "type": "item", "code": "game:knife-*", "isTool": true },
-			"C": { "type": "item", "code": "tailorsdelight:cloth-darkred" }
-		},
-		"width": 2,
-		"height": 1,
-		"output": { "type": "item", "code": "toolsmith:fabricstrips-cloth", "quantity": 2, "attributes": {
-			"modularPartRenderData": {
-				"partTextures": {
-					"material": "tailorsdelight:block/cloth/dark/darkred"
+					"material": "tailorsdelight:block/cloth/dark/{color}"
 				}
 			}
 		} }
