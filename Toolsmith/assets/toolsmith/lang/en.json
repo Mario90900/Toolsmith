@@ -72,6 +72,8 @@
 	"toolsmith:item-whetstone-pyroxenite": "Pyroxenite Whetstone",
 	"toolsmith:item-whetstone-serpentinite": "Serpentinite Whetstone",
 	"toolsmith:item-whetstone-syenite": "Syenite Whetstone",
+	"toolsmith:item-whetstone-greenstone": "Greenstone Whetstone",
+	"toolsmith:item-whetstone-tonalite": "Tonalite Whetstone",
 
 	"toolsmith:item-tinkertoolparts": "Tool Head and Handle",
 
@@ -82,6 +84,11 @@
 	"toolsmith:block-grindstone-diorite-north": "Diorite Grindstone",
 	"toolsmith:block-grindstone-gabbro-north": "Gabbro Grindstone",
 	"toolsmith:block-grindstone-quartzite-north": "Quartzite Grindstone",
+	"toolsmith:block-grindstone-dacite-north": "Dacite Grindstone",
+	"toolsmith:block-grindstone-granulite-north": "Granulite Grindstone",
+	"toolsmith:block-grindstone-rhyolite-north": "Rhyolite Grindstone",
+	"toolsmith:block-grindstone-syenite-north": "Syenite Grindstone",
+	"toolsmith:block-grindstone-tonalite-north": "Tonalite Grindstone",
 
 	"game:blockhelp-grindstone-hone": "Hone metal item",
 	"game:honing-cutoff-message": "There's very little material left for honing. It looks like a great time for a reforge!",

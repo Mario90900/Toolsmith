@@ -1,0 +1,62 @@
+[
+	{
+		"op": "addeach",
+		"path": "/variantgroups/0/states/-",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": [
+			"diorite",
+			"quartzite",
+			"greenstone",
+			"tonalite",
+		],
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-diorite",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/diorite-inside" }
+		},
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-quartzite",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/quartzite-inside" }
+		},
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-greenstone",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/greenstone-inside" }
+		},
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addmerge",
+		"path": "/texturesByType/*-tonalite",
+		"file": "toolsmith:itemtypes/whetstone.json",
+		"value": {
+			"stone": { "base": "game:block/stone/polishedrock/tonalite-inside" }
+		},
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	},
+	{
+		"op": "addeach",
+		"path": "/0/ingredient/allowedVariants/-",
+		"file": "toolsmith:recipes/knapping/whetstone.json",
+		"value": [
+			"diorite",
+			"quartzite",
+			"greenstone",
+			"tonalite",
+		],
+		"dependsOn": [{ "modid": "advancedgeology" }]
+	}
+]

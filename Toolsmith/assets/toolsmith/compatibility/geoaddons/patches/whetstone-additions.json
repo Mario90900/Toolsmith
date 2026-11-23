@@ -50,5 +50,17 @@
 		"value": {
 			"stone": { "base": "game:block/stone/polishedrock/jasper-inside" }
 		}
+	},
+	{
+		"op": "addeach",
+		"path": "/0/ingredient/allowedVariants/-",
+		"file": "toolsmith:recipes/knapping/whetstone.json",
+		"value": [
+			"diorite",
+			"gabbro",
+			"quartzite",
+			"jade",
+			"jasper"
+		]
 	}
 ]

@@ -1,0 +1,22 @@
+[
+	{
+		"op": "addeach",
+		"path": "/behaviors/1/properties/textures/0/values/-",
+		"file": "toolsmith:itemtypes/handles/handle.json",
+		"value": [
+			"floralzonescircumborealregion:block/wood/debarked/abiesbalsamea",
+			"floralzonescircumborealregion:block/wood/debarked/alnusglutinosa",
+			"floralzonescircumborealregion:block/wood/debarked/piceaglauca",
+		]
+	},
+	{
+		"op": "addeach",
+		"path": "/behaviors/1/properties/textures/0/values/-",
+		"file": "toolsmith:itemtypes/handles/carpentedhandle.json",
+		"value": [
+			"floralzonescircumborealregion:block/wood/debarked/abiesbalsamea",
+			"floralzonescircumborealregion:block/wood/debarked/alnusglutinosa",
+			"floralzonescircumborealregion:block/wood/debarked/piceaglauca",
+		]
+	}
+]
