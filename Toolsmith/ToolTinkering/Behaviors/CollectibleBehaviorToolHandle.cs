@@ -47,7 +47,11 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
             if (world.Api.Side.IsClient()) {
-                var handleStats = ToolsmithModSystem.Stats.BaseHandleStats.Get(ToolsmithModSystem.Stats.BaseHandleParts.Get(inSlot.Itemstack.Collectible.Code.Path).handleStatTag);
+                var handlePart = ToolsmithModSystem.Stats.BaseHandleParts.Get(inSlot.Itemstack.Collectible.Code.Path);
+                if (handlePart == null) {
+                    return;
+                }
+                var handleStats = ToolsmithModSystem.Stats.BaseHandleStats.Get(handlePart.handleStatTag);
                 if (handleStats != null) {
                     var totalHandleMult = handleStats.baseHPfactor * (1 + handleStats.selfHPBonus);
                     dsc.AppendLine("");
@@ -88,7 +92,7 @@ namespace Toolsmith.ToolTinkering.Behaviors {
             ItemSlot gripOrTreatmentSlot = null;
 
             foreach (var slot in allInputslots) {
-                if (!slot.Empty && (slot.Itemstack.Collectible.Code != ToolsmithConstants.SandpaperCode || slot.Itemstack.Collectible.Code != ToolsmithConstants.FirewoodCode)) {
+                if (!slot.Empty && (slot.Itemstack.Collectible.Code != ToolsmithConstants.SandpaperCode && slot.Itemstack.Collectible.Code != ToolsmithConstants.FirewoodCode)) {
                     if (slot.Itemstack.Collectible.Tool != null) {
                         toolSlot = slot;
                     } else if (slot.Itemstack.Collectible.Code.FirstCodePart() == ToolsmithConstants.HandleBlankCode) {
@@ -194,8 +198,13 @@ namespace Toolsmith.ToolTinkering.Behaviors {
                         }
 
                         var treatmentStatPair = ToolsmithModSystem.Stats.TreatmentParts.TryGetValue(treatment.Collectible.Code.Path);
-                        var treatmentStats = ToolsmithModSystem.Stats.TreatmentStats.TryGetValue(treatmentStatPair.treatmentStatTag);
+                        var treatmentStats = treatmentStatPair != null ? ToolsmithModSystem.Stats.TreatmentStats.TryGetValue(treatmentStatPair.treatmentStatTag) : null;
                         var handleStatPair = ToolsmithModSystem.Stats.BaseHandleParts.TryGetValue(handleSlot.Itemstack.Collectible.Code.Path);
+                        if (treatmentStats == null || handleStatPair == null) {
+                            ToolsmithModSystem.Logger.Error("A handle was crafted with " + treatment.Collectible.Code + " but it has no treatment stats registered. It will not apply any treatment.");
+                            outputSlot.MarkDirty();
+                            return;
+                        }
                         outputSlot.Itemstack.SetHandleTreatmentTag(treatmentStats.id);
                         outputSlot.Itemstack.SetWetTreatment((int)(treatmentStatPair.dryingHours * handleStatPair.dryingTimeMult));
                         outputSlot.Itemstack.Collectible.SetTransitionState(outputSlot.Itemstack, EnumTransitionType.Dry, 0);

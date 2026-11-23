@@ -272,14 +272,15 @@ namespace Toolsmith.ToolTinkering {
             var getItemStack = AccessTools.Method(typeof(ItemSlot), "get_Itemstack");
             var toolsmithShouldRenderSharpness = AccessTools.Method(typeof(TinkeringUtility), "ShouldRenderSharpnessBar", new Type[1] { typeof(ItemStack) });
 
-            var shouldRenderSharpnessAddition = new List<CodeInstruction> {
-                CodeInstruction.LoadArgument(1),
-                new CodeInstruction(OpCodes.Call, getItemStack),
-                new CodeInstruction(OpCodes.Call, toolsmithShouldRenderSharpness),
-                new CodeInstruction(OpCodes.Brtrue_S, codes[indexOfShouldRenderDamageCheck].operand)
-            };
-
             if (index >= 0 && indexOfSecondRet >= 0 && indexOfShouldRenderDamageCheck >= 0 && indexOfDamageColor >= 0 && indexOfGetMaxDur >= 0 && indexOfGetRemainingDur >= 0) {
+                //Only build this after the indexes are validated - indexing codes with a -1 would throw here and skip the helpful error messages below.
+                var shouldRenderSharpnessAddition = new List<CodeInstruction> {
+                    CodeInstruction.LoadArgument(1),
+                    new CodeInstruction(OpCodes.Call, getItemStack),
+                    new CodeInstruction(OpCodes.Call, toolsmithShouldRenderSharpness),
+                    new CodeInstruction(OpCodes.Brtrue_S, codes[indexOfShouldRenderDamageCheck].operand)
+                };
+
                 codeAddition[0].MoveLabelsFrom(codes[index]);
                 codes.InsertRange(index, codeAddition);
                 codes[indexOfDamageColor - 5].opcode = OpCodes.Nop;
