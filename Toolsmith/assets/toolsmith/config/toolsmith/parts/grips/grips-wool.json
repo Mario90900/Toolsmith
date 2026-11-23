@@ -117,67 +117,67 @@
 		"id": "cloth-wool-black",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/black"
+		"gripTextureOverride": "wool:block/cloth/wool/black"
 	},
 	{
 		"id": "cloth-wool-blue",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/blue"
+		"gripTextureOverride": "wool:block/cloth/wool/blue"
 	},
 	{
 		"id": "cloth-wool-brown",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/brown"
+		"gripTextureOverride": "wool:block/cloth/wool/brown"
 	},
 	{
 		"id": "cloth-wool-gray",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/gray"
+		"gripTextureOverride": "wool:block/cloth/wool/gray"
 	},
 	{
 		"id": "cloth-wool-green",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/green"
+		"gripTextureOverride": "wool:block/cloth/wool/green"
 	},
 	{
 		"id": "cloth-wool-orange",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/orange"
+		"gripTextureOverride": "wool:block/cloth/wool/orange"
 	},
 	{
 		"id": "cloth-wool-pink",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/pink"
+		"gripTextureOverride": "wool:block/cloth/wool/pink"
 	},
 	{
 		"id": "cloth-wool-purple",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/purple"
+		"gripTextureOverride": "wool:block/cloth/wool/purple"
 	},
 	{
 		"id": "cloth-wool-red",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/red"
+		"gripTextureOverride": "wool:block/cloth/wool/red"
 	},
 	{
 		"id": "cloth-wool-white",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/white"
+		"gripTextureOverride": "wool:block/cloth/wool/white"
 	},
 	{
 		"id": "cloth-wool-yellow",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/yellow"
+		"gripTextureOverride": "wool:block/cloth/wool/yellow"
 	},
 	{
 		"id": "cloth-wool-darkblue",
@@ -213,67 +213,67 @@
 		"id": "wool-black",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/black"
+		"gripTextureOverride": "wool:block/cloth/wool/black"
 	},
 	{
 		"id": "wool-blue",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/blue"
+		"gripTextureOverride": "wool:block/cloth/wool/blue"
 	},
 	{
 		"id": "wool-brown",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/brown"
+		"gripTextureOverride": "wool:block/cloth/wool/brown"
 	},
 	{
 		"id": "wool-gray",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/gray"
+		"gripTextureOverride": "wool:block/cloth/wool/gray"
 	},
 	{
 		"id": "wool-green",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/green"
+		"gripTextureOverride": "wool:block/cloth/wool/green"
 	},
 	{
 		"id": "wool-orange",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/orange"
+		"gripTextureOverride": "wool:block/cloth/wool/orange"
 	},
 	{
 		"id": "wool-pink",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/pink"
+		"gripTextureOverride": "wool:block/cloth/wool/pink"
 	},
 	{
 		"id": "wool-purple",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/purple"
+		"gripTextureOverride": "wool:block/cloth/wool/purple"
 	},
 	{
 		"id": "wool-red",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/red"
+		"gripTextureOverride": "wool:block/cloth/wool/red"
 	},
 	{
 		"id": "wool-white",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/white"
+		"gripTextureOverride": "wool:block/cloth/wool/white"
 	},
 	{
 		"id": "wool-yellow",
 		"gripStatTag": "cloth",
 		"gripShapePath": "fabric",
-		"gripTextureOverride": "wool:block/cloth/linen/yellow"
+		"gripTextureOverride": "wool:block/cloth/wool/yellow"
 	},
 	{
 		"id": "wool-darkblue",
