@@ -112,7 +112,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPatch(nameof(CollectibleObject.OnHeldUseStart))]
         private static bool OnHeldUseStartDominantOffhandInteractionPrefix(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumHandInteract useType, bool firstEvent, ref EnumHandHandling handling) {
             if (useType == EnumHandInteract.HeldItemInteract) {
-                if (byEntity != null && byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
+                if (byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
                     var bh = byEntity.LeftHandItemSlot.Itemstack.Collectible.GetBehavior<CollectibleBehaviorOffhandDominantInteraction>();
                     if (bh.AskItemForHasInteractionAvailable(byEntity.LeftHandItemSlot, slot, byEntity, blockSel, entitySel, firstEvent)) {
                         return true;
@@ -128,7 +128,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.OnHeldUseStep))]
         private static bool OnHeldUseStepDominantOffhandInteractionPrefix(ref EnumHandInteract __result, float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) {
-            if (byEntity != null && byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
+            if (byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
                 EnumHandInteract handUse = byEntity.Controls.HandUse;
                 if (handUse != EnumHandInteract.HeldItemAttack) {
                     var bh = byEntity.LeftHandItemSlot.Itemstack.Collectible.GetBehavior<CollectibleBehaviorOffhandDominantInteraction>();
@@ -151,7 +151,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(CollectibleObject.OnHeldUseCancel))]
         private static bool OnHeldUseCancelDominantOffhandInteractionPrefix(ref EnumHandInteract __result, float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason) {
-            if (byEntity != null && byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
+            if (byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
                 EnumHandInteract handUse = byEntity.Controls.HandUse;
                 if (handUse != EnumHandInteract.HeldItemAttack) {
                     var bh = byEntity.LeftHandItemSlot.Itemstack.Collectible.GetBehavior<CollectibleBehaviorOffhandDominantInteraction>();
@@ -175,7 +175,7 @@ namespace Toolsmith.ToolTinkering {
         [HarmonyPatch(nameof(CollectibleObject.OnHeldUseStop))]
         private static bool OnHeldUseStopDominantOffhandInteractionPrefix(float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumHandInteract useType) {
             if (useType == EnumHandInteract.HeldItemInteract) {
-                if (byEntity != null && byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
+                if (byEntity.LeftHandItemSlot?.Empty == false && byEntity.LeftHandItemSlot.Itemstack.Collectible.HasBehavior<CollectibleBehaviorOffhandDominantInteraction>()) {
                     var bh = byEntity.LeftHandItemSlot.Itemstack.Collectible.GetBehavior<CollectibleBehaviorOffhandDominantInteraction>();
                     if (bh.AskItemForHasInteractionAvailable(byEntity.LeftHandItemSlot, slot, byEntity, blockSel, entitySel)) {
                         return true;
@@ -196,12 +196,12 @@ namespace Toolsmith.ToolTinkering {
 
         [HarmonyTranspiler]
         [HarmonyPatch("ComposeSlotOverlays")]
-        private static IEnumerable<CodeInstruction> ComposeSlotOverlaysTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator ilGenerator) { //WOW Transpilers are FUN. And actually I do understand them better now having written this.
+        private static IEnumerable<CodeInstruction> ComposeSlotOverlaysTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator ilGenerator) { //WOW Transpilers are FUN. And actually I do understand them better now having written this. -- Oh man, this was my first Transpiler written... I don't want to rewrite it fully now but god it's not the best :P
 
-            int retCount = 0;
+            //int retCount = 0;
             int shadePathCount = 0;
             int index = -1;
-            int indexOfSecondRet = -1;
+            //int indexOfSetDrawItemDamage = -1;
             int indexOfShouldRenderDamageCheck = -1;
             int indexOfDamageColor = -1;
             var targetDamageColor = AccessTools.Method(typeof(CollectibleObject), nameof(CollectibleObject.GetItemDamageColor));
@@ -213,21 +213,12 @@ namespace Toolsmith.ToolTinkering {
             var codes = new List<CodeInstruction>(instructions);
 
             for (int i = 0; i < codes.Count; i++) {
-                if (retCount < 2 && codes[i].opcode == OpCodes.Ret) { //Don't need to look at anything until after we have found three 'ret' calls
-                    retCount++;
-                    if (retCount == 2 && codes[i - 1].opcode == OpCodes.Ldc_I4_1) {
-                        indexOfSecondRet = i; //Since I don't need to change this now anymore, using it as a stepping stone to find the nearest entry point to the check for if damage should be rendered
-                    }
+                if (indexOfShouldRenderDamageCheck < 0 && codes[i].opcode == OpCodes.Stloc_0 && (i + 2) < codes.Count) { //Don't need to look at anything until after we have found where drawItemDamage is set.
+                    indexOfShouldRenderDamageCheck = i + 2;
                     continue;
                 }
 
-                if (retCount == 2 && indexOfSecondRet > 1 && codes[i].opcode == OpCodes.Brtrue_S) {
-                    indexOfShouldRenderDamageCheck = i;
-                    indexOfSecondRet = 1;
-                    continue;
-                }
-
-                if (retCount == 2 && shadePathCount < 2 && codes[i].opcode == OpCodes.Callvirt) {
+                if (shadePathCount < 2 && codes[i].opcode == OpCodes.Callvirt) {
                     if ((MethodInfo)codes[i].operand == targetDamageColor) {
                         indexOfDamageColor = i;
                         continue;
@@ -242,7 +233,7 @@ namespace Toolsmith.ToolTinkering {
                     }
                 }
 
-                if (retCount == 2 && shadePathCount < 2 && codes[i].opcode == OpCodes.Call) {
+                if (shadePathCount < 2 && codes[i].opcode == OpCodes.Call) {
                     if (codes[i - 1].opcode == OpCodes.Ldc_R8 && (double)codes[i - 1].operand == (double)(2)) { //If a Call code is preceeded by a float 2 being loaded, it is likely the ShadePath call we are looking for.
                         if (codes[i - 2].opcode == OpCodes.Ldloc_2) { //Then just in case, lets see if before THAT was loading the textCtx on the stack. THEN we are certain. (probably? Hopefully.)
                             shadePathCount++;
@@ -263,22 +254,22 @@ namespace Toolsmith.ToolTinkering {
                 CodeInstruction.LoadArgument(3),
                 CodeInstruction.LoadLocal(2),
                 CodeInstruction.LoadArgument(0),
-                CodeInstruction.Call(typeof(ToolTinkeringGuiElementPatches), "DrawSharpnessBar", new Type[5] { typeof(ItemSlot), typeof(int), typeof(int), typeof(Context), typeof(GuiElementItemSlotGridBase) })
+                CodeInstruction.Call(typeof(ToolTinkeringGuiElementPatches), "DrawSharpnessBar", [typeof(ItemSlot), typeof(int), typeof(int), typeof(Context), typeof(GuiElementItemSlotGridBase)])
             };
 
-            var toolsmithGetItemDamage = AccessTools.Method(typeof(TinkeringUtility), "ToolsmithGetItemDamageColor", new Type[1] { typeof(ItemStack) });
-            var toolsmithGetMaxDur = AccessTools.Method(typeof(TinkeringUtility), "FindLowestMaxDurabilityForBar", new Type[1] { typeof(ItemStack) });
-            var toolsmithGetRemainingDur = AccessTools.Method(typeof(TinkeringUtility), "FindLowestCurrentDurabilityForBar", new Type[1] { typeof(ItemStack) });
+            var toolsmithGetItemDamage = AccessTools.Method(typeof(TinkeringUtility), "ToolsmithGetItemDamageColor", [typeof(ItemStack)]);
+            var toolsmithGetMaxDur = AccessTools.Method(typeof(TinkeringUtility), "FindLowestMaxDurabilityForBar", [typeof(ItemStack)]);
+            var toolsmithGetRemainingDur = AccessTools.Method(typeof(TinkeringUtility), "FindLowestCurrentDurabilityForBar", [typeof(ItemStack)]);
             var getItemStack = AccessTools.Method(typeof(ItemSlot), "get_Itemstack");
-            var toolsmithShouldRenderSharpness = AccessTools.Method(typeof(TinkeringUtility), "ShouldRenderSharpnessBar", new Type[1] { typeof(ItemStack) });
+            var toolsmithShouldRenderSharpness = AccessTools.Method(typeof(TinkeringUtility), "ShouldRenderSharpnessBar", [typeof(ItemStack)]);
 
-            if (index >= 0 && indexOfSecondRet >= 0 && indexOfShouldRenderDamageCheck >= 0 && indexOfDamageColor >= 0 && indexOfGetMaxDur >= 0 && indexOfGetRemainingDur >= 0) {
+            if (index >= 0 && indexOfShouldRenderDamageCheck >= 0 && indexOfDamageColor >= 0 && indexOfGetMaxDur >= 0 && indexOfGetRemainingDur >= 0) {
                 //Only build this after the indexes are validated - indexing codes with a -1 would throw here and skip the helpful error messages below.
                 var shouldRenderSharpnessAddition = new List<CodeInstruction> {
                     CodeInstruction.LoadArgument(1),
-                    new CodeInstruction(OpCodes.Call, getItemStack),
-                    new CodeInstruction(OpCodes.Call, toolsmithShouldRenderSharpness),
-                    new CodeInstruction(OpCodes.Brtrue_S, codes[indexOfShouldRenderDamageCheck].operand)
+                    new(OpCodes.Call, getItemStack),
+                    new(OpCodes.Call, toolsmithShouldRenderSharpness),
+                    new(OpCodes.Brtrue_S, codes[indexOfShouldRenderDamageCheck].operand)
                 };
 
                 codeAddition[0].MoveLabelsFrom(codes[index]);
@@ -303,9 +294,6 @@ namespace Toolsmith.ToolTinkering {
                 ToolsmithModSystem.Logger.Error("Durability and Sharpness Bar Transpiler had an error!  Will not patch anything, errors will follow:");
                 if (index < 0) {
                     ToolsmithModSystem.Logger.Error("Could not find the second call to ShadePath for the Damage Bar rendering.");
-                }
-                if (indexOfSecondRet < 0) {
-                    ToolsmithModSystem.Logger.Error("Could not locate the second return call.");
                 }
                 if (indexOfShouldRenderDamageCheck < 0) {
                     ToolsmithModSystem.Logger.Error("Could not locate the render damage check.");
